@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Block\Navbar;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\MenuRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 #[ApiResource]
-class Menu implements Stringable
+class Menu implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 

@@ -54,7 +54,12 @@ class FrontService
         ];
 
         foreach ($functions as $function) {
-            $meta = call_user_func_array([$this, $function], [$config, $meta]);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $meta = call_user_func_array($callable, [$config, $meta]);
         }
 
         return $meta;

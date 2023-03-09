@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\LibelleRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -15,7 +16,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: LibelleRepository::class)]
 #[ApiResource]
-class Libelle implements Stringable
+class Libelle implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 

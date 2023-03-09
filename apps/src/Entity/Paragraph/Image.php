@@ -9,6 +9,7 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\ImageRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -17,7 +18,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[ORM\Table(name: 'paragraph_image')]
 #[ApiResource(routePrefix: '/paragraph')]
-class Image implements ParagraphInterface
+class Image implements ParagraphInterface, EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphImages', cascade: ['persist'])]

@@ -26,6 +26,8 @@ use Labstag\Event\ParagraphEntityEvent;
 use Labstag\Event\PostEntityEvent;
 use Labstag\Event\RenderEntityEvent;
 use Labstag\Event\UserEntityEvent;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\EventSubscriberLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\HistoryService;
@@ -72,6 +74,7 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
+        /** @var BlockInterface $entity */
         $entity = new $classentity();
         $entity->setBlock($block);
 
@@ -220,7 +223,8 @@ class EntitySubscriber extends EventSubscriberLib
                 $configuration->setName($key);
             }
 
-            if (in_array($key, $this->parameterBag->get('metatags'))) {
+            $metatags = (array) $this->parameterBag->get('metatags');
+            if (in_array($key, $metatags)) {
                 $value = $value[0];
             }
 
@@ -313,7 +317,7 @@ class EntitySubscriber extends EventSubscriberLib
         $emails = $newEntity->getEmailUsers();
         $trouver = false;
         foreach ($emails as $emailUser) {
-            // @var  EmailUser $emailUser
+            /** @var  EmailUser $emailUser */
             $emailUser->setPrincipal(false);
             if ($emailUser->getAddress() === $address) {
                 $emailUser->setPrincipal(true);
@@ -398,6 +402,7 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
+        /** @var ParagraphInterface $entity */
         $entity = new $classentity();
         $entity->setParagraph($paragraph);
 
@@ -425,7 +430,12 @@ class EntitySubscriber extends EventSubscriberLib
         $this->verifMetasPost($entity, $method, $title);
         $this->verifMetasRender($entity, $method, $title);
         if ('' != $method) {
-            call_user_func([$meta, $method], $entity);
+            /** @var callable $callable */
+            $callable = [
+                $meta,
+                $method,
+            ];
+            call_user_func($callable, $entity);
         }
 
         $meta->setTitle($title);

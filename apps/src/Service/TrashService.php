@@ -4,6 +4,7 @@ namespace Labstag\Service;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -25,7 +26,7 @@ class TrashService
     {
         $data = [];
         foreach ($this->rewindableGenerator as $repository) {
-            $isTrashable = $this->isTrashable($repository::class);
+            $isTrashable = $this->isTrashable($repository);
             if (!$isTrashable) {
                 continue;
             }
@@ -37,7 +38,7 @@ class TrashService
 
             $data[] = [
                 'name'       => strtolower(substr((string) $entity, strrpos((string) $entity, '\\') + 1)),
-                'properties' => $this->getProperties($repository::class),
+                'properties' => $this->getProperties($repository),
                 'entity'     => substr((string) $entity, strrpos((string) $entity, '\\') + 1),
                 'total'      => $test,
                 'token'      => $this->csrfTokenManager->getToken('empty')->getValue(),
@@ -47,14 +48,14 @@ class TrashService
         return $data;
     }
 
-    public function getProperties(string $repository): array
+    protected function getProperties(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): array
     {
         $properties = [];
-        if (!$this->isTrashable($repository)) {
+        if (!$this->isTrashable($serviceEntityRepositoryLib)) {
             return $properties;
         }
 
-        $reflectionClass = new ReflectionClass($repository);
+        $reflectionClass = new ReflectionClass($serviceEntityRepositoryLib);
         $attributes = $reflectionClass->getAttributes();
         foreach ($attributes as $attribute) {
             if (Trashable::class != $attribute->getName()) {
@@ -69,9 +70,9 @@ class TrashService
         return $properties;
     }
 
-    public function isTrashable(string $repository): bool
+    private function isTrashable(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): bool
     {
-        $reflectionClass = new ReflectionClass($repository);
+        $reflectionClass = new ReflectionClass($serviceEntityRepositoryLib);
         $attributes = $reflectionClass->getAttributes();
         $find = false;
         foreach ($attributes as $attribute) {

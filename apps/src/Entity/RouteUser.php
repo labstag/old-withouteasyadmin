@@ -4,13 +4,14 @@ namespace Labstag\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\RouteUserRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: RouteUserRepository::class)]
 #[ApiResource]
-class RouteUser
+class RouteUser implements EntityInterface
 {
 
     #[ORM\Id]

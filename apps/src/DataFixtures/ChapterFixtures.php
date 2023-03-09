@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\Chapter;
+use Labstag\Entity\History;
 use Labstag\Entity\Meta;
 use Labstag\Lib\FixtureLib;
 
@@ -48,6 +49,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         $content = $generator->paragraphs(random_int(4, 10), true);
         $chapter->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $indexHistory = $generator->numberBetween(0, self::NUMBER_HISTORY - 1);
+        /** @var History $history */
         $history = $this->getReference('history_'.$indexHistory);
         if (!isset($this->position[$indexHistory])) {
             $this->position[$indexHistory] = [];

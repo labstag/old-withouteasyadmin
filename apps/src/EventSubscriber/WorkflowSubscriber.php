@@ -53,6 +53,7 @@ class WorkflowSubscriber extends EventSubscriberLib
 
     public function transitionPasswordLost(Event $event): void
     {
+        /** @var User $entity */
         $entity = $event->getSubject();
         $this->userMailService->lostPassword($entity);
         $this->sessionService->flashBagAdd(
@@ -65,6 +66,7 @@ class WorkflowSubscriber extends EventSubscriberLib
     {
         $entity = $event->getSubject();
         if (User::class == $entity::class) {
+            /** @var User $entity */
             $this->userMailService->newUser($entity);
             $this->sessionService->flashBagAdd(
                 'success',

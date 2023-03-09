@@ -3,12 +3,13 @@
 namespace Labstag\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\PhoneUserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PhoneUserRepository::class)]
-class PhoneUser extends Phone
+class PhoneUser extends Phone implements EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'phoneUsers', cascade: ['persist'])]

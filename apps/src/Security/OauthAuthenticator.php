@@ -56,7 +56,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected UserRepository $userRepository
     )
     {
-        // @var  Request $request
+        /** @var  Request $request */
         $this->request = $this->requestStack->getCurrentRequest();
 
         $attributes = $this->request->attributes;

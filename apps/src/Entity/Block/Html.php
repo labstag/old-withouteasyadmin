@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\Block\HtmlRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -13,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: HtmlRepository::class)]
 #[ORM\Table(name: 'block_html')]
 #[ApiResource(routePrefix: '/block')]
-class Html implements Stringable, BlockInterface
+class Html implements Stringable, BlockInterface, EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'htmls', cascade: ['persist'])]

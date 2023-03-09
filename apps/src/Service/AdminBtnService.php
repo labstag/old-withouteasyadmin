@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Labstag\Interfaces\EntityInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -47,7 +48,7 @@ class AdminBtnService
     }
 
     public function addBtnDelete(
-        object $entity,
+        EntityInterface $entity,
         array $route,
         string $text = 'Supprimer',
         array $routeParam = []
@@ -62,7 +63,8 @@ class AdminBtnService
             $route['delete'],
         ];
 
-        if (!$this->isRoutesEnable($routes)) {
+        $methods = get_class_methods($entity);
+        if (!$this->isRoutesEnable($routes) || !in_array('getId', $methods)) {
             return $this;
         }
 

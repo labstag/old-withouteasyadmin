@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\Block\HeaderRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -15,7 +16,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: HeaderRepository::class)]
 #[ORM\Table(name: 'block_header')]
 #[ApiResource(routePrefix: '/block')]
-class Header implements Stringable, BlockInterface
+class Header implements Stringable, BlockInterface, EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'headers', cascade: ['persist'])]

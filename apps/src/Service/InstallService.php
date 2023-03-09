@@ -51,7 +51,12 @@ class InstallService
         $file = __DIR__.'/../../json/'.$file.'.json';
         $data = [];
         if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode(
+                (string) file_get_contents($file),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
         }
 
         return $data;
@@ -66,7 +71,7 @@ class InstallService
         $data = [];
         $dotenv = new Dotenv();
         if (is_file($file)) {
-            $data = $dotenv->parse(file_get_contents($file));
+            $data = $dotenv->parse((string) file_get_contents($file));
         }
 
         $data = array_merge($serverEnv, $data);

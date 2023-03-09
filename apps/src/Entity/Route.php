@@ -6,13 +6,14 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\RouteRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: RouteRepository::class)]
 #[ApiResource]
-class Route implements Stringable
+class Route implements Stringable, EntityInterface
 {
 
     #[ORM\OneToMany(targetEntity: RouteGroupe::class, mappedBy: 'route', cascade: ['persist'], orphanRemoval: true)]

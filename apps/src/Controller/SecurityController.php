@@ -222,7 +222,6 @@ class SecurityController extends ControllerLib
         /** @var AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
         $session = $request->getSession();
-        /** @var string $referer */
         $query = $request->query->all();
         if (array_key_exists('link', $query)) {
             $session->set('link', 1);

@@ -69,6 +69,7 @@ class GeocodeService
         }
 
         $content = $response->getContent();
+        /** @var resource $tempFile */
         $tempFile = tmpfile();
         $path = stream_get_meta_data($tempFile)['uri'];
         file_put_contents($path, $content);
@@ -77,7 +78,7 @@ class GeocodeService
             return [];
         }
 
-        $content = $zipArchive->getFromName($country.'.txt');
+        $content = (string) $zipArchive->getFromName($country.'.txt');
         $csv = str_getcsv($content, "\n");
         $zipArchive->close();
 

@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\Block\ParagraphRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -13,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: ParagraphRepository::class)]
 #[ORM\Table(name: 'block_paragraph')]
 #[ApiResource(routePrefix: '/block')]
-class Paragraph implements Stringable, BlockInterface
+class Paragraph implements Stringable, BlockInterface, EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'paragraphs', cascade: ['persist'])]

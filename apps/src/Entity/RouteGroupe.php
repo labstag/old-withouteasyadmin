@@ -4,12 +4,13 @@ namespace Labstag\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\RouteGroupeRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: RouteGroupeRepository::class)]
 #[ApiResource]
-class RouteGroupe
+class RouteGroupe implements EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'routes', cascade: ['persist'])]

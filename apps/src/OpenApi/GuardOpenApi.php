@@ -28,7 +28,12 @@ class GuardOpenApi implements OpenApiFactoryInterface
         ];
 
         foreach ($functions as $function) {
-            $openApi = call_user_func([$this, $function], $openApi);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $openApi = call_user_func($callable, $openApi);
         }
 
         return $openApi;

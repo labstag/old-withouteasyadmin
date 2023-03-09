@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\Block\FooterRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -15,7 +16,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: FooterRepository::class)]
 #[ORM\Table(name: 'block_footer')]
 #[ApiResource(routePrefix: '/block')]
-class Footer implements Stringable, BlockInterface
+class Footer implements Stringable, BlockInterface, EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'footers', cascade: ['persist'])]

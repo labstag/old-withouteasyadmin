@@ -11,6 +11,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\UserRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -22,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;

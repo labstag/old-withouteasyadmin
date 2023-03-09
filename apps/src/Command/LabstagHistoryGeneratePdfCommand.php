@@ -43,16 +43,22 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
         $symfonyStyle->title('Génération des PDF');
         $symfonyStyle->progressStart(is_countable($histories) ? count($histories) : 0);
 
-        $fileDirectory = (string) $this->parameterBag->get('file_directory');
+        $fileDirectory = $this->parameterBag->get('file_directory');
+        if (!is_string($fileDirectory)) {
+            $symfonyStyle->progressFinish();
+
+            return Command::SUCCESS;
+        }
+
         /** @var History $history */
         foreach ($histories as $history) {
             $this->historyService->process(
-                $fileDirectory,
+                (string) $fileDirectory,
                 $history->getId(),
                 true
             );
             $this->historyService->process(
-                $fileDirectory,
+                (string) $fileDirectory,
                 $history->getId(),
                 false
             );

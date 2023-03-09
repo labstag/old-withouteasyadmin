@@ -5,6 +5,7 @@ namespace Labstag\Paragraph;
 use Embed\Embed;
 use Embed\Extractor;
 use Exception;
+use finfo;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
@@ -177,9 +178,15 @@ class VideoParagraph extends ParagraphLib
         string $slug
     ): void
     {
+        /** @var finfo $finfo */
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $fileDirectory = $this->getParameter('file_directory');
+        if (!is_string($fileDirectory)) {
+            return;
+        }
+
         try {
-            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $path = $fileDirectory.'/'.$annotation->getPath();
             $content = file_get_contents($image);
             /** @var resource $tmpfile */
             $tmpfile = tmpfile();

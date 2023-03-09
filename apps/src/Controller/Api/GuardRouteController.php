@@ -69,9 +69,10 @@ class GuardRouteController extends ApiControllerLib
             'add'    => 0,
             'error'  => '',
         ];
-        $state = $request->request->get('state');
+        $state = (bool) $request->request->get('state');
         $groupes = $groupeRepository->findAll();
         foreach ($groupes as $groupe) {
+            /** @var Groupe $groupe */
             $data = $this->setRouteGroupe(
                 $routeGroupeRepository,
                 $guardService,
@@ -96,7 +97,7 @@ class GuardRouteController extends ApiControllerLib
         $data = $this->getGuardRouteOrWorkflow($data, $get, RouteUser::class);
         $results = $this->getResultWorkflow($request, RouteGroupe::class);
         foreach ($results as $result) {
-            // @var  RouteGroupe $row
+            /** @var  RouteGroupe $row */
             $data['group'][] = [
                 'groupe' => $result->getRefgroupe()->getCode(),
                 'route'  => $result->getRefroute()->getName(),
@@ -121,7 +122,7 @@ class GuardRouteController extends ApiControllerLib
             'add'    => 0,
             'error'  => '',
         ];
-        $state = $request->request->get('state');
+        $state = (bool) $request->request->get('state');
         $data = $this->setRouteGroupe(
             $routeGroupeRepository,
             $guardService,
@@ -150,7 +151,7 @@ class GuardRouteController extends ApiControllerLib
             'add'    => 0,
             'error'  => '',
         ];
-        $state = $request->request->get('state');
+        $state = (bool) $request->request->get('state');
         $data = $this->setRouteUser(
             $routeUserRepository,
             $guardService,
@@ -178,10 +179,11 @@ class GuardRouteController extends ApiControllerLib
             'add'    => 0,
             'error'  => '',
         ];
-        $state = $request->request->get('state');
+        $state = (bool) $request->request->get('state');
         $routes = $guardService->getGuardRoutesForUser($user);
         /** @var EntityRoute $route */
         foreach ($routes as $route) {
+            /** @var EntityRoute $route */
             $data = $this->setRouteUser(
                 $routeUserRepository,
                 $guardService,

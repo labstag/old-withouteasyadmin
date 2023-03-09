@@ -3,6 +3,11 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\AddressUser;
+use Labstag\Entity\EmailUser;
+use Labstag\Entity\LinkUser;
+use Labstag\Entity\OauthConnectUser;
+use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
 use Labstag\Event\UserCollectionEvent;
 use Labstag\Service\RepositoryService;
@@ -76,7 +81,7 @@ abstract class RequestHandlerLib
         $userCollectionEvent = new UserCollectionEvent();
         $oauthConnectUsers = $user->getOauthConnectUsers();
         foreach ($oauthConnectUsers as $oauthConnectUser) {
-            /** @var OauthConnectUser $row */
+            /** @var OauthConnectUser $oauthConnectUser */
             $old = clone $oauthConnectUser;
             $oauthConnectUser->setRefuser($user);
             $userCollectionEvent->addOauthConnectUser($old, $oauthConnectUser);
@@ -84,7 +89,7 @@ abstract class RequestHandlerLib
 
         $linkUsers = $user->getLinkUsers();
         foreach ($linkUsers as $linkUser) {
-            /** @var LinkUser $row */
+            /** @var LinkUser $linkUser */
             $old = clone $linkUser;
             $linkUser->setRefuser($user);
             $userCollectionEvent->addLinkUser($old, $linkUser);
@@ -92,7 +97,7 @@ abstract class RequestHandlerLib
 
         $emailUsers = $user->getEmailUsers();
         foreach ($emailUsers as $emailUser) {
-            /** @var EmailUser $row */
+            /** @var EmailUser $emailUser */
             $old = clone $emailUser;
             $emailUser->setRefuser($user);
             $userCollectionEvent->addEmailUser($old, $emailUser);
@@ -100,7 +105,7 @@ abstract class RequestHandlerLib
 
         $phoneUsers = $user->getPhoneUsers();
         foreach ($phoneUsers as $phoneUser) {
-            /** @var PhoneUser $row */
+            /** @var PhoneUser $phoneUser */
             $old = clone $phoneUser;
             $phoneUser->setRefuser($user);
             $userCollectionEvent->addPhoneUser($old, $phoneUser);
@@ -108,7 +113,7 @@ abstract class RequestHandlerLib
 
         $addressUsers = $user->getAddressUsers();
         foreach ($addressUsers as $addressUser) {
-            /** @var AddressUser $row */
+            /** @var AddressUser $addressUser */
             $old = clone $addressUser;
             $addressUser->setRefuser($user);
             $userCollectionEvent->addAddressUser($old, $addressUser);

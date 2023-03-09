@@ -150,8 +150,9 @@ class LabstagExtension extends AbstractExtension
             return null;
         }
 
-        $file = $attachment->getName();
-        if (!is_file($file)) {
+        /** @var Attachment $attachment */
+        $name = $attachment->getName();
+        if (!is_file($name)) {
             return null;
         }
 
@@ -180,7 +181,12 @@ class LabstagExtension extends AbstractExtension
         $dataFilters = $this->getFiltersFunctions();
         $filters = [];
         foreach ($dataFilters as $key => $function) {
-            $filters[] = new TwigFilter($key, [$this, $function], ['is_safe' => ['all']]);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $filters[] = new TwigFilter($key, $callable, ['is_safe' => ['all']]);
         }
 
         return $filters;
@@ -194,7 +200,12 @@ class LabstagExtension extends AbstractExtension
         $dataFunctions = $this->getFiltersFunctions();
         $functions = [];
         foreach ($dataFunctions as $key => $function) {
-            $functions[] = new TwigFunction($key, [$this, $function], ['is_safe' => ['all']]);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $functions[] = new TwigFunction($key, $callable, ['is_safe' => ['all']]);
         }
 
         return $functions;
@@ -271,30 +282,23 @@ class LabstagExtension extends AbstractExtension
         return $this->guardService->guardRouteEnableUser($route, $user);
     }
 
-    /**
-     * Gets the browser path for the image and filter to apply.
-     *
-     * @param null|string $resolver
-     *
-     * @return string
-     */
     public function imagefilter(
         string $path,
         string $filter,
         array $config = [],
-        $resolver = null,
+        ?string $resolver = null,
         int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    )
+    ): string
     {
         $url = $this->cacheManager->getBrowserPath(
-            parse_url($path, PHP_URL_PATH),
+            (string) parse_url($path, PHP_URL_PATH),
             $filter,
             $config,
             $resolver,
             $referenceType
         );
 
-        return parse_url($url, PHP_URL_PATH);
+        return (string) parse_url($url, PHP_URL_PATH);
     }
 
     public function verifPhone(string $country, string $phone): bool
@@ -367,16 +371,19 @@ class LabstagExtension extends AbstractExtension
             'forms/'.$type.$htmltwig,
         ];
 
-        $vars = $class->vars;
-        $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
-        if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
-            $files[] = 'forms/paragraph/'.$type.$htmltwig;
-            $files[] = 'forms/paragraph/default'.$htmltwig;
-        }
+        if (isset($class->vars)) {
+            /** @var array $vars */
+            $vars = $class->vars;
+            $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
+            if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
+                $files[] = 'forms/paragraph/'.$type.$htmltwig;
+                $files[] = 'forms/paragraph/default'.$htmltwig;
+            }
 
-        if (!is_null($classtype) && 1 == substr_count($classtype, '\Block')) {
-            $files[] = 'forms/block/'.$type.$htmltwig;
-            $files[] = 'forms/block/default'.$htmltwig;
+            if (!is_null($classtype) && 1 == substr_count($classtype, '\Block')) {
+                $files[] = 'forms/block/'.$type.$htmltwig;
+                $files[] = 'forms/block/default'.$htmltwig;
+            }
         }
 
         $files[] = 'forms/default'.$htmltwig;

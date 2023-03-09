@@ -4,6 +4,7 @@ namespace Labstag\Front;
 
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Edito;
+use Labstag\Entity\Page;
 use Labstag\Interfaces\FrontInterface;
 
 class EditoFront extends PageFront
@@ -22,6 +23,7 @@ class EditoFront extends PageFront
             'title' => $front->getTitle(),
         ];
 
+        /** @var Page $page */
         $page = $this->pageRepository->findOneBy(
             ['slug' => '']
         );

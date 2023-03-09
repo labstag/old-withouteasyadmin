@@ -3,6 +3,7 @@
 namespace Labstag\Controller\Admin;
 
 use Labstag\Entity\Profil;
+use Labstag\Entity\User;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Lib\DomainLib;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -17,9 +18,12 @@ class ProfilController extends AdminControllerLib
         Security $security
     ): Response
     {
+        /** @var User $user */
+        $user = $security->getUser();
+
         return $this->form(
             $this->getDomainEntity(),
-            $security->getUser(),
+            $user,
             'admin/profil.html.twig'
         );
     }

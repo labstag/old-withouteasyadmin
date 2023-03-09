@@ -15,6 +15,7 @@ use Labstag\Repository\TemplateRepository;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locale;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserMailService
 {
@@ -91,7 +92,7 @@ class UserMailService
         return $content;
     }
 
-    public function checkNewAddress(User $user, AddressUser $addressUser): void
+    public function checkNewAddress(UserInterface $user, AddressUser $addressUser): void
     {
         /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
@@ -116,7 +117,7 @@ class UserMailService
         );
     }
 
-    public function checkNewLink(User $user, LinkUser $linkUser): void
+    public function checkNewLink(UserInterface $user, LinkUser $linkUser): void
     {
         /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
@@ -164,7 +165,7 @@ class UserMailService
     }
 
     public function checkNewOauthConnectUser(
-        User $user,
+        UserInterface $user,
         OauthConnectUser $oauthConnectUser
     ): void
     {
@@ -267,10 +268,11 @@ class UserMailService
 
     private function setEmail(
         Template $template,
-        User $user,
+        UserInterface $user,
         array $change = []
     ): void
     {
+        /** @var User $user */
         $html = $template->getHtml();
         $text = $template->getText();
         $name = $template->getName();

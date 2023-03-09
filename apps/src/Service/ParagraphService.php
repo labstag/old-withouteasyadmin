@@ -43,7 +43,12 @@ class ParagraphService
         $old = clone $paragraph;
         $paragraph->setType($code);
         $paragraph->setPosition($position);
-        call_user_func([$paragraph, $method], $entity);
+        /** @var callable $callable */
+        $callable = [
+            $paragraph,
+            $method,
+        ];
+        call_user_func($callable, $entity);
         $this->paragraphRequestHandler->handle($old, $paragraph);
     }
 
@@ -139,7 +144,7 @@ class ParagraphService
         return $name;
     }
 
-    public function getTypeEntity(Paragraph $paragraph): ?string
+    public function getTypeEntity(Paragraph $paragraph): mixed
     {
         $type = $paragraph->getType();
         $paragraph = null;

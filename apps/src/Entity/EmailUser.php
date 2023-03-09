@@ -4,12 +4,13 @@ namespace Labstag\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: EmailUserRepository::class)]
 #[ApiResource]
-class EmailUser extends Email
+class EmailUser extends Email implements EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'emailUsers', cascade: ['persist'])]

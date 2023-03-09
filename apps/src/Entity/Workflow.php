@@ -6,12 +6,13 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\WorkflowRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: WorkflowRepository::class)]
 #[ApiResource]
-class Workflow
+class Workflow implements EntityInterface
 {
 
     #[ORM\Column(type: 'string', length: 255)]

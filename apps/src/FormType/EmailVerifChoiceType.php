@@ -2,6 +2,7 @@
 
 namespace Labstag\FormType;
 
+use Labstag\Entity\EmailUser;
 use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;

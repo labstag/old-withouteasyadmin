@@ -4,6 +4,7 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Labstag\Entity\Block;
 use Labstag\Entity\Layout;
 use Labstag\Lib\FixtureLib;
 
@@ -35,6 +36,7 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
         array $dataLayout
     ): void
     {
+        /** @var Block $block */
         $block = $this->getReference('block_'.$region.'-'.$type);
         $layout = new Layout();
         $old = clone $layout;

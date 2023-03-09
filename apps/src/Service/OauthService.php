@@ -99,7 +99,12 @@ class OauthService
         $file = __DIR__.'/../../json/oauth.json';
         $data = [];
         if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode(
+                (string) file_get_contents($file),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
         }
 
         $this->configProvider = $data;
@@ -151,17 +156,12 @@ class OauthService
         ];
 
         foreach ($functions as $function) {
-            $provider = call_user_func_array(
-                [
-                    $this,
-                    $function,
-                ],
-                [
-                    $clientName,
-                    $params,
-                    $provider,
-                ]
-            );
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $provider = call_user_func_array($callable, [$clientName, $params, $provider]);
         }
 
         return $provider;

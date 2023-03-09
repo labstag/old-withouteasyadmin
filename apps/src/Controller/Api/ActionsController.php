@@ -5,6 +5,7 @@ namespace Labstag\Controller\Api;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Lib\ApiControllerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\TrashService;
@@ -66,6 +67,7 @@ class ActionsController extends ApiControllerLib
         ];
         /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
+        /** @var EntityTrashInterface $entity */
         $entity = $repository->find($id);
         if (is_null($entity) || is_null($entity->getDeletedAt())) {
             $data['error'] = 'entité inconnu';
@@ -330,7 +332,12 @@ class ActionsController extends ApiControllerLib
         foreach ($entities as $id) {
             try {
                 $entity = $repository->find($id);
-                call_user_func([$this, $method], $entity);
+                /** @var callable $callable */
+                $callable = [
+                    $this,
+                    $method,
+                ];
+                call_user_func($callable, $entity);
             } catch (Exception $exception) {
                 $error[] = $exception->getMessage();
             }

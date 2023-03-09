@@ -158,7 +158,12 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         ];
 
         foreach ($functions as $function) {
-            call_user_func_array([$this, $function], [$queryBuilder, $get]);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            call_user_func_array($callable, [$queryBuilder, $get]);
         }
 
         return $queryBuilder;

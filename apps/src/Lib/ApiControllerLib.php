@@ -33,7 +33,7 @@ abstract class ApiControllerLib extends AbstractController
         protected UserRepository $userRepository
     )
     {
-        // @var  Request $request
+        /** @var  Request $request */
         $this->request = $this->requeststack->getCurrentRequest();
     }
 
@@ -53,7 +53,7 @@ abstract class ApiControllerLib extends AbstractController
         $results = $entityRepository->findEnableByUser($user);
         if (RouteUser::class == $entityClass) {
             foreach ($results as $row) {
-                // @var  RouteUser $row
+                /** @var  RouteUser $row */
                 $data['user'][] = [
                     'route' => $row->getRefroute()->getName(),
                 ];
@@ -63,7 +63,7 @@ abstract class ApiControllerLib extends AbstractController
         }
 
         foreach ($results as $result) {
-            // @var  WorkflowGroupe $row
+            /** @var  WorkflowGroupe $row */
             $data['group'][] = [
                 'entity'     => $result->getRefworkflow()->getEntity(),
                 'transition' => $result->getRefworkflow()->getTransition(),

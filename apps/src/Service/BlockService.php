@@ -45,6 +45,7 @@ class BlockService
 
         $data = [];
         foreach ($blocks as $block) {
+            /** @var Block $block */
             $title = $block->getTitle();
             $id = $block->getId();
             $data[$title] = $id;

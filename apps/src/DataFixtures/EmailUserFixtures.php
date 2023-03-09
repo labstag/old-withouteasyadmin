@@ -29,6 +29,7 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
         $users = $this->installService->getData('user');
         for ($index = 0; $index < self::NUMBER_EMAIL; ++$index) {
             $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+            /** @var User $user */
             $user = $this->getReference('user_'.$indexUser);
             $this->addEmail($generator, $user);
         }

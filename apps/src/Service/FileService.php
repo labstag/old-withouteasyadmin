@@ -43,8 +43,8 @@ class FileService
             $old = clone $attachment;
         }
 
-        $attachment->setMimeType(mime_content_type($file));
-        $attachment->setSize(filesize($file));
+        $attachment->setMimeType((string) mime_content_type($file));
+        $attachment->setSize((int) filesize($file));
         $attachment->setName(
             str_replace(
                 $this->containerBag->get('kernel.project_dir').'/public/',

@@ -28,7 +28,7 @@ class OauthChoiceType extends AbstractType
         $types = $this->oauthService->getTypes();
         $choices = [];
         foreach ($types as $type) {
-            $choices[$type] = new ChoiceView('', $type, $type);
+            $choices[$type] = new ChoiceView('', (string) $type, (string) $type);
         }
 
         ksort($choices);

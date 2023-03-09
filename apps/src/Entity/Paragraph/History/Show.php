@@ -5,6 +5,7 @@ namespace Labstag\Entity\Paragraph\History;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\History\ShowRepository;
 use Stringable;
@@ -13,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: ShowRepository::class)]
 #[ORM\Table(name: 'paragraph_history_show')]
 #[ApiResource(routePrefix: '/paragraph/history')]
-class Show implements Stringable, ParagraphInterface
+class Show implements Stringable, ParagraphInterface, EntityInterface
 {
 
     #[ORM\Id]

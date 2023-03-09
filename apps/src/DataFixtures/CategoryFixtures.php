@@ -27,6 +27,7 @@ class CategoryFixtures extends DataFixtureLib implements DependentFixtureInterfa
         $indexCategory = $generator->numberBetween(0, $index);
         $code = 'category_'.$indexCategory;
         if ($this->hasReference($code) && 1 == random_int(0, 1)) {
+            /** @var Category $parent */
             $parent = $this->getReference($code);
             $category->setParent($parent);
         }

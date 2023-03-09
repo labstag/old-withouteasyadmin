@@ -14,12 +14,13 @@ use Labstag\Entity\Traits\Paragraph\BookmarkEntity;
 use Labstag\Entity\Traits\Paragraph\EditoEntity;
 use Labstag\Entity\Traits\Paragraph\HistoryEntity;
 use Labstag\Entity\Traits\Paragraph\PostEntity;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\ParagraphRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: ParagraphRepository::class)]
 #[ApiResource]
-class Paragraph
+class Paragraph implements EntityInterface
 {
     use BookmarkEntity;
     use EditoEntity;

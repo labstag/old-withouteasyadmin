@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\PhoneUser;
+use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
 
 class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
@@ -35,6 +36,7 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $users = $this->installService->getData('user');
         $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+        /** @var User $user */
         $user = $this->getReference('user_'.$indexUser);
         $number = $generator->e164PhoneNumber;
         $phoneUser = new PhoneUser();

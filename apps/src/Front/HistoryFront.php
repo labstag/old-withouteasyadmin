@@ -3,6 +3,7 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\History;
+use Labstag\Entity\Page;
 use Labstag\Interfaces\FrontInterface;
 
 class HistoryFront extends PageFront
@@ -34,6 +35,7 @@ class HistoryFront extends PageFront
             'title' => $front->getName(),
         ];
 
+        /** @var Page $page */
         $page = $this->pageRepository->findOneBy(
             ['slug' => 'mes-histoires']
         );

@@ -12,13 +12,14 @@ use Labstag\Entity\Paragraph\Image;
 use Labstag\Entity\Paragraph\TextImage;
 use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: AttachmentRepository::class)]
 #[ApiResource]
-class Attachment
+class Attachment implements EntityTrashInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;

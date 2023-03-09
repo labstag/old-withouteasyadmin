@@ -192,6 +192,7 @@ class GuardService
         }
 
         if (empty($token) || !$token->getUser() instanceof User) {
+            /** @var Groupe $groupe */
             $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
 
             return $this->searchRouteGroupe($groupe, $route);
@@ -261,6 +262,7 @@ class GuardService
         $data = $this->routeRepository->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
+            /** @var Route $route */
             $state = $this->guardRouteEnableGroupe($route, $groupe);
             if (!$state) {
                 continue;
@@ -280,6 +282,7 @@ class GuardService
         $data = $this->routeRepository->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
+            /** @var Route $route */
             $state = $this->guardRouteEnableUser($route, $user);
             if (!$state) {
                 continue;

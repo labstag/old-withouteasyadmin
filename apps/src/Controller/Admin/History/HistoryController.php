@@ -71,8 +71,14 @@ class HistoryController extends AdminControllerLib
     #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]
     public function pdf(HistoryService $historyService, History $history): RedirectResponse
     {
+        $fileDirectory = $this->getParameter('file_directory');
+        $kernelProjectDir = $this->getParameter('kernel.project_dir');
+        if (!is_string($fileDirectory) || !is_string($kernelProjectDir)) {
+            throw $this->createNotFoundException('Pas de fichier');
+        }
+
         $historyService->process(
-            (string) $this->getParameter('file_directory'),
+            (string) $fileDirectory,
             $history->getId(),
             true
         );
@@ -82,7 +88,7 @@ class HistoryController extends AdminControllerLib
         }
 
         $filename = str_replace(
-            ((string) $this->getParameter('kernel.project_dir')).'/public/',
+            ((string) $kernelProjectDir).'/public/',
             '/',
             $filename
         );

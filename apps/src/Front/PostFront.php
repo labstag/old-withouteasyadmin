@@ -5,6 +5,7 @@ namespace Labstag\Front;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
+use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Interfaces\FrontInterface;
 
@@ -30,6 +31,7 @@ class PostFront extends PageFront
             'title' => $front->getTitle(),
         ];
 
+        /** @var Page $page */
         $page = $this->pageRepository->findOneBy(
             ['slug' => 'mes-articles']
         );
@@ -65,6 +67,7 @@ class PostFront extends PageFront
         }
 
         $repository = $this->repositoryService->get(Category::class);
+        /** @var Category $category */
         $category = $repository->findOneBy(
             [
                 'slug' => $params['slug'],
@@ -78,7 +81,7 @@ class PostFront extends PageFront
             ),
             'title' => $category->getName(),
         ];
-
+        /** @var Page $page */
         $page = $this->pageRepository->findOneBy(
             ['slug' => 'mes-articles']
         );
@@ -97,6 +100,7 @@ class PostFront extends PageFront
         }
 
         $repository = $this->repositoryService->get(Libelle::class);
+        /** @var Libelle $libelle */
         $libelle = $repository->findOneBy(
             [
                 'slug' => $params['slug'],
@@ -110,7 +114,7 @@ class PostFront extends PageFront
             ),
             'title' => $libelle->getName(),
         ];
-
+        /** @var Page $page */
         $page = $this->pageRepository->findOneBy(
             ['slug' => 'mes-articles']
         );
@@ -135,6 +139,7 @@ class PostFront extends PageFront
             ),
             'title' => $params['year'],
         ];
+        /** @var Page $page */
         $page = $this->pageRepository->findOneBy(
             ['slug' => 'mes-articles/archive']
         );
@@ -154,17 +159,12 @@ class PostFront extends PageFront
             'setBreadcrumbRoutingCategory',
         ];
         foreach ($functions as $function) {
-            $breadcrumb = call_user_func_array(
-                [
-                    $this,
-                    $function,
-                ],
-                [
-                    $route,
-                    $params,
-                    $breadcrumb,
-                ]
-            );
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $breadcrumb = call_user_func_array($callable, [$route, $params, $breadcrumb]);
         }
 
         return $breadcrumb;

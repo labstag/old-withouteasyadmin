@@ -30,7 +30,7 @@ class ParagraphType extends AbstractType
         $paragraphs = $this->paragraphService->getAll($entity);
         $choices = [];
         foreach ($paragraphs as $name => $type) {
-            $choices[$type] = new ChoiceView('', $type, $name);
+            $choices[$type] = new ChoiceView('', (string) $type, (string) $name);
         }
 
         $formView->vars['label'] = 'Paragraphs';

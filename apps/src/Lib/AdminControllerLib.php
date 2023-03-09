@@ -4,8 +4,13 @@ namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Labstag\Entity\Block;
+use Labstag\Entity\Chapter;
+use Labstag\Entity\Menu;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
+use Labstag\Interfaces\EntityInterface;
+use Labstag\Interfaces\EntityTrashInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +25,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function form(
         DomainLib $domainLib,
-        object $entity,
+        EntityInterface $entity,
         string $twig = 'admin/crud/form.html.twig',
         array $parameters = []
     ): Response
@@ -115,10 +120,11 @@ abstract class AdminControllerLib extends ControllerLib
 
     public function renderShowOrPreview(
         DomainLib $domainLib,
-        object $entity,
+        EntityInterface $entity,
         string $twigShow
     ): Response
     {
+        /** @var EntityTrashInterface $entity */
         $url = $domainLib->getUrlAdmin();
         $routeCurrent = $this->requeststack->getCurrentRequest()->get('_route');
         $routeType = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
@@ -383,7 +389,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->twigEnvironment->addGlobal('breadcrumbs', $data);
     }
 
-    protected function setBtnDelete(array $url, object $entity): void
+    protected function setBtnDelete(array $url, EntityInterface $entity): void
     {
         if (!isset($url['delete'])) {
             return;
@@ -441,7 +447,7 @@ abstract class AdminControllerLib extends ControllerLib
         );
     }
 
-    protected function setBtnGuard(array $url, object $entity): void
+    protected function setBtnGuard(array $url, EntityInterface $entity): void
     {
         if (!isset($url['guard']) || !$this->enableBtnGuard($entity)) {
             return;
@@ -484,7 +490,7 @@ abstract class AdminControllerLib extends ControllerLib
         $this->setBtnDeleties($routeType, $route, $routeParams, $serviceEntityRepositoryLib);
     }
 
-    protected function setBtnShow(array $url, object $entity): void
+    protected function setBtnShow(array $url, EntityInterface $entity): void
     {
         if (!isset($url['show'])) {
             return;
@@ -501,7 +507,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setBtnViewUpdate(
         array $url,
-        object $entity
+        EntityInterface $entity
     ): void
     {
         $this->setBtnList($url);
@@ -516,7 +522,12 @@ abstract class AdminControllerLib extends ControllerLib
         ];
 
         foreach ($functions as $function) {
-            call_user_func_array([$this, $function], [$url, $entity]);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            call_user_func_array($callable, [$url, $entity]);
         }
     }
 
@@ -545,9 +556,14 @@ abstract class AdminControllerLib extends ControllerLib
         $query = $this->requeststack->getCurrentRequest()->query;
         $get = $query->all();
         $limit = $query->getInt('limit', 10);
+        /** @var callable $callable */
+        $callable = [
+            $serviceEntityRepositoryLib,
+            $method,
+        ];
 
         return $this->paginator->paginate(
-            call_user_func([$serviceEntityRepositoryLib, $method], $get),
+            call_user_func($callable, $get),
             $query->getInt('page', 1),
             $limit
         );
@@ -565,6 +581,7 @@ abstract class AdminControllerLib extends ControllerLib
                 $id = $row['id'];
                 $position = (int) $row['position'];
                 $repository = $this->repositoryService->get($entityclass);
+                /** @var Block|Chapter|Menu $entity */
                 $entity = $repository->find($id);
                 if (!is_null($entity)) {
                     $entity->setPosition($position + 1);
@@ -617,8 +634,12 @@ abstract class AdminControllerLib extends ControllerLib
         $methodTrash = $methods['trash'];
         $filterCollection = $entityManager->getFilters();
         $filterCollection->disable('softdeleteable');
-
-        $trash = call_user_func([$serviceEntityRepositoryLib, $methodTrash], []);
+        /** @var callable $callable */
+        $callable = [
+            $serviceEntityRepositoryLib,
+            $methodTrash,
+        ];
+        $trash = call_user_func($callable, []);
         $result = $trash->getQuery()->getResult();
         $total = is_countable($result) ? count($result) : 0;
         $filterCollection->enable('softdeleteable');
@@ -652,7 +673,12 @@ abstract class AdminControllerLib extends ControllerLib
         ];
 
         foreach ($functions as $function) {
-            call_user_func_array([$this, $function], [$url, $routeType, $entity]);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            call_user_func_array($callable, [$url, $routeType, $entity]);
         }
     }
 

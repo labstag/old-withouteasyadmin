@@ -5,6 +5,8 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Block;
+use Labstag\Entity\Block\Navbar;
+use Labstag\Entity\Menu;
 use Labstag\Lib\FixtureLib;
 
 class BlockFixtures extends FixtureLib implements DependentFixtureInterface
@@ -43,6 +45,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         $block->setType($type);
         $block->setPosition($position + 1);
         if (array_key_exists('code-menu', $blockData)) {
+            /** @var Menu $menu */
             $menu = $this->getReference('menu_'.$blockData['code-menu']);
             $classentity = $this->blockService->getTypeEntity($block);
             $entity = $this->blockService->getEntity($block);
@@ -50,6 +53,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
                 return;
             }
 
+            /** @var Navbar $entity */
             $entity = new $classentity();
             $entity->setBlock($block);
             $entity->setMenu($menu);

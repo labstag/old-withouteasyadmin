@@ -63,6 +63,7 @@ class HistoryService
 
     private function generateHistoryPdf(History $history, Collection $collection): Html2Pdf
     {
+        /** @var resource $tmpfile */
         $tmpfile = tmpfile();
         $data = stream_get_meta_data($tmpfile);
         $html2Pdf = new Html2Pdf();

@@ -6,6 +6,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
+use finfo;
 use Labstag\DataFixtures\CategoryFixtures;
 use Labstag\DataFixtures\DataFixtures;
 use Labstag\DataFixtures\LibelleFixtures;
@@ -223,7 +224,12 @@ abstract class FixtureLib extends Fixture
         for ($index = 0; $index < $number; ++$index) {
             $stateId = array_rand($statesTab);
             $states = $statesTab[$stateId];
-            call_user_func_array([$this, $method], [$faker, $index, $states]);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $method,
+            ];
+            call_user_func_array($callable, [$faker, $index, $states]);
         }
     }
 
@@ -234,7 +240,12 @@ abstract class FixtureLib extends Fixture
         for ($index = 0; $index < $number; ++$index) {
             $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
             $user = $this->getReference('user_'.$indexUser);
-            call_user_func_array([$this, $method], [$faker, $user]);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $method,
+            ];
+            call_user_func_array($callable, [$faker, $user]);
         }
     }
 
@@ -266,12 +277,16 @@ abstract class FixtureLib extends Fixture
         $faker = $this->setFaker();
         $meta->setTitle($faker->unique()->colorName());
         $meta->setDescription($faker->unique()->sentence());
-        $meta->setKeywords($faker->unique()->words(random_int(1, 5), true));
+
+        $keywords = $faker->unique()->words(random_int(1, 5), true);
+        if (is_string($keywords)) {
+            $meta->setKeywords($keywords);
+        }
     }
 
     protected function upload(mixed $entity, Generator $generator): void
     {
-        /** @var resource $finfo */
+        /** @var finfo $finfo */
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         $asciiSlugger = new AsciiSlugger();

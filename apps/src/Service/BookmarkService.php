@@ -4,7 +4,9 @@ namespace Labstag\Service;
 
 use DateTime;
 use Exception;
+use finfo;
 use Labstag\Entity\Bookmark;
+use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\Repository\UserRepository;
@@ -41,6 +43,7 @@ class BookmarkService
         DateTime $dateTime
     ): void
     {
+        /** @var User $user */
         $user = $this->userRepository->find($userid);
         $bookmark = $this->bookmarkRepository->findOneBy(
             ['url' => $url]
@@ -59,7 +62,7 @@ class BookmarkService
 
         try {
             $headers = get_headers($url, true);
-            if (self::CLIENTNUMBER < substr((string) $headers[0], 9, 3)) {
+            if (!isset($headers[0]) || self::CLIENTNUMBER < substr((string) $headers[0], 9, 3)) {
                 return;
             }
 
@@ -83,7 +86,7 @@ class BookmarkService
         string $image
     ): void
     {
-        /** @var resource $finfo */
+        /** @var finfo $finfo */
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $annotations = $this->uploadAnnotationReader->getUploadableFields($bookmark);
         $asciiSlugger = new AsciiSlugger();
@@ -95,28 +98,30 @@ class BookmarkService
 
             try {
                 $pathinfo = pathinfo((string) $image);
-                $content = file_get_contents($image);
-                /** @var resource $tmpfile */
-                $tmpfile = tmpfile();
-                $data = stream_get_meta_data($tmpfile);
-                file_put_contents($data['uri'], $content);
-                $file = new UploadedFile(
-                    $data['uri'],
-                    $slug.'.'.$pathinfo['extension'],
-                    (string) finfo_file($finfo, $data['uri']),
-                    null,
-                    true
-                );
-                $filename = $file->getClientOriginalName();
-                if (!is_dir($path)) {
-                    mkdir($path, 0777, true);
-                }
+                if (isset($pathinfo['extension'])) {
+                    $content = file_get_contents($image);
+                    /** @var resource $tmpfile */
+                    $tmpfile = tmpfile();
+                    $data = stream_get_meta_data($tmpfile);
+                    file_put_contents((string) $data['uri'], $content);
+                    $file = new UploadedFile(
+                        $data['uri'],
+                        $slug.'.'.$pathinfo['extension'],
+                        (string) finfo_file($finfo, (string) $data['uri']),
+                        null,
+                        true
+                    );
+                    $filename = $file->getClientOriginalName();
+                    if (!is_dir($path)) {
+                        mkdir($path, 0777, true);
+                    }
 
-                $file->move(
-                    $path,
-                    $filename
-                );
-                $file = $path.'/'.$filename;
+                    $file->move(
+                        $path,
+                        $filename
+                    );
+                    $file = $path.'/'.$filename;
+                }
             } catch (Exception $exception) {
                 $this->errorService->set($exception);
             }

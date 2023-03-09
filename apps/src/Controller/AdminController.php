@@ -226,12 +226,19 @@ class AdminController extends AdminControllerLib
     private function setUpload(Request $request, array $images): void
     {
         $all = $request->files->all();
+        $kernelProjectDir = $this->getParameter('kernel.project_dir');
+        $fileDirectory = $this->getParameter('file_directory');
+        if (!is_string($kernelProjectDir) || !is_string($fileDirectory)) {
+            return;
+        }
+
         $files = $all['param'];
         $paths = [
-            'image'   => $this->getParameter('file_directory'),
-            'favicon' => ((string) $this->getParameter('kernel.project_dir')).'/public',
+            'image'   => $fileDirectory,
+            'favicon' => $kernelProjectDir.'/public',
         ];
         foreach ($paths as $path) {
+            /** @var string $path */
             if (is_dir($path)) {
                 continue;
             }
@@ -240,7 +247,7 @@ class AdminController extends AdminControllerLib
         }
 
         foreach ($files as $key => $file) {
-            if (is_null($file)) {
+            if (is_null($file) && !isset($paths[$key])) {
                 continue;
             }
 
@@ -249,7 +256,13 @@ class AdminController extends AdminControllerLib
             $filename = $file->getClientOriginalName();
             $path = $paths[$key];
             $filename = ('favicon' == $key) ? 'favicon.ico' : $filename;
-            $this->fileService->moveFile($file, $path, $filename, $attachment, $old);
+            $this->fileService->moveFile(
+                $file,
+                $path,
+                $filename,
+                $attachment,
+                $old
+            );
         }
     }
 }

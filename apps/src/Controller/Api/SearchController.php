@@ -59,7 +59,12 @@ class SearchController extends ApiControllerLib
         $return = [
             'results' => [],
         ];
-        $data = call_user_func([$serviceEntityRepositoryLib, $method], $get['name']);
+        /** @var callable $callable */
+        $callable = [
+            $serviceEntityRepositoryLib,
+            $method,
+        ];
+        $data = call_user_func($callable, $get['name']);
 
         foreach ($data as $user) {
             $return['results'][] = [

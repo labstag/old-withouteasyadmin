@@ -59,10 +59,12 @@ class HistoryController extends FrontControllerLib
         HistoryRepository $historyRepository
     ): Response
     {
+        /** @var History $history */
         $history = $historyRepository->findOneBy(
             ['slug' => $history]
         );
 
+        /** @var Chapter $chapter */
         $chapter = $chapterRepository->findOneBy(
             ['slug' => $chapter]
         );
@@ -70,7 +72,7 @@ class HistoryController extends FrontControllerLib
         $test = [
             !$history instanceof History,
             !$chapter instanceof Chapter,
-            $chapter->getRefhistory()->getId() != $history->getId(),
+            $chapter->getRefhistory()->getId() !== $history->getId(),
         ];
 
         foreach ($test as $row) {
@@ -100,12 +102,15 @@ class HistoryController extends FrontControllerLib
             ['slug' => $slug]
         );
 
-        if (!$history instanceof History) {
+        $fileDirectory = $this->getParameter('file_directory');
+        $kernelProjectDir = $this->getParameter('kernel.project_dir');
+
+        if (!$history instanceof History || !is_string($fileDirectory) || !is_string($kernelProjectDir)) {
             throw $this->createNotFoundException('Pas de fichier');
         }
 
         $historyService->process(
-            $this->getParameter('file_directory'),
+            (string) $fileDirectory,
             $history->getId(),
             false
         );
@@ -113,7 +118,7 @@ class HistoryController extends FrontControllerLib
         $filename = $historyService->getFilename();
 
         $filename = str_replace(
-            ((string) $this->getParameter('kernel.project_dir')).'/public/',
+            $kernelProjectDir.'/public/',
             '/',
             $filename
         );

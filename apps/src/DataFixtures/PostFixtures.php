@@ -5,8 +5,10 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
+use Labstag\Entity\Category;
 use Labstag\Entity\Meta;
 use Labstag\Entity\Post;
+use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
 
 class PostFixtures extends FixtureLib implements DependentFixtureInterface
@@ -42,11 +44,13 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $post->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $users = $this->installService->getData('user');
         $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+        /** @var User $user */
         $user = $this->getReference('user_'.$indexUser);
         $post->setRefuser($user);
         $post->setPublished($generator->unique()->dateTime('now'));
         $this->setLibelles($generator, $post);
         $indexLibelle = $generator->numberBetween(0, self::NUMBER_CATEGORY - 1);
+        /** @var Category $category */
         $category = $this->getReference('category_'.$indexLibelle);
         $post->setRefcategory($category);
         $post->setRemark((bool) random_int(0, 1));

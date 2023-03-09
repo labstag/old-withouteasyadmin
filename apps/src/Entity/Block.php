@@ -17,13 +17,14 @@ use Labstag\Entity\Block\Html;
 use Labstag\Entity\Block\Navbar;
 use Labstag\Entity\Block\Paragraph;
 use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\BlockRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: BlockRepository::class)]
 #[ApiResource]
-class Block
+class Block implements EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
