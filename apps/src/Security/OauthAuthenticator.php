@@ -41,8 +41,6 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     protected string $oauthCode;
 
-    protected Request $request;
-
     public function __construct(
         protected ErrorService $errorService,
         protected EntityManagerInterface $entityManager,
@@ -56,10 +54,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected UserRepository $userRepository
     )
     {
-        // @var  Request $request
-        $this->request = $this->requestStack->getCurrentRequest();
-
-        $attributes      = $this->request->attributes;
+        $attributes      = $this->requestStack->getCurrentRequest()->attributes;
         $this->oauthCode = $this->setOauthCode($attributes);
     }
 

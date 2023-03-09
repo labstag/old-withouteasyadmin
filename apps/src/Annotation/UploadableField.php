@@ -46,12 +46,12 @@ final class UploadableField implements MappingAttribute
         $this->slug     = $slug;
     }
 
-    public function getFilename(): string
+    public function getFilename(): ?string
     {
         return $this->filename;
     }
 
-    public function getPath(): string
+    public function getPath(): ?string
     {
         return $this->path;
     }

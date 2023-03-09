@@ -97,7 +97,7 @@ class GuardRouteController extends ApiControllerLib
         $data    = $this->getGuardRouteOrWorkflow($data, $get, RouteUser::class);
         $results = $this->getResultWorkflow($request, RouteGroupe::class);
         foreach ($results as $result) {
-            // @var  RouteGroupe $row
+            /** @var RouteGroupe $result */
             $data['group'][] = [
                 'groupe' => $result->getRefgroupe()->getCode(),
                 'route'  => $result->getRefroute()->getName(),

@@ -80,7 +80,7 @@ class GuardWorkflowController extends ApiControllerLib
         $data    = $this->getGuardRouteOrWorkflow($data, $get, WorkflowUser::class);
         $results = $this->getResultWorkflow($request, WorkflowGroupe::class);
         foreach ($results as $result) {
-            // @var  WorkflowGroupe $row
+            /** @var WorkflowGroupe $result */
             $data['group'][] = [
                 'groupe'     => $result->getRefgroupe()->getCode(),
                 'entity'     => $result->getRefworkflow()->getEntity(),

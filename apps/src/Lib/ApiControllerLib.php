@@ -5,6 +5,7 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
+use Labstag\Entity\WorkflowGroupe;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\PhoneService;
@@ -18,9 +19,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 abstract class ApiControllerLib extends AbstractController
 {
-
-    protected Request $request;
-
     public function __construct(
         protected RepositoryService $repositoryService,
         protected RequestStack $requeststack,
@@ -33,8 +31,6 @@ abstract class ApiControllerLib extends AbstractController
         protected UserRepository $userRepository
     )
     {
-        // @var  Request $request
-        $this->request = $this->requeststack->getCurrentRequest();
     }
 
     protected function getGuardRouteOrWorkflow(array $data, array $get, string $entityClass): array
@@ -53,7 +49,7 @@ abstract class ApiControllerLib extends AbstractController
         $results          = $entityRepository->findEnableByUser($user);
         if (RouteUser::class == $entityClass) {
             foreach ($results as $row) {
-                // @var  RouteUser $row
+                /** @var RouteUser $row */
                 $data['user'][] = [
                     'route' => $row->getRefroute()->getName(),
                 ];
@@ -63,10 +59,11 @@ abstract class ApiControllerLib extends AbstractController
         }
 
         foreach ($results as $result) {
-            // @var  WorkflowGroupe $row
+            /** @var WorkflowGroupe $result */
+            $workflow        = $result->getRefworkflow();
             $data['group'][] = [
-                'entity'     => $result->getRefworkflow()->getEntity(),
-                'transition' => $result->getRefworkflow()->getTransition(),
+                'entity'     => $workflow->getEntity(),
+                'transition' => $workflow->getTransition(),
             ];
         }
 

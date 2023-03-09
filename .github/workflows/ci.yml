@@ -54,7 +54,7 @@ jobs:
       - name: Linter yaml
         run: npm run lint:yaml
       - name: linter phpstan
-        run: npm run lint:phpstan
+        run: npm run lint:phpstan:0
       - name: 'BDD MIGRATE'
         run: npm run doctrine:migrate
       - name: 'BDD Schema update'

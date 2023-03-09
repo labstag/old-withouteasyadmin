@@ -1,7 +1,7 @@
 <?php
 /*
  * This document has been generated with
- * https://mlocati.github.io/php-cs-fixer-configurator/#version:3.11.0|configurator
+ * https://mlocati.github.io/php-cs-fixer-configurator/#version:3.14.4|configurator
  * you can change this configuration by importing this file.
  */
 $config = new PhpCsFixer\Config();
@@ -18,12 +18,7 @@ return $config
         // Converts backtick operators to `shell_exec` calls.
         'backtick_to_shell_exec' => true,
         // Binary operators should be surrounded by space as configured.
-        'binary_operator_spaces' => [
-            'operators' => [
-                '=>' => 'align_single_space_minimal',
-                '='  => 'align_single_space_minimal',
-            ]
-        ],
+        'binary_operator_spaces' => ['operators'=>['=>'=>'align_single_space_minimal','='=>'align_single_space_minimal']],
         // There MUST be one blank line after the namespace declaration.
         'blank_line_after_namespace' => true,
         // Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.
@@ -31,13 +26,7 @@ return $config
         // An empty line feed must precede any configured statement.
         'blank_line_before_statement' => true,
         // The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
-        'braces' => [
-            'allow_single_line_anonymous_class_with_empty_body' => true,
-            'allow_single_line_closure' => true,
-            'position_after_functions_and_oop_constructs' => 'next',
-            'position_after_control_structures' => 'same',
-            'position_after_anonymous_constructs' => 'next',
-        ],
+        'braces' => ['allow_single_line_anonymous_class_with_empty_body'=>true,'allow_single_line_closure'=>true,'position_after_functions_and_oop_constructs'=>'next','position_after_control_structures'=>'same','position_after_anonymous_constructs'=>'next'],
         // A single space or none should be between cast and variable.
         'cast_spaces' => true,
         // Class, trait and interface elements must be separated with one or none blank line.
@@ -170,7 +159,7 @@ return $config
         'no_superfluous_elseif' => true,
         // Removes `@param`, `@return` and `@var` tags that don't provide any useful information.
         'no_superfluous_phpdoc_tags' => true,
-        // PHP single-line arrays should not have trailing comma.
+        // If a list of values separated by a comma is contained on a single line, then the last item MUST NOT have a trailing comma.
         'no_trailing_comma_in_singleline' => true,
         // Remove trailing whitespace at the end of non-blank lines.
         'no_trailing_whitespace' => true,
@@ -237,7 +226,7 @@ return $config
         // Forces PHPDoc tags to be either regular annotations or inline.
         'phpdoc_tag_type' => true,
         // Docblocks should only be used on structural elements.
-        'phpdoc_to_comment' => true,
+        'phpdoc_to_comment' => false,
         // PHPDoc should start and end with content, excluding the very first and last line of the docblocks.
         'phpdoc_trim' => true,
         // Removes extra blank lines after summary and after description in PHPDoc.
@@ -277,7 +266,9 @@ return $config
         // Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.
         'single_line_after_imports' => true,
         // Single-line comments and multi-line comments with only one line of actual content should use the `//` syntax.
-        'single_line_comment_style' => true,
+        'single_line_comment_style' => [
+            'comment_types'=> ['asterisk']
+        ],
         // Throwing exception must be done in single line.
         'single_line_throw' => true,
         // Convert double quotes to single quotes for simple strings.
@@ -318,7 +309,7 @@ return $config
         'yoda_style' => true,
     ])
     ->setFinder(PhpCsFixer\Finder::create()
-        ->exclude('vendor')
+        // ->exclude('folder-to-exclude') // if you want to exclude some folders, you can do it like this!
         ->in(__DIR__)
     )
 ;

@@ -30,7 +30,7 @@ final class Trashable implements MappingAttribute
         $this->url = $url;
     }
 
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }

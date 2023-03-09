@@ -158,7 +158,7 @@ class GuardController extends ApiControllerLib
         ];
         $results = $routeGroupeRepository->findEnableByGroupe($user->getRefgroupe());
         foreach ($results as $row) {
-            // @var  RouteGroupe $row
+            /** @var RouteGroupe $row */
             $data['groups'][] = [
                 'route' => $row->getRefroute()->getName(),
             ];
@@ -166,7 +166,7 @@ class GuardController extends ApiControllerLib
 
         $results = $routeUserRepository->findEnableByUser($user);
         foreach ($results as $result) {
-            // @var  RouteUser $row
+            /** @var RouteUser $row */
             $data['user'][] = [
                 'route' => $result->getRefroute()->getName(),
             ];
@@ -183,7 +183,7 @@ class GuardController extends ApiControllerLib
         $results = $routeGroupeRepository->findEnableByGroupe($groupe);
         $data    = [];
         foreach ($results as $result) {
-            // @var  RouteGroupe $row
+            /** @var RouteGroupe $result */
             $data[] = [
                 'groupe' => $result->getRefgroupe()->getCode(),
                 'route'  => $result->getRefroute()->getName(),

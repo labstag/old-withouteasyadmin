@@ -28,7 +28,6 @@ class CustomBlock extends BlockLib
         protected LayoutRepository $layoutRepository
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
         parent::__construct($translator, $twigEnvironment);
     }
 
@@ -79,7 +78,7 @@ class CustomBlock extends BlockLib
 
     private function setParagraphs(Custom $custom): array
     {
-        $all         = $this->request->attributes->all();
+        $all         = $this->requestStack->getCurrentRequest()->attributes->all();
         $route       = $all['_route'];
         $dataLayouts = $this->layoutRepository->findByCustom($custom);
         $layouts     = [];

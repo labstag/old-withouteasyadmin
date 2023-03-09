@@ -64,9 +64,9 @@ class WorkflowSubscriber extends EventSubscriberLib
 
     public function transitionSubmit(Event $event): void
     {
+        /** @var User $entity */
         $entity = $event->getSubject();
         if (User::class == $entity::class) {
-            // @var User $entity
             $this->userMailService->newUser($entity);
             $this->sessionService->flashBagAdd(
                 'success',

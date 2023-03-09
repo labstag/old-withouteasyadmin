@@ -317,7 +317,7 @@ class EntitySubscriber extends EventSubscriberLib
         $emails  = $newEntity->getEmailUsers();
         $trouver = false;
         foreach ($emails as $emailUser) {
-            // @var  EmailUser $emailUser
+            /** @var EmailUser $emailUser */
             $emailUser->setPrincipal(false);
             if ($emailUser->getAddress() === $address) {
                 $emailUser->setPrincipal(true);
