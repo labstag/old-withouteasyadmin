@@ -393,7 +393,9 @@ class ActionsController extends ApiControllerLib
 
     private function tokenVerif(string $action, mixed $entity = null): bool
     {
-        $token = $this->requeststack->getCurrentRequest()->get('_token');
+        /** @Var Request $request */
+        $request = $this->requeststack->getCurrentRequest();
+        $token   = $request->get('_token');
 
         $csrfToken = new CsrfToken(
             $action.(is_null($entity) ? '' : $entity->getId()),

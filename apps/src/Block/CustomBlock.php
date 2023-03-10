@@ -17,9 +17,6 @@ use Twig\Environment;
 
 class CustomBlock extends BlockLib
 {
-
-    protected ?Request $request;
-
     public function __construct(
         TranslatorInterface $translator,
         Environment $twigEnvironment,
@@ -78,7 +75,9 @@ class CustomBlock extends BlockLib
 
     private function setParagraphs(Custom $custom): array
     {
-        $all         = $this->requestStack->getCurrentRequest()->attributes->all();
+        /** @Var Request $request */
+        $request     = $this->requestStack->getCurrentRequest();
+        $all         = $request->attributes->all();
         $route       = $all['_route'];
         $dataLayouts = $this->layoutRepository->findByCustom($custom);
         $layouts     = [];

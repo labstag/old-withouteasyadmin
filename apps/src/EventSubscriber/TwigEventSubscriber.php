@@ -4,6 +4,7 @@ namespace Labstag\EventSubscriber;
 
 use Labstag\Entity\User;
 use Labstag\Lib\EventSubscriberLib;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class TwigEventSubscriber extends EventSubscriberLib
@@ -67,8 +68,10 @@ class TwigEventSubscriber extends EventSubscriberLib
 
     protected function setConfigCanonical(): void
     {
+        /** @Var Request $request */
+        $request   = $this->requestStack->getCurrentRequest();
         $globals   = $this->twigEnvironment->getGlobals();
-        $canonical = $globals['canonical'] ?? $this->requestStack->getCurrentRequest()->getUri();
+        $canonical = $globals['canonical'] ?? $request->getUri();
         $this->twigEnvironment->AddGlobal('canonical', $canonical);
     }
 

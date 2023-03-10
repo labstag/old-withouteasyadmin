@@ -6,15 +6,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\RepositoryService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
 abstract class FrontLib
 {
-
-    protected Request $request;
-
     public function __construct(
         protected RepositoryService $repositoryService,
         protected EntityManagerInterface $entityManager,
@@ -23,7 +19,6 @@ abstract class FrontLib
         protected RouterInterface $router
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
     }
 
     protected function getMeta(array|Collection $metas, array $meta): array

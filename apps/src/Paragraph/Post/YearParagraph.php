@@ -9,6 +9,7 @@ use Labstag\Form\Admin\Paragraph\Post\YearType;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class YearParagraph extends ParagraphLib
@@ -47,14 +48,16 @@ class YearParagraph extends ParagraphLib
 
     public function show(Year $postyear): Response
     {
-        $all        = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $year       = $routeParam['year'] ?? null;
         /** @var PostRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
         $pagination                 = $this->paginator->paginate(
             $serviceEntityRepositoryLib->findPublierArchive($year),
-            $this->request->query->getInt('page', 1),
+            $request->query->getInt('page', 1),
             10
         );
 

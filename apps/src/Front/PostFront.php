@@ -8,6 +8,7 @@ use Labstag\Entity\Libelle;
 use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Interfaces\FrontInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class PostFront extends PageFront
 {
@@ -149,9 +150,11 @@ class PostFront extends PageFront
 
     private function setBreadcrumbRouting(array $breadcrumb): array
     {
-        $all    = $this->request->attributes->all();
-        $route  = $all['_route'];
-        $params = $all['_route_params'];
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        $all     = $request->attributes->all();
+        $route   = $all['_route'];
+        $params  = $all['_route_params'];
 
         $functions = [
             'setBreadcrumbRoutingYear',

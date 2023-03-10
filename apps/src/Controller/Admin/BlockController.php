@@ -40,7 +40,7 @@ class BlockController extends AdminControllerLib
     #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_block_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_block_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    public function indexOrTrash(Request $request): Response
     {
         $region = null;
         $this->adminBtnService->add(
@@ -67,7 +67,6 @@ class BlockController extends AdminControllerLib
         $url    = $domain->getUrlAdmin();
         /** @var BlockRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $domain->getRepository();
-        $request                    = $this->requeststack->getCurrentRequest();
         $all                        = $request->attributes->all();
         $route                      = $all['_route'];
         $routeType                  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';

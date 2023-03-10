@@ -9,6 +9,7 @@ use Labstag\Form\Admin\Paragraph\History\ShowType;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShowParagraph extends ParagraphLib
@@ -47,7 +48,9 @@ class ShowParagraph extends ParagraphLib
 
     public function show(Show $show): ?Response
     {
-        $all        = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug       = $routeParam['slug'] ?? null;
         /** @var HistoryRepository $serviceEntityRepositoryLib */

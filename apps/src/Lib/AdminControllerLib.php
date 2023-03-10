@@ -83,7 +83,8 @@ abstract class AdminControllerLib extends ControllerLib
         array $parameters = []
     ): Response
     {
-        $url       = $domainLib->getUrlAdmin();
+        $url = $domainLib->getUrlAdmin();
+        /** @var Request $request */
         $request   = $this->requeststack->getCurrentRequest();
         $all       = $request->attributes->all();
         $route     = $all['_route'];
@@ -125,8 +126,10 @@ abstract class AdminControllerLib extends ControllerLib
     ): Response
     {
         /** @var EntityTrashInterface $entity */
-        $url          = $domainLib->getUrlAdmin();
-        $routeCurrent = $this->requeststack->getCurrentRequest()->get('_route');
+        $url = $domainLib->getUrlAdmin();
+        /** @Var Request $request */
+        $request      = $this->requeststack->getCurrentRequest();
+        $routeCurrent = $request->get('_route');
         $routeType    = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->showOrPreviewadd($url, $routeType, $entity);
 
@@ -481,11 +484,12 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $url                        = $domainLib->getUrlAdmin();
         $serviceEntityRepositoryLib = $domainLib->getRepository();
-        $request                    = $this->requeststack->getCurrentRequest();
-        $all                        = $request->attributes->all();
-        $route                      = $all['_route'];
-        $routeParams                = $all['_route_params'];
-        $methods                    = $this->getMethodsList();
+        /** @Var Request $request */
+        $request     = $this->requeststack->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $route       = $all['_route'];
+        $routeParams = $all['_route_params'];
+        $methods     = $this->getMethodsList();
         $this->addNewImport($this->entityManager, $serviceEntityRepositoryLib, $methods, $routeType, $url);
         $this->setBtnDeleties($routeType, $route, $routeParams, $serviceEntityRepositoryLib);
     }
@@ -553,9 +557,11 @@ abstract class AdminControllerLib extends ControllerLib
         $serviceEntityRepositoryLib = $domainLib->getRepository();
         $methods                    = $this->getMethodsList();
         $method                     = $methods[$routeType];
-        $query                      = $this->requeststack->getCurrentRequest()->query;
-        $get                        = $query->all();
-        $limit                      = $query->getInt('limit', 10);
+        /** @Var Request $request */
+        $request = $this->requeststack->getCurrentRequest();
+        $query   = $request->query;
+        $get     = $query->all();
+        $limit   = $query->getInt('limit', 10);
         /** @var callable $callable */
         $callable = [
             $serviceEntityRepositoryLib,
@@ -596,10 +602,12 @@ abstract class AdminControllerLib extends ControllerLib
         DomainLib $domainLib
     ): array
     {
-        $query = $this->requeststack->getCurrentRequest()->query;
-        $get   = $query->all();
-        $limit = $query->getInt('limit', 10);
-        $form  = $domainLib->getSearchForm();
+        /** @var Request $request */
+        $request = $this->requeststack->getCurrentRequest();
+        $query   = $request->query;
+        $get     = $query->all();
+        $limit   = $query->getInt('limit', 10);
+        $form    = $domainLib->getSearchForm();
         if ('' == $form) {
             return $parameters;
         }
@@ -608,7 +616,7 @@ abstract class AdminControllerLib extends ControllerLib
         $searchLib        = $domainLib->getSearchData();
         $searchLib->limit = $limit;
         $searchLib->search($get, $this->entityManager);
-        $route      = $this->requeststack->getCurrentRequest()->get('_route');
+        $route      = $request->get('_route');
         $url        = $this->generateUrl($route);
         $searchForm = $this->createForm(
             $form,
@@ -882,6 +890,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     private function setPositionParagraphs(): void
     {
+        /** @Var Request $request */
         $request    = $this->requeststack->getCurrentRequest();
         $paragraphs = $request->request->all('paragraphs');
         if (!is_array($paragraphs)) {
@@ -902,6 +911,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     private function setTitleHeader(array $parameters): array
     {
+        /** @Var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $all     = $request->attributes->all();
         $route   = $all['_route'];

@@ -36,7 +36,7 @@ class LayoutController extends AdminControllerLib
     #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_layout_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_layout_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    public function indexOrTrash(Request $request): Response
     {
         $this->adminBtnService->add(
             'btn-admin-header-new',
@@ -56,7 +56,6 @@ class LayoutController extends AdminControllerLib
 
         $domain    = $this->getDomainEntity();
         $url       = $domain->getUrlAdmin();
-        $request   = $this->requeststack->getCurrentRequest();
         $all       = $request->attributes->all();
         $route     = $all['_route'];
         $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';

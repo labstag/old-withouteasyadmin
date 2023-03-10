@@ -9,6 +9,7 @@ use Labstag\Form\Admin\Paragraph\Post\LibelleType;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class LibelleParagraph extends ParagraphLib
@@ -47,14 +48,16 @@ class LibelleParagraph extends ParagraphLib
 
     public function show(Libelle $libelle): Response
     {
-        $all        = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug       = $routeParam['slug'] ?? null;
         /** @var PostRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
         $pagination                 = $this->paginator->paginate(
             $serviceEntityRepositoryLib->findPublierLibelle($slug),
-            $this->request->query->getInt('page', 1),
+            $request->query->getInt('page', 1),
             10
         );
 

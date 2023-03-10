@@ -9,6 +9,7 @@ use Labstag\Form\Admin\Paragraph\Post\HeaderType;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class HeaderParagraph extends ParagraphLib
@@ -47,7 +48,9 @@ class HeaderParagraph extends ParagraphLib
 
     public function show(Header $header): ?Response
     {
-        $all        = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug       = $routeParam['slug'] ?? null;
         /** @var PostRepository $serviceEntityRepositoryLib */

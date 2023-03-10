@@ -27,8 +27,6 @@ class FrontService
         'error_controller::preview',
     ];
 
-    protected ?Request $request;
-
     public function __construct(
         protected RewindableGenerator $rewindableGenerator,
         protected Environment $twigEnvironment,
@@ -37,7 +35,6 @@ class FrontService
         protected AttachmentRepository $attachmentRepository
     )
     {
-        $this->request = $this->requestStack->getCurrentRequest();
     }
 
     public function configMeta(
@@ -168,8 +165,10 @@ class FrontService
             return $meta;
         }
 
-        $url = $this->request->getSchemeAndHttpHost();
-        $all = $this->request->attributes->all();
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        $url     = $request->getSchemeAndHttpHost();
+        $all     = $request->attributes->all();
         if (isset($all['_route']) && '' != $all['_route']) {
             $url = $this->urlGenerator->generate(
                 $all['_route'],
@@ -233,7 +232,9 @@ class FrontService
 
     private function isStateMeta(): bool
     {
-        $controller = $this->request->attributes->get('_controller');
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $controller = $request->attributes->get('_controller');
         preg_match(self::ADMIN_CONTROLLER, (string) $controller, $matches);
 
         return 0 == count($matches) || !in_array($controller, self::ERROR_CONTROLLER);

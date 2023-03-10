@@ -54,8 +54,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected UserRepository $userRepository
     )
     {
-        $attributes      = $this->requestStack->getCurrentRequest()->attributes;
-        $this->oauthCode = $this->setOauthCode($attributes);
+        $this->oauthCode = $this->setOauthCode();
     }
 
     public function authenticate(Request $request): Passport
@@ -151,8 +150,12 @@ class OauthAuthenticator extends AbstractAuthenticator
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 
-    protected function setOauthCode(ParameterBag $parameterBag): string
+    protected function setOauthCode(): string
     {
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        /** @var ParameterBag $parameterBag */
+        $parameterBag = $request->attributes;
         if ($parameterBag->has('oauthCode')) {
             return $parameterBag->get('oauthCode');
         }

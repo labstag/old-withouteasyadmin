@@ -9,6 +9,7 @@ use Labstag\Form\Admin\Paragraph\Post\UserType;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib
@@ -47,14 +48,16 @@ class UserParagraph extends ParagraphLib
 
     public function show(User $user): Response
     {
-        $all        = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $username   = $routeParam['username'] ?? null;
         /** @var PostRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
         $pagination                 = $this->paginator->paginate(
             $serviceEntityRepositoryLib->findPublierUsername($username),
-            $this->request->query->getInt('page', 1),
+            $request->query->getInt('page', 1),
             10
         );
 

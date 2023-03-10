@@ -9,6 +9,7 @@ use Labstag\Form\Admin\Paragraph\Post\ArchiveType;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArchiveParagraph extends ParagraphLib
@@ -50,7 +51,9 @@ class ArchiveParagraph extends ParagraphLib
         /** @var PostRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
         $archives                   = $serviceEntityRepositoryLib->findDateArchive();
-        $page                       = $this->request->query->getInt('page', 1);
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        $page    = $request->query->getInt('page', 1);
         if (1 != $page) {
             return null;
         }

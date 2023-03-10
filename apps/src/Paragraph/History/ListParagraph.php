@@ -9,6 +9,7 @@ use Labstag\Form\Admin\Paragraph\History\ListType;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
@@ -49,10 +50,12 @@ class ListParagraph extends ParagraphLib
     {
         /** @var HistoryRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(History::class);
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
 
         $pagination = $this->paginator->paginate(
             $serviceEntityRepositoryLib->findPublier(),
-            $this->request->query->getInt('page', 1),
+            $request->query->getInt('page', 1),
             10
         );
 

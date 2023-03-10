@@ -13,7 +13,6 @@ use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\RepositoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -21,8 +20,6 @@ use Twig\Environment;
 
 abstract class ParagraphLib extends AbstractController
 {
-
-    protected ?Request $request;
 
     protected array $template = [];
 
@@ -41,7 +38,6 @@ abstract class ParagraphLib extends AbstractController
         protected EntityManagerInterface $entityManager
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
     }
 
     public function getCode(ParagraphInterface $entityParagraphLib): string

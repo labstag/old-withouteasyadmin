@@ -9,6 +9,7 @@ use Labstag\Repository\ParagraphRepository;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class ParagraphControllerLib extends ControllerLib
@@ -76,6 +77,7 @@ abstract class ParagraphControllerLib extends ControllerLib
             $paragraph
         );
         $this->modalAttachmentDelete($paragraph, $form);
+        /** @Var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         /** @var ParagraphRepository $repository */
         $repository = $this->repositoryService->get(Paragraph::class);

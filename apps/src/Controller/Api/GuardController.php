@@ -16,6 +16,7 @@ use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\RouteGroupeRequestHandler;
 use Labstag\RequestHandler\RouteUserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
@@ -41,13 +42,14 @@ class GuardController extends ApiControllerLib
     public function setgroup(
         string $route,
         string $groupe,
+        Request $request,
         RouteGroupeRequestHandler $routeGroupeRequestHandler,
         GroupeRepository $groupeRepository,
         RouteRepository $routeRepository,
         RouteGroupeRepository $routeGroupeRepository
     ): JsonResponse
     {
-        $post   = $this->requeststack->getCurrentRequest()->request->all();
+        $post   = $request->request->all();
         $data   = ['ok' => false];
         $groupe = $groupeRepository->findOneBy(['code' => $groupe]);
         $route  = $routeRepository->findOneBy(['name' => $route]);
@@ -95,6 +97,7 @@ class GuardController extends ApiControllerLib
     public function setuser(
         string $route,
         string $user,
+        Request $request,
         RouteUserRequestHandler $routeUserRequestHandler,
         UserRepository $userRepository,
         RouteRepository $routeRepository,
@@ -102,7 +105,7 @@ class GuardController extends ApiControllerLib
     ): JsonResponse
     {
         $data  = ['ok' => false];
-        $post  = $this->requeststack->getCurrentRequest()->request->all();
+        $post  = $request->request->all();
         $user  = $userRepository->findOneBy(['username' => $user]);
         $route = $routeRepository->findOneBy(['name' => $route]);
         if (empty($user) || empty($route) || !array_key_exists('_token', $post) || !is_string($post['_token'])) {

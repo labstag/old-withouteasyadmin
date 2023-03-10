@@ -9,7 +9,6 @@ use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\FrontService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -18,9 +17,6 @@ use Twig\Environment;
 
 class BreadcrumbBlock extends BlockLib
 {
-
-    protected ?Request $request;
-
     public function __construct(
         TranslatorInterface $translator,
         Environment $twigEnvironment,
@@ -30,7 +26,6 @@ class BreadcrumbBlock extends BlockLib
         protected PageRepository $pageRepository
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
         parent::__construct($translator, $twigEnvironment);
     }
 

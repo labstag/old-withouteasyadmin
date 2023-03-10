@@ -10,6 +10,7 @@ use Labstag\Form\Admin\Paragraph\History\ChapterType;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\ChapterRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ChapterParagraph extends ParagraphLib
@@ -48,7 +49,9 @@ class ChapterParagraph extends ParagraphLib
 
     public function show(HistoryChapter $historychapter): ?Response
     {
-        $all        = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $history    = $routeParam['history'] ?? null;
         $chapter    = $routeParam['chapter'] ?? null;

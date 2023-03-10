@@ -5,6 +5,7 @@ namespace Labstag\EventSubscriber;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Lib\EventSubscriberLib;
 use ReflectionClass;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
@@ -37,7 +38,9 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
         string $method
     ): void
     {
-        $routeCurrent = $this->requestStack->getCurrentRequest()->attributes->get('_route');
+        /** @Var Request $request */
+        $request      = $this->requestStack->getCurrentRequest();
+        $routeCurrent = $request->attributes->get('_route');
         $routes       = [
             'api_action_destroies',
             'api_action_restories',
