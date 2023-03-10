@@ -1,12 +1,12 @@
 framework:
   workflows:
     attachment:
-      type: 'state_machine'
+      type: "state_machine"
       audit_trail:
         enabled: "%kernel.debug%"
       marking_store:
-        type: 'method'
-        property: 'state'
+        type: "method"
+        property: "state"
       supports:
         - Labstag\Entity\Attachment
       initial_marking: start
@@ -17,17 +17,17 @@ framework:
         - nonconforme
       transitions:
         submit:
-            from: start
-            to: averifier
+          from: start
+          to: averifier
         valider:
-            from: averifier
-            to: valide
+          from: averifier
+          to: valide
         reenvoyer:
-            from: [nonconforme, averifier]
-            to: averifier
+          from: [nonconforme, averifier]
+          to: averifier
         annuler:
-            from: averifier
-            to: nonconforme
+          from: averifier
+          to: nonconforme
     bookmark:
       type: "state_machine"
       audit_trail:
@@ -93,12 +93,12 @@ framework:
           from: relecture
           to: rejete
     edito:
-      type: 'state_machine'
+      type: "state_machine"
       audit_trail:
         enabled: "%kernel.debug%"
       marking_store:
-        type: 'method'
-        property: 'state'
+        type: "method"
+        property: "state"
       supports:
         - Labstag\Entity\Edito
       initial_marking: start
@@ -110,27 +110,27 @@ framework:
         - rejete
       transitions:
         submit:
-            from: start
-            to: brouillon
+          from: start
+          to: brouillon
         relire:
-            from: brouillon
-            to: relecture
+          from: brouillon
+          to: relecture
         corriger:
-            from: relecture
-            to: brouillon
+          from: relecture
+          to: brouillon
         publier:
-            from: relecture
-            to: publie
+          from: relecture
+          to: publie
         rejeter:
-            from: relecture
-            to: rejete
+          from: relecture
+          to: rejete
     email:
-      type: 'state_machine'
+      type: "state_machine"
       audit_trail:
         enabled: "%kernel.debug%"
       marking_store:
-        type: 'method'
-        property: 'state'
+        type: "method"
+        property: "state"
       supports:
         - Labstag\Entity\Email
       initial_marking: start
@@ -140,11 +140,11 @@ framework:
         - valide
       transitions:
         submit:
-            from: start
-            to: averifier
+          from: start
+          to: averifier
         valider:
-            from: averifier
-            to: valide
+          from: averifier
+          to: valide
     history:
       type: "state_machine"
       audit_trail:
@@ -178,12 +178,12 @@ framework:
           from: relecture
           to: rejete
     memo:
-      type: 'state_machine'
+      type: "state_machine"
       audit_trail:
         enabled: "%kernel.debug%"
       marking_store:
-        type: 'method'
-        property: 'state'
+        type: "method"
+        property: "state"
       supports:
         - Labstag\Entity\Memo
       initial_marking: start
@@ -195,27 +195,27 @@ framework:
         - rejete
       transitions:
         submit:
-            from: start
-            to: brouillon
+          from: start
+          to: brouillon
         relire:
-            from: brouillon
-            to: relecture
+          from: brouillon
+          to: relecture
         corriger:
-            from: relecture
-            to: brouillon
+          from: relecture
+          to: brouillon
         publier:
-            from: relecture
-            to: publie
+          from: relecture
+          to: publie
         rejeter:
-            from: relecture
-            to: rejete
+          from: relecture
+          to: rejete
     phone:
-      type: 'state_machine'
+      type: "state_machine"
       audit_trail:
         enabled: "%kernel.debug%"
       marking_store:
-        type: 'method'
-        property: 'state'
+        type: "method"
+        property: "state"
       supports:
         - Labstag\Entity\Phone
       initial_marking: start
@@ -225,11 +225,11 @@ framework:
         - valide
       transitions:
         submit:
-            from: start
-            to: averifier
+          from: start
+          to: averifier
         valider:
-            from: averifier
-            to: valide
+          from: averifier
+          to: valide
     post:
       type: "state_machine"
       audit_trail:
@@ -263,12 +263,12 @@ framework:
           from: relecture
           to: rejete
     user:
-      type: 'state_machine'
+      type: "state_machine"
       audit_trail:
         enabled: "%kernel.debug%"
       marking_store:
-        type: 'method'
-        property: 'state'
+        type: "method"
+        property: "state"
       supports:
         - Labstag\Entity\User
       initial_marking: start
@@ -280,20 +280,20 @@ framework:
         - disable
       transitions:
         submit:
-            from: start
-            to: nonverifier
+          from: start
+          to: nonverifier
         validation:
-            from: nonverifier
-            to: valider
+          from: nonverifier
+          to: valider
         passwordlost:
-            from: valider
-            to: lostpassword
+          from: valider
+          to: lostpassword
         changepassword:
-            from: lostpassword
-            to: valider
+          from: lostpassword
+          to: valider
         desactiver:
-            from: valider
-            to: disable
+          from: valider
+          to: disable
         activer:
-            from: disable
-            to: valider
+          from: disable
+          to: valider
