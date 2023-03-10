@@ -47,7 +47,7 @@ class DataService
     {
         $config = $this->getConfig();
         foreach ($metatags as $metatag) {
-            /** @var string $index */
+            /** @var string $metatag */
             if (isset($config[$metatag])) {
                 $config[$metatag] = [
                     $config[$metatag],
