@@ -491,7 +491,7 @@
 {%  block button_widget %}
     {%  set attr = attr|merge({class: (attr.class|default('btn-secondary') ~ ' btn')|trim}) %}
     <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %}>
-        
+
     {%  if label is empty %}
         {%  if label_format is not empty %}
             {% set label = label_format|replace({
