@@ -23,15 +23,13 @@ class ParagraphService
         protected RewindableGenerator $rewindableGenerator,
         protected Environment $twigEnvironment,
         protected ParagraphRequestHandler $paragraphRequestHandler
-    )
-    {
+    ) {
     }
 
     public function add(
         mixed $entity,
         string $code
-    ): void
-    {
+    ): void {
         $method = $this->getMethod($entity);
         if (is_null($method)) {
             return;

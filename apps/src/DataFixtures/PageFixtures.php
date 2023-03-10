@@ -31,8 +31,7 @@ class PageFixtures extends FixtureLib implements DependentFixtureInterface
     protected function addPage(
         array $pageData,
         ?Page $parent = null
-    ): void
-    {
+    ): void {
         $page = new Page();
         $old  = clone $page;
         $page->setName($pageData['name']);

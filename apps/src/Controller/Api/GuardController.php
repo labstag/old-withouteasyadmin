@@ -27,8 +27,7 @@ class GuardController extends ApiControllerLib
     public function groupe(
         RouteGroupeRepository $routeGroupeRepository,
         Groupe $groupe
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $this->getRefgroupe($routeGroupeRepository, $groupe);
     }
 
@@ -47,8 +46,7 @@ class GuardController extends ApiControllerLib
         GroupeRepository $groupeRepository,
         RouteRepository $routeRepository,
         RouteGroupeRepository $routeGroupeRepository
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $post   = $request->request->all();
         $data   = ['ok' => false];
         $groupe = $groupeRepository->findOneBy(['code' => $groupe]);
@@ -102,8 +100,7 @@ class GuardController extends ApiControllerLib
         UserRepository $userRepository,
         RouteRepository $routeRepository,
         RouteUserRepository $routeUserRepository
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data  = ['ok' => false];
         $post  = $request->request->all();
         $user  = $userRepository->findOneBy(['username' => $user]);
@@ -153,8 +150,7 @@ class GuardController extends ApiControllerLib
         User $user,
         RouteGroupeRepository $routeGroupeRepository,
         RouteUserRepository $routeUserRepository
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'groups' => [],
             'user'   => [],
@@ -183,8 +179,7 @@ class GuardController extends ApiControllerLib
     private function getRefgroupe(
         RouteGroupeRepository $routeGroupeRepository,
         ?Groupe $groupe = null
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $results = $routeGroupeRepository->findEnableByGroupe($groupe);
         $data    = [];
         foreach ($results as $result) {

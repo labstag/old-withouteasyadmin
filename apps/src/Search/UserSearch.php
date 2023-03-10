@@ -7,7 +7,6 @@ use Labstag\Lib\SearchLib;
 
 class UserSearch extends SearchLib
 {
-
     public ?string $email = null;
 
     public ?string $etape = null;

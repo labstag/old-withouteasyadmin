@@ -17,8 +17,7 @@ abstract class FrontLib
         protected PageRepository $pageRepository,
         protected RequestStack $requestStack,
         protected RouterInterface $router
-    )
-    {
+    ) {
     }
 
     protected function getMeta(array|Collection $metas, array $meta): array

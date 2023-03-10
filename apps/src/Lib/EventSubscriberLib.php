@@ -75,7 +75,6 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected UserMailService $userMailService,
         protected EmailUserRequestHandler $emailUserRequestHandler,
         protected TranslatorInterface $translator
-    )
-    {
+    ) {
     }
 }

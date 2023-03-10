@@ -21,8 +21,7 @@ class GeoCodeDomain extends DomainLib
         protected GeoCodeRepository $geoCodeRepository,
         protected GeoCodeSearch $geoCodeSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

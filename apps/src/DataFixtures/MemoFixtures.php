@@ -32,8 +32,7 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $dateTime = $generator->unique()->dateTimeInInterval('now', '+30 years');
         $users    = $this->userRepository->findAll();
         $memo     = new Memo();

@@ -11,8 +11,7 @@ abstract class CommandLib extends Command
     public function __construct(
         protected RepositoryService $repositoryService,
         protected EntityManagerInterface $entityManager
-    )
-    {
+    ) {
         parent::__construct();
     }
 }

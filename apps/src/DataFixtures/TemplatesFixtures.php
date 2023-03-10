@@ -21,8 +21,7 @@ class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterf
     protected function addTemplate(
         string $key,
         string $value
-    ): void
-    {
+    ): void {
         $template = new Template();
         $old      = clone $template;
         $template->setName($value);

@@ -9,8 +9,7 @@ class RouterFront extends PageFront
     public function setBreadcrumb(
         ?FrontInterface $front,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         unset($front);
 
         return $breadcrumb;
@@ -19,8 +18,7 @@ class RouterFront extends PageFront
     public function setMeta(
         ?FrontInterface $front,
         array $meta
-    ): array
-    {
+    ): array {
         unset($front);
 
         return $meta;

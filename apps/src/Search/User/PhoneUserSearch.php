@@ -7,7 +7,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class PhoneUserSearch extends SearchLib
 {
-
     public ?string $country = null;
 
     public ?string $etape = null;

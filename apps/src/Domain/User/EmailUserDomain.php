@@ -21,8 +21,7 @@ class EmailUserDomain extends DomainLib
         protected EmailUserRepository $emailUserRepository,
         protected EmailUserSearch $emailUserSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

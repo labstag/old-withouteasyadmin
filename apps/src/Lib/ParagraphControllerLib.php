@@ -41,8 +41,7 @@ abstract class ParagraphControllerLib extends ControllerLib
         Paragraph $paragraph,
         mixed $entity,
         string $urledit
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         /** @var ParagraphRepository $repository */
         $repository = $this->repositoryService->get(Paragraph::class);
         $repository->remove($paragraph);
@@ -55,8 +54,7 @@ abstract class ParagraphControllerLib extends ControllerLib
         string $urledit,
         Collection $paragraphs,
         string $urldelete
-    ): Response
-    {
+    ): Response {
         return $this->render(
             'admin/paragraph/list.html.twig',
             [
@@ -70,8 +68,7 @@ abstract class ParagraphControllerLib extends ControllerLib
     protected function showTwig(
         Paragraph $paragraph,
         ParagraphRequestHandler $paragraphRequestHandler
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(
             ParagraphType::class,
             $paragraph

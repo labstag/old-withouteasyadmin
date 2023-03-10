@@ -19,8 +19,7 @@ class LayoutType extends AbstractTypeLib
     public function __construct(
         TranslatorInterface $translator,
         protected GuardService $guardService
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 
@@ -30,8 +29,7 @@ class LayoutType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $formBuilder,
         array $options
-    ): void
-    {
+    ): void {
         unset($options);
         $formBuilder->add(
             'name',

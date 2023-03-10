@@ -21,8 +21,7 @@ class LibelleDomain extends DomainLib
         protected LibelleRepository $libelleRepository,
         protected LibelleSearch $libelleSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

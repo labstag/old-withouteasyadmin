@@ -9,8 +9,7 @@ abstract class DomainLib implements DomainInterface
 {
     public function __construct(
         protected TranslatorInterface $translator
-    )
-    {
+    ) {
     }
 
     public function getSearchForm(): string

@@ -35,8 +35,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         string $region,
         int $position,
         array $blockData
-    ): void
-    {
+    ): void {
         $type  = $blockData['type'];
         $block = new Block();
         $old   = clone $block;

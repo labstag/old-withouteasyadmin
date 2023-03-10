@@ -17,16 +17,14 @@ class EmailVerifChoiceType extends AbstractType
     public function __construct(
         protected EmailUserRepository $emailUserRepository,
         protected TranslatorInterface $translator
-    )
-    {
+    ) {
     }
 
     public function buildView(
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         /** @var FormInterface $parent */
         $parent  = $form->getParent();
         $entity  = $parent->getData();

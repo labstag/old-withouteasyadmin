@@ -14,7 +14,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource]
 class Workflow implements EntityInterface
 {
-
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $entity = null;
 
@@ -127,8 +126,7 @@ class Workflow implements EntityInterface
     private function removeElementWorkflow(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getRefworkflow() === $this) {
             $variable->setRefworkflow(null);
         }

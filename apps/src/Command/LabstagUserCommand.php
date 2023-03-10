@@ -32,8 +32,7 @@ class LabstagUserCommand extends CommandLib
         protected UserRequestHandler $userRequestHandler,
         protected GroupeRepository $groupeRepository,
         protected UserRepository $userRepository
-    )
-    {
+    ) {
         parent::__construct($repositoryService, $entityManager);
     }
 
@@ -42,8 +41,7 @@ class LabstagUserCommand extends CommandLib
         OutputInterface $output,
         SymfonyStyle $symfonyStyle,
         string $action
-    ): void
-    {
+    ): void {
         /** @var QuestionHelper $helper */
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -91,8 +89,7 @@ class LabstagUserCommand extends CommandLib
         InputInterface $input,
         OutputInterface $output,
         SymfonyStyle $symfonyStyle
-    ): void
-    {
+    ): void {
         /** @var QuestionHelper $helper */
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -113,8 +110,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $symfonyStyle = new SymfonyStyle($input, $output);
         $user         = new User();
         $old          = clone $user;
@@ -174,8 +170,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof UserType) {
             $symfonyStyle->warning(
@@ -210,8 +205,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
@@ -261,8 +255,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
@@ -373,8 +366,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
@@ -442,8 +434,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(

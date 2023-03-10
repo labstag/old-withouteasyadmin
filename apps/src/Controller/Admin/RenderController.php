@@ -17,8 +17,7 @@ class RenderController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_render_new', methods: ['GET', 'POST'])]
     public function edit(
         ?Render $render
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($render) ? new Render() : $render,

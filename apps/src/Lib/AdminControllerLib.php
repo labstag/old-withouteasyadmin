@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class AdminControllerLib extends ControllerLib
 {
-
     protected string $urlHome = '';
 
     public function form(
@@ -29,8 +28,7 @@ abstract class AdminControllerLib extends ControllerLib
         EntityInterface $entity,
         string $twig = 'admin/crud/form.html.twig',
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
         $requestHandlerLib = $domainLib->getRequestHandler();
         $formType          = $domainLib->getType();
@@ -82,8 +80,7 @@ abstract class AdminControllerLib extends ControllerLib
         DomainLib $domainLib,
         string $html,
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         $url = $domainLib->getUrlAdmin();
         /** @var Request $request */
         $request   = $this->requeststack->getCurrentRequest();
@@ -124,8 +121,7 @@ abstract class AdminControllerLib extends ControllerLib
         DomainLib $domainLib,
         EntityInterface $entity,
         string $twigShow
-    ): Response
-    {
+    ): Response {
         /** @var EntityTrashInterface $entity */
         $url = $domainLib->getUrlAdmin();
         /** @var Request $request */
@@ -152,8 +148,7 @@ abstract class AdminControllerLib extends ControllerLib
         Route $data,
         array $routeParam,
         string $route
-    ): void
-    {
+    ): void {
         $compiledRoute   = $data->compile();
         $breadcrumbTitle = array_merge(
             $this->setHeaderTitle(),
@@ -199,8 +194,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $methods,
         string $routeType,
         array $url = [],
-    ): void
-    {
+    ): void {
         $this->listOrTrashRouteTrashsetTrashIcon(
             $methods,
             $serviceEntityRepositoryLib,
@@ -255,8 +249,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function isRouteEnable(
         string $route
-    ): bool
-    {
+    ): bool {
         return $this->guardService->guardRoute(
             $route,
             $this->tokenStorage->getToken()
@@ -266,8 +259,7 @@ abstract class AdminControllerLib extends ControllerLib
     protected function listOrTrashRouteTrash(
         array $url,
         ServiceEntityRepositoryLib $serviceEntityRepositoryLib
-    ): void
-    {
+    ): void {
         $entity = strtolower(
             str_replace(
                 'Labstag\\Entity\\',
@@ -351,8 +343,7 @@ abstract class AdminControllerLib extends ControllerLib
         string $view,
         array $parameters = [],
         ?Response $response = null
-    ): Response
-    {
+    ): Response {
         $parameters = $this->generateMenus($parameters);
         $this->setBreadcrumbsPage();
         $parameters = $this->setTitleHeader($parameters);
@@ -423,8 +414,7 @@ abstract class AdminControllerLib extends ControllerLib
         string $route,
         array $routeParams,
         ServiceEntityRepositoryLib $serviceEntityRepositoryLib
-    ): void
-    {
+    ): void {
         if ('trash' == $routeType) {
             return;
         }
@@ -482,8 +472,7 @@ abstract class AdminControllerLib extends ControllerLib
     protected function setBtnListOrTrash(
         string $routeType,
         DomainLib $domainLib
-    ): void
-    {
+    ): void {
         $url                        = $domainLib->getUrlAdmin();
         $serviceEntityRepositoryLib = $domainLib->getRepository();
         /** @var Request $request */
@@ -514,8 +503,7 @@ abstract class AdminControllerLib extends ControllerLib
     protected function setBtnViewUpdate(
         array $url,
         EntityInterface $entity
-    ): void
-    {
+    ): void {
         $this->setBtnList($url);
         if (empty($entity->getId())) {
             return;
@@ -554,8 +542,7 @@ abstract class AdminControllerLib extends ControllerLib
     protected function setPagination(
         string $routeType,
         DomainLib $domainLib
-    ): PaginationInterface
-    {
+    ): PaginationInterface {
         $serviceEntityRepositoryLib = $domainLib->getRepository();
         $methods                    = $this->getMethodsList();
         $method                     = $methods[$routeType];
@@ -603,8 +590,7 @@ abstract class AdminControllerLib extends ControllerLib
     protected function setSearchForms(
         array $parameters,
         DomainLib $domainLib
-    ): array
-    {
+    ): array {
         /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $query   = $request->query;
@@ -640,8 +626,7 @@ abstract class AdminControllerLib extends ControllerLib
         ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
         array $url,
         EntityManagerInterface $entityManager
-    ): void
-    {
+    ): void {
         $methodTrash      = $methods['trash'];
         $filterCollection = $entityManager->getFilters();
         $filterCollection->disable('softdeleteable');
@@ -672,8 +657,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $url,
         string $routeType,
         mixed $entity
-    ): void
-    {
+    ): void {
         $functions = [
             'showOrPreviewaddBtnList',
             'showOrPreviewaddBtnGuard',
@@ -697,8 +681,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $url,
         string $routeType,
         mixed $entity
-    ): void
-    {
+    ): void {
         if (!(isset($url['destroy']) && 'preview' == $routeType)) {
             return;
         }
@@ -721,8 +704,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $url,
         string $routeType,
         mixed $entity
-    ): void
-    {
+    ): void {
         if (!(isset($url['edit']) && 'show' == $routeType) || !$this->isGranted('edit', $entity)) {
             return;
         }
@@ -740,8 +722,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $url,
         string $routeType,
         mixed $entity
-    ): void
-    {
+    ): void {
         if (!(isset($url['guard']) && 'show' == $routeType) || !$this->enableBtnGuard($entity)) {
             return;
         }
@@ -772,8 +753,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $url,
         string $routeType,
         mixed $entity
-    ): void
-    {
+    ): void {
         if (isset($url['restore']) && 'preview' == $routeType) {
             $this->adminBtnService->addBtnRestore(
                 $entity,
@@ -838,8 +818,7 @@ abstract class AdminControllerLib extends ControllerLib
         TraceableUrlMatcher $traceableUrlMatcher,
         string $pathinfo,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         $traces = $traceableUrlMatcher->getTraces($pathinfo);
         foreach ($traces as $trace) {
             $testadmin = 0 != substr_count((string) $trace['name'], 'admin');
@@ -870,8 +849,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $url,
         string $routeType,
         EntityManagerInterface $entityManager
-    ): void
-    {
+    ): void {
         if ('trash' == $routeType) {
             $this->listOrTrashRouteTrash($url, $serviceEntityRepositoryLib);
 

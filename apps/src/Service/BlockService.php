@@ -15,8 +15,7 @@ class BlockService
     public function __construct(
         protected RewindableGenerator $rewindableGenerator,
         protected BlockRepository $blockRepository
-    )
-    {
+    ) {
     }
 
     /**
@@ -174,8 +173,7 @@ class BlockService
     public function showContent(
         Block $block,
         ?FrontInterface $front
-    ): ?Response
-    {
+    ): ?Response {
         $type   = $block->getType();
         $entity = $this->getEntity($block);
         $html   = null;
@@ -197,8 +195,7 @@ class BlockService
     public function showTemplate(
         Block $block,
         ?FrontInterface $front
-    ): ?array
-    {
+    ): ?array {
         $type     = $block->getType();
         $entity   = $this->getEntity($block);
         $template = null;

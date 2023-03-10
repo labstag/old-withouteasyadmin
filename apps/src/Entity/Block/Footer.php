@@ -18,7 +18,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/block')]
 class Footer implements Stringable, BlockInterface, EntityInterface
 {
-
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'footers', cascade: ['persist'])]
     private ?Block $block = null;
 

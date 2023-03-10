@@ -10,15 +10,13 @@ class SessionService
 {
     public function __construct(
         protected RequestStack $requestStack
-    )
-    {
+    ) {
     }
 
     public function flashBagAdd(
         string $type,
         string $message
-    ): void
-    {
+    ): void {
         $requestStack = $this->requestStack;
         /** @var Request $request */
         $request = $requestStack->getCurrentRequest();

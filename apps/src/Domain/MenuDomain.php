@@ -20,8 +20,7 @@ class MenuDomain extends DomainLib
         protected MenuRepository $menuRepository,
         protected MenuSearch $menuSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

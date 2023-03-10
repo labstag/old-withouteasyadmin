@@ -50,8 +50,7 @@ class LabstagExtension extends AbstractExtension
         protected GuardService $guardService,
         protected ParagraphService $paragraphService,
         protected AttachmentRepository $attachmentRepository
-    )
-    {
+    ) {
     }
 
     public function classEntity(object $entity): string
@@ -291,8 +290,7 @@ class LabstagExtension extends AbstractExtension
         array $config = [],
         ?string $resolver = null,
         int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    ): string
-    {
+    ): string {
         $url = $this->cacheManager->getBrowserPath(
             (string) parse_url($path, PHP_URL_PATH),
             $filter,
@@ -454,8 +452,7 @@ class LabstagExtension extends AbstractExtension
     private function setFilesformClass(
         string $type,
         object $class
-    ): array
-    {
+    ): array {
         $htmltwig = '.html.twig';
         $files    = [
             'forms/'.$type.$htmltwig,

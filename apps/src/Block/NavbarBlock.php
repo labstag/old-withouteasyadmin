@@ -20,8 +20,7 @@ class NavbarBlock extends BlockLib
         protected MenuService $menuService,
         TranslatorInterface $translator,
         Environment $twigEnvironment
-    )
-    {
+    ) {
         parent::__construct($translator, $twigEnvironment);
     }
 

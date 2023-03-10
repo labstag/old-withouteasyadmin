@@ -21,8 +21,7 @@ class GroupeDomain extends DomainLib
         protected GroupeRepository $groupeRepository,
         protected GroupeSearch $groupeSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

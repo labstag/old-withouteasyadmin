@@ -22,8 +22,7 @@ class PrincipalType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $formBuilder,
         array $options
-    ): void
-    {
+    ): void {
         $this->setTextType($formBuilder);
         $this->addPublished($formBuilder);
         $formBuilder->add(

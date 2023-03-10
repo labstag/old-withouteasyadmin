@@ -16,7 +16,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/block')]
 class Breadcrumb implements Stringable, BlockInterface, EntityInterface
 {
-
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'breadcrumbs', cascade: ['persist'])]
     private ?Block $block = null;
 

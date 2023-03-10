@@ -17,8 +17,7 @@ class GeoCodeController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_geocode_new', methods: ['GET', 'POST'])]
     public function edit(
         ?GeoCode $geoCode
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($geoCode) ? new GeoCode() : $geoCode

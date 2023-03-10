@@ -10,8 +10,7 @@ class FormService
     public function __construct(
         protected RewindableGenerator $formfront,
         protected RewindableGenerator $postform
-    )
-    {
+    ) {
     }
 
     public function all(): RewindableGenerator
@@ -45,8 +44,7 @@ class FormService
         AbstractTypeLib $typeLib,
         array $success,
         string $formName
-    ): array
-    {
+    ): array {
         $formClass = $typeLib::class;
         foreach ($this->postform as $row) {
             if ($row->getForm() == $formClass) {

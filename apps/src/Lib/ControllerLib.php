@@ -30,7 +30,6 @@ use Twig\Environment;
 
 abstract class ControllerLib extends AbstractController
 {
-
     protected Request $request;
 
     public function __construct(
@@ -57,7 +56,6 @@ abstract class ControllerLib extends AbstractController
         protected MenuService $menuService,
         protected BreadcrumbService $breadcrumbService,
         protected AdminBtnService $adminBtnService
-    )
-    {
+    ) {
     }
 }

@@ -174,8 +174,7 @@ class Category implements Stringable, EntityTrashInterface
     private function removeElementCategory(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getRefcategory() === $this) {
             $variable->setRefcategory(null);
         }

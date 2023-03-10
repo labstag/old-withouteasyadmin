@@ -14,16 +14,14 @@ class OauthChoiceType extends AbstractType
 {
     public function __construct(
         protected OauthService $oauthService
-    )
-    {
+    ) {
     }
 
     public function buildView(
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         /** @var FormInterface $parent */
         $parent  = $form->getParent();
         $entity  = $parent->getData();

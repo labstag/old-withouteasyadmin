@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource]
 class RouteGroupe implements EntityInterface
 {
-
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'routes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
     private ?Groupe $groupe = null;

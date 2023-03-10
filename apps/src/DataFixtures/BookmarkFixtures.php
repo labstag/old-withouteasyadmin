@@ -30,8 +30,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $bookmark = new Bookmark();
         $old      = clone $bookmark;
         $this->setLibelles($generator, $bookmark);

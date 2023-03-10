@@ -20,8 +20,7 @@ class ParagraphController extends ParagraphControllerLib
         ParagraphService $paragraphService,
         Memo $memo,
         Request $request
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $paragraphService->add($memo, $request->get('data'));
 
         return $this->redirectToRoute('admin_memo_paragraph_list', ['id' => $memo->getId()]);
@@ -51,8 +50,7 @@ class ParagraphController extends ParagraphControllerLib
     public function show(
         Paragraph $paragraph,
         ParagraphRequestHandler $paragraphRequestHandler
-    ): Response
-    {
+    ): Response {
         return parent::showTwig($paragraph, $paragraphRequestHandler);
     }
 }

@@ -17,8 +17,7 @@ class AttachmentController extends ApiControllerLib
     public function delete(
         AttachmentRepository $attachmentRepository,
         Attachment $attachment
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $return = [
             'state' => false,
             'error' => '',

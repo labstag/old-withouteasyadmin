@@ -22,8 +22,7 @@ abstract class RequestHandlerLib
         protected EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
         protected EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
     }
 
     public function changeWorkflowState(mixed $entity, array $states): void

@@ -11,15 +11,13 @@ use Twig\Environment;
 
 class HistoryService
 {
-
     private ?string $filename = null;
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
         private readonly Environment $twigEnvironment,
         protected HistoryRepository $historyRepository
-    )
-    {
+    ) {
     }
 
     public function getFilename(): ?string
@@ -31,8 +29,7 @@ class HistoryService
         string $fileDirectory,
         string $historyId,
         bool $all
-    ): void
-    {
+    ): void {
         $history = $this->historyRepository->find($historyId);
         if (!$history instanceof History || (false == $all && !in_array('publie', (array) $history->getState()))) {
             return;

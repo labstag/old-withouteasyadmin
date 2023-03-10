@@ -17,8 +17,7 @@ class CategoryController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_category_new', methods: ['GET', 'POST'])]
     public function edit(
         ?Category $category
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($category) ? new Category() : $category

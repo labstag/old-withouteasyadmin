@@ -43,8 +43,7 @@ class SearchController extends ApiControllerLib
         Request $request,
         ?string $entity,
         string $method
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
         if (!array_key_exists('name', $get) || is_null($entity)) {

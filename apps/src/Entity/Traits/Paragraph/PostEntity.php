@@ -17,7 +17,6 @@ use Labstag\Entity\Post;
 
 trait PostEntity
 {
-
     #[ORM\ManyToOne(
         targetEntity: Post::class,
         inversedBy: 'paragraphs',
@@ -347,8 +346,7 @@ trait PostEntity
     private function removeElementPost(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);
         }

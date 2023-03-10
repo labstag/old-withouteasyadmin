@@ -21,8 +21,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
         RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected GeocodeService $geocodeService
-    )
-    {
+    ) {
         parent::__construct($repositoryService, $entityManager);
     }
 

@@ -31,8 +31,7 @@ class BookmarkService
         private readonly BookmarkRequestHandler $bookmarkRequestHandler,
         protected UserRepository $userRepository,
         protected BookmarkRepository $bookmarkRepository
-    )
-    {
+    ) {
     }
 
     public function process(
@@ -41,8 +40,7 @@ class BookmarkService
         string $name,
         string $icon,
         DateTime $dateTime
-    ): void
-    {
+    ): void {
         /** @var User $user */
         $user     = $this->userRepository->find($userid);
         $bookmark = $this->bookmarkRepository->findOneBy(
@@ -84,8 +82,7 @@ class BookmarkService
     protected function upload(
         Bookmark $bookmark,
         string $image
-    ): void
-    {
+    ): void {
         /** @var finfo $finfo */
         $finfo        = finfo_open(FILEINFO_MIME_TYPE);
         $annotations  = $this->uploadAnnotationReader->getUploadableFields($bookmark);

@@ -21,8 +21,7 @@ class TemplateDomain extends DomainLib
         protected TemplateRepository $templateRepository,
         protected TemplateSearch $templateSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

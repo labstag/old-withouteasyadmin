@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiResource]
 class EmailUser extends Email implements EntityInterface
 {
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'emailUsers', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
     private ?UserInterface $user = null;

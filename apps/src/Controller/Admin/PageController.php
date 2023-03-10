@@ -20,8 +20,7 @@ class PageController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
     public function edit(
         ?Page $page
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($page) ? new Page() : $page,

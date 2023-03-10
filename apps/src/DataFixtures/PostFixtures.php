@@ -31,8 +31,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $post = new Post();
         $meta = new Meta();
         $meta->setPost($post);

@@ -11,8 +11,7 @@ class FileService
     public function __construct(
         protected ContainerBagInterface $containerBag,
         private readonly AttachmentRequestHandler $attachmentRequestHandler
-    )
-    {
+    ) {
     }
 
     public function moveFile(
@@ -21,8 +20,7 @@ class FileService
         string $filename,
         ?Attachment $attachment,
         ?Attachment $old
-    ): void
-    {
+    ): void {
         $file->move(
             $path,
             $filename
@@ -36,8 +34,7 @@ class FileService
         string $file,
         ?Attachment $attachment = null,
         ?Attachment $old = null
-    ): Attachment
-    {
+    ): Attachment {
         if (is_null($attachment) && is_null($old)) {
             $attachment = new Attachment();
             $old        = clone $attachment;

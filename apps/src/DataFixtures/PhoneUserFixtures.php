@@ -32,8 +32,7 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $users     = $this->installService->getData('user');
         $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
         /** @var User $user */

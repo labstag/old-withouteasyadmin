@@ -27,8 +27,7 @@ class BookmarkController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_bookmark_new', methods: ['GET', 'POST'])]
     public function edit(
         ?Bookmark $bookmark
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($bookmark) ? new Bookmark() : $bookmark,
@@ -92,8 +91,7 @@ class BookmarkController extends AdminControllerLib
         FormInterface $form,
         Security $security,
         EnqueueMethod $enqueueMethod
-    ): void
-    {
+    ): void {
         $file = $form->get('file')->getData();
         if (!$file instanceof UploadedFile) {
             return;

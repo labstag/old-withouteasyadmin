@@ -23,8 +23,7 @@ class CustomBlock extends BlockLib
         protected RequestStack $requestStack,
         protected ParagraphService $paragraphService,
         protected LayoutRepository $layoutRepository
-    )
-    {
+    ) {
         parent::__construct($translator, $twigEnvironment);
     }
 

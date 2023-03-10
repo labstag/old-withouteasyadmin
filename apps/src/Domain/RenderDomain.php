@@ -21,8 +21,7 @@ class RenderDomain extends DomainLib
         protected RenderRepository $renderRepository,
         protected RenderSearch $renderSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

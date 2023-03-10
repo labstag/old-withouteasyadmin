@@ -34,8 +34,7 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
         string $type,
         string $region,
         array $dataLayout
-    ): void
-    {
+    ): void {
         /** @var Block $block */
         $block   = $this->getReference('block_'.$region.'-'.$type);
         $layout  = new Layout();

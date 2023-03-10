@@ -47,8 +47,7 @@ class EntityVoter extends Voter
     protected function supports(
         mixed $attribute,
         mixed $subject
-    ): bool
-    {
+    ): bool {
         unset($attribute);
         $entities = [
             AddressUser::class,

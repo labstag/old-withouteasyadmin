@@ -21,7 +21,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/paragraph')]
 class Video implements Stringable, ParagraphInterface, EntityInterface
 {
-
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphVideos', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
     private ?Attachment $attachment = null;

@@ -11,7 +11,6 @@ use Labstag\Entity\Paragraph\Bookmark\Liste as BookmarkList;
 
 trait BookmarkEntity
 {
-
     #[ORM\OneToMany(
         targetEntity: BookmarkCategory::class,
         mappedBy: 'paragraph',
@@ -149,8 +148,7 @@ trait BookmarkEntity
     private function removeElementBookmark(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);
         }

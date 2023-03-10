@@ -20,8 +20,7 @@ class LabstagInstallCommand extends CommandLib
         RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected InstallService $installService
-    )
-    {
+    ) {
         parent::__construct($repositoryService, $entityManager);
     }
 

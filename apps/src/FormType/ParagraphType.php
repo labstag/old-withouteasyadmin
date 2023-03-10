@@ -16,16 +16,14 @@ class ParagraphType extends AbstractType
     public function __construct(
         protected ParagraphService $paragraphService,
         protected RouterInterface $router
-    )
-    {
+    ) {
     }
 
     public function buildView(
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         /** @var FormInterface $parent */
         $parent     = $form->getParent();
         $entity     = $parent->getData();

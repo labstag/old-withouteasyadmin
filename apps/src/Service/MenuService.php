@@ -16,8 +16,7 @@ class MenuService
         protected MenuRepository $menuRepository,
         protected TokenStorageInterface $tokenStorage,
         protected GuardService $guardService,
-    )
-    {
+    ) {
     }
 
     public function createMenu(Menu $menu): ItemInterface
@@ -129,8 +128,7 @@ class MenuService
         array $children,
         ItemInterface|string $key,
         MenuItem $menuItem
-    ): void
-    {
+    ): void {
         $divider = 0;
         foreach ($children as $child) {
             $extras = $child->getExtras();
@@ -147,8 +145,7 @@ class MenuService
     private function setDataChild(
         ?array &$dataChild,
         array &$data
-    ): void
-    {
+    ): void {
         if (isset($dataChild['url'])) {
             $data['uri'] = $dataChild['url'];
             unset($dataChild['url']);

@@ -17,8 +17,7 @@ class LinkUserController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_linkuser_new', methods: ['GET', 'POST'])]
     public function edit(
         ?LinkUser $linkUser
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($linkUser) ? new LinkUser() : $linkUser

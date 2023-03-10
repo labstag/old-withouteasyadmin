@@ -21,8 +21,7 @@ class LinkUserDomain extends DomainLib
         protected LinkUserRepository $linkUserRepository,
         protected LinkUserSearch $linkUserSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

@@ -9,25 +9,26 @@ use Rector\CodeQuality\Rector\Ternary\ArrayKeyExistsTernaryThenValueToCoalescing
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\Config\RectorConfig;
 use Rector\Core\ValueObject\PhpVersion;
+use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
+use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
+use Rector\Php80\ValueObject\NestedAnnotationToAttribute;
+use Rector\Php82\Rector\Class_\ReadOnlyClassRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
-use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
-use Rector\Php80\ValueObject\NestedAnnotationToAttribute;
-use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Set\SensiolabsSetList;
-use Rector\Doctrine\Set\DoctrineSetList;
-use Rector\Php82\Rector\Class_\ReadOnlyClassRector;
+use Rector\Symfony\Set\SymfonySetList;
 use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromAssignsRector;
 
-return static function (RectorConfig $rectorConfig): void {
+return static function (RectorConfig $rectorConfig): void
+{
     $rectorConfig->cacheClass(FileCacheStorage::class);
     $rectorConfig->cacheDirectory('./var/cache/rector');
     $rectorConfig->importNames();
     $rectorConfig->paths([
-        __DIR__ . '/src',
-        __DIR__ . '/tests'
+        __DIR__.'/src',
+        __DIR__.'/tests',
     ]);
 
     $rectorConfig->phpVersion(PhpVersion::PHP_82);
@@ -67,7 +68,7 @@ return static function (RectorConfig $rectorConfig): void {
     //         ),
     //     ]
     // );
-    $rectorConfig->phpstanConfig(__DIR__ . '/phpstan.neon');
+    $rectorConfig->phpstanConfig(__DIR__.'/phpstan.neon');
     // define sets of rules
     $rectorConfig->sets([
         DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
@@ -82,6 +83,6 @@ return static function (RectorConfig $rectorConfig): void {
         // SetList::TYPE_DECLARATION,
         SensiolabsSetList::FRAMEWORK_EXTRA_61,
         SensiolabsSetList::ANNOTATIONS_TO_ATTRIBUTES,
-        LevelSetList::UP_TO_PHP_82
+        LevelSetList::UP_TO_PHP_82,
     ]);
 };

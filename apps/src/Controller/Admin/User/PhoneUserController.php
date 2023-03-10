@@ -17,8 +17,7 @@ class PhoneUserController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_phoneuser_new', methods: ['GET', 'POST'])]
     public function edit(
         ?PhoneUser $phoneUser
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($phoneUser) ? new PhoneUser() : $phoneUser

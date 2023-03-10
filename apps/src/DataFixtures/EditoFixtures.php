@@ -33,8 +33,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $users = $this->userRepository->findAll();
         $edito = new Edito();
         $meta  = new Meta();

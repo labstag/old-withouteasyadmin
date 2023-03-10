@@ -36,8 +36,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
         int $index,
         array $dataUser,
         Generator $generator
-    ): void
-    {
+    ): void {
         $user = $this->userService->create($groupes, $dataUser);
         $this->upload($user, $generator);
         $this->addReference('user_'.$index, $user);

@@ -19,8 +19,7 @@ abstract class AbstractTypeLib extends AbstractType
 {
     public function __construct(
         protected TranslatorInterface $translator
-    )
-    {
+    ) {
     }
 
     protected function addParagraph(FormBuilderInterface $formBuilder, array $urls): void
@@ -80,8 +79,7 @@ abstract class AbstractTypeLib extends AbstractType
     protected function setCollectionType(
         FormBuilderInterface $formBuilder,
         array $tab
-    ): void
-    {
+    ): void {
         foreach ($tab as $key => $type) {
             $formBuilder->add(
                 $key,
@@ -111,8 +109,7 @@ abstract class AbstractTypeLib extends AbstractType
     protected function setInputText(
         FormBuilderInterface $formBuilder,
         array $tab
-    ): void
-    {
+    ): void {
         foreach ($tab as $id => $row) {
             $formBuilder->add(
                 $id,

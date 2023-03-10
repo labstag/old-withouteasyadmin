@@ -22,8 +22,7 @@ class MenuController extends AdminControllerLib
     public function add(
         Request $request,
         MenuRepository $menuRepository
-    ): Response
-    {
+    ): Response {
         $get = $request->query->all();
         $url = $this->generateUrl('admin_menu_index');
         if (!isset($get['id'])) {
@@ -73,8 +72,7 @@ class MenuController extends AdminControllerLib
     #[Route(path: '/update/{id}', name: 'admin_menu_update', methods: ['GET', 'POST'])]
     public function edit(
         Menu $menu
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
         $data             = [$menu->getData()];
         $data[0]['param'] = isset($data[0]['params']) ? json_encode($data[0]['params'], JSON_THROW_ON_ERROR) : '';
@@ -90,8 +88,7 @@ class MenuController extends AdminControllerLib
     public function index(
         Environment $twigEnvironment,
         MenuRepository $menuRepository
-    ): Response
-    {
+    ): Response {
         $all             = $menuRepository->findAllCode();
         $globals         = $twigEnvironment->getGlobals();
         $modal           = $globals['modal'] ?? [];

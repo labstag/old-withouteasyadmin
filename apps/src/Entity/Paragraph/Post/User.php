@@ -16,7 +16,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/paragraph/post')]
 class User implements Stringable, ParagraphInterface, EntityInterface
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]

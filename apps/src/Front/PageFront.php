@@ -11,8 +11,7 @@ class PageFront extends FrontLib
     public function setBreadcrumb(
         ?FrontInterface $front,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if (!$front instanceof Page) {
             return $breadcrumb;
         }
@@ -36,8 +35,7 @@ class PageFront extends FrontLib
     public function setMeta(
         ?FrontInterface $front,
         array $meta
-    ): array
-    {
+    ): array {
         if (!$front instanceof Page) {
             return $meta;
         }
@@ -48,8 +46,7 @@ class PageFront extends FrontLib
     protected function setBreadcrumbPage(
         ?Page $page,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if (!$page instanceof Page) {
             return $breadcrumb;
         }

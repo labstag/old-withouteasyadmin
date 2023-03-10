@@ -21,8 +21,7 @@ class ChapterController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
     public function edit(
         ?Chapter $chapter
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($chapter) ? new Chapter() : $chapter,
@@ -46,8 +45,7 @@ class ChapterController extends AdminControllerLib
         History $history,
         ChapterRepository $chapterRepository,
         ChapterRequestHandler $chapterRequestHandler
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $chapter = new Chapter();
         $chapter->setRefhistory($history);
         $chapter->setName(Uuid::v1());

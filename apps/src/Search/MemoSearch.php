@@ -7,7 +7,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class MemoSearch extends SearchLib
 {
-
     public ?string $dateEnd = null;
 
     public ?string $dateStart = null;

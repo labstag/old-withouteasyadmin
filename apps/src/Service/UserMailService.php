@@ -19,7 +19,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserMailService
 {
-
     protected array $config;
 
     public function __construct(
@@ -28,8 +27,7 @@ class UserMailService
         protected MailerService $mailerService,
         protected DataService $dataService,
         protected TemplateRepository $templateRepository
-    )
-    {
+    ) {
         $config       = $dataService->getConfig();
         $this->config = $config;
 
@@ -74,8 +72,7 @@ class UserMailService
         User $user,
         string $content,
         array $otherchange = []
-    ): string
-    {
+    ): string {
         $dateTime = new DateTime();
         $change   = [
             'username' => $user->getUsername(),
@@ -167,8 +164,7 @@ class UserMailService
     public function checkNewOauthConnectUser(
         UserInterface $user,
         OauthConnectUser $oauthConnectUser
-    ): void
-    {
+    ): void {
         /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-oauthconnectuser']
@@ -270,8 +266,7 @@ class UserMailService
         Template $template,
         UserInterface $user,
         array $change = []
-    ): void
-    {
+    ): void {
         /** @var User $user */
         $html  = (string) $template->getHtml();
         $text  = (string) $template->getText();

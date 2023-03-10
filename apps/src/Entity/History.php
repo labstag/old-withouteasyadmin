@@ -270,8 +270,7 @@ class History implements FrontInterface, EntityTrashInterface
     private function removeElementHistory(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getHistory() === $this) {
             $variable->setHistory(null);
         }

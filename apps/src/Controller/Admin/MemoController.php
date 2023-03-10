@@ -21,8 +21,7 @@ class MemoController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_memo_edit', methods: ['GET', 'POST'])]
     public function edit(
         ?Memo $memo
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($memo) ? new Memo() : $memo,
@@ -46,8 +45,7 @@ class MemoController extends AdminControllerLib
         MemoRepository $memoRepository,
         MemoRequestHandler $memoRequestHandler,
         Security $security
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $user = $security->getUser();
         if (is_null($user)) {
             return $this->redirectToRoute('admin_memo_index');

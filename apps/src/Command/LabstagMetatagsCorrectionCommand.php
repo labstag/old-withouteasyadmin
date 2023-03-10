@@ -43,8 +43,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         protected PageRequestHandler $pageRequestHandler,
         protected PostRequestHandler $postRequestHandler,
         protected RenderRequestHandler $renderRequestHandler
-    )
-    {
+    ) {
         parent::__construct($repositoryService, $entityManager);
     }
 

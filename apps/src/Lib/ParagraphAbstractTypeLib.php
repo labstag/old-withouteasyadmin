@@ -16,16 +16,14 @@ abstract class ParagraphAbstractTypeLib extends AbstractTypeLib
         protected ParagraphService $paragraphService,
         protected Environment $twigEnvironment,
         protected FormService $formService
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 
     protected function getRender(
         string $view,
         array $param = []
-    ): string
-    {
+    ): string {
         return $this->twigEnvironment->render($view, $param);
     }
 }

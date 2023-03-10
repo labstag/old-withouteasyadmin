@@ -21,8 +21,7 @@ class BookmarkDomain extends DomainLib
         protected BookmarkRepository $bookmarkRepository,
         protected BookmarkSearch $bookmarkSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

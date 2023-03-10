@@ -10,7 +10,6 @@ use Labstag\Entity\User;
 
 abstract class SearchLib
 {
-
     public int $limit = 10;
 
     public int $page = 0;
@@ -18,8 +17,7 @@ abstract class SearchLib
     public function search(
         array $get,
         EntityManagerInterface $entityManager
-    ): void
-    {
+    ): void {
         $entityRepository = $entityManager->getRepository(User::class);
         $categoryRepo     = $entityManager->getRepository(Category::class);
         $groupeRepo       = $entityManager->getRepository(Groupe::class);

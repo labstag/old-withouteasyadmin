@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class PostSearch extends SearchLib
 {
-
     public ?Category $category = null;
 
     public ?string $etape = null;

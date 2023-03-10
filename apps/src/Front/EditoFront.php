@@ -12,8 +12,7 @@ class EditoFront extends PageFront
     public function setBreadcrumb(
         ?FrontInterface $front,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if (!$front instanceof Edito) {
             return $breadcrumb;
         }
@@ -34,8 +33,7 @@ class EditoFront extends PageFront
     public function setMeta(
         ?FrontInterface $front,
         array $meta
-    ): array
-    {
+    ): array {
         if (!$front instanceof Edito) {
             return $meta;
         }

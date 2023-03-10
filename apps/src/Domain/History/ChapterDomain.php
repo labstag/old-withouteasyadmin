@@ -21,8 +21,7 @@ class ChapterDomain extends DomainLib
         protected ChapterRepository $chapterRepository,
         protected ChapterSearch $chapterSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

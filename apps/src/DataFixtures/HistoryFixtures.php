@@ -33,8 +33,7 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $users   = $this->userRepository->findAll();
         $history = new History();
         $meta    = new Meta();

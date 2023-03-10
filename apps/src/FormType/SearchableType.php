@@ -24,24 +24,21 @@ class SearchableType extends AbstractType
         protected RouterInterface $router,
         protected TranslatorInterface $translator,
         protected EntityManagerInterface $entityManager
-    )
-    {
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         $formBuilder->addModelTransformer(
             new CallbackTransformer(
-                static function ($value)
-                {
+                static function ($value) {
                     if ($value instanceof Collection) {
                         return $value->map(
                             static fn ($d) => (string) $d->getId()
                         )->toArray();
                     }
                 },
-                function ($ids) use ($options)
-                {
+                function ($ids) use ($options) {
                     if (empty($ids)) {
                         return is_array($ids) ? new ArrayCollection([]) : null;
                     }

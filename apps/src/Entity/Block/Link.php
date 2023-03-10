@@ -14,7 +14,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/block')]
 class Link implements Stringable, EntityInterface
 {
-
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $external = null;
 

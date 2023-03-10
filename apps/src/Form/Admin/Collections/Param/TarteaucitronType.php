@@ -14,8 +14,7 @@ class TarteaucitronType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $formBuilder,
         array $options
-    ): void
-    {
+    ): void {
         $formBuilder->add(
             'privacyUrl',
             UrlType::class,
@@ -148,8 +147,7 @@ class TarteaucitronType extends AbstractTypeLib
     private function setInputTrueFalse(
         FormBuilderInterface $formBuilder,
         array $tab
-    ): void
-    {
+    ): void {
         foreach ($tab as $id => $row) {
             $formBuilder->add(
                 $id,

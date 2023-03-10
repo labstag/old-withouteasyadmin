@@ -12,7 +12,6 @@ use Labstag\Lib\FixtureLib;
 
 class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
     protected array $position = [];
 
     /**
@@ -37,8 +36,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         int $index,
         array $states
-    ): void
-    {
+    ): void {
         $chapter = new Chapter();
         $meta    = new Meta();
         $meta->setChapter($chapter);

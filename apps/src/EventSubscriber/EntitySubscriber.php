@@ -414,8 +414,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     private function verifMetas(
         mixed $entity
-    ): void
-    {
+    ): void {
         $title = null;
         $metas = $entity->getMetas();
         if (0 != count($metas)) {
@@ -449,8 +448,7 @@ class EntitySubscriber extends EventSubscriberLib
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Chapter) {
             return;
         }
@@ -463,8 +461,7 @@ class EntitySubscriber extends EventSubscriberLib
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Edito) {
             return;
         }
@@ -477,8 +474,7 @@ class EntitySubscriber extends EventSubscriberLib
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof History) {
             return;
         }
@@ -491,8 +487,7 @@ class EntitySubscriber extends EventSubscriberLib
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Page) {
             return;
         }
@@ -505,8 +500,7 @@ class EntitySubscriber extends EventSubscriberLib
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Post) {
             return;
         }
@@ -519,8 +513,7 @@ class EntitySubscriber extends EventSubscriberLib
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Render) {
             return;
         }

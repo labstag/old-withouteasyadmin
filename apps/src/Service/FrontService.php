@@ -33,15 +33,13 @@ class FrontService
         protected RequestStack $requestStack,
         protected UrlGeneratorInterface $urlGenerator,
         protected AttachmentRepository $attachmentRepository
-    )
-    {
+    ) {
     }
 
     public function configMeta(
         array $config,
         array $meta
-    ): array
-    {
+    ): array {
         $functions = [
             'configMetaImage',
             'configMetaRobots',
@@ -159,8 +157,7 @@ class FrontService
     protected function configMetaLocale(
         array $config,
         array $meta
-    ): array
-    {
+    ): array {
         if (!$this->isStateMeta()) {
             return $meta;
         }
@@ -197,8 +194,7 @@ class FrontService
     protected function configMetaTitle(
         array $config,
         array $meta
-    ): array
-    {
+    ): array {
         if (!array_key_exists('site_title', $config)) {
             return $meta;
         }
@@ -220,8 +216,7 @@ class FrontService
     private function arrayKeyExists(
         array $var,
         array $data
-    ): bool
-    {
+    ): bool {
         $find = 0;
         foreach ($var as $name) {
             $find = (int) array_key_exists($name, $data);

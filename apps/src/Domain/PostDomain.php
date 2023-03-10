@@ -21,8 +21,7 @@ class PostDomain extends DomainLib
         protected PostRepository $postRepository,
         protected PostSearch $postSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

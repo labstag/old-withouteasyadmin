@@ -21,8 +21,7 @@ class EditoDomain extends DomainLib
         protected EditoRepository $editoRepository,
         protected EditoSearch $editoSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

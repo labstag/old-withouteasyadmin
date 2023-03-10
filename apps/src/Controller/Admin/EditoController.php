@@ -22,8 +22,7 @@ class EditoController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_edito_edit', methods: ['GET', 'POST'])]
     public function edit(
         ?Edito $edito
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($edito) ? new Edito() : $edito,
@@ -47,8 +46,7 @@ class EditoController extends AdminControllerLib
         EditoRepository $editoRepository,
         EditoRequestHandler $editoRequestHandler,
         Security $security
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $user = $security->getUser();
         if (is_null($user)) {
             return $this->redirectToRoute('admin_edito_index');

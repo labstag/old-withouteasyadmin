@@ -31,8 +31,7 @@ abstract class ApiControllerLib extends AbstractController
         protected AttachmentRequestHandler $attachmentRequestHandler,
         protected WorkflowService $workflowService,
         protected UserRepository $userRepository
-    )
-    {
+    ) {
     }
 
     protected function getGuardRouteOrWorkflow(array $data, array $get, string $entityClass): array

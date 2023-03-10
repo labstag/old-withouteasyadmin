@@ -19,8 +19,7 @@ class BlockDomain extends DomainLib
         protected BlockRepository $blockRepository,
         protected BlockSearch $blockSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

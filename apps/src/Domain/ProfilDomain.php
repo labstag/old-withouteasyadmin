@@ -19,8 +19,7 @@ class ProfilDomain extends DomainLib
         protected UserRepository $userRepository,
         protected ProfilSearch $profilSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

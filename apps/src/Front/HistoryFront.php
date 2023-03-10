@@ -11,16 +11,14 @@ class HistoryFront extends PageFront
     public function setBreadcrumb(
         ?FrontInterface $front,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         return $this->setBreadcrumbHistory($front, $breadcrumb);
     }
 
     public function setBreadcrumbHistory(
         ?FrontInterface $front,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if (!$front instanceof History) {
             return $breadcrumb;
         }
@@ -46,8 +44,7 @@ class HistoryFront extends PageFront
     public function setMeta(
         ?FrontInterface $front,
         array $meta
-    ): array
-    {
+    ): array {
         if (!$front instanceof History) {
             return $meta;
         }

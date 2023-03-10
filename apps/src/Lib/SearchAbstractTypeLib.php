@@ -24,8 +24,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
         protected ParameterBagInterface $parameterBag,
         protected WorkflowService $workflowService,
         protected TranslatorInterface $translator
-    )
-    {
+    ) {
     }
 
     /**
@@ -34,8 +33,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
     public function buildForm(
         FormBuilderInterface $formBuilder,
         array $options
-    ): void
-    {
+    ): void {
         $formBuilder->add(
             'limit',
             NumberType::class,
@@ -144,8 +142,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
         string $label,
         string $help,
         string $placeholder
-    ): void
-    {
+    ): void {
         /** @var WorkflowInterface $workflow */
         $workflow   = $this->workflowService->get($entityclass);
         $definition = $workflow->getDefinition();

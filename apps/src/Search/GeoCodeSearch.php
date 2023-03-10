@@ -6,7 +6,6 @@ use Labstag\Lib\SearchLib;
 
 class GeoCodeSearch extends SearchLib
 {
-
     public ?string $communityname = null;
 
     public ?string $countrycode = null;

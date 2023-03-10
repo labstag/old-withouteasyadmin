@@ -20,8 +20,7 @@ class HistoryController extends ParagraphControllerLib
         ParagraphService $paragraphService,
         History $history,
         Request $request
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $paragraphService->add($history, $request->get('data'));
 
         return $this->redirectToRoute('admin_history_paragraph_list', ['id' => $history->getId()]);
@@ -51,8 +50,7 @@ class HistoryController extends ParagraphControllerLib
     public function show(
         Paragraph $paragraph,
         ParagraphRequestHandler $paragraphRequestHandler
-    ): Response
-    {
+    ): Response {
         return parent::showTwig($paragraph, $paragraphRequestHandler);
     }
 }

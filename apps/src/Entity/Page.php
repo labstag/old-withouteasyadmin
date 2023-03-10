@@ -204,8 +204,7 @@ class Page implements Stringable, FrontInterface, EntityTrashInterface
     private function removeElementPage(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getPage() === $this) {
             $variable->setPage(null);
         }

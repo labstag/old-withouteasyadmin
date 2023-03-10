@@ -31,8 +31,7 @@ class LinkUserFixtures extends FixtureLib implements DependentFixtureInterface
     protected function addLink(
         Generator $generator,
         User $user
-    ): void
-    {
+    ): void {
         $linkUser = new LinkUser();
         $old      = clone $linkUser;
         $linkUser->setRefUser($user);

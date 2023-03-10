@@ -159,8 +159,7 @@ abstract class FixtureLib extends Fixture
         protected MenuRequestHandler $menuRequestHandler,
         protected PageRequestHandler $pageRequestHandler,
         protected RenderRequestHandler $renderRequestHandler
-    )
-    {
+    ) {
     }
 
     public function getDependenciesBookmarkPost(): array

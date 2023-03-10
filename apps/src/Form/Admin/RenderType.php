@@ -16,8 +16,7 @@ class RenderType extends AbstractTypeLib
     public function __construct(
         TranslatorInterface $translator,
         protected GuardService $guardService
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 
@@ -27,8 +26,7 @@ class RenderType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $formBuilder,
         array $options
-    ): void
-    {
+    ): void {
         $formBuilder->add(
             'name',
             TextType::class,

@@ -5,6 +5,7 @@
  * you can change this configuration by importing this file.
  */
 $config = new PhpCsFixer\Config();
+
 return $config
     ->setRules([
         // Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
@@ -18,7 +19,7 @@ return $config
         // Converts backtick operators to `shell_exec` calls.
         'backtick_to_shell_exec' => true,
         // Binary operators should be surrounded by space as configured.
-        'binary_operator_spaces' => ['operators'=>['=>'=>'align_single_space_minimal','='=>'align_single_space_minimal']],
+        'binary_operator_spaces' => ['operators' => ['=>' => 'align_single_space_minimal', '=' => 'align_single_space_minimal']],
         // There MUST be one blank line after the namespace declaration.
         'blank_line_after_namespace' => true,
         // Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.
@@ -26,7 +27,7 @@ return $config
         // An empty line feed must precede any configured statement.
         'blank_line_before_statement' => true,
         // The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
-        'braces' => ['allow_single_line_anonymous_class_with_empty_body'=>true,'allow_single_line_closure'=>true,'position_after_functions_and_oop_constructs'=>'next','position_after_control_structures'=>'same','position_after_anonymous_constructs'=>'next'],
+        'braces' => ['allow_single_line_anonymous_class_with_empty_body' => true, 'allow_single_line_closure' => true, 'position_after_functions_and_oop_constructs' => 'next', 'position_after_control_structures' => 'same', 'position_after_anonymous_constructs' => 'next'],
         // A single space or none should be between cast and variable.
         'cast_spaces' => true,
         // Class, trait and interface elements must be separated with one or none blank line.
@@ -188,7 +189,7 @@ return $config
         // There should not be space before or after object operators `->` and `?->`.
         'object_operator_without_whitespace' => true,
         // Orders the elements of classes/interfaces/traits/enums.
-        'ordered_class_elements' => ['sort_algorithm'=>'alpha'],
+        'ordered_class_elements' => ['sort_algorithm' => 'alpha'],
         // Ordering `use` statements.
         'ordered_imports' => true,
         // PHPUnit annotations should be a FQCNs including a root namespace.
@@ -267,7 +268,7 @@ return $config
         'single_line_after_imports' => true,
         // Single-line comments and multi-line comments with only one line of actual content should use the `//` syntax.
         'single_line_comment_style' => [
-            'comment_types'=> ['asterisk']
+            'comment_types' => ['asterisk'],
         ],
         // Throwing exception must be done in single line.
         'single_line_throw' => true,
@@ -308,8 +309,8 @@ return $config
         // Write conditions in Yoda style (`true`), non-Yoda style (`['equal' => false, 'identical' => false, 'less_and_greater' => false]`) or ignore those conditions (`null`) based on configuration.
         'yoda_style' => true,
     ])
-    ->setFinder(PhpCsFixer\Finder::create()
+    ->setFinder(
+        PhpCsFixer\Finder::create()
         // ->exclude('folder-to-exclude') // if you want to exclude some folders, you can do it like this!
-        ->in(__DIR__)
-    )
-;
+            ->in(__DIR__)
+    );

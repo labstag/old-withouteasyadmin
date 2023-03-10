@@ -25,8 +25,7 @@ class HistoryController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
     public function edit(
         ?History $history
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($history) ? new History() : $history,
@@ -50,8 +49,7 @@ class HistoryController extends AdminControllerLib
         HistoryRepository $historyRepository,
         HistoryRequestHandler $historyRequestHandler,
         Security $security
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $user = $security->getUser();
         if (is_null($user)) {
             return $this->redirectToRoute('admin_history_index');

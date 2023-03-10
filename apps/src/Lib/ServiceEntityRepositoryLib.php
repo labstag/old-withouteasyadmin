@@ -105,8 +105,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         Query $query,
         ?int $limit = null,
         ?int $offset = null
-    ): mixed
-    {
+    ): mixed {
         $query->setMaxResults($limit);
         $query->setFirstResult($offset);
 

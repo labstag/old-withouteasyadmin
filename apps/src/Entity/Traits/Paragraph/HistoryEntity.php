@@ -13,7 +13,6 @@ use Labstag\Entity\Paragraph\History\User as HistoryUser;
 
 trait HistoryEntity
 {
-
     #[ORM\OneToMany(
         targetEntity: ParagraphHistory::class,
         mappedBy: 'paragraph',
@@ -207,8 +206,7 @@ trait HistoryEntity
     private function removeElementHistory(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);
         }

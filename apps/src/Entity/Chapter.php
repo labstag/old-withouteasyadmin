@@ -242,8 +242,7 @@ class Chapter implements FrontInterface, EntityTrashInterface
     private function removeElementChapter(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getChapter() === $this) {
             $variable->setChapter(null);
         }

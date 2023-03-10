@@ -178,8 +178,7 @@ class Groupe implements Stringable, EntityTrashInterface
     private function removeElementGroupe(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getRefgroupe() === $this) {
             $variable->setRefgroupe(null);
         }

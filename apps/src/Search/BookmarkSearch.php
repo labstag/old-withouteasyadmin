@@ -8,7 +8,6 @@ use Labstag\Lib\SearchLib;
 
 class BookmarkSearch extends SearchLib
 {
-
     public ?Category $category = null;
 
     public ?string $etape = null;

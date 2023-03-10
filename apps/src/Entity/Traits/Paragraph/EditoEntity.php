@@ -11,7 +11,6 @@ use Labstag\Entity\Paragraph\Edito\Show as EditoShow;
 
 trait EditoEntity
 {
-
     #[ORM\ManyToOne(
         targetEntity: Edito::class,
         inversedBy: 'paragraphs',
@@ -131,8 +130,7 @@ trait EditoEntity
     private function removeElementEdito(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);
         }

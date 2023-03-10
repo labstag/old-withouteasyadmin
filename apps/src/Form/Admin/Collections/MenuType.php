@@ -14,16 +14,14 @@ class MenuType extends AbstractTypeLib
     public function __construct(
         TranslatorInterface $translator,
         protected GuardService $guardService
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 
     public function buildForm(
         FormBuilderInterface $formBuilder,
         array $options
-    ): void
-    {
+    ): void {
         unset($options);
 
         $all     = $this->guardService->allRoutes();

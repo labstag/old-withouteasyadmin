@@ -29,8 +29,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         protected EventDispatcherInterface $eventDispatcher,
         protected WorkflowRequestHandler $workflowRequestHandler,
         protected WorkflowRepository $workflowRepository
-    )
-    {
+    ) {
         parent::__construct($repositoryService, $entityManager);
     }
 

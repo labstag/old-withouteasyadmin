@@ -26,8 +26,7 @@ class ParamType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $formBuilder,
         array $options
-    ): void
-    {
+    ): void {
         $formBuilder->add('site_title', TextType::class);
         $this->setFileType($formBuilder);
         $this->setInputs($formBuilder);

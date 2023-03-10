@@ -27,16 +27,14 @@ class UserService
         protected TranslatorInterface $translator,
         protected OauthConnectUserRepository $oauthConnectUserRepository,
         protected UserRepository $userRepository
-    )
-    {
+    ) {
     }
 
     public function addOauthToUser(
         string $client,
         User $user,
         ResourceOwnerInterface $resourceOwner
-    ): void
-    {
+    ): void {
         $identity = $this->oauthService->getIdentity($resourceOwner->toArray(), $client);
         $find     = $this->findOAuthIdentity(
             $user,
@@ -86,8 +84,7 @@ class UserService
     public function create(
         array $groupes,
         array $dataUser
-    ): User
-    {
+    ): User {
         $user = new User();
         $old  = clone $user;
 
@@ -106,8 +103,7 @@ class UserService
         AbstractProvider $provider,
         array $query,
         ?string $oauth2state
-    ): bool
-    {
+    ): bool {
         if (is_null($oauth2state)) {
             return true;
         }
@@ -139,8 +135,7 @@ class UserService
         string $identity,
         string $client,
         ?OauthConnectUser &$oauthConnectUser = null
-    ): bool
-    {
+    ): bool {
         $return            = false;
         $oauthConnectUsers = $user->getOauthConnectUsers();
         foreach ($oauthConnectUsers as $oauthConnect) {

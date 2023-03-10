@@ -21,8 +21,7 @@ class PageDomain extends DomainLib
         protected PageRepository $pageRepository,
         protected PageSearch $pageSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

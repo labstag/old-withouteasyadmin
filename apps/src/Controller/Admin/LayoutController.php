@@ -25,8 +25,7 @@ class LayoutController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_layout_edit', methods: ['GET', 'POST'])]
     public function edit(
         ?Layout $layout
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($layout) ? new Layout() : $layout,
@@ -86,8 +85,7 @@ class LayoutController extends AdminControllerLib
         LayoutRepository $layoutRepository,
         LayoutRequestHandler $layoutRequestHandler,
         CustomRepository $customRepository
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $post   = $request->request->all('new_layout');
         $custom = $customRepository->findOneBy(
             [

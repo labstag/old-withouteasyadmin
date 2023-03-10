@@ -20,8 +20,7 @@ class UserDomain extends DomainLib
         protected UserRepository $userRepository,
         protected UserSearch $userSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

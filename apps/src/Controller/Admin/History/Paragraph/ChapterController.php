@@ -20,8 +20,7 @@ class ChapterController extends ParagraphControllerLib
         ParagraphService $paragraphService,
         Chapter $chapter,
         Request $request
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $paragraphService->add($chapter, $request->get('data'));
 
         return $this->redirectToRoute('admin_chapter_paragraph_list', ['id' => $chapter->getId()]);
@@ -51,8 +50,7 @@ class ChapterController extends ParagraphControllerLib
     public function show(
         Paragraph $paragraph,
         ParagraphRequestHandler $paragraphRequestHandler
-    ): Response
-    {
+    ): Response {
         return parent::showTwig($paragraph, $paragraphRequestHandler);
     }
 }

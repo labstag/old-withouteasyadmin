@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: PhoneUserRepository::class)]
 class PhoneUser extends Phone implements EntityInterface
 {
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'phoneUsers', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id')]
     #[Assert\NotBlank]

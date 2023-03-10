@@ -20,8 +20,7 @@ class LabstagGuardRouteCommand extends CommandLib
         RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected GuardService $guardService
-    )
-    {
+    ) {
         parent::__construct($repositoryService, $entityManager);
     }
 

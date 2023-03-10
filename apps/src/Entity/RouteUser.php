@@ -13,7 +13,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiResource]
 class RouteUser implements EntityInterface
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]

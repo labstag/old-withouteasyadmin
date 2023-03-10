@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource]
 class WorkflowGroupe implements EntityInterface
 {
-
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'workflowGroupes', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refgroupe_id')]
     private ?Groupe $groupe = null;

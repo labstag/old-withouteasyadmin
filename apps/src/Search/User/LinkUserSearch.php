@@ -7,6 +7,5 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class LinkUserSearch extends SearchLib
 {
-
     public ?UserInterface $user = null;
 }

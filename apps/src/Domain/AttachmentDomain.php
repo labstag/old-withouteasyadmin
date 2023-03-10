@@ -19,8 +19,7 @@ class AttachmentDomain extends DomainLib
         protected AttachmentRepository $attachmentRepository,
         protected AttachmentSearch $attachmentSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

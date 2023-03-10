@@ -26,8 +26,7 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
         protected ParameterBagInterface $parameterBag,
         protected HistoryService $historyService,
         protected HistoryRepository $historyRepository
-    )
-    {
+    ) {
         parent::__construct($repositoryService, $entityManager);
     }
 

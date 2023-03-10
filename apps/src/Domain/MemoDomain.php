@@ -21,8 +21,7 @@ class MemoDomain extends DomainLib
         protected MemoRepository $memoRepository,
         protected MemoSearch $memoSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

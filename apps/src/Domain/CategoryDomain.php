@@ -21,8 +21,7 @@ class CategoryDomain extends DomainLib
         protected CategoryRepository $categoryRepository,
         protected CategorySearch $categorySearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

@@ -24,8 +24,7 @@ class BreadcrumbBlock extends BlockLib
         protected RequestStack $requestStack,
         protected RouterInterface $router,
         protected PageRepository $pageRepository
-    )
-    {
+    ) {
         parent::__construct($translator, $twigEnvironment);
     }
 

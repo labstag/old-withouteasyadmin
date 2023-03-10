@@ -19,7 +19,6 @@ use Wohali\OAuth2\Client\Provider\Discord;
 
 class OauthService
 {
-
     protected array $configProvider;
 
     protected array $oauthActivated;
@@ -27,8 +26,7 @@ class OauthService
     public function __construct(
         protected RouterInterface $router,
         protected DataService $dataService
-    )
-    {
+    ) {
         $this->oauthActivated = $this->dataService->getOauthActivated();
         $this->setConfigProvider();
     }
@@ -129,8 +127,7 @@ class OauthService
         string $clientName,
         string $url,
         array $oauth
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         $params = [
             'clientId'     => $oauth['id'],
             'clientSecret' => $oauth['secret'],
@@ -172,8 +169,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         return ('bitbucket' == $clientName) ? new Bitbucket($params) : $provider;
     }
 
@@ -181,8 +177,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         return ('discord' == $clientName) ? new Discord($params) : $provider;
     }
 
@@ -190,8 +185,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         return ('dropbox' == $clientName) ? new Dropbox($params) : $provider;
     }
 
@@ -199,8 +193,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         return ('github' == $clientName) ? new Github($params) : $provider;
     }
 
@@ -208,8 +201,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         return ('gitlab' == $clientName) ? new Gitlab($params) : $provider;
     }
 
@@ -217,8 +209,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         return ('google' == $clientName) ? new Google($params) : $provider;
     }
 
@@ -226,8 +217,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         return ('linkedin' == $clientName) ? new LinkedIn($params) : $provider;
     }
 
@@ -235,8 +225,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         $params = array_merge(
             $params,
             [
@@ -255,8 +244,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         return ('slack' == $clientName) ? new Slack($params) : $provider;
     }
 
@@ -264,8 +252,7 @@ class OauthService
         string $clientName,
         array $params,
         ?AbstractProvider $provider
-    ): ?AbstractProvider
-    {
+    ): ?AbstractProvider {
         return ('twitch' == $clientName) ? new TwitchHelix($params) : $provider;
     }
 

@@ -18,8 +18,7 @@ class ParagraphBlock extends BlockLib
         TranslatorInterface $translator,
         Environment $twigEnvironment,
         protected ParagraphService $paragraphService
-    )
-    {
+    ) {
         parent::__construct($translator, $twigEnvironment);
     }
 

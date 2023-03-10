@@ -21,8 +21,7 @@ class AddressUserDomain extends DomainLib
         protected AddressUserRepository $addressUserRepository,
         protected AddressUserSearch $addressUserSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

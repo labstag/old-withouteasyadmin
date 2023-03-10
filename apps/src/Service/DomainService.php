@@ -9,8 +9,7 @@ class DomainService
 {
     public function __construct(
         protected RewindableGenerator $rewindableGenerator
-    )
-    {
+    ) {
     }
 
     public function getDomain(string $entity): ?DomainLib

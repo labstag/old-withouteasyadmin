@@ -21,8 +21,7 @@ class HistoryDomain extends DomainLib
         protected HistoryRepository $historyRepository,
         protected HistorySearch $historySearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

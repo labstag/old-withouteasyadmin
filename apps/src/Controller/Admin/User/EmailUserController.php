@@ -17,8 +17,7 @@ class EmailUserController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_emailuser_new', methods: ['GET', 'POST'])]
     public function edit(
         ?EmailUser $emailUser
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($emailUser) ? new EmailUser() : $emailUser

@@ -11,14 +11,12 @@ use Psr\Log\LoggerInterface;
 
 class PhoneService
 {
-
     protected PhoneNumberUtil $phoneUtil;
 
     public function __construct(
         protected ErrorService $errorService,
         protected LoggerInterface $logger
-    )
-    {
+    ) {
         $this->phoneUtil = PhoneNumberUtil::getInstance();
     }
 

@@ -52,8 +52,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected TokenStorageInterface $tokenStorage,
         protected LoggerInterface $logger,
         protected UserRepository $userRepository
-    )
-    {
+    ) {
         $this->oauthCode = $this->setOauthCode();
     }
 
@@ -104,8 +103,7 @@ class OauthAuthenticator extends AbstractAuthenticator
     public function onAuthenticationFailure(
         Request $request,
         AuthenticationException $authenticationException
-    ): ?Response
-    {
+    ): ?Response {
         if ($request->hasSession()) {
             $request->getSession()->set(SecurityRequestAttributes::AUTHENTICATION_ERROR, $authenticationException);
         }
@@ -119,8 +117,7 @@ class OauthAuthenticator extends AbstractAuthenticator
         Request $request,
         TokenInterface $token,
         string $firewallName
-    ): ?Response
-    {
+    ): ?Response {
         unset($token);
         $targetPath = $this->getTargetPath($request->getSession(), $firewallName);
         if ($targetPath) {

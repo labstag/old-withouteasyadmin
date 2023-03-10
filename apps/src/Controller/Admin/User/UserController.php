@@ -18,8 +18,7 @@ class UserController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
     public function edit(
         ?User $user
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($user) ? new User() : $user,
@@ -31,8 +30,7 @@ class UserController extends AdminControllerLib
     public function guard(
         User $user,
         WorkflowRepository $workflowRepository
-    ): Response
-    {
+    ): Response {
         $this->adminBtnService->addBtnList(
             'admin_user_index',
             'Liste',

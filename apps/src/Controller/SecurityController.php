@@ -166,8 +166,7 @@ class SecurityController extends ControllerLib
     public function login(
         AuthenticationUtils $authenticationUtils,
         OauthConnectUserRepository $oauthConnectUserRepository
-    ): Response
-    {
+    ): Response {
         // get the login error if there is one
         $authenticationException = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -267,8 +266,7 @@ class SecurityController extends ControllerLib
         ErrorService $errorService,
         OauthService $oauthService,
         UserService $userService
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         /** @var AbstractProvider $provider */
         $provider    = $oauthService->setProvider($oauthCode);
         $query       = $request->query->all();
@@ -345,8 +343,7 @@ class SecurityController extends ControllerLib
         string $oauthCode,
         Security $security,
         OauthConnectUserRepository $oauthConnectUserRepository
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $this->denyAccessUnlessGranted('ROLE_USER');
         /** @var User $user */
         $user = $security->getUser();

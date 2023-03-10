@@ -8,7 +8,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class EditoSearch extends SearchLib
 {
-
     public ?string $etape = null;
 
     public ?DateTime $published = null;

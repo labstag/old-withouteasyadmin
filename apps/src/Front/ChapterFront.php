@@ -11,8 +11,7 @@ class ChapterFront extends HistoryFront
     public function setBreadcrumb(
         ?FrontInterface $front,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if (!$front instanceof Chapter) {
             return $breadcrumb;
         }
@@ -36,8 +35,7 @@ class ChapterFront extends HistoryFront
     public function setMeta(
         ?FrontInterface $front,
         array $meta
-    ): array
-    {
+    ): array {
         if (!$front instanceof Chapter) {
             return $meta;
         }

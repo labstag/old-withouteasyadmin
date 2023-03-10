@@ -8,7 +8,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 trait StateableEntity
 {
-
     #[ORM\Column(type: 'array')]
     private mixed $state = null;
 

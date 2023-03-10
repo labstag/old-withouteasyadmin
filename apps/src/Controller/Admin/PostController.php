@@ -22,8 +22,7 @@ class PostController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'admin_post_edit', methods: ['GET', 'POST'])]
     public function edit(
         ?Post $post
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($post) ? new Post() : $post,
@@ -47,8 +46,7 @@ class PostController extends AdminControllerLib
         PostRepository $postRepository,
         PostRequestHandler $postRequestHandler,
         Security $security
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $user = $security->getUser();
         if (is_null($user)) {
             return $this->redirectToRoute('admin_post_index');

@@ -33,8 +33,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
     protected function addMenu(
         Generator $generator,
         array $dataMenu
-    ): void
-    {
+    ): void {
         $menu = new Menu();
         $old  = clone $menu;
         if (array_key_exists('clef', $dataMenu)) {
@@ -57,8 +56,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
         int $position,
         Menu $parent,
         array $child
-    ): void
-    {
+    ): void {
         $menu = new Menu();
         $old  = clone $menu;
         $menu->setPosition($position + 1);

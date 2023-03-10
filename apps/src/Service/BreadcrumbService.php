@@ -4,7 +4,6 @@ namespace Labstag\Service;
 
 class BreadcrumbService
 {
-
     protected array $data = [];
 
     public function add(string $title, string $route): void

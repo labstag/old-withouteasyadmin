@@ -38,8 +38,7 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
     protected function addEmail(
         Generator $generator,
         User $user
-    ): void
-    {
+    ): void {
         $emailUser = new EmailUser();
         $old       = clone $emailUser;
         $emailUser->setRefuser($user);

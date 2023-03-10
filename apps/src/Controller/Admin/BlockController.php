@@ -26,8 +26,7 @@ class BlockController extends AdminControllerLib
     public function edit(
         BlockService $blockService,
         Block $block
-    ): Response
-    {
+    ): Response {
         $field = $blockService->getEntityField($block);
 
         return $this->form(
@@ -96,8 +95,7 @@ class BlockController extends AdminControllerLib
     public function move(
         BlockRepository $blockRepository,
         Request $request
-    ): Response
-    {
+    ): Response {
         $currentUrl = $this->generateUrl('admin_block_move');
         if ('POST' == $request->getMethod()) {
             $this->setPositionEntity($request, Block::class);
@@ -130,8 +128,7 @@ class BlockController extends AdminControllerLib
         ?Block $block,
         BlockRepository $blockRepository,
         BlockRequestHandler $blockRequestHandler
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $post  = $request->request->all('new_block');
         $block = new Block();
         $old   = clone $block;

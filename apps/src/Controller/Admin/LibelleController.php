@@ -17,8 +17,7 @@ class LibelleController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_libelle_new', methods: ['GET', 'POST'])]
     public function edit(
         ?Libelle $libelle
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($libelle) ? new Libelle() : $libelle

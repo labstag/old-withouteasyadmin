@@ -11,7 +11,6 @@ use Symfony\Contracts\Cache\ItemInterface;
 
 class DataService
 {
-
     protected array $config = [];
 
     protected array $oauthActivated = [];
@@ -20,8 +19,7 @@ class DataService
         protected EntityManagerInterface $entityManager,
         protected CacheInterface $cache,
         protected ConfigurationRepository $configurationRepository
-    )
-    {
+    ) {
         $this->setData();
     }
 

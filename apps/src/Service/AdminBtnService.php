@@ -10,7 +10,6 @@ use Twig\Environment;
 
 class AdminBtnService
 {
-
     protected array $bouton = [];
 
     public function __construct(
@@ -19,16 +18,14 @@ class AdminBtnService
         protected TokenStorageInterface $tokenStorage,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected GuardService $guardService
-    )
-    {
+    ) {
     }
 
     public function add(
         string $icon,
         string $text,
         array $attr = []
-    ): self
-    {
+    ): self {
         if (!isset($attr['href'])) {
             $attr['href'] = '#';
         }
@@ -52,8 +49,7 @@ class AdminBtnService
         array $route,
         string $text = 'Supprimer',
         array $routeParam = []
-    ): self
-    {
+    ): self {
         if (!isset($route['list']) || !isset($route['delete'])) {
             return $this;
         }
@@ -99,8 +95,7 @@ class AdminBtnService
         array $route,
         string $text = 'Destroy',
         array $routeParam = []
-    ): void
-    {
+    ): void {
         $this->addBtnDestroyRestore('destroy', $entity, $route, $routeParam, $text);
     }
 
@@ -108,8 +103,7 @@ class AdminBtnService
         string $route,
         string $text = 'Editer',
         array $routeParam = []
-    ): self
-    {
+    ): self {
         if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
@@ -168,8 +162,7 @@ class AdminBtnService
         string $route,
         string $text = 'Editer',
         array $routeParam = []
-    ): self
-    {
+    ): self {
         if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
@@ -241,8 +234,7 @@ class AdminBtnService
         array $route,
         string $text = 'Restore',
         array $routeParam = []
-    ): void
-    {
+    ): void {
         $this->addBtnDestroyRestore('restore', $entity, $route, $routeParam, $text);
     }
 
@@ -264,8 +256,7 @@ class AdminBtnService
         string $route,
         string $text = 'Show',
         array $routeParam = []
-    ): self
-    {
+    ): self {
         if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
@@ -302,8 +293,7 @@ class AdminBtnService
         array $routes,
         string $code,
         string $title = 'Restaurer'
-    ): void
-    {
+    ): void {
         $this->addBtnVider('restories', $routes, $code, $title);
     }
 
@@ -311,8 +301,7 @@ class AdminBtnService
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    ): void
-    {
+    ): void {
         $this->addBtnVider('deleties', $routes, $code, $title);
     }
 
@@ -320,8 +309,7 @@ class AdminBtnService
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    ): void
-    {
+    ): void {
         $this->addBtnVider('empties', $routes, $code, $title);
     }
 
@@ -338,8 +326,7 @@ class AdminBtnService
         array $routes,
         string $code,
         string $title = 'Restaurer',
-    ): void
-    {
+    ): void {
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
             return;
@@ -404,8 +391,7 @@ class AdminBtnService
         array $route,
         array $routeParam,
         string $text
-    ): void
-    {
+    ): void {
         if (!isset($route['list']) || !isset($route[$word])) {
             return;
         }

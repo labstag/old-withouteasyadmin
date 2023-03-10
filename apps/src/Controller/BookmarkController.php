@@ -24,8 +24,7 @@ class BookmarkController extends FrontControllerLib
         string $slug,
         BookmarkRepository $bookmarkRepository,
         PageRepository $pageRepository
-    ): Response|RedirectResponse
-    {
+    ): Response|RedirectResponse {
         $bookmark = $bookmarkRepository->findOneBy(
             ['slug' => $slug]
         );
@@ -49,8 +48,7 @@ class BookmarkController extends FrontControllerLib
     public function category(
         string $slug,
         RenderRepository $renderRepository
-    ): Response
-    {
+    ): Response {
         unset($slug);
         $render = $renderRepository->findOneBy(
             ['url' => 'front_bookmark_category']
@@ -70,8 +68,7 @@ class BookmarkController extends FrontControllerLib
     public function libelle(
         string $slug,
         RenderRepository $renderRepository
-    ): Response
-    {
+    ): Response {
         unset($slug);
         $render = $renderRepository->findOneBy(
             ['url' => 'front_bookmark_libelle']

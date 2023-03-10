@@ -21,8 +21,7 @@ class PhoneUserDomain extends DomainLib
         protected PhoneUserRepository $phoneUserRepository,
         protected PhoneUserSearch $phoneUserSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

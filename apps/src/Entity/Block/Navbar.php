@@ -17,7 +17,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/block')]
 class Navbar implements Stringable, BlockInterface, EntityInterface
 {
-
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'menu', cascade: ['persist'])]
     private ?Block $block = null;
 

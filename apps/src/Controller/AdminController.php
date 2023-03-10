@@ -61,8 +61,7 @@ class AdminController extends AdminControllerLib
     #[Route(path: '/', name: 'admin')]
     public function index(
         MemoRepository $memoRepository
-    ): Response
-    {
+    ): Response {
         $memos = $memoRepository->findPublier();
 
         return $this->render(
@@ -89,8 +88,7 @@ class AdminController extends AdminControllerLib
         DataService $dataService,
         CacheInterface $cache,
         AttachmentRepository $attachmentRepository
-    ): Response
-    {
+    ): Response {
         $this->modalAttachmentDelete();
         $images = [
             'image'   => $attachmentRepository->getImageDefault(),
@@ -165,8 +163,7 @@ class AdminController extends AdminControllerLib
         CsrfTokenManagerInterface $csrfTokenManager,
         Environment $twigEnvironment,
         TrashService $trashService
-    ): Response
-    {
+    ): Response {
         $all = $trashService->all();
         dump($all);
         if (0 == (is_countable($all) ? count($all) : 0)) {

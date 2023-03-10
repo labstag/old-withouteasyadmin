@@ -21,8 +21,7 @@ class LayoutDomain extends DomainLib
         protected LayoutRepository $layoutRepository,
         protected LayoutSearch $layoutSearch,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         parent::__construct($translator);
     }
 

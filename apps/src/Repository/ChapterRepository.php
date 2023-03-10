@@ -18,8 +18,7 @@ class ChapterRepository extends ServiceEntityRepositoryLib
     public function findChapterByHistory(
         string $history,
         string $chapter
-    ): mixed
-    {
+    ): mixed {
         $queryBuilder = $this->createQueryBuilder('c');
         $queryBuilder->leftJoin('c.history', 'h');
         $queryBuilder->where('h.slug = :slughistory');

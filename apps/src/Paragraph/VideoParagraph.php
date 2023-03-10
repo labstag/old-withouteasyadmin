@@ -182,8 +182,7 @@ class VideoParagraph extends ParagraphLib
         Video $video,
         ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
         string $slug
-    ): void
-    {
+    ): void {
         /** @var finfo $finfo */
         $finfo         = finfo_open(FILEINFO_MIME_TYPE);
         $fileDirectory = $this->getParameter('file_directory');

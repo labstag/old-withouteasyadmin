@@ -36,8 +36,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     protected function ignoreSoftDeleteAnnotation(
         mixed $controller,
         string $method
-    ): void
-    {
+    ): void {
         /** @var Request $request */
         $request      = $this->requestStack->getCurrentRequest();
         $routeCurrent = $request->attributes->get('_route');
@@ -75,8 +74,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     protected function readAnnotation(
         mixed $controller,
         string $method
-    ): bool
-    {
+    ): bool {
         $status           = false;
         $reflectionClass  = new ReflectionClass($controller::class);
         $reflectionMethod = $reflectionClass->getMethod($method);

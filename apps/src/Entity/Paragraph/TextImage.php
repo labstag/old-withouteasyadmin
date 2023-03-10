@@ -21,7 +21,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/paragraph')]
 class TextImage implements ParagraphInterface, EntityInterface, Stringable
 {
-
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphTextImages', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
     private ?Attachment $attachment = null;

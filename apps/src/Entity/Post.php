@@ -311,8 +311,7 @@ class Post implements Stringable, FrontInterface, EntityTrashInterface
     private function removeElementPost(
         Collection $element,
         mixed $variable
-    ): void
-    {
+    ): void {
         if ($element->removeElement($variable) && $variable->getPost() === $this) {
             $variable->setPost(null);
         }

@@ -21,8 +21,7 @@ class GeocodeService
         protected EntityManagerInterface $entityManager,
         protected GeoCodeRequestHandler $geoCodeRequestHandler,
         protected GeoCodeRepository $geoCodeRepository
-    )
-    {
+    ) {
     }
 
     public function add(array $row): void

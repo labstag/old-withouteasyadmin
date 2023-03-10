@@ -21,8 +21,7 @@ class GroupFixtures extends DataFixtureLib implements DependentFixtureInterface
     protected function addGroupe(
         int $key,
         string $row
-    ): void
-    {
+    ): void {
         $groupe = new Groupe();
         $old    = clone $groupe;
         $groupe->setCode($row);

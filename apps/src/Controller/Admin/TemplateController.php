@@ -17,8 +17,7 @@ class TemplateController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_template_new', methods: ['GET', 'POST'])]
     public function edit(
         ?Template $template
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($template) ? new Template() : $template

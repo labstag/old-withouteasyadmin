@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource]
 class Meta implements Stringable, EntityInterface
 {
-
     #[ORM\ManyToOne(targetEntity: Chapter::class, inversedBy: 'metas', cascade: ['persist'])]
     private ?Chapter $chapter = null;
 

@@ -10,8 +10,7 @@ class ErrorService
     public function __construct(
         protected LoggerInterface $logger,
         protected SessionService $sessionService
-    )
-    {
+    ) {
     }
 
     public function set(Exception $exception): void

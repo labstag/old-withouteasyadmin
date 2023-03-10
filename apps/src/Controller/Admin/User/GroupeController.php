@@ -18,8 +18,7 @@ class GroupeController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_groupuser_new', methods: ['GET', 'POST'])]
     public function edit(
         ?Groupe $groupe
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($groupe) ? new Groupe() : $groupe
@@ -30,8 +29,7 @@ class GroupeController extends AdminControllerLib
     public function guard(
         Groupe $groupe,
         WorkflowRepository $workflowRepository
-    ): Response
-    {
+    ): Response {
         $this->adminBtnService->addBtnList(
             'admin_groupuser_index',
             'Liste',

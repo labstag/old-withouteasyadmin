@@ -17,8 +17,7 @@ class AddressUserController extends AdminControllerLib
     #[Route(path: '/new', name: 'admin_addressuser_new', methods: ['GET', 'POST'])]
     public function edit(
         ?AddressUser $addressUser
-    ): Response
-    {
+    ): Response {
         return $this->form(
             $this->getDomainEntity(),
             is_null($addressUser) ? new AddressUser() : $addressUser
