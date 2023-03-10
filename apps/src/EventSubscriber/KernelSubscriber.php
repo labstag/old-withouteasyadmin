@@ -3,6 +3,7 @@
 namespace Labstag\EventSubscriber;
 
 use Labstag\Lib\EventSubscriberLib;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use tidy;
 
 class KernelSubscriber extends EventSubscriberLib
@@ -113,10 +114,10 @@ class KernelSubscriber extends EventSubscriberLib
         return ['kernel.response' => 'onKernelResponse'];
     }
 
-    public function onKernelResponse($event): void
+    public function onKernelResponse(ResponseEvent $responseEvent): void
     {
-        $response = $event->getResponse();
-        $request = $event->getRequest();
+        $response   = $responseEvent->getResponse();
+        $request    = $responseEvent->getRequest();
         $controller = $request->attributes->get('_controller');
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
         preg_match(self::API_CONTROLLER, (string) $controller, $apis);
@@ -130,7 +131,7 @@ class KernelSubscriber extends EventSubscriberLib
         }
 
         $content = $response->getContent();
-        $content = preg_replace('#<script>#i', '<script type="text/javascript">', $content);
+        $content = preg_replace('#<script>#i', '<script type="text/javascript">', (string) $content);
 
         $config = [
             'indent'                      => true,
@@ -142,10 +143,10 @@ class KernelSubscriber extends EventSubscriberLib
             'wrap'                        => 200,
         ];
         $tidy = new tidy();
-        $tidy->parseString($content, $config, 'utf8');
+        $tidy->parseString((string) $content, $config, 'utf8');
         $tidy->cleanRepair();
 
-        $response->setContent($tidy);
-        $event->setResponse($response);
+        $response->setContent($tidy->html()->value);
+        $responseEvent->setResponse($response);
     }
 }

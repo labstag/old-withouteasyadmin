@@ -14,15 +14,15 @@ class RouteUserRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, RouteUser::class);
     }
 
-    public function findRoute(User $user, string $route)
+    public function findRoute(User $user, string $route): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $queryBuilder->leftJoin(
-            'a.refuser',
+            'a.user',
             'u'
         );
         $queryBuilder->leftJoin(
-            'a.refroute',
+            'a.route',
             'r'
         );
         $queryBuilder->where(

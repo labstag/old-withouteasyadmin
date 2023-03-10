@@ -9,6 +9,7 @@ use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class AttachFormService
 {
@@ -22,12 +23,12 @@ class AttachFormService
     {
     }
 
-    public function upload($entity): void
+    public function upload(mixed $entity): void
     {
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         foreach ($annotations as $property => $annotation) {
             $accessor = PropertyAccess::createPropertyAccessor();
-            $file = $accessor->getValue($entity, $property);
+            $file     = $accessor->getValue($entity, $property);
             if (!$file instanceof UploadedFile) {
                 continue;
             }
@@ -40,39 +41,23 @@ class AttachFormService
             $old = clone $attachment;
 
             $filename = $file->getClientOriginalName();
-            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $path     = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }
 
-            $this->moveFile($file, $path, $filename, $attachment, $old);
+            $this->fileService->moveFile($file, $path, $filename, $attachment, $old);
             $accessor->setValue($entity, $annotation->getFilename(), $attachment);
         }
     }
 
-    protected function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
-    }
-
-    protected function moveFile($file, $path, $filename, $attachment, $old)
-    {
-        $file->move(
-            $path,
-            $filename
-        );
-        $file = $path.'/'.$filename;
-
-        $this->fileService->setAttachment($file, $attachment, $old);
-    }
-
     protected function setAttachment(
-        $accessor,
-        $entity,
-        $annotation
+        PropertyAccessor $propertyAccessor,
+        mixed $entity,
+        mixed $annotation
     ): Attachment
     {
-        $attachmentField = $accessor->getValue($entity, $annotation->getFilename());
+        $attachmentField = $propertyAccessor->getValue($entity, $annotation->getFilename());
         if (is_null($attachmentField)) {
             return new Attachment();
         }

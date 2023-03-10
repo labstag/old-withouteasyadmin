@@ -2,84 +2,61 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\CategoryRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-class Category implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ApiResource]
+class Category implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $bookmarks;
+    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $bookmarks;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $children;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?Category $category = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $children;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="children", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(
-     *     name="parent_id",
-     *     referencedColumnName="id",
-     *     onDelete="SET NULL"
-     * )
-     */
-    private $parent;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refcategory", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $posts;
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'category', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $posts;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"name"})
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
+    #[Gedmo\Slug(updatable: false, fields: ['name'])]
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $slug = null;
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
-        $this->posts = new ArrayCollection();
+        $this->children  = new ArrayCollection();
+        $this->posts     = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         $category = $this->getParent();
-        $text = is_null($category) ? '' : $category.' - ';
+        $text     = is_null($category) ? '' : $category.' - ';
 
         return $text.$this->getName();
     }
@@ -136,7 +113,7 @@ class Category implements Stringable
 
     public function getParent(): ?self
     {
-        return $this->parent;
+        return $this->category;
     }
 
     public function getPosts(): Collection
@@ -182,7 +159,7 @@ class Category implements Stringable
 
     public function setParent(?self $parent): self
     {
-        $this->parent = $parent;
+        $this->category = $parent;
 
         return $this;
     }
@@ -194,7 +171,10 @@ class Category implements Stringable
         return $this;
     }
 
-    private function removeElementCategory($element, $variable)
+    private function removeElementCategory(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getRefcategory() === $this) {
             $variable->setRefcategory(null);

@@ -2,6 +2,7 @@
 
 namespace Labstag\FormType;
 
+use Labstag\Entity\EmailUser;
 use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -26,13 +27,15 @@ class EmailVerifChoiceType extends AbstractType
         array $options
     ): void
     {
-        $entity = $form->getParent()->getData();
-        $data = $this->emailUserRepository->getEmailsUserVerif($entity, true);
+        /** @var FormInterface $parent */
+        $parent  = $form->getParent();
+        $entity  = $parent->getData();
+        $data    = $this->emailUserRepository->getEmailsUserVerif($entity, true);
         $choices = [];
         foreach ($data as $email) {
-            // @var EmailUser $email
-            $address = $email->getAddress();
-            $choices[$address] = new ChoiceView('', $address, $address);
+            /** @var EmailUser $email */
+            $address           = $email->getAddress();
+            $choices[$address] = new ChoiceView('', (string) $address, (string) $address);
         }
 
         ksort($choices);
@@ -41,7 +44,7 @@ class EmailVerifChoiceType extends AbstractType
             $formView->vars['required'] = false;
         }
 
-        $formView->vars['value'] = $entity->getEmail();
+        $formView->vars['value']   = $entity->getEmail();
         $formView->vars['choices'] = $choices;
         unset($options, $form);
     }

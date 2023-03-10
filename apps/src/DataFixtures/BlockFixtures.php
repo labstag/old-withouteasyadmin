@@ -5,6 +5,8 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Block;
+use Labstag\Entity\Block\Navbar;
+use Labstag\Entity\Menu;
 use Labstag\Lib\FixtureLib;
 
 class BlockFixtures extends FixtureLib implements DependentFixtureInterface
@@ -35,21 +37,23 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         array $blockData
     ): void
     {
-        $type = $blockData['type'];
+        $type  = $blockData['type'];
         $block = new Block();
-        $old = clone $block;
+        $old   = clone $block;
         $block->setTitle($region.' - '.$type.'('.($position + 1).')');
         $block->setRegion($region);
         $block->setType($type);
         $block->setPosition($position + 1);
         if (array_key_exists('code-menu', $blockData)) {
-            $menu = $this->getReference('menu_'.$blockData['code-menu']);
+            /** @var Menu $menu */
+            $menu        = $this->getReference('menu_'.$blockData['code-menu']);
             $classentity = $this->blockService->getTypeEntity($block);
-            $entity = $this->blockService->getEntity($block);
+            $entity      = $this->blockService->getEntity($block);
             if (!is_null($entity) || is_null($classentity)) {
                 return;
             }
 
+            /** @var Navbar $entity */
             $entity = new $classentity();
             $entity->setBlock($block);
             $entity->setMenu($menu);
@@ -61,7 +65,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         $this->addReference('block_'.$region.'-'.$type, $block);
     }
 
-    protected function addBlocks($region, $blocks)
+    protected function addBlocks(string $region, array $blocks): void
     {
         foreach ($blocks as $position => $block) {
             $this->addBlock($region, $position, $block);

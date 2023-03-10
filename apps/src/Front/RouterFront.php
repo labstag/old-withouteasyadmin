@@ -2,18 +2,26 @@
 
 namespace Labstag\Front;
 
+use Labstag\Interfaces\FrontInterface;
+
 class RouterFront extends PageFront
 {
-    public function setBreadcrumb($content, $breadcrumb)
+    public function setBreadcrumb(
+        ?FrontInterface $front,
+        array $breadcrumb
+    ): array
     {
-        unset($content);
+        unset($front);
 
         return $breadcrumb;
     }
 
-    public function setMeta($content, $meta)
+    public function setMeta(
+        ?FrontInterface $front,
+        array $meta
+    ): array
     {
-        unset($content);
+        unset($front);
 
         return $meta;
     }

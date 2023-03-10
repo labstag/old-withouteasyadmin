@@ -20,7 +20,7 @@ class DisclaimerSubscriber extends EventSubscriberLib
     public function onKernelRequest(RequestEvent $requestEvent): void
     {
         $request = $requestEvent->getRequest();
-        $state = $this->disclaimerActivate($request);
+        $state   = $this->disclaimerActivate($request);
         if (!$state) {
             return;
         }
@@ -34,10 +34,10 @@ class DisclaimerSubscriber extends EventSubscriberLib
 
     protected function disclaimerActivate(Request $request): bool
     {
-        $config = $this->dataService->getConfig();
+        $config     = $this->dataService->getConfig();
         $controller = $request->attributes->get('_controller');
-        $key = 'disclaimer';
-        $session = $request->getSession();
+        $key        = 'disclaimer';
+        $session    = $request->getSession();
         if (!isset($config[$key]) || !isset($config[$key])) {
             return false;
         }
@@ -59,7 +59,7 @@ class DisclaimerSubscriber extends EventSubscriberLib
         }
 
         $disclaimer = $config[$key];
-        $activate = (bool) $disclaimer['activate'];
+        $activate   = (bool) $disclaimer['activate'];
         if (false === $activate) {
             return false;
         }

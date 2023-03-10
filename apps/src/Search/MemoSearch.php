@@ -3,17 +3,18 @@
 namespace Labstag\Search;
 
 use Labstag\Lib\SearchLib;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class MemoSearch extends SearchLib
 {
 
-    public $dateEnd;
+    public ?string $dateEnd = null;
 
-    public $dateStart;
+    public ?string $dateStart = null;
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $refuser;
+    public ?string $title = null;
 
-    public $title;
+    public ?UserInterface $user = null;
 }

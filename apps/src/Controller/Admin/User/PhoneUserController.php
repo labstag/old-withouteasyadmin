@@ -2,9 +2,11 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\PhoneUser;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,9 +25,7 @@ class PhoneUserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_phoneuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_phoneuser_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -36,9 +36,7 @@ class PhoneUserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_phoneuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_phoneuser_preview', methods: ['GET'])]
     public function showOrPreview(PhoneUser $phoneUser): Response
@@ -50,8 +48,13 @@ class PhoneUserController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(PhoneUser::class);
+        $domainLib = $this->domainService->getDomain(PhoneUser::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

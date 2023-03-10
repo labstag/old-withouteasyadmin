@@ -3,16 +3,16 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
 use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\RepositoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -21,47 +21,40 @@ use Twig\Environment;
 abstract class ParagraphLib extends AbstractController
 {
 
-    protected ?Request $request;
-
     protected array $template = [];
 
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected FileService $fileService,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected ErrorService $errorService,
         protected PaginatorInterface $paginator,
         protected TranslatorInterface $translator,
         protected MailerInterface $mailer,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected ParagraphService $paragraphService,
         protected RequestStack $requestStack,
         protected FormService $formService,
         protected EntityManagerInterface $entityManager
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
     }
 
-    public function getCode($block): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($block);
+        unset($entityParagraphLib);
 
         return '';
     }
 
-    public function setData(Paragraph $paragraph)
+    public function setData(Paragraph $paragraph): void
     {
         unset($paragraph);
     }
 
-    public function template($entity)
+    public function template(mixed $entity): array
     {
         return $this->showTemplateFile($this->getCode($entity));
-    }
-
-    protected function getRepository(string $entity): EntityRepository
-    {
-        return $this->entityManager->getRepository($entity);
     }
 
     protected function getTemplateData(string $type): array
@@ -70,9 +63,9 @@ abstract class ParagraphLib extends AbstractController
             return $this->template[$type];
         }
 
-        $folder = __DIR__.'/../../templates/';
+        $folder   = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
-        $files = [
+        $files    = [
             'paragraph/'.$type.$htmltwig,
             'paragraph/default'.$htmltwig,
         ];
@@ -106,8 +99,8 @@ abstract class ParagraphLib extends AbstractController
 
     protected function showTemplateFile(string $type): array
     {
-        $data = $this->getTemplateData($type);
-        $globals = $this->environment->getGlobals();
+        $data    = $this->getTemplateData($type);
+        $globals = $this->twigEnvironment->getGlobals();
         if ('dev' == $globals['app']->getDebug()) {
             return $data;
         }

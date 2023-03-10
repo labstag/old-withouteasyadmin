@@ -6,15 +6,16 @@ use Labstag\Entity\Edito as EntityEdito;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Edito;
 use Labstag\Form\Admin\Paragraph\EditoType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\EditoRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class EditoParagraph extends ParagraphLib
 {
-    public function getCode($edito): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($edito);
+        unset($entityParagraphLib);
 
         return 'edito';
     }
@@ -46,13 +47,13 @@ class EditoParagraph extends ParagraphLib
 
     public function show(Edito $edito): Response
     {
-        /** @var EditoRepository $entityRepository */
-        $entityRepository = $this->getRepository(EntityEdito::class);
+        /** @var EditoRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityEdito::class);
 
         return $this->render(
             $this->getTemplateFile($this->getCode($edito)),
             [
-                'edito'     => $entityRepository->findOnePublier(),
+                'edito'     => $serviceEntityRepositoryLib->findOnePublier(),
                 'paragraph' => $edito,
             ]
         );

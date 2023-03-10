@@ -7,15 +7,15 @@ use Labstag\Lib\SearchLib;
 class GeoCodeSearch extends SearchLib
 {
 
-    public $communityname;
+    public ?string $communityname = null;
 
-    public $countrycode;
+    public ?string $countrycode = null;
 
-    public $placename;
+    public ?string $placename = null;
 
-    public $postalcode;
+    public ?string $postalcode = null;
 
-    public $provincename;
+    public ?string $provincename = null;
 
-    public $statename;
+    public ?string $statename = null;
 }

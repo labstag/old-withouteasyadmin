@@ -22,7 +22,7 @@ class MenuService
 
     public function createMenu(Menu $menu): ItemInterface
     {
-        $clef = $menu->getClef();
+        $clef     = (string) $menu->getClef();
         $menuItem = $this->menuFactory->createItem('menulabstag');
         $menuItem->setChildrenAttribute('class', 'navbar-nav menu-'.$clef);
 
@@ -35,9 +35,9 @@ class MenuService
     public function createMenus(): array
     {
         $menus = [];
-        $all = $this->menuRepository->findAllCode();
+        $all   = $this->menuRepository->findAllCode();
         foreach ($all as $row) {
-            $key = $row->getClef();
+            $key         = $row->getClef();
             $menus[$key] = $this->createMenu($row);
         }
 
@@ -48,8 +48,8 @@ class MenuService
     {
         $data = $this->menuRepository->findOneBy(
             [
-                'clef'   => $clef,
-                'parent' => null,
+                'clef' => $clef,
+                'menu' => null,
             ]
         );
 
@@ -69,7 +69,7 @@ class MenuService
 
     protected function addMenu(MenuItem &$menuItem, Menu $menu): void
     {
-        $data = [];
+        $data      = [];
         $dataChild = $menu->getData();
         if ($menu->isSeparateur()) {
             $menuItem->addChild('')->setExtra('divider', true);
@@ -95,11 +95,12 @@ class MenuService
         $this->setDataChild($dataChild, $data);
 
         $item = $menuItem->addChild(
-            $menu->getName(),
+            (string) $menu->getName(),
             $data
         );
         $childrens = $menu->getChildren();
         foreach ($childrens as $children) {
+            /** @var Menu $children */
             $this->addMenu($item, $children);
         }
     }
@@ -124,7 +125,11 @@ class MenuService
         }
     }
 
-    protected function deleteParent($children, $key, $menu): void
+    protected function deleteParent(
+        array $children,
+        ItemInterface|string $key,
+        MenuItem $menuItem
+    ): void
     {
         $divider = 0;
         foreach ($children as $child) {
@@ -135,11 +140,14 @@ class MenuService
         }
 
         if ($divider == (is_countable($children) ? count($children) : 0)) {
-            $menu->removeChild($key);
+            $menuItem->removeChild($key);
         }
     }
 
-    private function setDataChild(&$dataChild, &$data): void
+    private function setDataChild(
+        ?array &$dataChild,
+        array &$data
+    ): void
     {
         if (isset($dataChild['url'])) {
             $data['uri'] = $dataChild['url'];

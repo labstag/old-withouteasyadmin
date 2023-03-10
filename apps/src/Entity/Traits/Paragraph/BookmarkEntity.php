@@ -3,6 +3,7 @@
 namespace Labstag\Entity\Traits\Paragraph;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph\Bookmark as ParagraphBookmark;
 use Labstag\Entity\Paragraph\Bookmark\Category as BookmarkCategory;
 use Labstag\Entity\Paragraph\Bookmark\Libelle as BookmarkLibelle;
@@ -11,25 +12,41 @@ use Labstag\Entity\Paragraph\Bookmark\Liste as BookmarkList;
 trait BookmarkEntity
 {
 
-    /**
-     * @ORM\OneToMany(targetEntity=BookmarkCategory::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $bookmarkCategories;
+    #[ORM\OneToMany(
+        targetEntity: BookmarkCategory::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $bookmarkCategories;
 
-    /**
-     * @ORM\OneToMany(targetEntity=BookmarkLibelle::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $bookmarkLibelles;
+    #[ORM\OneToMany(
+        targetEntity: BookmarkLibelle::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $bookmarkLibelles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=BookmarkList::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $bookmarkLists;
+    #[ORM\OneToMany(
+        targetEntity: BookmarkList::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $bookmarkLists;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ParagraphBookmark::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $bookmarks;
+    #[ORM\OneToMany(
+        targetEntity: ParagraphBookmark::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $bookmarks;
 
     public function addBookmark(ParagraphBookmark $paragraphBookmark): self
     {
@@ -95,9 +112,6 @@ trait BookmarkEntity
         return $this->bookmarkLists;
     }
 
-    /**
-     * @return Collection<int, Bookmark>
-     */
     public function getBookmarks(): Collection
     {
         return $this->bookmarks;
@@ -132,7 +146,10 @@ trait BookmarkEntity
         return $this;
     }
 
-    private function removeElementBookmark($element, $variable)
+    private function removeElementBookmark(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);

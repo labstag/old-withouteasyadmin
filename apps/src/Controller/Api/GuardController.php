@@ -3,6 +3,7 @@
 namespace Labstag\Controller\Api;
 
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Route as EntityRoute;
 use Labstag\Entity\RouteGroupe;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
@@ -15,6 +16,7 @@ use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\RouteGroupeRequestHandler;
 use Labstag\RequestHandler\RouteUserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
@@ -36,36 +38,36 @@ class GuardController extends ApiControllerLib
         return $this->getRefgroupe($routeGroupeRepository);
     }
 
-    /**
-     * @return Response
-     */
     #[Route(path: '/setgroup/{route}/{groupe}', name: 'api_guard_setgroup')]
     public function setgroup(
         string $route,
         string $groupe,
+        Request $request,
         RouteGroupeRequestHandler $routeGroupeRequestHandler,
         GroupeRepository $groupeRepository,
         RouteRepository $routeRepository,
         RouteGroupeRepository $routeGroupeRepository
     ): JsonResponse
     {
-        $post = $this->requeststack->getCurrentRequest()->request->all();
-        $data = ['ok' => false];
+        $post   = $request->request->all();
+        $data   = ['ok' => false];
         $groupe = $groupeRepository->findOneBy(['code' => $groupe]);
-        $route = $routeRepository->findOneBy(['name' => $route]);
-        if (empty($groupe) || empty($route) || !array_key_exists('_token', $post)) {
+        $route  = $routeRepository->findOneBy(['name' => $route]);
+        if (empty($groupe) || empty($route) || !array_key_exists('_token', $post) || !is_string($post['_token'])) {
             $data['error'] = 'Erreur de saisie';
 
             return new JsonResponse($data);
         }
 
+        /** @var Groupe $groupe */
         $groupeId = $groupe->getId();
-        $routeId = $route->getId();
+        /** @var EntityRoute $route */
+        $routeId   = $route->getId();
         $csrfToken = new CsrfToken(
             'guard-'.$groupeId.'-route-'.$routeId,
-            $post['_token']
+            (string) $post['_token']
         );
-        if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
+        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
             $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
@@ -84,43 +86,43 @@ class GuardController extends ApiControllerLib
         }
 
         $old = clone $routeGroupe;
-        $routeGroupe->setState($post['state']);
+        $routeGroupe->setState((bool) $post['state']);
         $routeGroupeRequestHandler->handle($old, $routeGroupe);
         $data['ok'] = true;
 
         return new JsonResponse($data);
     }
 
-    /**
-     * @return Response
-     */
     #[Route(path: '/setuser/{route}/{user}', name: 'api_guard_setuser', methods: ['POST'])]
     public function setuser(
         string $route,
         string $user,
+        Request $request,
         RouteUserRequestHandler $routeUserRequestHandler,
         UserRepository $userRepository,
         RouteRepository $routeRepository,
         RouteUserRepository $routeUserRepository
     ): JsonResponse
     {
-        $data = ['ok' => false];
-        $post = $this->requeststack->getCurrentRequest()->request->all();
-        $user = $userRepository->findOneBy(['username' => $user]);
+        $data  = ['ok' => false];
+        $post  = $request->request->all();
+        $user  = $userRepository->findOneBy(['username' => $user]);
         $route = $routeRepository->findOneBy(['name' => $route]);
-        if (empty($user) || empty($route) || !array_key_exists('_token', $post)) {
+        if (empty($user) || empty($route) || !array_key_exists('_token', $post) || !is_string($post['_token'])) {
             $data['error'] = 'Erreur de saisie';
 
             return new JsonResponse($data);
         }
 
+        /** @var User $user */
         $userId = $user->getId();
-        $routeId = $route->getId();
+        /** @var EntityRoute $route */
+        $routeId   = $route->getId();
         $csrfToken = new CsrfToken(
             'guard-'.$userId.'-route-'.$routeId,
-            $post['_token']
+            (string) $post['_token']
         );
-        if (!is_null($csrfToken) && $this->csrfTokenManager->isTokenValid($csrfToken)) {
+        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
             $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
@@ -139,16 +141,13 @@ class GuardController extends ApiControllerLib
         }
 
         $old = clone $routeUser;
-        $routeUser->setState($post['state']);
+        $routeUser->setState((bool) $post['state']);
         $routeUserRequestHandler->handle($old, $routeUser);
         $data['ok'] = true;
 
         return new JsonResponse($data);
     }
 
-    /**
-     * @return Response
-     */
     #[Route(path: '/users/{user}', name: 'api_guard_user')]
     public function user(
         User $user,
@@ -162,15 +161,17 @@ class GuardController extends ApiControllerLib
         ];
         $results = $routeGroupeRepository->findEnableByGroupe($user->getRefgroupe());
         foreach ($results as $row) {
-            // @var RouteGroupe $row
+            /** @var RouteGroupe $row */
+            /** @var EntityRoute $route */
+            $route            = $row->getRefroute();
             $data['groups'][] = [
-                'route' => $row->getRefroute()->getName(),
+                'route' => $route->getName(),
             ];
         }
 
         $results = $routeUserRepository->findEnableByUser($user);
         foreach ($results as $result) {
-            // @var RouteUser $row
+            /** @var RouteUser $row */
             $data['user'][] = [
                 'route' => $result->getRefroute()->getName(),
             ];
@@ -185,12 +186,16 @@ class GuardController extends ApiControllerLib
     ): JsonResponse
     {
         $results = $routeGroupeRepository->findEnableByGroupe($groupe);
-        $data = [];
+        $data    = [];
         foreach ($results as $result) {
-            // @var RouteGroupe $row
+            /** @var RouteGroupe $result */
+            /** @var Groupe $groupe */
+            $groupe = $result->getRefgroupe();
+            /** @var EntityRoute $route */
+            $route  = $result->getRefroute();
             $data[] = [
-                'groupe' => $result->getRefgroupe()->getCode(),
-                'route'  => $result->getRefroute()->getName(),
+                'groupe' => $groupe->getCode(),
+                'route'  => $route->getName(),
             ];
         }
 

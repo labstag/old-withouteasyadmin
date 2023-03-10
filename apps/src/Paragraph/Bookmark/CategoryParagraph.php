@@ -6,15 +6,17 @@ use Labstag\Entity\Bookmark;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Bookmark\Category;
 use Labstag\Form\Admin\Paragraph\Bookmark\CategoryType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\BookmarkRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryParagraph extends ParagraphLib
 {
-    public function getCode($category): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($category);
+        unset($entityParagraphLib);
 
         return 'bookmark/category';
     }
@@ -46,14 +48,16 @@ class CategoryParagraph extends ParagraphLib
 
     public function show(Category $category): Response
     {
-        $all = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug = $routeParam['slug'] ?? null;
-        /** @var BookmarkRepository $entityRepository */
-        $entityRepository = $this->getRepository(Bookmark::class);
-        $pagination = $this->paginator->paginate(
-            $entityRepository->findPublierCategory($slug),
-            $this->request->query->getInt('page', 1),
+        $slug       = $routeParam['slug'] ?? null;
+        /** @var BookmarkRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Bookmark::class);
+        $pagination                 = $this->paginator->paginate(
+            $serviceEntityRepositoryLib->findPublierCategory($slug),
+            $request->query->getInt('page', 1),
             10
         );
 

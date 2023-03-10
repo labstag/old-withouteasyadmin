@@ -5,8 +5,10 @@ namespace Labstag\Lib;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Labstag\Entity\AddressUser;
+use Labstag\Entity\Block;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Category;
 use Labstag\Entity\Edito;
@@ -27,7 +29,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add($entity): void
+    public function add(mixed $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
@@ -40,15 +42,15 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $this->setQuery($queryBuilder, $get);
     }
 
-    public function findEnableByGroupe(?Groupe $groupe = null)
+    public function findEnableByGroupe(?Groupe $groupe = null): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query = $queryBuilder->where(
+        $query        = $queryBuilder->where(
             'a.state=:state'
         );
         $parameters = ['state' => 1];
         if (!is_null($groupe)) {
-            $query->andWhere('a.refgroupe=:refgroupe');
+            $query->andWhere('a.groupe=:refgroupe');
             $parameters['refgroupe'] = $groupe;
         }
 
@@ -57,15 +59,15 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function findEnableByUser(?User $user = null)
+    public function findEnableByUser(?User $user = null): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
-        $query = $queryBuilder->where(
+        $query        = $queryBuilder->where(
             'a.state=:state'
         );
         $parameters = ['state' => 1];
         if (!is_null($user)) {
-            $query->andWhere('a.refuser=:refuser');
+            $query->andWhere('a.user=:refuser');
             $parameters['refuser'] = $user;
         }
 
@@ -80,10 +82,10 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     public function findOneRandom(): object
     {
         $classMetadataName = $this->getClassMetadataName();
-        $dql = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery($dql);
-        $query = $query->setMaxResults(1);
+        $dql               = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
+        $entityManager     = $this->getEntityManager();
+        $query             = $entityManager->createQuery($dql);
+        $query             = $query->setMaxResults(1);
 
         return $query->getOneOrNullResult();
     }
@@ -99,10 +101,14 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $this->setQuery($query, $get);
     }
 
-    public function getLimitOffsetResult($query, $limit, $offset)
+    public function getLimitOffsetResult(
+        Query $query,
+        ?int $limit = null,
+        ?int $offset = null
+    ): mixed
     {
-        $query->setMaxResults($limit ?: null);
-        $query->setFirstResult($offset ?: null);
+        $query->setMaxResults($limit);
+        $query->setFirstResult($offset);
 
         return $query->getResult();
     }
@@ -111,7 +117,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove($entity): void
+    public function remove(mixed $entity): void
     {
         $this->_em->remove($entity);
         $this->_em->flush();
@@ -120,7 +126,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
     protected function getClassMetadataName(): string
     {
         $methods = get_class_methods($this);
-        $name = '';
+        $name    = '';
         if (in_array('getClassMetadata', $methods)) {
             $name = $this->getClassMetadata()->getName();
         }
@@ -130,29 +136,40 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
 
     protected function setQuery(QueryBuilder $queryBuilder, array $get): QueryBuilder
     {
-        $this->setQueryCity($queryBuilder, $get);
-        $this->setQueryCommunityName($queryBuilder, $get);
-        $this->setQueryCountry($queryBuilder, $get);
-        $this->setQueryCountryCode($queryBuilder, $get);
-        $this->setQueryDateEnd($queryBuilder, $get);
-        $this->setQueryDateStart($queryBuilder, $get);
-        $this->setQueryEmail($queryBuilder, $get);
-        $this->setQueryEtape($queryBuilder, $get);
-        $this->setQueryName($queryBuilder, $get);
-        $this->setQueryPlaceName($queryBuilder, $get);
-        $this->setQueryPostalCode($queryBuilder, $get);
-        $this->setQueryProvinceName($queryBuilder, $get);
-        $this->setQueryPublished($queryBuilder, $get);
-        $this->setQueryRefCategory($queryBuilder, $get);
-        $this->setQueryRefGroup($queryBuilder, $get);
-        $this->setQueryRefUser($queryBuilder, $get);
-        $this->setQueryStateName($queryBuilder, $get);
-        $this->setQueryTitle($queryBuilder, $get);
+        $functions = [
+            'setQueryCity',
+            'setQueryCommunityName',
+            'setQueryCountry',
+            'setQueryCountryCode',
+            'setQueryDateEnd',
+            'setQueryDateStart',
+            'setQueryEmail',
+            'setQueryEtape',
+            'setQueryName',
+            'setQueryPlaceName',
+            'setQueryPostalCode',
+            'setQueryProvinceName',
+            'setQueryPublished',
+            'setQueryRefCategory',
+            'setQueryRefGroup',
+            'setQueryRefUser',
+            'setQueryStateName',
+            'setQueryTitle',
+        ];
+
+        foreach ($functions as $function) {
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            call_user_func_array($callable, [$queryBuilder, $get]);
+        }
 
         return $queryBuilder;
     }
 
-    protected function setQueryCity(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryCity(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = AddressUser::class == $this->_entityName;
         if (!$launch || !isset($get['city']) || empty($get['city'])) {
@@ -163,7 +180,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('city', '%'.$get['city'].'%');
     }
 
-    protected function setQueryCommunityName(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryCommunityName(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['communityname']) || empty($get['communityname'])) {
@@ -174,7 +191,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('communityname', '%'.$get['communityname'].'%');
     }
 
-    protected function setQueryCountry(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryCountry(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = in_array($this->_entityName, [AddressUser::class, PhoneUser::class]);
         if (!$launch || !isset($get['country']) || empty($get['country'])) {
@@ -185,7 +202,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('country', '%'.$get['country'].'%');
     }
 
-    protected function setQueryCountryCode(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryCountryCode(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['countrycode']) || empty($get['countrycode'])) {
@@ -196,7 +213,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('countrycode', '%'.$get['countrycode'].'%');
     }
 
-    protected function setQueryDateEnd(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryDateEnd(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = Memo::class == $this->_entityName;
         if (!$launch || !isset($get['dateEnd']) || empty($get['dateEnd'])) {
@@ -207,7 +224,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('dateEnd', $get['dateEnd']);
     }
 
-    protected function setQueryDateStart(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryDateStart(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = Memo::class == $this->_entityName;
         if (!$launch || !isset($get['dateStart']) || empty($get['dateStart'])) {
@@ -218,7 +235,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('dateStart', $get['dateStart']);
     }
 
-    protected function setQueryEmail(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryEmail(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = User::class == $this->_entityName;
         if (!$launch || !isset($get['email']) || empty($get['email'])) {
@@ -229,7 +246,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('email', $get['email']);
     }
 
-    protected function setQueryEtape(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryEtape(QueryBuilder $queryBuilder, array $get): void
     {
         $entities = [
             Bookmark::class,
@@ -249,7 +266,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('state', '%'.$get['etape'].'%');
     }
 
-    protected function setQueryName(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryName(QueryBuilder $queryBuilder, array $get): void
     {
         $entities = [
             Bookmark::class,
@@ -267,7 +284,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('name', '%'.$get['name'].'%');
     }
 
-    protected function setQueryPlaceName(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryPlaceName(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['placename']) || empty($get['placename'])) {
@@ -278,7 +295,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('placename', '%'.$get['placename'].'%');
     }
 
-    protected function setQueryPostalCode(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryPostalCode(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['postalcode']) || empty($get['postalcode'])) {
@@ -289,7 +306,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('postalcode', '%'.$get['postalcode'].'%');
     }
 
-    protected function setQueryProvinceName(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryProvinceName(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['provincename']) || empty($get['provincename'])) {
@@ -300,7 +317,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('provincename', '%'.$get['provincename'].'%');
     }
 
-    protected function setQueryPublished(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryPublished(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = in_array($this->_entityName, [Edito::class, Post::class]);
         if (!$launch || !isset($get['published']) || empty($get['published'])) {
@@ -311,31 +328,31 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('published', $get['published']);
     }
 
-    protected function setQueryRefCategory(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryRefCategory(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = in_array($this->_entityName, [Bookmark::class, Post::class]);
         if (!$launch || !isset($get['refcategory']) || empty($get['refcategory'])) {
             return;
         }
 
-        $queryBuilder->leftJoin('a.refcategory', 'u');
+        $queryBuilder->leftJoin('a.category', 'u');
         $queryBuilder->andWhere('u.id = :refcategory');
         $queryBuilder->setParameter('refcategory', $get['refcategory']);
     }
 
-    protected function setQueryRefGroup(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryRefGroup(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = User::class == $this->_entityName;
-        if (!$launch || !isset($get['refgroup']) || empty($get['refgroup'])) {
+        if (!$launch || !isset($get['groupe']) || empty($get['groupe'])) {
             return;
         }
 
-        $queryBuilder->leftJoin('a.refgroupe', 'g');
+        $queryBuilder->leftJoin('a.groupe', 'g');
         $queryBuilder->andWhere('g.id = :refgroup');
-        $queryBuilder->setParameter('refgroup', $get['refgroup']);
+        $queryBuilder->setParameter('refgroup', $get['groupe']);
     }
 
-    protected function setQueryRefUser(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryRefUser(QueryBuilder $queryBuilder, array $get): void
     {
         $entities = [
             AddressUser::class,
@@ -353,12 +370,12 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
             return;
         }
 
-        $queryBuilder->leftJoin('a.refuser', 'u');
+        $queryBuilder->leftJoin('a.user', 'u');
         $queryBuilder->andWhere('u.id = :refuser');
         $queryBuilder->setParameter('refuser', $get['refuser']);
     }
 
-    protected function setQueryStateName(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryStateName(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = GeoCode::class == $this->_entityName;
         if (!$launch || !isset($get['statename']) || empty($get['statename'])) {
@@ -369,9 +386,9 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('statename', '%'.$get['statename'].'%');
     }
 
-    protected function setQueryTitle(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryTitle(QueryBuilder $queryBuilder, array $get): void
     {
-        $launch = in_array($this->_entityName, [Edito::class, Memo::class, Post::class]);
+        $launch = in_array($this->_entityName, [Block::class, Edito::class, Memo::class, Post::class]);
         if (!$launch || !isset($get['title']) || empty($get['title'])) {
             return;
         }
@@ -380,7 +397,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         $queryBuilder->setParameter('title', '%'.$get['title'].'%');
     }
 
-    protected function setQueryUsername(QueryBuilder &$queryBuilder, array $get): void
+    protected function setQueryUsername(QueryBuilder $queryBuilder, array $get): void
     {
         $launch = User::class == $this->_entityName;
         if (!$launch || !isset($get['username']) || empty($get['username'])) {

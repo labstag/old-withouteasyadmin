@@ -7,9 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Edito;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_edito_trash")
- */
+#[Trashable(url: 'admin_edito_trash')]
 class EditoRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -17,14 +15,14 @@ class EditoRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Edito::class);
     }
 
-    public function findOnePublier()
+    public function findOnePublier(): mixed
     {
         $queryBuilder = $this->createQueryBuilder('e');
-        $queryBuilder->leftjoin('e.refuser', 'u');
+        $queryBuilder->leftjoin('e.user', 'u');
         $queryBuilder->where(
             'e.state LIKE :state'
         );
-        $queryBuilder->orderBy('e.published', 'DESC');
+        $queryBuilder->orderBy('e.dateTime', 'DESC');
         $queryBuilder->setParameters(
             ['state' => '%publie%']
         );

@@ -2,9 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -53,10 +55,10 @@ class MenuController extends AdminControllerLib
     #[Route(path: '/divider/{id}', name: 'admin_menu_divider')]
     public function divider(Menu $menu, MenuRequestHandler $menuRequestHandler): RedirectResponse
     {
-        $entity = new Menu();
+        $entity    = new Menu();
         $oldEntity = clone $entity;
-        $children = $menu->getChildren();
-        $position = is_countable($children) ? count($children) : 0;
+        $children  = $menu->getChildren();
+        $position  = is_countable($children) ? count($children) : 0;
         $entity->setPosition($position + 1);
         $entity->setSeparateur(true);
         $entity->setParent($menu);
@@ -74,7 +76,7 @@ class MenuController extends AdminControllerLib
     ): Response
     {
         $this->modalAttachmentDelete();
-        $data = [$menu->getData()];
+        $data             = [$menu->getData()];
         $data[0]['param'] = isset($data[0]['params']) ? json_encode($data[0]['params'], JSON_THROW_ON_ERROR) : '';
         $menu->setData($data);
 
@@ -86,16 +88,16 @@ class MenuController extends AdminControllerLib
 
     #[Route(path: '/', name: 'admin_menu_index', methods: ['GET'])]
     public function index(
-        Environment $environment,
+        Environment $twigEnvironment,
         MenuRepository $menuRepository
     ): Response
     {
-        $all = $menuRepository->findAllCode();
-        $globals = $environment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $all             = $menuRepository->findAllCode();
+        $globals         = $twigEnvironment->getGlobals();
+        $modal           = $globals['modal'] ?? [];
         $modal['delete'] = true;
-        $environment->addGlobal('modal', $modal);
-        $this->btnInstance()->addBtnNew('admin_menu_new');
+        $twigEnvironment->addGlobal('modal', $modal);
+        $this->adminBtnService->addBtnNew('admin_menu_new');
 
         return $this->render(
             'admin/menu/index.html.twig',
@@ -116,11 +118,11 @@ class MenuController extends AdminControllerLib
             $this->setPositionEntity($request, Menu::class);
         }
 
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_menu_index',
             'Liste',
         );
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-save-move',
             'Enregistrer',
             [
@@ -144,9 +146,7 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_menu_trash', methods: ['GET'])]
     public function trash(): Response
     {
@@ -156,8 +156,13 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Menu::class);
+        $domainLib = $this->domainService->getDomain(Menu::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

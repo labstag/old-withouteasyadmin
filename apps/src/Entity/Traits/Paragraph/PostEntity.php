@@ -3,6 +3,7 @@
 namespace Labstag\Entity\Traits\Paragraph;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph\Post\Archive as PostArchive;
 use Labstag\Entity\Paragraph\Post as ParagraphPost;
 use Labstag\Entity\Paragraph\Post\Category as PostCategory;
@@ -17,55 +18,94 @@ use Labstag\Entity\Post;
 trait PostEntity
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="paragraphs", cascade={"persist"})
-     */
-    private $post;
+    #[ORM\ManyToOne(
+        targetEntity: Post::class,
+        inversedBy: 'paragraphs',
+        cascade: ['persist']
+    )
+    ]
+    private ?Post $post = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostArchive::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $postArchives;
+    #[ORM\OneToMany(
+        targetEntity: PostArchive::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $postArchives;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostCategory::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $postCategories;
+    #[ORM\OneToMany(
+        targetEntity: PostCategory::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $postCategories;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostHeader::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $postHeaders;
+    #[ORM\OneToMany(
+        targetEntity: PostHeader::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $postHeaders;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostLibelle::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $postLibelles;
+    #[ORM\OneToMany(
+        targetEntity: PostLibelle::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $postLibelles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostList::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $postLists;
+    #[ORM\OneToMany(
+        targetEntity: PostList::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $postLists;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ParagraphPost::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $posts;
+    #[ORM\OneToMany(
+        targetEntity: ParagraphPost::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $posts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostShow::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $postShows;
+    #[ORM\OneToMany(
+        targetEntity: PostShow::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $postShows;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostUser::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $postUsers;
+    #[ORM\OneToMany(
+        targetEntity: PostUser::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $postUsers;
 
-    /**
-     * @ORM\OneToMany(targetEntity=PostYear::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $postYears;
+    #[ORM\OneToMany(
+        targetEntity: PostYear::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $postYears;
 
     public function addPost(ParagraphPost $paragraphPost): self
     {
@@ -304,7 +344,10 @@ trait PostEntity
         return $this;
     }
 
-    private function removeElementPost($element, $variable)
+    private function removeElementPost(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);

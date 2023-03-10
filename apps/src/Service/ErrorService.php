@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Exception;
 use Psr\Log\LoggerInterface;
 
 class ErrorService
@@ -13,7 +14,7 @@ class ErrorService
     {
     }
 
-    public function set($exception): void
+    public function set(Exception $exception): void
     {
         $errorMsg = sprintf(
             'Exception : Erreur %s dans %s L.%s : %s',

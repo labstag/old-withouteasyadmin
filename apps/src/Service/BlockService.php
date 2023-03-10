@@ -3,14 +3,17 @@
 namespace Labstag\Service;
 
 use Labstag\Entity\Block;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\BlockRepository;
 use ReflectionClass;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class BlockService
 {
     public function __construct(
-        protected $blocksclass,
+        protected RewindableGenerator $rewindableGenerator,
         protected BlockRepository $blockRepository
     )
     {
@@ -22,9 +25,9 @@ class BlockService
     public function getAll(): array
     {
         $data = [];
-        foreach ($this->blocksclass as $row) {
-            $type = $row->getType();
-            $name = $row->getName();
+        foreach ($this->rewindableGenerator as $row) {
+            $type        = $row->getType();
+            $name        = $row->getName();
             $data[$name] = $type;
         }
 
@@ -42,28 +45,29 @@ class BlockService
 
         $data = [];
         foreach ($blocks as $block) {
-            $title = $block->getTitle();
-            $id = $block->getId();
+            /** @var Block $block */
+            $title        = $block->getTitle();
+            $id           = $block->getId();
             $data[$title] = $id;
         }
 
         return $data;
     }
 
-    public function getEntity(Block $block)
+    public function getEntity(Block $block): mixed
     {
         $entity = null;
-        $field = $this->getEntityField($block);
+        $field  = $this->getEntityField($block);
         if (is_null($field)) {
             return $entity;
         }
 
-        $reflection = $this->setReflection($block);
+        $reflectionClass  = new ReflectionClass($block);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        foreach ($reflection->getProperties() as $reflectionProperty) {
-            if ($reflectionProperty->getName() == $field) {
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            if ($reflectionProperty->getName() === $field) {
                 $entities = $propertyAccessor->getValue($block, $field);
-                $entity = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
                 break;
             }
@@ -72,19 +76,21 @@ class BlockService
         return $entity;
     }
 
-    public function getEntityField(Block $block)
+    public function getEntityField(Block $block): ?string
     {
-        $field = null;
+        $field       = null;
         $childentity = $this->getTypeEntity($block);
         if (is_null($childentity)) {
             return $field;
         }
 
-        $reflection = $this->setReflection($childentity);
-        foreach ($reflection->getProperties() as $reflectionProperty) {
+        $reflectionClass = new ReflectionClass($childentity);
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ('block' == $reflectionProperty->getName()) {
-                preg_match('#inversedBy=\"(.*)\", #m', (string) $reflectionProperty->getDocComment(), $matches);
-                $field = $matches[1] ?? $field;
+                $attributes = $reflectionProperty->getAttributes();
+                $attribute  = $attributes[0];
+                $arguments  = $attribute->getArguments();
+                $field      = $arguments['inversedBy'] ?? $field;
 
                 break;
             }
@@ -93,11 +99,11 @@ class BlockService
         return $field;
     }
 
-    public function getName(Block $block)
+    public function getName(Block $block): ?string
     {
         $type = $block->getType();
         $form = null;
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $form = $row->getName();
 
@@ -120,11 +126,11 @@ class BlockService
         ];
     }
 
-    public function getTypeEntity(Block $block)
+    public function getTypeEntity(Block $block): mixed
     {
-        $type = $block->getType();
+        $type  = $block->getType();
         $block = null;
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $block = $row->getEntity();
 
@@ -135,11 +141,11 @@ class BlockService
         return $block;
     }
 
-    public function getTypeForm(Block $block)
+    public function getTypeForm(Block $block): ?string
     {
         $type = $block->getType();
         $form = null;
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $form = $row->getForm();
 
@@ -150,11 +156,11 @@ class BlockService
         return $form;
     }
 
-    public function isShow(Block $block)
+    public function isShow(Block $block): bool
     {
         $type = $block->getType();
         $show = false;
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($row->getType() == $type) {
                 $show = $row->isShowForm();
 
@@ -165,18 +171,21 @@ class BlockService
         return $show;
     }
 
-    public function showContent(Block $block, $content)
+    public function showContent(
+        Block $block,
+        ?FrontInterface $front
+    ): ?Response
     {
-        $type = $block->getType();
+        $type   = $block->getType();
         $entity = $this->getEntity($block);
-        $html = null;
+        $html   = null;
         if (is_null($entity)) {
             return $html;
         }
 
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($type == $row->getType()) {
-                $html = $row->show($entity, $content);
+                $html = $row->show($entity, $front);
 
                 break;
             }
@@ -185,26 +194,24 @@ class BlockService
         return $html;
     }
 
-    public function showTemplate(Block $block, $content)
+    public function showTemplate(
+        Block $block,
+        ?FrontInterface $front
+    ): ?array
     {
-        $type = $block->getType();
-        $entity = $this->getEntity($block);
+        $type     = $block->getType();
+        $entity   = $this->getEntity($block);
         $template = null;
         if (is_null($entity)) {
             return $template;
         }
 
-        foreach ($this->blocksclass as $row) {
+        foreach ($this->rewindableGenerator as $row) {
             if ($type == $row->getType()) {
-                $template = $row->template($entity, $content);
+                $template = $row->template($entity, $front);
             }
         }
 
         return $template;
-    }
-
-    protected function setReflection($entity): ReflectionClass
-    {
-        return new ReflectionClass($entity);
     }
 }

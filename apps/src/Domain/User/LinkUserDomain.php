@@ -7,6 +7,8 @@ use Labstag\Entity\LinkUser;
 use Labstag\Form\Admin\Search\User\LinkUserType as SearchLinkUserType;
 use Labstag\Form\Admin\User\LinkUserType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\LinkUserRepository;
 use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\Search\User\LinkUserSearch;
@@ -17,33 +19,34 @@ class LinkUserDomain extends DomainLib
     public function __construct(
         protected LinkUserRequestHandler $linkUserRequestHandler,
         protected LinkUserRepository $linkUserRepository,
+        protected LinkUserSearch $linkUserSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return LinkUser::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->linkUserRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->linkUserRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): LinkUserSearch
     {
-        return new LinkUserSearch();
+        return $this->linkUserSearch;
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchLinkUserType::class;
     }
@@ -63,7 +66,7 @@ class LinkUserDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return LinkUserType::class;
     }

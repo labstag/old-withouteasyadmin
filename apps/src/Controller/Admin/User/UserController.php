@@ -2,9 +2,11 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,18 +33,18 @@ class UserController extends AdminControllerLib
         WorkflowRepository $workflowRepository
     ): Response
     {
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_user_index',
             'Liste',
         );
-        $this->btnInstance()->addBtnShow(
+        $this->adminBtnService->addBtnShow(
             'admin_user_show',
             'Show',
             [
                 'id' => $user->getId(),
             ]
         );
-        $this->btnInstance()->addBtnEdit(
+        $this->adminBtnService->addBtnEdit(
             'admin_user_edit',
             'Editer',
             [
@@ -77,9 +79,7 @@ class UserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_user_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_user_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -90,9 +90,7 @@ class UserController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_user_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_user_preview', methods: ['GET'])]
     public function showOrPreview(User $user): Response
@@ -104,8 +102,13 @@ class UserController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(User::class);
+        $domainLib = $this->domainService->getDomain(User::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

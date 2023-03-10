@@ -14,7 +14,7 @@ class UploadAnnotationReader
     {
     }
 
-    public function enableAttachment($annotations, $fields)
+    public function enableAttachment(mixed $annotations, array $fields): bool
     {
         $enable = false;
         foreach (array_keys($annotations) as $key) {
@@ -49,37 +49,39 @@ class UploadAnnotationReader
      *
      * @return mixed[]
      */
-    public function getUploadableFields($entity): array
+    public function getUploadableFields(mixed $entity): array
     {
         $properties = [];
         if (!$this->isUploadable($entity)) {
             return $properties;
         }
 
-        $reflection = $this->setReflection($entity);
-        foreach ($reflection->getProperties() as $reflectionProperty) {
-            $annotation = $this->annotationReader->getPropertyAnnotation($reflectionProperty, UploadableField::class);
-            if (is_null($annotation)) {
-                continue;
+        $reflectionClass = new ReflectionClass($entity::class);
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            $attributes = $reflectionProperty->getAttributes();
+            foreach ($attributes as $attribute) {
+                if (UploadableField::class == $attribute->getName()) {
+                    $properties[$reflectionProperty->getName()] = $attribute->newInstance();
+                }
             }
-
-            $properties[$reflectionProperty->getName()] = $annotation;
         }
 
         return $properties;
     }
 
-    protected function setReflection($entity): ReflectionClass
+    private function isUploadable(mixed $entity): bool
     {
-        return new ReflectionClass($entity::class);
-    }
+        $reflectionClass = new ReflectionClass($entity::class);
 
-    private function isUploadable($entity): bool
-    {
-        $reflection = $this->setReflection($entity);
+        $uploadable = false;
+        foreach ($reflectionClass->getAttributes() as $attribute) {
+            if (Uploadable::class === $attribute->getName()) {
+                $uploadable = true;
 
-        $uploadable = $this->annotationReader->getClassAnnotation($reflection, Uploadable::class);
+                break;
+            }
+        }
 
-        return !is_null($uploadable);
+        return $uploadable;
     }
 }

@@ -7,5 +7,5 @@ use Labstag\Lib\SearchLib;
 class RenderSearch extends SearchLib
 {
 
-    public $name;
+    public ?string $name = null;
 }

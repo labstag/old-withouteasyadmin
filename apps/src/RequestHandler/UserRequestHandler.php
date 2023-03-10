@@ -8,7 +8,7 @@ use Labstag\Lib\RequestHandlerLib;
 
 class UserRequestHandler extends RequestHandlerLib
 {
-    public function handle($oldEntity, $entity): void
+    public function handle(mixed $oldEntity, mixed $entity): void
     {
         $this->setArrayCollection($entity);
         parent::handle($oldEntity, $entity);

@@ -2,42 +2,33 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\ConfigurationRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-class Configuration implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: ConfigurationRepository::class)]
+#[ApiResource]
+class Configuration implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $name;
 
-    /**
-     * @ORM\Column(type="object", nullable=true)
-     */
-    protected $value;
+    #[ORM\Column(type: 'object', nullable: true)]
+    private mixed $value;
 
     public function __toString(): string
     {
@@ -54,7 +45,7 @@ class Configuration implements Stringable
         return $this->name;
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
@@ -66,7 +57,7 @@ class Configuration implements Stringable
         return $this;
     }
 
-    public function setValue($value): self
+    public function setValue(mixed $value): self
     {
         $this->value = $value;
 

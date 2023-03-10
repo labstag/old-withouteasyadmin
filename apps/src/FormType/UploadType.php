@@ -26,25 +26,29 @@ class UploadType extends AbstractType
         array $options
     ): void
     {
-        $entity = $form->getParent()->getData();
-        $name = $form->getName();
-        $field = null;
+        /** @var FormInterface $parent */
+        $parent = $form->getParent();
+        $entity = $parent->getData();
+        $name   = $form->getName();
+        $field  = null;
         if (!is_array($entity)) {
             $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
             if (isset($annotations[$name])) {
                 $propertyAccessor = PropertyAccess::createPropertyAccessor();
-                $field = $propertyAccessor->getValue($entity, $annotations[$name]->getFileName());
+                $field            = $propertyAccessor->getValue($entity, $annotations[$name]->getFileName());
             }
         } elseif (isset($entity[$name]) && $entity[$name] instanceof Attachment) {
             $field = $entity[$name];
         }
 
-        dump($field);
-
         $formView->vars['field'] = $field;
-        $formView->vars['url'] = null;
+        $formView->vars['url']   = null;
         if (null != $field) {
-            $formView->vars['url'] = $this->router->generate('api_attachment_delete', ['attachment' => $field->getId()]);
+            $route = $this->router->generate(
+                'api_attachment_delete',
+                ['attachment' => $field->getId()]
+            );
+            $formView->vars['url'] = $route;
         }
 
         unset($form, $options);

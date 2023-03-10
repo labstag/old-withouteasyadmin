@@ -5,6 +5,8 @@ namespace Labstag\Lib;
 use Labstag\Entity\Category;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\Service\WorkflowService;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -13,12 +15,16 @@ use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Workflow\Registry;
+use Symfony\Component\Workflow\WorkflowInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class SearchAbstractTypeLib extends AbstractType
 {
-    public function __construct(protected Registry $registry, protected TranslatorInterface $translator)
+    public function __construct(
+        protected ParameterBagInterface $parameterBag,
+        protected WorkflowService $workflowService,
+        protected TranslatorInterface $translator
+    )
     {
     }
 
@@ -66,9 +72,9 @@ abstract class SearchAbstractTypeLib extends AbstractType
         return '';
     }
 
-    protected function addName($builder)
+    protected function addName(FormBuilderInterface $formBuilder): void
     {
-        $builder->add(
+        $formBuilder->add(
             'name',
             TextType::class,
             [
@@ -80,9 +86,9 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addPublished($builder)
+    protected function addPublished(FormBuilderInterface $formBuilder): void
     {
-        $builder->add(
+        $formBuilder->add(
             'published',
             DateType::class,
             [
@@ -94,10 +100,10 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addRefCategory($builder)
+    protected function addRefCategory(FormBuilderInterface $formBuilder): void
     {
-        $builder->add(
-            'refcategory',
+        $formBuilder->add(
+            'category',
             SearchableType::class,
             [
                 'required' => false,
@@ -113,10 +119,10 @@ abstract class SearchAbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addRefUser($builder)
+    protected function addRefUser(FormBuilderInterface $formBuilder): void
     {
-        $builder->add(
-            'refuser',
+        $formBuilder->add(
+            'user',
             SearchableType::class,
             [
                 'required' => false,
@@ -133,17 +139,18 @@ abstract class SearchAbstractTypeLib extends AbstractType
     }
 
     protected function showState(
-        $builder,
+        FormBuilderInterface $formBuilder,
         object $entityclass,
-        $label,
-        $help,
-        $placeholder
-    )
+        string $label,
+        string $help,
+        string $placeholder
+    ): void
     {
-        $workflow = $this->registry->get($entityclass);
+        /** @var WorkflowInterface $workflow */
+        $workflow   = $this->workflowService->get($entityclass);
         $definition = $workflow->getDefinition();
-        $places = $definition->getPlaces();
-        $builder->add(
+        $places     = $definition->getPlaces();
+        $formBuilder->add(
             'etape',
             ChoiceType::class,
             [

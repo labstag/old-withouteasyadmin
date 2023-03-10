@@ -3,13 +3,14 @@
 namespace Labstag\Search\User;
 
 use Labstag\Lib\SearchLib;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class PhoneUserSearch extends SearchLib
 {
 
-    public $country;
+    public ?string $country = null;
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $refuser;
+    public ?UserInterface $user = null;
 }

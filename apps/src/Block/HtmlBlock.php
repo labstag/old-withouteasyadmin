@@ -4,14 +4,16 @@ namespace Labstag\Block;
 
 use Labstag\Entity\Block\Html;
 use Labstag\Form\Admin\Block\HtmlType;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\BlockLib;
 use Symfony\Component\HttpFoundation\Response;
 
 class HtmlBlock extends BlockLib
 {
-    public function getCode($html, $content): string
+    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
     {
-        unset($html, $content);
+        unset($entityBlockLib, $front);
 
         return 'html';
     }
@@ -41,12 +43,10 @@ class HtmlBlock extends BlockLib
         return true;
     }
 
-    public function show(Html $html, $content): Response
+    public function show(Html $html, ?FrontInterface $front): Response
     {
-        $content = null;
-
         return $this->render(
-            $this->getTemplateFile($this->getCode($html, $content)),
+            $this->getTemplateFile($this->getCode($html, $front)),
             ['block' => $html]
         );
     }

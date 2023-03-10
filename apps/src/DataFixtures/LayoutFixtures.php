@@ -4,6 +4,7 @@ namespace Labstag\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Labstag\Entity\Block;
 use Labstag\Entity\Layout;
 use Labstag\Lib\FixtureLib;
 
@@ -35,9 +36,10 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
         array $dataLayout
     ): void
     {
-        $block = $this->getReference('block_'.$region.'-'.$type);
-        $layout = new Layout();
-        $old = clone $layout;
+        /** @var Block $block */
+        $block   = $this->getReference('block_'.$region.'-'.$type);
+        $layout  = new Layout();
+        $old     = clone $layout;
         $customs = $block->getCustoms();
         $layout->setCustom($customs[0]);
         $layout->setName($dataLayout['name']);
@@ -51,9 +53,9 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
         $this->addReference('layout_'.$type.'-'.$region.'-'.$dataLayout['name'], $layout);
     }
 
-    protected function addLayouts($data)
+    protected function addLayouts(array $data): void
     {
-        $type = $data['block-type'];
+        $type   = $data['block-type'];
         $region = $data['block-region'];
         foreach ($data['layouts'] as $layout) {
             $this->addLayout($type, $region, $layout);

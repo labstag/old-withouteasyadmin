@@ -5,8 +5,11 @@ namespace Labstag\Domain;
 use Labstag\Entity\Attachment;
 
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\Search\AttachmentSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AttachmentDomain extends DomainLib
@@ -14,25 +17,31 @@ class AttachmentDomain extends DomainLib
     public function __construct(
         protected AttachmentRequestHandler $attachmentRequestHandler,
         protected AttachmentRepository $attachmentRepository,
+        protected AttachmentSearch $attachmentSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Attachment::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->attachmentRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->attachmentRequestHandler;
+    }
+
+    public function getSearchData(): AttachmentSearch
+    {
+        return $this->attachmentSearch;
     }
 
     /**
@@ -43,6 +52,11 @@ class AttachmentDomain extends DomainLib
         return [
             'admin_attachment_index' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
         ];
+    }
+
+    public function getType(): string
+    {
+        return '';
     }
 
     public function getUrlAdmin(): array

@@ -2,72 +2,50 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\MetaRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=MetaRepository::class)
- */
-class Meta implements Stringable
+#[ORM\Entity(repositoryClass: MetaRepository::class)]
+#[ApiResource]
+class Meta implements Stringable, EntityInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\ManyToOne(targetEntity: Chapter::class, inversedBy: 'metas', cascade: ['persist'])]
+    private ?Chapter $chapter = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="metas", cascade={"persist"})
-     */
-    private $chapter;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $description;
+    #[ORM\ManyToOne(targetEntity: Edito::class, inversedBy: 'metas', cascade: ['persist'])]
+    private ?Edito $edito = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Edito::class, inversedBy="metas", cascade={"persist"})
-     */
-    private $edito;
+    #[ORM\ManyToOne(targetEntity: History::class, inversedBy: 'metas', cascade: ['persist'])]
+    private ?History $history = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="metas", cascade={"persist"})
-     */
-    private $history;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $keywords;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $keywords = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="metas", cascade={"persist"})
-     */
-    private $page;
+    #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'metas', cascade: ['persist'])]
+    private ?Page $page = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="metas", cascade={"persist"})
-     */
-    private $post;
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'metas', cascade: ['persist'])]
+    private ?Post $post = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Render::class, inversedBy="metas", cascade={"persist"})
-     */
-    private $render;
+    #[ORM\ManyToOne(targetEntity: Render::class, inversedBy: 'metas', cascade: ['persist'])]
+    private ?Render $render = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $title = null;
 
     public function __toString(): string
     {

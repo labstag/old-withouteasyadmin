@@ -2,9 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\PageRepository;
 use Labstag\RequestHandler\PageRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,9 +29,7 @@ class PageController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_page_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_page_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -53,9 +53,7 @@ class PageController extends AdminControllerLib
         return $this->redirectToRoute('admin_page_edit', ['id' => $page->getId()]);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_page_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_page_preview', methods: ['GET'])]
     public function showOrPreview(Page $page): Response
@@ -67,8 +65,13 @@ class PageController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Page::class);
+        $domainLib = $this->domainService->getDomain(Page::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

@@ -7,6 +7,8 @@ use Labstag\Form\Admin\LibelleType;
 
 use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\LibelleRepository;
 use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\Search\LibelleSearch;
@@ -17,33 +19,34 @@ class LibelleDomain extends DomainLib
     public function __construct(
         protected LibelleRequestHandler $libelleRequestHandler,
         protected LibelleRepository $libelleRepository,
+        protected LibelleSearch $libelleSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Libelle::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->libelleRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->libelleRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): LibelleSearch
     {
-        return new LibelleSearch();
+        return $this->libelleSearch;
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchLibelleType::class;
     }
@@ -63,7 +66,7 @@ class LibelleDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return LibelleType::class;
     }

@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Category;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
@@ -10,39 +11,47 @@ use Labstag\Entity\User;
 abstract class SearchLib
 {
 
-    public $limit;
+    public int $limit = 10;
 
-    public function search(array $get, $doctrine)
+    public int $page = 0;
+
+    public function search(
+        array $get,
+        EntityManagerInterface $entityManager
+    ): void
     {
-        $userRepo = $doctrine->getRepository(User::class);
-        $categoryRepo = $doctrine->getRepository(Category::class);
-        $groupeRepo = $doctrine->getRepository(Groupe::class);
-        $dateTime = new DateTime();
+        $entityRepository = $entityManager->getRepository(User::class);
+        $categoryRepo     = $entityManager->getRepository(Category::class);
+        $groupeRepo       = $entityManager->getRepository(Groupe::class);
         foreach ($get as $key => $value) {
-            $this->{$key} = $value;
+            if (!isset($this->{$key})) {
+                continue;
+            }
+
             if ('published' == $key) {
                 if (!empty($value)) {
+                    $dateTime = new DateTime();
                     [
                         $year,
                         $month,
                         $day,
                     ] = explode('-', (string) $value);
-                    $dateTime->setDate($year, $month, $day);
-                    $this->{$key} = $dateTime;
+                    $dateTime->setDate((int) $year, (int) $month, (int) $day);
+                    $value = $dateTime;
 
                     continue;
                 }
 
-                $this->{$key} = null;
+                $value = null;
 
                 continue;
             }
 
             $this->{$key} = match ($key) {
-                'refuser' => $userRepo->find($value),
-                'refcategory' => $categoryRepo->find($value),
-                'refgroup' => $groupeRepo->find($value),
-                default => $this->{$key}
+                'user'     => $entityRepository->find($value),
+                'category' => $categoryRepo->find($value),
+                'groupe'   => $groupeRepo->find($value),
+                default    => $value
             };
         }
     }

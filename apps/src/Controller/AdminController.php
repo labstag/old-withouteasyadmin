@@ -32,7 +32,7 @@ class AdminController extends AdminControllerLib
         $config = $dataService->getConfig();
         ksort($config);
         $content = json_encode($config, JSON_PRETTY_PRINT);
-        $file = '../json/config.json';
+        $file    = '../json/config.json';
         if (is_file($file)) {
             try {
                 file_put_contents($file, $content);
@@ -106,20 +106,14 @@ class AdminController extends AdminControllerLib
             $attachmentRepository->add($images[$key]);
         }
 
-        $config = $dataService->getConfig();
-        $tab = $this->getParameter('metatags');
-        foreach ($tab as $index) {
-            $config[$index] = [
-                $config[$index],
-            ];
-        }
-
+        $metatags = (array) $this->getParameter('metatags');
+        $config   = $dataService->getConfigWithMetatags($metatags);
         foreach ($images as $key => $value) {
             $images[$key] = $value;
         }
 
         $form = $this->createForm(ParamType::class, $config);
-        $this->btnInstance()->addBtnSave($form->getName(), 'Sauvegarder');
+        $this->adminBtnService->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $this->setUpload($request, $images);
@@ -128,7 +122,7 @@ class AdminController extends AdminControllerLib
             $eventDispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-header-export',
             'Exporter',
             [
@@ -165,17 +159,16 @@ class AdminController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_trash')]
     public function trash(
         CsrfTokenManagerInterface $csrfTokenManager,
-        Environment $environment,
+        Environment $twigEnvironment,
         TrashService $trashService
     ): Response
     {
         $all = $trashService->all();
+        dump($all);
         if (0 == (is_countable($all) ? count($all) : 0)) {
             $this->sessionService->flashBagAdd(
                 'danger',
@@ -185,13 +178,13 @@ class AdminController extends AdminControllerLib
             return $this->redirectToRoute('admin');
         }
 
-        $globals = $environment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals        = $twigEnvironment->getGlobals();
+        $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
-            $value = $csrfTokenManager->getToken('emptyall')->getValue();
+            $value             = $csrfTokenManager->getToken('emptyall')->getValue();
             $modal['emptyall'] = true;
-            $this->btnInstance()->add(
+            $this->adminBtnService->add(
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
@@ -203,8 +196,8 @@ class AdminController extends AdminControllerLib
             );
         }
 
-        $environment->addGlobal('modal', $modal);
-        $this->btnInstance()->addViderSelection(
+        $twigEnvironment->addGlobal('modal', $modal);
+        $this->adminBtnService->addViderSelection(
             [
                 'redirect' => [
                     'href'   => 'admin_trash',
@@ -226,13 +219,20 @@ class AdminController extends AdminControllerLib
 
     private function setUpload(Request $request, array $images): void
     {
-        $all = $request->files->all();
+        $all              = $request->files->all();
+        $kernelProjectDir = $this->getParameter('kernel.project_dir');
+        $fileDirectory    = $this->getParameter('file_directory');
+        if (!is_string($kernelProjectDir) || !is_string($fileDirectory)) {
+            return;
+        }
+
         $files = $all['param'];
         $paths = [
-            'image'   => $this->getParameter('file_directory'),
-            'favicon' => $this->getParameter('kernel.project_dir').'/public',
+            'image'   => $fileDirectory,
+            'favicon' => $kernelProjectDir.'/public',
         ];
         foreach ($paths as $path) {
+            /** @var string $path */
             if (is_dir($path)) {
                 continue;
             }
@@ -241,16 +241,22 @@ class AdminController extends AdminControllerLib
         }
 
         foreach ($files as $key => $file) {
-            if (is_null($file)) {
+            if (is_null($file) && !isset($paths[$key])) {
                 continue;
             }
 
             $attachment = $images[$key];
-            $old = clone $attachment;
-            $filename = $file->getClientOriginalName();
-            $path = $paths[$key];
-            $filename = ('favicon' == $key) ? 'favicon.ico' : $filename;
-            $this->moveFile($file, $path, $filename, $attachment, $old);
+            $old        = clone $attachment;
+            $filename   = $file->getClientOriginalName();
+            $path       = $paths[$key];
+            $filename   = ('favicon' == $key) ? 'favicon.ico' : $filename;
+            $this->fileService->moveFile(
+                $file,
+                $path,
+                $filename,
+                $attachment,
+                $old
+            );
         }
     }
 }

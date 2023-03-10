@@ -2,70 +2,71 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\GroupeRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=GroupeRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-class Groupe implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: GroupeRepository::class)]
+#[ApiResource]
+class Groupe implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"name"})
-     *
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
-    protected $code;
+    #[Gedmo\Slug(updatable: false, fields: ['name'])]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    private string $code;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     */
-    protected $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private string $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $routes;
+    #[ORM\OneToMany(
+        targetEntity: RouteGroupe::class,
+        mappedBy: 'groupe',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $routes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $users;
+    #[ORM\OneToMany(
+        targetEntity: User::class,
+        mappedBy: 'groupe',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $users;
 
-    /**
-     * @ORM\OneToMany(targetEntity=WorkflowGroupe::class, mappedBy="refgroupe", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $workflowGroupes;
+    #[ORM\OneToMany(
+        targetEntity: WorkflowGroupe::class,
+        mappedBy: 'groupe',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $workflowGroupes;
 
     public function __construct()
     {
-        $this->routes = new ArrayCollection();
+        $this->routes          = new ArrayCollection();
         $this->workflowGroupes = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->users           = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -123,7 +124,7 @@ class Groupe implements Stringable
         return $this->routes;
     }
 
-    public function getUsers()
+    public function getUsers(): Collection
     {
         return $this->users;
     }
@@ -174,7 +175,10 @@ class Groupe implements Stringable
         return $this;
     }
 
-    private function removeElementGroupe($element, $variable)
+    private function removeElementGroupe(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getRefgroupe() === $this) {
             $variable->setRefgroupe(null);

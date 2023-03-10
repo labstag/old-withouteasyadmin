@@ -7,6 +7,8 @@ use Labstag\Form\Admin\LayoutType;
 
 use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\LayoutRepository;
 use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\Search\LayoutSearch;
@@ -17,33 +19,34 @@ class LayoutDomain extends DomainLib
     public function __construct(
         protected LayoutRequestHandler $layoutRequestHandler,
         protected LayoutRepository $layoutRepository,
+        protected LayoutSearch $layoutSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Layout::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->layoutRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->layoutRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): LayoutSearch
     {
-        return new LayoutSearch();
+        return $this->layoutSearch;
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchLayoutType::class;
     }
@@ -63,7 +66,7 @@ class LayoutDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return LayoutType::class;
     }

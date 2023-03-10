@@ -7,6 +7,7 @@ use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Event\UserCollectionEvent;
 use Labstag\Lib\EventSubscriberLib;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserCollectionSubscriber extends EventSubscriberLib
 {
@@ -21,8 +22,8 @@ class UserCollectionSubscriber extends EventSubscriberLib
     public function onUserCollectionEvent(UserCollectionEvent $userCollectionEvent): void
     {
         $oauthConnectUser = $userCollectionEvent->getOauthConnectUser();
-        $linkUser = $userCollectionEvent->getLinkUser();
-        $addressUser = $userCollectionEvent->getAddressUser();
+        $linkUser         = $userCollectionEvent->getLinkUser();
+        $addressUser      = $userCollectionEvent->getAddressUser();
 
         $this->setOauthConnectUser($oauthConnectUser);
         $this->setLinkUser($linkUser);
@@ -35,15 +36,18 @@ class UserCollectionSubscriber extends EventSubscriberLib
             return;
         }
 
-        // @var AddressUser $old
+        /** @var AddressUser $old */
         $old = $data['old'];
-        // @var AddressUser $new
+        /** @var AddressUser $new */
         $new = $data['new'];
-        if ($old->getId() == $new->getId()) {
+        if ($old->getId() === $new->getId()) {
             return;
         }
 
-        $this->userMailService->checkNewAddress($new->getRefuser(), $new);
+        /** @var UserInterface $newuser */
+        $newuser = $new->getRefuser();
+
+        $this->userMailService->checkNewAddress($newuser, $new);
     }
 
     protected function setLinkUser(array $data): void
@@ -52,15 +56,18 @@ class UserCollectionSubscriber extends EventSubscriberLib
             return;
         }
 
-        // @var LinkUser $old
+        /** @var LinkUser $old */
         $old = $data['old'];
-        // @var LinkUser $new
+        /** @var LinkUser $new */
         $new = $data['new'];
-        if ($old->getId() == $new->getId()) {
+        if ($old->getId() === $new->getId()) {
             return;
         }
 
-        $this->userMailService->checkNewLink($new->getRefuser(), $new);
+        /** @var UserInterface $newuser */
+        $newuser = $new->getRefuser();
+
+        $this->userMailService->checkNewLink($newuser, $new);
     }
 
     protected function setOauthConnectUser(array $data): void
@@ -69,16 +76,18 @@ class UserCollectionSubscriber extends EventSubscriberLib
             return;
         }
 
-        // @var OauthConnectUser $old
+        /** @var OauthConnectUser $old */
         $old = $data['old'];
-        // @var OauthConnectUser $new
+        /** @var OauthConnectUser $new */
         $new = $data['new'];
-        if ($old->getId() == $new->getId()) {
+        if ($old->getId() === $new->getId()) {
             return;
         }
 
+        /** @var UserInterface $newuser */
+        $newuser = $new->getRefuser();
         $this->userMailService->checkNewOauthConnectUser(
-            $new->getRefuser(),
+            $newuser,
             $new
         );
     }

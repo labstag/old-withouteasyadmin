@@ -7,9 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Attachment;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_attachment_trash")
- */
+#[Trashable(url: 'admin_attachment_trash')]
 class AttachmentRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -17,13 +15,28 @@ class AttachmentRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Attachment::class);
     }
 
-    public function getFavicon(): ?object
+    public function getFavicon(): ?Attachment
     {
-        return $this->findOneBy(['code' => 'favicon']);
+        $data = $this->getByCode('favicon');
+        if ($data instanceof Attachment) {
+            return $data;
+        }
+
+        return null;
     }
 
-    public function getImageDefault(): ?object
+    public function getImageDefault(): ?Attachment
     {
-        return $this->findOneBy(['code' => 'image']);
+        $data = $this->getByCode('image');
+        if ($data instanceof Attachment) {
+            return $data;
+        }
+
+        return null;
+    }
+
+    private function getByCode(string $code): mixed
+    {
+        return $this->findOneBy(['code' => $code]);
     }
 }

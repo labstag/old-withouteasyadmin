@@ -26,7 +26,7 @@ class MenuType extends AbstractTypeLib
     {
         unset($options);
 
-        $all = $this->guardService->allRoutes();
+        $all     = $this->guardService->allRoutes();
         $choices = [];
         foreach (array_keys($all) as $key) {
             $choices[$key] = $key;

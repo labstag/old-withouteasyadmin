@@ -25,7 +25,7 @@ class InstallService
         protected UserRequestHandler $userRequestHandler,
         protected TemplateRequestHandler $templateRequestHandler,
         protected EntityManagerInterface $entityManager,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected CacheInterface $cache,
         protected GroupeRepository $groupeRepository,
         protected ConfigurationRepository $configurationRepository,
@@ -46,12 +46,17 @@ class InstallService
         $this->cache->delete('configuration');
     }
 
-    public function getData($file)
+    public function getData(string $file): array
     {
         $file = __DIR__.'/../../json/'.$file.'.json';
         $data = [];
         if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode(
+                (string) file_get_contents($file),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
         }
 
         return $data;
@@ -60,13 +65,13 @@ class InstallService
     /**
      * @return mixed[]
      */
-    public function getEnv($serverEnv): array
+    public function getEnv(array $serverEnv): array
     {
-        $file = __DIR__.'/../../.env';
-        $data = [];
+        $file   = __DIR__.'/../../.env';
+        $data   = [];
         $dotenv = new Dotenv();
         if (is_file($file)) {
-            $data = $dotenv->parse(file_get_contents($file));
+            $data = $dotenv->parse((string) file_get_contents($file));
         }
 
         $data = array_merge($serverEnv, $data);
@@ -77,7 +82,7 @@ class InstallService
 
     public function users(): void
     {
-        $users = $this->getData('user');
+        $users   = $this->getData('user');
         $groupes = $this->groupeRepository->findAll();
         foreach ($users as $user) {
             $this->addUser($groupes, $user);
@@ -86,10 +91,10 @@ class InstallService
 
     protected function addConfig(
         string $key,
-        $value
+        mixed $value
     ): void
     {
-        $search = ['name' => $key];
+        $search        = ['name' => $key];
         $configuration = $this->configurationRepository->findOneBy($search);
         if (!$configuration instanceof Configuration) {
             $configuration = new Configuration();
@@ -120,18 +125,18 @@ class InstallService
 
     protected function setOauth(array $serverEnv, array &$data): void
     {
-        $env = $this->getEnv($serverEnv);
+        $env   = $this->getEnv($serverEnv);
         $oauth = [];
         foreach ($env as $key => $val) {
             if (0 == substr_count((string) $key, 'OAUTH_')) {
                 continue;
             }
 
-            $code = str_replace('OAUTH_', '', (string) $key);
-            $code = strtolower($code);
+            $code    = str_replace('OAUTH_', '', (string) $key);
+            $code    = strtolower($code);
             $explode = explode('_', $code);
-            $type = $explode[0];
-            $key = $explode[1];
+            $type    = $explode[0];
+            $key     = $explode[1];
             if (!isset($oauth[$type])) {
                 $activate = $this->oauthService->getActivedProvider($type);
 
@@ -144,7 +149,7 @@ class InstallService
             $oauth[$type][$key] = $val;
         }
 
-        // @var mixed $row
+        /** @var mixed $row */
         foreach ($oauth as $row) {
             $data['oauth'][] = $row;
         }

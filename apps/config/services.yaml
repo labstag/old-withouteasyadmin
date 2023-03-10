@@ -67,6 +67,9 @@ services:
     Labstag\Command\LabstagWorkflowsShowCommand:
         arguments:  
             - !tagged_iterator entitiesclass
+    Labstag\Service\RepositoryService:
+        arguments:  
+            - !tagged_iterator repositories
     Labstag\Service\TrashService:
         arguments:  
             - !tagged_iterator repositories
@@ -89,18 +92,16 @@ services:
     Labstag\Service\FrontService:
         arguments:
             - !tagged_iterator frontclass
-      # add more service definitions when explicit configuration is needed
-      # please note that last definitions always *replace* previous ones
-    Labstag\Swagger\CheckSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
-    Labstag\Swagger\SearchSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
-    Labstag\Swagger\GuardSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
-    Labstag\Swagger\ActionsSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
-    Labstag\Swagger\AttachmentSwaggerDecorator:
-      decorates: 'api_platform.swagger.normalizer.api_gateway'
+    Labstag\OpenApi\ActionsOpenApi:
+      decorates: api_platform.openapi.factory
+    Labstag\OpenApi\AttachmentOpenApi:
+      decorates: api_platform.openapi.factory
+    Labstag\OpenApi\CheckOpenApi:
+      decorates: api_platform.openapi.factory
+    Labstag\OpenApi\GuardOpenApi:
+      decorates: api_platform.openapi.factory
+    Labstag\OpenApi\SearchOpenApi:
+      decorates: api_platform.openapi.factory
     Labstag\Reader\UploadAnnotationReader:
       arguments: ["@annotations.reader"]
 

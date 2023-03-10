@@ -6,14 +6,17 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Show;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\ShowType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShowParagraph extends ParagraphLib
 {
-    public function getCode($show): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($show);
+        unset($entityParagraphLib);
 
         return 'post/show';
     }
@@ -43,19 +46,21 @@ class ShowParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Show $show)
+    public function show(Show $show): ?Response
     {
-        $all = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug = $routeParam['slug'] ?? null;
-        /** @var PostRepository $entityRepository */
-        $entityRepository = $this->getRepository(Post::class);
-        $post = $entityRepository->findOneBy(
+        $slug       = $routeParam['slug'] ?? null;
+        /** @var PostRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
+        $post                       = $serviceEntityRepositoryLib->findOneBy(
             ['slug' => $slug]
         );
 
         if (!$post instanceof Post) {
-            return;
+            return null;
         }
 
         return $this->render(

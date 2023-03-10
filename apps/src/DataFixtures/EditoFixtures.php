@@ -37,19 +37,19 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $users = $this->userRepository->findAll();
         $edito = new Edito();
-        $meta = new Meta();
+        $meta  = new Meta();
         $meta->setEdito($edito);
         $this->setMeta($meta);
-        $old = clone $edito;
+        $old    = clone $edito;
         $random = $generator->numberBetween(5, 50);
         $edito->setTitle($generator->unique()->text($random));
-        // @var string $content
+        /** @var string $content */
         $content = $generator->paragraphs(random_int(4, 10), true);
         $edito->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $edito->setPublished($generator->unique()->dateTime('now'));
         $this->addReference('edito_'.$index, $edito);
         $tabIndex = array_rand($users);
-        // @var User $user
+        /** @var User $user */
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
         $this->upload($edito, $generator);

@@ -2,9 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Category;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,9 +25,7 @@ class CategoryController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_category_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_category_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -36,9 +36,7 @@ class CategoryController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_category_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_category_preview', methods: ['GET'])]
     public function showOrPreview(Category $category): Response
@@ -50,9 +48,14 @@ class CategoryController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Category::class);
+        $domainLib = $this->domainService->getDomain(Category::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 
     /**

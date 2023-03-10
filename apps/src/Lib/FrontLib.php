@@ -2,41 +2,33 @@
 
 namespace Labstag\Lib;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Labstag\Repository\PageRepository;
-use Symfony\Component\HttpFoundation\Request;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
 abstract class FrontLib
 {
-
-    protected Request $request;
-
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected EntityManagerInterface $entityManager,
         protected PageRepository $pageRepository,
         protected RequestStack $requestStack,
         protected RouterInterface $router
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
     }
 
-    protected function getMeta($metas, $meta)
+    protected function getMeta(array|Collection $metas, array $meta): array
     {
         foreach ($metas as $entity) {
             $meta['description'] = $entity->getDescription();
-            $meta['keywords'] = $entity->getKeywords();
-            $meta['title'] = $entity->getTitle();
+            $meta['keywords']    = $entity->getKeywords();
+            $meta['title']       = $entity->getTitle();
         }
 
         return $meta;
-    }
-
-    protected function getRepository(string $entity): EntityRepository
-    {
-        return $this->entityManager->getRepository($entity);
     }
 }

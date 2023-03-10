@@ -2,39 +2,36 @@
 
 namespace Labstag\Entity\Block;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\Block\ParagraphRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="block_paragraph")
- *
- * @ORM\Entity(repositoryClass=ParagraphRepository::class)
- */
-class Paragraph implements Stringable
+#[ORM\Entity(repositoryClass: ParagraphRepository::class)]
+#[ORM\Table(name: 'block_paragraph')]
+#[ApiResource(routePrefix: '/block')]
+class Paragraph implements Stringable, BlockInterface, EntityInterface
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="paragraphs", cascade={"persist"})
-     */
-    private $block;
+    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'paragraphs', cascade: ['persist'])]
+    private ?Block $block = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
     public function __toString(): string
     {
-        return (string) $this->getBlock()->getTitle();
+        /** @var Block $block */
+        $block = $this->getBlock();
+
+        return (string) $block->getTitle();
     }
 
     public function getBlock(): ?Block

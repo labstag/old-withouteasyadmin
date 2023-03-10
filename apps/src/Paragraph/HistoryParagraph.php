@@ -6,15 +6,16 @@ use Labstag\Entity\History as EntityHistory;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\History;
 use Labstag\Form\Admin\Paragraph\HistoryType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class HistoryParagraph extends ParagraphLib
 {
-    public function getCode($history): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($history);
+        unset($entityParagraphLib);
 
         return 'history';
     }
@@ -46,9 +47,13 @@ class HistoryParagraph extends ParagraphLib
 
     public function show(History $history): Response
     {
-        /** @var HistoryRepository $entityRepository */
-        $entityRepository = $this->getRepository(EntityHistory::class);
-        $histories = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        /** @var HistoryRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityHistory::class);
+        $histories                  = $serviceEntityRepositoryLib->getLimitOffsetResult(
+            $serviceEntityRepositoryLib->findPublier(),
+            5,
+            0
+        );
 
         return $this->render(
             $this->getTemplateFile($this->getcode($history)),

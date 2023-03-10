@@ -2,9 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Libelle;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,9 +25,7 @@ class LibelleController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_libelle_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_libelle_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -36,9 +36,7 @@ class LibelleController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_libelle_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_libelle_preview', methods: ['GET'])]
     public function showOrPreview(Libelle $libelle): Response
@@ -50,8 +48,13 @@ class LibelleController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Libelle::class);
+        $domainLib = $this->domainService->getDomain(Libelle::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

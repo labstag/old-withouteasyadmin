@@ -2,6 +2,8 @@
 
 namespace Labstag\Entity;
 
-class Profil extends User
+use Labstag\Interfaces\EntityInterface;
+
+class Profil extends User implements EntityInterface
 {
 }

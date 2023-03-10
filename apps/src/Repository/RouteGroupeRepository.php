@@ -14,15 +14,15 @@ class RouteGroupeRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, RouteGroupe::class);
     }
 
-    public function findRoute(Groupe $groupe, string $route)
+    public function findRoute(Groupe $groupe, ?string $route): mixed
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $queryBuilder->leftJoin(
-            'a.refgroupe',
+            'a.groupe',
             'g'
         );
         $queryBuilder->leftJoin(
-            'a.refroute',
+            'a.route',
             'r'
         );
         $queryBuilder->where(

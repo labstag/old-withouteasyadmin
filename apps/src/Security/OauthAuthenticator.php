@@ -22,12 +22,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class OauthAuthenticator extends AbstractAuthenticator
@@ -40,11 +40,6 @@ class OauthAuthenticator extends AbstractAuthenticator
     final public const LOGIN_ROUTE = 'app_login';
 
     protected string $oauthCode;
-
-    protected Request $request;
-
-    // @var string
-    protected $route;
 
     public function __construct(
         protected ErrorService $errorService,
@@ -59,20 +54,16 @@ class OauthAuthenticator extends AbstractAuthenticator
         protected UserRepository $userRepository
     )
     {
-        // @var Request $request
-        $this->request = $this->requestStack->getCurrentRequest();
-
-        $attributes = $this->request->attributes;
-        $this->oauthCode = $this->setOauthCode($attributes);
+        $this->oauthCode = $this->setOauthCode();
     }
 
     public function authenticate(Request $request): Passport
     {
-        // @var AbstractProvider $provider
-        $provider = $this->oauthService->setProvider($this->oauthCode);
-        $attributes = $request->attributes->all();
-        $query = $request->query->all();
-        $session = $request->getSession();
+        /** @var AbstractProvider $provider */
+        $provider    = $this->oauthService->setProvider($this->oauthCode);
+        $attributes  = $request->attributes->all();
+        $query       = $request->query->all();
+        $session     = $request->getSession();
         $oauth2state = $session->get('oauth2state');
         if (!$provider instanceof AbstractProvider) {
             throw new CustomUserMessageAuthenticationException('No API token provided');
@@ -83,19 +74,18 @@ class OauthAuthenticator extends AbstractAuthenticator
         }
 
         try {
-            // @var AccessToken $tokenProvider
+            /** @var AccessToken $accessToken */
             $accessToken = $provider->getAccessToken(
                 'authorization_code',
                 [
                     'code' => $query['code'],
                 ]
             );
-            // @var mixed $userOauth
             $resourceOwner = $provider->getResourceOwner($accessToken);
-            $data = $resourceOwner->toArray();
-            $client = $attributes['_route_params']['oauthCode'];
-            $identity = $this->oauthService->getIdentity($data, $client);
-            $user = $this->userRepository->findOauth(
+            $data          = $resourceOwner->toArray();
+            $client        = $attributes['_route_params']['oauthCode'];
+            $identity      = $this->oauthService->getIdentity($data, $client);
+            $user          = $this->userRepository->findOauth(
                 $identity,
                 $client
             );
@@ -117,7 +107,7 @@ class OauthAuthenticator extends AbstractAuthenticator
     ): ?Response
     {
         if ($request->hasSession()) {
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $authenticationException);
+            $request->getSession()->set(SecurityRequestAttributes::AUTHENTICATION_ERROR, $authenticationException);
         }
 
         $url = $this->getLoginUrl($request);
@@ -145,12 +135,10 @@ class OauthAuthenticator extends AbstractAuthenticator
     public function supports(Request $request): ?bool
     {
         $session = $request->getSession()->all();
-        $route = $request->attributes->get('_route');
-        $this->route = $route;
-
-        $token = $this->tokenStorage->getToken();
-        $test1 = 'connect_check' === $route && !array_key_exists('link', $session);
-        $test2 = (is_null($token) || !$token->getUser() instanceof User);
+        $route   = $request->attributes->get('_route');
+        $token   = $this->tokenStorage->getToken();
+        $test1   = 'connect_check' === $route && !array_key_exists('link', $session);
+        $test2   = (is_null($token) || !$token->getUser() instanceof User);
 
         return $test1 && $test2;
     }
@@ -162,8 +150,12 @@ class OauthAuthenticator extends AbstractAuthenticator
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 
-    protected function setOauthCode(ParameterBag $parameterBag): string
+    protected function setOauthCode(): string
     {
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        /** @var ParameterBag $parameterBag */
+        $parameterBag = $request->attributes;
         if ($parameterBag->has('oauthCode')) {
             return $parameterBag->get('oauthCode');
         }

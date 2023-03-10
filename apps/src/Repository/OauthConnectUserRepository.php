@@ -31,7 +31,7 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
         }
 
         $dql = $this->createQueryBuilder('p');
-        $dql->where('p.refuser! = :iduser');
+        $dql->where('p.user! = :iduser');
         $dql->andWhere('p.identity = :identity');
         $dql->andWhere('p.name = :name');
         $dql->setParameters(
@@ -53,7 +53,7 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
 
         $dql = $this->createQueryBuilder('p');
         $dql->where('p.name = :name');
-        $dql->andWhere('p.refuser = :iduser');
+        $dql->andWhere('p.user = :iduser');
         $dql->setParameters(
             [
                 'iduser' => (string) $user->getId(),

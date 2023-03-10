@@ -7,6 +7,8 @@ use Labstag\Entity\Groupe;
 use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\Search\GroupeSearch;
@@ -17,33 +19,34 @@ class GroupeDomain extends DomainLib
     public function __construct(
         protected GroupeRequestHandler $groupeRequestHandler,
         protected GroupeRepository $groupeRepository,
+        protected GroupeSearch $groupeSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Groupe::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->groupeRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->groupeRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): GroupeSearch
     {
-        return new GroupeSearch();
+        return $this->groupeSearch;
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchGroupeType::class;
     }
@@ -64,7 +67,7 @@ class GroupeDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return GroupeType::class;
     }

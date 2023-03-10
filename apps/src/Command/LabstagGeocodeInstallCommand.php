@@ -5,6 +5,7 @@ namespace Labstag\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Lib\CommandLib;
 use Labstag\Service\GeocodeService;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -17,11 +18,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagGeocodeInstallCommand extends CommandLib
 {
     public function __construct(
+        RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected GeocodeService $geocodeService
     )
     {
-        parent::__construct($entityManager);
+        parent::__construct($repositoryService, $entityManager);
     }
 
     protected function configure(): void
@@ -35,7 +37,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
         $symfonyStyle = new SymfonyStyle($input, $output);
         $symfonyStyle->title('Récupération des code postaux');
 
-        $country = $input->getArgument('country');
+        $country = (string) $input->getArgument('country');
         if (empty($country)) {
             $symfonyStyle->note(
                 sprintf(
@@ -48,7 +50,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
         }
 
         $csv = $this->geocodeService->csv($country);
-        if (0 == $csv) {
+        if ([] == $csv) {
             $symfonyStyle->warning(
                 ['fichier inexistant']
             );
@@ -57,7 +59,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
         }
 
         $progressBar = new ProgressBar($output, is_countable($csv) ? count($csv) : 0);
-        $table = $this->geocodeService->tables($csv);
+        $table       = $this->geocodeService->tables($csv);
         $progressBar->start();
         foreach ($table as $row) {
             $this->geocodeService->add($row);

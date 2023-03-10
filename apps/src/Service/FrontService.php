@@ -2,9 +2,12 @@
 
 namespace Labstag\Service;
 
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
@@ -24,45 +27,56 @@ class FrontService
         'error_controller::preview',
     ];
 
-    // @var null|Request
-    protected $request;
-
     public function __construct(
-        protected $frontclass,
-        protected Environment $environment,
+        protected RewindableGenerator $rewindableGenerator,
+        protected Environment $twigEnvironment,
         protected RequestStack $requestStack,
         protected UrlGeneratorInterface $urlGenerator,
         protected AttachmentRepository $attachmentRepository
     )
     {
-        $this->request = $this->requestStack->getCurrentRequest();
     }
 
-    public function configMeta($config, $meta)
+    public function configMeta(
+        array $config,
+        array $meta
+    ): array
     {
-        $meta = $this->configMetaImage($meta);
-        $meta = $this->configMetaRobots($meta);
-        $meta = $this->configMetaTitle($config, $meta);
-        $meta = $this->configMetaLocale($config, $meta);
+        $functions = [
+            'configMetaImage',
+            'configMetaRobots',
+            'configMetaTitle',
+            'configMetaLocale',
+            'configMetaDescription',
+        ];
 
-        return $this->configMetaDescription($meta);
+        foreach ($functions as $function) {
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $meta = call_user_func_array($callable, [$config, $meta]);
+        }
+
+        return $meta;
     }
 
-    public function setBreadcrumb($content)
+    public function setBreadcrumb(?FrontInterface $front): array
     {
         $breadcrumb = [];
-        foreach ($this->frontclass as $row) {
-            $breadcrumb = $row->setBreadcrumb($content, $breadcrumb);
+        foreach ($this->rewindableGenerator as $row) {
+            $breadcrumb = $row->setBreadcrumb($front, $breadcrumb);
         }
 
         return array_reverse($breadcrumb);
     }
 
-    public function setMeta($content)
+    public function setMeta(?FrontInterface $front): array
     {
         $meta = [];
-        foreach ($this->frontclass as $row) {
-            $meta = $row->setMeta($content, $meta);
+        foreach ($this->rewindableGenerator as $row) {
+            $meta = $row->setMeta($front, $meta);
         }
 
         foreach ($meta as $key => $value) {
@@ -74,12 +88,11 @@ class FrontService
         return $meta;
     }
 
-    public function setMetatags($meta): void
+    public function setMetatags(array $meta): void
     {
-        $metatags = [];
+        $metatags             = [];
         $meta['twitter:card'] = 'summary_large_image';
-        $meta['og:type'] = 'website';
-
+        $meta['og:type']      = 'website';
         ksort($meta);
         foreach ($meta as $key => $value) {
             if ('' == $value || is_null($value) || 'title' == $key) {
@@ -101,21 +114,12 @@ class FrontService
             ];
         }
 
-        $this->environment->AddGlobal('sitemetatags', $metatags);
+        $this->twigEnvironment->AddGlobal('sitemetatags', $metatags);
     }
 
-    private function arrayKeyExists(array $var, $data): bool
+    protected function configMetaDescription(array $config, array $meta): array
     {
-        $find = 0;
-        foreach ($var as $name) {
-            $find = (int) array_key_exists($name, $data);
-        }
-
-        return 0 != $find;
-    }
-
-    private function configMetaDescription($meta)
-    {
+        unset($config);
         $tests = [
             'og:description',
             'twitter:description',
@@ -124,25 +128,26 @@ class FrontService
             return $meta;
         }
 
-        $meta['og:description'] = $meta['description'];
+        $meta['og:description']      = $meta['description'];
         $meta['twitter:description'] = $meta['description'];
 
         return $meta;
     }
 
-    private function configMetaImage($meta)
+    protected function configMetaImage(array $config, array $meta): array
     {
-        $imageDefault = $this->attachmentRepository->getImageDefault();
-        $this->environment->AddGlobal('imageglobal', $imageDefault);
-        if (!isset($meta['image']) || is_null($imageDefault) || is_null($imageDefault->getName())) {
+        unset($config);
+        $attachment = $this->attachmentRepository->getImageDefault();
+        $this->twigEnvironment->AddGlobal('imageglobal', $attachment);
+        if (!isset($meta['image']) || is_null($attachment) || is_null($attachment->getName())) {
             return $meta;
         }
 
-        $image = $meta['image'] ?? $imageDefault->getName();
+        $image = $meta['image'] ?? $attachment->getName();
 
-        $pathPackage = new PathPackage('/', new EmptyVersionStrategy());
-        $url = $pathPackage->getUrl($image);
-        $meta['og:image'] = $url;
+        $pathPackage           = new PathPackage('/', new EmptyVersionStrategy());
+        $url                   = $pathPackage->getUrl($image);
+        $meta['og:image']      = $url;
         $meta['twitter:image'] = $url;
         if (isset($meta['image'])) {
             unset($meta['image']);
@@ -151,14 +156,19 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaLocale($config, $meta)
+    protected function configMetaLocale(
+        array $config,
+        array $meta
+    ): array
     {
         if (!$this->isStateMeta()) {
             return $meta;
         }
 
-        $url = $this->request->getSchemeAndHttpHost();
-        $all = $this->request->attributes->all();
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        $url     = $request->getSchemeAndHttpHost();
+        $all     = $request->attributes->all();
         if (isset($all['_route']) && '' != $all['_route']) {
             $url = $this->urlGenerator->generate(
                 $all['_route'],
@@ -167,15 +177,16 @@ class FrontService
             );
         }
 
-        $meta['og:locale'] = $config['languagedefault'];
-        $meta['og:url'] = $url;
+        $meta['og:locale']   = $config['languagedefault'];
+        $meta['og:url']      = $url;
         $meta['twitter:url'] = $url;
 
         return $meta;
     }
 
-    private function configMetaRobots($meta)
+    protected function configMetaRobots(array $config, array $meta): array
     {
+        unset($config);
         if (!$this->isStateMeta()) {
             $meta['robots'] = 'noindex';
         }
@@ -183,7 +194,10 @@ class FrontService
         return $meta;
     }
 
-    private function configMetaTitle($config, $meta)
+    protected function configMetaTitle(
+        array $config,
+        array $meta
+    ): array
     {
         if (!array_key_exists('site_title', $config)) {
             return $meta;
@@ -197,15 +211,30 @@ class FrontService
             $meta['title'] = $title;
         }
 
-        $meta['og:title'] = $title;
+        $meta['og:title']      = $title;
         $meta['twitter:title'] = $title;
 
         return $meta;
     }
 
-    private function isStateMeta()
+    private function arrayKeyExists(
+        array $var,
+        array $data
+    ): bool
     {
-        $controller = $this->request->attributes->get('_controller');
+        $find = 0;
+        foreach ($var as $name) {
+            $find = (int) array_key_exists($name, $data);
+        }
+
+        return 0 != $find;
+    }
+
+    private function isStateMeta(): bool
+    {
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $controller = $request->attributes->get('_controller');
         preg_match(self::ADMIN_CONTROLLER, (string) $controller, $matches);
 
         return 0 == count($matches) || !in_array($controller, self::ERROR_CONTROLLER);

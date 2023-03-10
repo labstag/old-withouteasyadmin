@@ -3,7 +3,9 @@
 namespace Labstag\Paragraph;
 
 use Embed\Embed;
+use Embed\Extractor;
 use Exception;
+use finfo;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
@@ -15,7 +17,12 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\VideoType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Repository\AttachmentRepository;
+use Labstag\Repository\Paragraph\VideoRepository;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -24,23 +31,11 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class VideoParagraph extends ParagraphLib
 {
-    public function getCode($video): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($video);
+        unset($entityParagraphLib);
 
         return 'video';
-    }
-
-    public function getData(Video $video)
-    {
-        $url = $video->getUrl();
-        if ('' == $url) {
-            return [];
-        }
-
-        $embed = new Embed();
-
-        return $embed->get($url);
     }
 
     public function getEntity(): string
@@ -68,27 +63,32 @@ class VideoParagraph extends ParagraphLib
         return true;
     }
 
-    public function setData(Paragraph $paragraph)
+    public function setData(Paragraph $paragraph): void
     {
         /** @var VideoRepository $videoRepository */
         $videoRepository = $this->entityManager->getRepository(Video::class);
         /** @var AttachmentRepository $attachmentRepository */
         $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
-        $collection = $paragraph->getVideos();
-        $video = $collection[0];
-        $url = $video->getUrl();
+        $videos               = $paragraph->getVideos();
+        /** @var Video $video */
+        $video = $videos[0];
+        $url   = (string) $video->getUrl();
         if ('' == $url) {
             return;
         }
 
+        $slug = null;
+
         try {
             $embed = new Embed();
-            $info = $embed->get($url);
-            $image = $info->image->__toString();
-            $title = $info->title;
+            $info  = $embed->get($url);
+            /** @var UriInterface $infoimage */
+            $infoimage    = $info->image;
+            $image        = $infoimage->__toString();
+            $title        = (string) $info->title;
             $asciiSlugger = new AsciiSlugger();
             $video->setTitle($title);
-            $slug = $asciiSlugger->slug($video->getTitle());
+            $slug = (string) $asciiSlugger->slug($title);
             $video->setSlug($slug);
             $videoRepository->add($video);
         } catch (Exception) {
@@ -115,18 +115,24 @@ class VideoParagraph extends ParagraphLib
         }
     }
 
-    public function show(Video $video): Response
+    public function show(Video $video): ?Response
     {
-        $data = $this->getData($video);
-
-        $package = new Package(new EmptyVersionStrategy());
-        $image = ($video->getImage() instanceof Attachment) ? $package->getUrl('/'.$video->getImage()->getName()) : null;
-
-        if (is_null($image)) {
-            $image = $data->image->__toString();
+        $extractor = $this->getData($video);
+        if (is_null($extractor)) {
+            return null;
         }
 
-        $metas = $data->getMetas();
+        $package    = new Package(new EmptyVersionStrategy());
+        $attachment = $video->getImage();
+        $image      = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
+
+        if (is_null($image)) {
+            /** @var UriInterface $extractorImage */
+            $extractorImage = $extractor->image;
+            $image          = $extractorImage->__toString();
+        }
+
+        $metas = $extractor->getMetas();
 
         $datas = $metas->get('og:video:url');
         $embed = (0 != count($datas)) ? $datas[0] : null;
@@ -136,7 +142,7 @@ class VideoParagraph extends ParagraphLib
             [
                 'paragraph' => $video,
                 'image'     => $image,
-                'data'      => $data,
+                'data'      => $extractor,
                 'embed'     => $embed,
             ]
         );
@@ -158,15 +164,39 @@ class VideoParagraph extends ParagraphLib
         ];
     }
 
-    private function setDataAnnotation($annotation, $image, $video, $repository, $slug)
+    private function getData(Video $video): ?Extractor
     {
+        $url = (string) $video->getUrl();
+        if ('' == $url) {
+            return null;
+        }
+
+        $embed = new Embed();
+
+        return $embed->get($url);
+    }
+
+    private function setDataAnnotation(
+        mixed $annotation,
+        string $image,
+        Video $video,
+        ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
+        string $slug
+    ): void
+    {
+        /** @var finfo $finfo */
+        $finfo         = finfo_open(FILEINFO_MIME_TYPE);
+        $fileDirectory = $this->getParameter('file_directory');
+        if (!is_string($fileDirectory)) {
+            return;
+        }
+
         try {
-            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $path    = $fileDirectory.'/'.$annotation->getPath();
             $content = file_get_contents($image);
-            // @var resource $tmpfile
+            /** @var resource $tmpfile */
             $tmpfile = tmpfile();
-            $data = stream_get_meta_data($tmpfile);
+            $data    = stream_get_meta_data($tmpfile);
             file_put_contents($data['uri'], $content);
             $file = new UploadedFile(
                 $data['uri'],
@@ -184,14 +214,11 @@ class VideoParagraph extends ParagraphLib
                 $path,
                 $clientOriginalName
             );
-            $file = $path.'/'.$clientOriginalName;
-
-            if (isset($clientOriginalName)) {
-                $attachment = $this->fileService->setAttachment($file);
-                $repository->add($attachment);
-                $video->setImage($attachment);
-                $repository->add($video);
-            }
+            $file       = $path.'/'.$clientOriginalName;
+            $attachment = $this->fileService->setAttachment($file);
+            $serviceEntityRepositoryLib->add($attachment);
+            $video->setImage($attachment);
+            $serviceEntityRepositoryLib->add($video);
         } catch (Exception $exception) {
             $this->errorService->set($exception);
             echo $exception->getMessage();

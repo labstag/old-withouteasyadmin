@@ -2,28 +2,29 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\AddressUserRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=AddressUserRepository::class)
- */
-class AddressUser extends Address
+#[ORM\Entity(repositoryClass: AddressUserRepository::class)]
+#[ApiResource]
+class AddressUser extends Address implements EntityInterface
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="addressUsers", cascade={"persist"})
-     */
-    protected $refuser;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addressUsers', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refuser_id')]
+    protected ?UserInterface $user = null;
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

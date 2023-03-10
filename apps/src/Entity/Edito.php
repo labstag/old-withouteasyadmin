@@ -2,96 +2,70 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
+use ApiPlatform\Metadata\ApiResource;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
-use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\EditoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=EditoRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Uploadable
- */
-class Edito implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: EditoRepository::class)]
+#[ApiResource]
+class Edito implements Stringable, FrontInterface, EntityTrashInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\NotBlank
-     */
-    protected $content;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'editos', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'fond_id')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @UploadableField(filename="fond", path="edito/fond", slug="title")
-     */
-    protected $file;
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank]
+    private ?string $content = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="editos", cascade={"persist"})
-     */
-    protected $fond;
+    #[ORM\Column(name: 'published', type: 'datetime')]
+    private ?DateTimeInterface $dateTime = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[UploadableField(filename: 'fond', path: 'edito/fond', slug: 'title')]
+    private mixed $file;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="editos", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
-    protected $refuser;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
-     *
-     * @Assert\NotBlank
-     */
-    protected $title;
+    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'edito', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $metas;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $metas;
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'edito', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private Collection $paragraphs;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="edito", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
-    private $paragraphs;
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Assert\NotBlank]
+    private string $title;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $published;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'editos', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    private ?UserInterface $user = null;
 
     public function __construct()
     {
         $this->paragraphs = new ArrayCollection();
-        $this->metas = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -124,14 +98,14 @@ class Edito implements Stringable
         return $this->content;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
 
     public function getFond(): ?Attachment
     {
-        return $this->fond;
+        return $this->attachment;
     }
 
     public function getId(): ?string
@@ -157,12 +131,12 @@ class Edito implements Stringable
 
     public function getPublished(): ?DateTimeInterface
     {
-        return $this->published;
+        return $this->dateTime;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getTitle(): ?string
@@ -197,7 +171,7 @@ class Edito implements Stringable
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 
@@ -206,21 +180,21 @@ class Edito implements Stringable
 
     public function setFond(?Attachment $attachment): self
     {
-        $this->fond = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }
 
     public function setPublished(DateTimeInterface $dateTime): self
     {
-        $this->published = $dateTime;
+        $this->dateTime = $dateTime;
 
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

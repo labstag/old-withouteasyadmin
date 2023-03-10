@@ -5,6 +5,7 @@ namespace Labstag\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Lib\CommandLib;
 use Labstag\Service\GuardService;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -16,11 +17,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class LabstagGuardRouteCommand extends CommandLib
 {
     public function __construct(
+        RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected GuardService $guardService
     )
     {
-        parent::__construct($entityManager);
+        parent::__construct($repositoryService, $entityManager);
     }
 
     protected function configure(): void
@@ -34,7 +36,7 @@ class LabstagGuardRouteCommand extends CommandLib
         $symfonyStyle->title('Installation du système de droit utilisateurs');
         $symfonyStyle->section('Enregistrement des routes');
 
-        $all = $this->guardService->all();
+        $all         = $this->guardService->all();
         $progressBar = new ProgressBar($output, is_countable($all) ? count($all) : 0);
         $progressBar->start();
         foreach (array_keys($all) as $name) {
@@ -61,7 +63,7 @@ class LabstagGuardRouteCommand extends CommandLib
                 ['route'],
                 $table
             );
-            $table = $this->guardService->delete();
+            $this->guardService->delete();
             $symfonyStyle->newLine();
             $symfonyStyle->success('Fin de suppression');
         }

@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,99 +12,69 @@ use Labstag\Entity\Paragraph\Image;
 use Labstag\Entity\Paragraph\TextImage;
 use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=AttachmentRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-class Attachment
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: AttachmentRepository::class)]
+#[ApiResource]
+class Attachment implements EntityTrashInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $editos;
+    #[ORM\OneToMany(targetEntity: Bookmark::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $bookmarks;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $code = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $mimeType;
+    #[ORM\OneToMany(targetEntity: Edito::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $editos;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $name;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="fond", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $noteInternes;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $mimeType = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $posts;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    protected $size;
+    #[ORM\OneToMany(targetEntity: Memo::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $noteInternes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="avatar", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $users;
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $paragraphImages;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="img", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $bookmarks;
+    #[ORM\OneToMany(targetEntity: TextImage::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $paragraphTextImages;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $code;
+    #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $paragraphVideos;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $paragraphImages;
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $posts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $paragraphTextImages;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $size = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="image", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $paragraphVideos;
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'avatar', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $users;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->posts = new ArrayCollection();
-        $this->editos = new ArrayCollection();
-        $this->noteInternes = new ArrayCollection();
-        $this->bookmarks = new ArrayCollection();
-        $this->paragraphVideos = new ArrayCollection();
-        $this->paragraphImages = new ArrayCollection();
+        $this->users               = new ArrayCollection();
+        $this->posts               = new ArrayCollection();
+        $this->editos              = new ArrayCollection();
+        $this->noteInternes        = new ArrayCollection();
+        $this->bookmarks           = new ArrayCollection();
+        $this->paragraphVideos     = new ArrayCollection();
+        $this->paragraphImages     = new ArrayCollection();
         $this->paragraphTextImages = new ArrayCollection();
     }
 
@@ -237,25 +208,16 @@ class Attachment
         return $this->noteInternes;
     }
 
-    /**
-     * @return Collection<int, Video>
-     */
     public function getParagraphImages(): Collection
     {
         return $this->paragraphImages;
     }
 
-    /**
-     * @return Collection<int, Video>
-     */
     public function getParagraphTextImages(): Collection
     {
         return $this->paragraphTextImages;
     }
 
-    /**
-     * @return Collection<int, Video>
-     */
     public function getParagraphVideos(): Collection
     {
         return $this->paragraphVideos;

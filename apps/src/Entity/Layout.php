@@ -2,53 +2,41 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Block\Custom;
+use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\LayoutRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=LayoutRepository::class)
- */
-class Layout
+#[ORM\Entity(repositoryClass: LayoutRepository::class)]
+#[ApiResource]
+class Layout implements FrontInterface, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Custom::class, inversedBy="layouts", cascade={"persist"})
-     */
-    private $custom;
+    #[ORM\ManyToOne(targetEntity: Custom::class, inversedBy: 'layouts', cascade: ['persist'])]
+    private ?Custom $custom = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="layout", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
-    private $paragraphs;
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'layout', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private Collection $paragraphs;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $url = [];
+    #[ORM\Column(type: 'array', nullable: true)]
+    private ?array $url = [];
 
     public function __construct()
     {

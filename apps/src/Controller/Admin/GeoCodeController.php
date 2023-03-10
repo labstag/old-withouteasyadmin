@@ -2,9 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,9 +25,7 @@ class GeoCodeController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_geocode_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_geocode_index', methods: ['GET'])]
     public function index(): Response
@@ -36,9 +36,7 @@ class GeoCodeController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_geocode_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_geocode_preview', methods: ['GET'])]
     public function showOrPreview(GeoCode $geoCode): Response
@@ -50,8 +48,13 @@ class GeoCodeController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(GeoCode::class);
+        $domainLib = $this->domainService->getDomain(GeoCode::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

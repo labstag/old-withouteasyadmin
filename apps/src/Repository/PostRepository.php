@@ -8,9 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Post;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_post_trash")
- */
+#[Trashable(url: 'admin_post_trash')]
 class PostRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -18,7 +16,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Post::class);
     }
 
-    public function findDateArchive()
+    public function findDateArchive(): mixed
     {
         $query = $this->createQueryBuilder('p');
         $query->select(
@@ -40,7 +38,7 @@ class PostRepository extends ServiceEntityRepositoryLib
     public function findPublier(): Query
     {
         $query = $this->createQueryBuilder('p');
-        $query->innerjoin('p.refuser', 'u');
+        $query->innerjoin('p.user', 'u');
         $query->where(
             'p.state LIKE :state'
         );
@@ -52,10 +50,10 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierArchive($published): Query
+    public function findPublierArchive(int $published): Query
     {
         $query = $this->createQueryBuilder('p');
-        $query->innerjoin('p.refuser', 'u');
+        $query->innerjoin('p.user', 'u');
         $query->where('p.state LIKE :state');
         $query->andWhere("date_format(p.published,'%Y-%m') = :published");
         $query->orderBy('p.published', 'DESC');
@@ -69,12 +67,12 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierCategory($code): Query
+    public function findPublierCategory(string $code): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->where('p.state LIKE :state');
         $query->orderBy('p.published', 'DESC');
-        $query->leftJoin('p.refcategory', 'c');
+        $query->leftJoin('p.category', 'c');
         $query->andWhere('c.slug=:slug');
         $query->setParameters(
             [
@@ -86,7 +84,7 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierLibelle($code): Query
+    public function findPublierLibelle(string $code): Query
     {
         $query = $this->createQueryBuilder('p');
         $query->where('p.state LIKE :state');
@@ -103,10 +101,10 @@ class PostRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierUsername($username): Query
+    public function findPublierUsername(string $username): Query
     {
         $query = $this->createQueryBuilder('p');
-        $query->leftJoin('p.refuser', 'u');
+        $query->leftJoin('p.user', 'u');
         $query->where('p.state LIKE :state');
         $query->andWhere('u.username = :username');
         $query->orderBy('p.published', 'DESC');

@@ -3,41 +3,53 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\Chapter;
+use Labstag\Entity\History;
+use Labstag\Interfaces\FrontInterface;
 
 class ChapterFront extends HistoryFront
 {
-    public function setBreadcrumb($content, $breadcrumb)
+    public function setBreadcrumb(
+        ?FrontInterface $front,
+        array $breadcrumb
+    ): array
     {
-        if (!$content instanceof Chapter) {
+        if (!$front instanceof Chapter) {
             return $breadcrumb;
         }
 
+        /** @var History $history */
+        $history      = $front->getRefhistory();
         $breadcrumb[] = [
             'route' => $this->router->generate(
                 'front_history_chapter',
                 [
-                    'history' => $content->getRefhistory()->getSlug(),
-                    'chapter' => $content->getSlug(),
+                    'history' => $history->getSlug(),
+                    'chapter' => $front->getSlug(),
                 ]
             ),
-            'title' => $content->getName(),
+            'title' => $front->getName(),
         ];
 
-        return $this->setBreadcrumbHistory($content->getRefhistory(), $breadcrumb);
+        return $this->setBreadcrumbHistory($history, $breadcrumb);
     }
 
-    public function setMeta($content, $meta)
+    public function setMeta(
+        ?FrontInterface $front,
+        array $meta
+    ): array
     {
-        if (!$content instanceof Chapter) {
+        if (!$front instanceof Chapter) {
             return $meta;
         }
 
-        $history = $this->getMeta($content->getRefhistory()->getMetas(), $meta);
-        $chapter = $this->getMeta($content->getMetas(), $meta);
-        if (isset($history['title'])) {
-            $chapter['title'] = $chapter['title'].' - '.$history['title'];
+        /** @var History $history */
+        $history     = $front->getRefhistory();
+        $metahistory = $this->getMeta($history->getMetas(), $meta);
+        $meta        = $this->getMeta($front->getMetas(), $meta);
+        if (isset($metahistory['title'])) {
+            $meta['title'] = $meta['title'].' - '.$metahistory['title'];
         }
 
-        return $chapter;
+        return $meta;
     }
 }

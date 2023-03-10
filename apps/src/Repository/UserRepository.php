@@ -7,9 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\User;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_user_trash")
- */
+#[Trashable(url: 'admin_user_trash')]
 class UserRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -17,7 +15,10 @@ class UserRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, User::class);
     }
 
-    public function findOauth(string $identity, $name)
+    public function findOauth(
+        string $identity,
+        string $name
+    ): mixed
     {
         $query = $this->createQueryBuilder('u');
         $query->leftJoin('u.oauthConnectUsers', 'o');
@@ -52,7 +53,7 @@ class UserRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getOneOrNullResult();
     }
 
-    public function findUserName(string $field)
+    public function findUserName(string $field): mixed
     {
         $query = $this->createQueryBuilder('u');
         $query->where(

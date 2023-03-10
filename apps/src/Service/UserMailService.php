@@ -15,6 +15,7 @@ use Labstag\Repository\TemplateRepository;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locale;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserMailService
 {
@@ -29,17 +30,17 @@ class UserMailService
         protected TemplateRepository $templateRepository
     )
     {
-        $config = $dataService->getConfig();
+        $config       = $dataService->getConfig();
         $this->config = $config;
 
-        $code = 'languagedefault';
+        $code            = 'languagedefault';
         $languagedefault = $config[$code] ?? 'fr';
         Locale::setDefault($languagedefault);
     }
 
     public function changeEmailPrincipal(User $user): void
     {
-        // @var Template $template
+        /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'change-email-principal']
         );
@@ -55,7 +56,7 @@ class UserMailService
 
     public function changePassword(User $user): void
     {
-        // @var Template $template
+        /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'change-password']
         );
@@ -76,7 +77,7 @@ class UserMailService
     ): string
     {
         $dateTime = new DateTime();
-        $change = [
+        $change   = [
             'username' => $user->getUsername(),
             'datetime' => $dateTime->format('d/m/Y H:i'),
         ];
@@ -84,16 +85,16 @@ class UserMailService
         $change = array_merge($change, $otherchange);
 
         foreach ($change as $key => $after) {
-            $before = '%'.$key.'%';
+            $before  = '%'.$key.'%';
             $content = str_replace($before, $after, $content);
         }
 
         return $content;
     }
 
-    public function checkNewAddress(User $user, AddressUser $addressUser): void
+    public function checkNewAddress(UserInterface $user, AddressUser $addressUser): void
     {
-        // @var Template $template
+        /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-address']
         );
@@ -105,7 +106,7 @@ class UserMailService
             'address_street'  => $addressUser->getStreet(),
             'address_zipcode' => $addressUser->getZipcode(),
             'address_city'    => $addressUser->getCity(),
-            'address_country' => Countries::getName($addressUser->getCountry()),
+            'address_country' => Countries::getName((string) $addressUser->getCountry()),
             'address_gps'     => $addressUser->getGps(),
             'address_pmr'     => $addressUser->isPmr() ? 'Oui' : 'Non',
         ];
@@ -116,9 +117,9 @@ class UserMailService
         );
     }
 
-    public function checkNewLink(User $user, LinkUser $linkUser): void
+    public function checkNewLink(UserInterface $user, LinkUser $linkUser): void
     {
-        // @var Template $template
+        /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-link']
         );
@@ -138,7 +139,7 @@ class UserMailService
 
     public function checkNewMail(User $user, EmailUser $emailUser): void
     {
-        // @var Template $template
+        /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-mail']
         );
@@ -146,7 +147,7 @@ class UserMailService
             return;
         }
 
-        $url = $this->config['site_url'] ?? '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_email' => $url.$this->router->generate(
                 'app_confirm_mail',
@@ -164,11 +165,11 @@ class UserMailService
     }
 
     public function checkNewOauthConnectUser(
-        User $user,
+        UserInterface $user,
         OauthConnectUser $oauthConnectUser
     ): void
     {
-        // @var Template $template
+        /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-oauthconnectuser']
         );
@@ -188,7 +189,7 @@ class UserMailService
 
     public function checkNewPhone(User $user, PhoneUser $phoneUser): void
     {
-        // @var Template $template
+        /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-new-phone']
         );
@@ -196,7 +197,7 @@ class UserMailService
             return;
         }
 
-        $url = $this->config['site_url'] ?? '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_phone' => $url.$this->router->generate(
                 'app_confirm_phone',
@@ -215,7 +216,7 @@ class UserMailService
 
     public function lostPassword(User $user): void
     {
-        // @var Template $template
+        /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'lost-password']
         );
@@ -223,7 +224,7 @@ class UserMailService
             return;
         }
 
-        $url = $this->config['site_url'] ?? $url = '';
+        $url    = $this->config['site_url'] ?? $url = '';
         $change = [
             'url_change_password' => $url.$this->router->generate(
                 'app_changepassword',
@@ -241,7 +242,7 @@ class UserMailService
 
     public function newUser(User $user): void
     {
-        // @var Template $template
+        /** @var Template $template */
         $template = $this->templateRepository->findOneBy(
             ['code' => 'check-user']
         );
@@ -249,7 +250,7 @@ class UserMailService
             return;
         }
 
-        $url = $this->config['site_url'] ?? '';
+        $url    = $this->config['site_url'] ?? '';
         $change = [
             'url_confirm_user' => $url.$this->router->generate(
                 'app_confirm_user',
@@ -266,21 +267,22 @@ class UserMailService
     }
 
     private function setEmail(
-        $template,
-        User $user,
+        Template $template,
+        UserInterface $user,
         array $change = []
     ): void
     {
-        $html = $template->getHtml();
-        $txt = $template->getText();
-        $subject = $template->getName();
+        /** @var User $user */
+        $html  = (string) $template->getHtml();
+        $text  = (string) $template->getText();
+        $name  = (string) $template->getName();
         $email = $this->mailerService->createEmail(
             [
                 'html' => $this->changeValue($user, $html, $change),
-                'txt'  => $this->changeValue($user, $txt, $change),
+                'txt'  => $this->changeValue($user, $text, $change),
             ]
         );
-        $email->subject($subject);
+        $email->subject($name);
         $email->to($user->getEmail());
 
         $this->mailerService->send($email);

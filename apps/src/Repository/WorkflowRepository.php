@@ -13,7 +13,7 @@ class WorkflowRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Workflow::class);
     }
 
-    public function toDeleteEntities(array $entities)
+    public function toDeleteEntities(array $entities): mixed
     {
         $query = $this->createQueryBuilder('u');
         $query->where(
@@ -26,7 +26,7 @@ class WorkflowRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function toDeletetransition(string $entity, array $transitions)
+    public function toDeletetransition(string $entity, array $transitions): mixed
     {
         $query = $this->createQueryBuilder('u');
         $query->where(

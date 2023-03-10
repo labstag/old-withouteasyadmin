@@ -9,6 +9,7 @@ use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Provider\LinkedIn;
 use Omines\OAuth2\Client\Provider\Gitlab;
 use Rudolf\OAuth2\Client\Provider\Reddit;
+use RuntimeException;
 use Stevenmaguire\OAuth2\Client\Provider\Bitbucket;
 use Stevenmaguire\OAuth2\Client\Provider\Dropbox;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -99,7 +100,12 @@ class OauthService
         $file = __DIR__.'/../../json/oauth.json';
         $data = [];
         if (is_file($file)) {
-            $data = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode(
+                (string) file_get_contents($file),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
         }
 
         $this->configProvider = $data;
@@ -119,7 +125,11 @@ class OauthService
         }
     }
 
-    protected function generateProvider($clientName, $url, $oauth)
+    protected function generateProvider(
+        string $clientName,
+        string $url,
+        array $oauth
+    ): ?AbstractProvider
     {
         $params = [
             'clientId'     => $oauth['id'],
@@ -130,58 +140,102 @@ class OauthService
         return $this->generateStandardProvider($clientName, $params);
     }
 
-    protected function generateStandardProvider($clientName, $params)
+    protected function generateStandardProvider(string $clientName, array $params): ?AbstractProvider
     {
-        $provider = null;
-        $provider = $this->generateStandardProviderBitbucket($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderDiscord($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderDropbox($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderGithub($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderGitlab($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderGoogle($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderLinkedin($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderReddit($clientName, $params, $provider);
-        $provider = $this->generateStandardProviderSlack($clientName, $params, $provider);
+        $provider  = null;
+        $functions = [
+            'generateStandardProviderBitbucket',
+            'generateStandardProviderDiscord',
+            'generateStandardProviderDropbox',
+            'generateStandardProviderGithub',
+            'generateStandardProviderGitlab',
+            'generateStandardProviderGoogle',
+            'generateStandardProviderLinkedin',
+            'generateStandardProviderReddit',
+            'generateStandardProviderSlack',
+            'generateStandardProviderTwitch',
+        ];
 
-        return $this->generateStandardProviderTwitch($clientName, $params, $provider);
+        foreach ($functions as $function) {
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $provider = call_user_func_array($callable, [$clientName, $params, $provider]);
+        }
+
+        return $provider;
     }
 
-    protected function generateStandardProviderBitbucket($clientName, $params, $provider)
+    protected function generateStandardProviderBitbucket(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         return ('bitbucket' == $clientName) ? new Bitbucket($params) : $provider;
     }
 
-    protected function generateStandardProviderDiscord($clientName, $params, $provider)
+    protected function generateStandardProviderDiscord(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         return ('discord' == $clientName) ? new Discord($params) : $provider;
     }
 
-    protected function generateStandardProviderDropbox($clientName, $params, $provider)
+    protected function generateStandardProviderDropbox(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         return ('dropbox' == $clientName) ? new Dropbox($params) : $provider;
     }
 
-    protected function generateStandardProviderGithub($clientName, $params, $provider)
+    protected function generateStandardProviderGithub(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         return ('github' == $clientName) ? new Github($params) : $provider;
     }
 
-    protected function generateStandardProviderGitlab($clientName, $params, $provider)
+    protected function generateStandardProviderGitlab(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         return ('gitlab' == $clientName) ? new Gitlab($params) : $provider;
     }
 
-    protected function generateStandardProviderGoogle($clientName, $params, $provider)
+    protected function generateStandardProviderGoogle(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         return ('google' == $clientName) ? new Google($params) : $provider;
     }
 
-    protected function generateStandardProviderlinkedin($clientName, $params, $provider)
+    protected function generateStandardProviderlinkedin(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         return ('linkedin' == $clientName) ? new LinkedIn($params) : $provider;
     }
 
-    protected function generateStandardProviderReddit($clientName, $params, $provider)
+    protected function generateStandardProviderReddit(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         $params = array_merge(
             $params,
@@ -197,12 +251,20 @@ class OauthService
         return ('reddit' == $clientName) ? new Reddit($params) : $provider;
     }
 
-    protected function generateStandardProviderSlack($clientName, $params, $provider)
+    protected function generateStandardProviderSlack(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         return ('slack' == $clientName) ? new Slack($params) : $provider;
     }
 
-    protected function generateStandardProviderTwitch($clientName, $params, $provider)
+    protected function generateStandardProviderTwitch(
+        string $clientName,
+        array $params,
+        ?AbstractProvider $provider
+    ): ?AbstractProvider
     {
         return ('twitch' == $clientName) ? new TwitchHelix($params) : $provider;
     }
@@ -221,14 +283,19 @@ class OauthService
 
     protected function initProvider(string $clientName): AbstractProvider
     {
-        $code = strtoupper($clientName);
+        $code  = strtoupper($clientName);
         $oauth = $this->oauthActivated[strtolower($code)];
-        $url = 'https:'.$this->router->generate(
+        $url   = 'https:'.$this->router->generate(
             'connect_check',
             ['oauthCode' => $clientName],
             UrlGeneratorInterface::NETWORK_PATH
         );
 
-        return $this->generateProvider($clientName, $url, $oauth);
+        $provider = $this->generateProvider($clientName, $url, $oauth);
+        if (!$provider instanceof AbstractProvider) {
+            throw new RuntimeException('Provider not found');
+        }
+
+        return $provider;
     }
 }

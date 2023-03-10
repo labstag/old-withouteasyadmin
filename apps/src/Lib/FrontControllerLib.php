@@ -4,13 +4,14 @@ namespace Labstag\Lib;
 
 use Labstag\Entity\Block;
 use Labstag\Entity\Page;
+use Labstag\Repository\BlockRepository;
 use Labstag\Repository\PageRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class FrontControllerLib extends ControllerLib
 {
     public function page(
-        string $slug,
+        ?string $slug,
         PageRepository $pageRepository
     ): Response
     {
@@ -39,18 +40,20 @@ abstract class FrontControllerLib extends ControllerLib
         return parent::render($view, $parameters, $response);
     }
 
-    private function setParameters($parameters)
+    private function setParameters(array $parameters): array
     {
-        $blocksArray = $this->getRepository(Block::class)->getDataByRegion();
-        $content = null;
+        /** @var BlockRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Block::class);
+        $blocksArray                = $serviceEntityRepositoryLib->getDataByRegion();
+        $content                    = null;
         if (isset($parameters['content'])) {
             $content = $parameters['content'];
             unset($parameters['content']);
         }
 
-        $globals = $this->environment->getGlobals();
+        $globals = $this->twigEnvironment->getGlobals();
 
-        $config = $globals['config'] ?? $this->dataService->getConfig();
+        $config   = $globals['config'] ?? $this->dataService->getConfig();
         $tagsmeta = $config['meta'] ?? [];
         $tagsmeta = array_merge(
             $tagsmeta,
@@ -60,11 +63,11 @@ abstract class FrontControllerLib extends ControllerLib
         $config['meta'] = $this->frontService->configMeta($config, $tagsmeta);
 
         $this->frontService->setMetatags($config['meta']);
-        $this->environment->AddGlobal('config', $config);
+        $this->twigEnvironment->AddGlobal('config', $config);
 
         $parameters['blocks'] = [];
         foreach ($blocksArray as $key => $blocks) {
-            $key = ('content' == $key) ? 'main' : $key;
+            $key                        = ('content' == $key) ? 'main' : $key;
             $parameters['blocks'][$key] = [];
             foreach ($blocks as $block) {
                 $data = $this->blockService->showContent($block, $content);

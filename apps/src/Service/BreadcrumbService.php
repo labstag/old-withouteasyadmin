@@ -1,17 +1,11 @@
 <?php
 
-namespace Labstag\Singleton;
+namespace Labstag\Service;
 
-class BreadcrumbsSingleton
+class BreadcrumbService
 {
 
     protected array $data = [];
-
-    protected static $instance;
-
-    protected function __construct()
-    {
-    }
 
     public function add(string $title, string $route): void
     {
@@ -24,7 +18,7 @@ class BreadcrumbsSingleton
     public function addPosition(array $breadcrumbs, int $position): void
     {
         $newbreadcrumbs = [];
-        $integer = 0;
+        $integer        = 0;
         foreach ($this->data as $key => $row) {
             $newbreadcrumbs[$key] = $row;
             if ($position === $integer) {
@@ -45,15 +39,6 @@ class BreadcrumbsSingleton
     public function get(): array
     {
         return $this->data;
-    }
-
-    public static function getInstance(): ?BreadcrumbsSingleton
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new BreadcrumbsSingleton();
-        }
-
-        return self::$instance;
     }
 
     /**

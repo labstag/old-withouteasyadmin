@@ -15,9 +15,9 @@ class BlockType extends BlockAbstractTypeLib
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         $formType = $this->blockService->getTypeForm($formBuilder->getData());
-        $label = $this->blockService->getName($formBuilder->getData());
-        $field = $this->blockService->getEntityField($formBuilder->getData());
-        $show = $this->blockService->isShow($formBuilder->getData());
+        $label    = $this->blockService->getName($formBuilder->getData());
+        $field    = $this->blockService->getEntityField($formBuilder->getData());
+        $show     = $this->blockService->isShow($formBuilder->getData());
         $formBuilder->add(
             'title',
             TextType::class,
@@ -43,7 +43,7 @@ class BlockType extends BlockAbstractTypeLib
         );
         if ((!is_null($formType) || is_null($field)) && $show) {
             $formBuilder->add(
-                $field,
+                (string) $field,
                 CollectionType::class,
                 [
                     'label'         => $label,

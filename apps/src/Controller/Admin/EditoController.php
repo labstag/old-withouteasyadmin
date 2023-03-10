@@ -3,15 +3,17 @@
 namespace Labstag\Controller\Admin;
 
 use DateTime;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\EditoRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/edito')]
@@ -29,9 +31,7 @@ class EditoController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_edito_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_edito_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -50,6 +50,9 @@ class EditoController extends AdminControllerLib
     ): RedirectResponse
     {
         $user = $security->getUser();
+        if (is_null($user)) {
+            return $this->redirectToRoute('admin_edito_index');
+        }
 
         $edito = new Edito();
         $edito->setPublished(new DateTime());
@@ -63,9 +66,7 @@ class EditoController extends AdminControllerLib
         return $this->redirectToRoute('admin_edito_edit', ['id' => $edito->getId()]);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_edito_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_edito_preview', methods: ['GET'])]
     public function showOrPreview(Edito $edito): Response
@@ -77,8 +78,13 @@ class EditoController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Edito::class);
+        $domainLib = $this->domainService->getDomain(Edito::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

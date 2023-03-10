@@ -47,7 +47,7 @@ class UserType extends SearchAbstractTypeLib
             ]
         );
         $formBuilder->add(
-            'refgroup',
+            'groupe',
             SearchableType::class,
             [
                 'required' => false,

@@ -5,8 +5,11 @@ namespace Labstag\Domain;
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\BlockType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
+use Labstag\Search\BlockSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BlockDomain extends DomainLib
@@ -14,25 +17,31 @@ class BlockDomain extends DomainLib
     public function __construct(
         protected BlockRequestHandler $blockRequestHandler,
         protected BlockRepository $blockRepository,
+        protected BlockSearch $blockSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Block::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->blockRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->blockRequestHandler;
+    }
+
+    public function getSearchData(): BlockSearch
+    {
+        return $this->blockSearch;
     }
 
     /**
@@ -48,7 +57,7 @@ class BlockDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return BlockType::class;
     }

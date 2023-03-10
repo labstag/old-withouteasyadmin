@@ -6,6 +6,7 @@ use Labstag\Entity\Attachment;
 use Labstag\Lib\ApiControllerLib;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
@@ -29,24 +30,20 @@ class AttachmentController extends ApiControllerLib
             return new JsonResponse($return);
         }
 
-        if (is_null($attachment)) {
-            $return['state'] = false;
-
-            return new JsonResponse($return);
-        }
-
         $attachmentRepository->remove($attachment);
         $return['state'] = true;
 
         return new JsonResponse($return);
     }
 
-    protected function verifToken($entity): bool
+    protected function verifToken(Attachment $attachment): bool
     {
-        $token = $this->requeststack->getCurrentRequest()->request->get('_token');
+        /** @var Request $request */
+        $request = $this->requeststack->getCurrentRequest();
+        $token   = (string) $request->request->get('_token');
 
         $csrfToken = new CsrfToken(
-            'attachment-img-'.$entity->getId(),
+            (string) 'attachment-img-'.$attachment->getId(),
             $token
         );
 

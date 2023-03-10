@@ -4,19 +4,21 @@ namespace Labstag\Controller\Admin;
 
 use DateTime;
 use DOMDocument;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Bookmark\ImportType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Service\BookmarkService;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
 #[Route(path: '/admin/bookmark')]
 class BookmarkController extends AdminControllerLib
@@ -38,10 +40,10 @@ class BookmarkController extends AdminControllerLib
     public function import(Request $request, Security $security, EnqueueMethod $enqueueMethod): Response
     {
         $domain = $this->getDomainEntity();
-        $url = $domain->getUrlAdmin();
+        $url    = $domain->getUrlAdmin();
         $this->setBtnList($url);
         $form = $this->createForm(ImportType::class, []);
-        $this->btnInstance()->addBtnSave($form->getName(), 'Import');
+        $this->adminBtnService->addBtnSave($form->getName(), 'Import');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->uploadFile($form, $security, $enqueueMethod);
@@ -53,9 +55,7 @@ class BookmarkController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_bookmark_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_bookmark_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -66,9 +66,7 @@ class BookmarkController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_bookmark_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_bookmark_preview', methods: ['GET'])]
     public function showOrPreview(Bookmark $bookmark): Response
@@ -80,9 +78,14 @@ class BookmarkController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Bookmark::class);
+        $domainLib = $this->domainService->getDomain(Bookmark::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 
     private function uploadFile(
@@ -100,9 +103,9 @@ class BookmarkController extends AdminControllerLib
         $domDocument->loadHTMLFile($file->getPathname(), LIBXML_NOWARNING | LIBXML_NOERROR);
 
         $domNodeList = $domDocument->getElementsByTagName('a');
-        $dateTime = new DateTime();
+        $dateTime    = new DateTime();
         /** @var User $user */
-        $user = $security->getUser();
+        $user   = $security->getUser();
         $userId = $user->getId();
         foreach ($domNodeList as $tag) {
             $enqueueMethod->enqueue(

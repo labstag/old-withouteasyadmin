@@ -6,6 +6,8 @@ use Labstag\Entity\User;
 use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Search\UserSearch;
@@ -16,33 +18,34 @@ class UserDomain extends DomainLib
     public function __construct(
         protected UserRequestHandler $userRequestHandler,
         protected UserRepository $userRepository,
+        protected UserSearch $userSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return User::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->userRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->userRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): UserSearch
     {
-        return new UserSearch();
+        return $this->userSearch;
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchUserType::class;
     }
@@ -63,7 +66,7 @@ class UserDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return UserType::class;
     }

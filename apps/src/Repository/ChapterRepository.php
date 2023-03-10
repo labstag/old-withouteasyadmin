@@ -7,9 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Chapter;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_history_trash")
- */
+#[Trashable(url: 'admin_history_trash')]
 class ChapterRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -17,10 +15,13 @@ class ChapterRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Chapter::class);
     }
 
-    public function findChapterByHistory($history, $chapter)
+    public function findChapterByHistory(
+        string $history,
+        string $chapter
+    ): mixed
     {
         $queryBuilder = $this->createQueryBuilder('c');
-        $queryBuilder->leftJoin('c.refhistory', 'h');
+        $queryBuilder->leftJoin('c.history', 'h');
         $queryBuilder->where('h.slug = :slughistory');
         $queryBuilder->andWhere('c.slug = :slugchapter');
         $queryBuilder->setParameters(

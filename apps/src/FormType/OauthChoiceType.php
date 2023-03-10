@@ -24,11 +24,13 @@ class OauthChoiceType extends AbstractType
         array $options
     ): void
     {
-        $entity = $form->getParent()->getData();
-        $types = $this->oauthService->getTypes();
+        /** @var FormInterface $parent */
+        $parent  = $form->getParent();
+        $entity  = $parent->getData();
+        $types   = $this->oauthService->getTypes();
         $choices = [];
         foreach ($types as $type) {
-            $choices[$type] = new ChoiceView('', $type, $type);
+            $choices[$type] = new ChoiceView('', (string) $type, (string) $type);
         }
 
         ksort($choices);

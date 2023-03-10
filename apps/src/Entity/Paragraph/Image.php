@@ -2,66 +2,58 @@
 
 namespace Labstag\Entity\Paragraph;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\EntityInterface;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\ImageRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_image")
- *
- * @ORM\Entity(repositoryClass=ImageRepository::class)
- *
- * @Uploadable
- */
-class Image
+#[Uploadable()]
+#[ORM\Entity(repositoryClass: ImageRepository::class)]
+#[ORM\Table(name: 'paragraph_image')]
+#[ApiResource(routePrefix: '/paragraph')]
+class Image implements ParagraphInterface, EntityInterface, Stringable
 {
 
-    /**
-     * @UploadableField(filename="image", path="paragraph/image", slug="title")
-     */
-    protected $file;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphImages', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[UploadableField(filename: 'image', path: 'paragraph/image', slug: 'title')]
+    private mixed $file;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphImages", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
-    private $image;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="images", cascade={"persist"})
-     */
-    private $paragraph;
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'images', cascade: ['persist'])]
+    private ?Paragraph $paragraph = null;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"title"})
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $slug;
+    #[Gedmo\Slug(updatable: false, fields: ['title'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $slug = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $title = null;
 
-    public function getFile()
+    public function __toString(): string
+    {
+        /** @var Paragraph $paragraph */
+        $paragraph = $this->getParagraph();
+
+        return (string) $paragraph->getType();
+    }
+
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -73,7 +65,7 @@ class Image
 
     public function getImage(): ?Attachment
     {
-        return $this->image;
+        return $this->attachment;
     }
 
     public function getParagraph(): ?Paragraph
@@ -91,7 +83,7 @@ class Image
         return $this->title;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 
@@ -100,7 +92,7 @@ class Image
 
     public function setImage(?Attachment $attachment): self
     {
-        $this->image = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }

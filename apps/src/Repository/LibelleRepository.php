@@ -7,9 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Libelle;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_libelle_trash")
- */
+#[Trashable(url: 'admin_libelle_trash')]
 class LibelleRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -17,7 +15,7 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Libelle::class);
     }
 
-    public function findByBookmark()
+    public function findByBookmark(): mixed
     {
         $query = $this->createQueryBuilder('a');
         $query->innerJoin('a.bookmarks', 'b');
@@ -29,11 +27,11 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findByPost()
+    public function findByPost(): mixed
     {
         $query = $this->createQueryBuilder('a');
         $query->innerJoin('a.posts', 'p');
-        $query->innerjoin('p.refuser', 'u');
+        $query->innerjoin('p.user', 'u');
         $query->where('p.state LIKE :state');
         $query->setParameters(
             ['state' => '%publie%']
@@ -42,7 +40,7 @@ class LibelleRepository extends ServiceEntityRepositoryLib
         return $query->getQuery()->getResult();
     }
 
-    public function findName(string $field)
+    public function findName(string $field): mixed
     {
         $query = $this->createQueryBuilder('u');
         $query->where(

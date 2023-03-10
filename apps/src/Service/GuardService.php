@@ -13,7 +13,7 @@ use Labstag\Repository\RouteRepository;
 use Labstag\Repository\RouteUserRepository;
 use Symfony\Component\Routing\Route as Routing;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Workflow\Registry;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class GuardService
 {
@@ -50,7 +50,6 @@ class GuardService
     public function __construct(
         protected RouterInterface $router,
         protected EntityManagerInterface $entityManager,
-        protected Registry $registry,
         protected GroupeRepository $groupeRepository,
         protected RouteRepository $routeRepository,
         protected RouteGroupeRepository $routeGroupeRepository,
@@ -64,11 +63,11 @@ class GuardService
      */
     public function all(): array
     {
-        $data = [];
+        $data            = [];
         $routeCollection = $this->router->getRouteCollection();
-        $all = $routeCollection->all();
+        $all             = $routeCollection->all();
         foreach ($all as $name => $route) {
-            // @var Routing $route
+            /** @var Routing $route */
             $defaults = $route->getDefaults();
             if (!isset($defaults['_controller'])) {
                 continue;
@@ -90,9 +89,9 @@ class GuardService
      */
     public function allRoutes(): array
     {
-        $data = [];
+        $data            = [];
         $routeCollection = $this->router->getRouteCollection();
-        $all = $routeCollection->all();
+        $all             = $routeCollection->all();
         foreach ($all as $name => $route) {
             $data[$name] = $route;
         }
@@ -127,7 +126,9 @@ class GuardService
     public function getGuardRoutesForUser(User $user): array
     {
         $routes = $this->routesEnableUser($user);
-        if ('superadmin' == $user->getRefgroupe()->getCode()) {
+        /** @var Groupe $groupe */
+        $groupe = $user->getRefgroupe();
+        if ('superadmin' == $groupe->getCode()) {
             $routes = [];
         }
 
@@ -139,11 +140,11 @@ class GuardService
      */
     public function getPublicRoute(): array
     {
-        $data = [];
+        $data            = [];
         $routeCollection = $this->router->getRouteCollection();
-        $all = $routeCollection->all();
+        $all             = $routeCollection->all();
         foreach ($all as $name => $route) {
-            // @var Routing $route
+            /** @var Routing $route */
             $defaults = $route->getDefaults();
             if (!isset($defaults['_controller'])) {
                 continue;
@@ -162,7 +163,7 @@ class GuardService
         return $data;
     }
 
-    public function getPublicRouteWithParams()
+    public function getPublicRouteWithParams(): array
     {
         $data = $this->getPublicRoute();
         if (isset($data['front'])) {
@@ -182,21 +183,27 @@ class GuardService
         return $data;
     }
 
-    public function guardRoute($route, $token): bool
+    public function guardRoute(
+        ?string $route,
+        ?TokenInterface $token
+    ): bool
     {
-        $all = $this->all();
+        $route = (string) $route;
+        $all   = $this->all();
         if (!array_key_exists($route, $all)) {
             return true;
         }
 
         if (empty($token) || !$token->getUser() instanceof User) {
+            /** @var Groupe $groupe */
             $groupe = $this->groupeRepository->findOneBy(['code' => 'visiteur']);
 
             return $this->searchRouteGroupe($groupe, $route);
         }
 
-        // @var User $user
+        /** @var User $user */
         $user = $token->getUser();
+        /** @var Groupe $groupe */
         $groupe = $user->getRefgroupe();
         if ('superadmin' == $groupe->getCode()) {
             return true;
@@ -205,7 +212,7 @@ class GuardService
         return $this->searchRouteUser($user, $route);
     }
 
-    public function guardRouteEnableGroupe(string $route, Groupe $groupe): bool
+    public function guardRouteEnableGroupe(Route $route, Groupe $groupe): bool
     {
         return $this->isRouteGroupe(
             $groupe,
@@ -213,10 +220,13 @@ class GuardService
         );
     }
 
-    public function guardRouteEnableUser(string $route, User $user): bool
+    public function guardRouteEnableUser(Route $route, User $user): bool
     {
+        /** @var Groupe $groupe */
+        $groupe = $user->getRefgroupe();
+
         return $this->isRouteGroupe(
-            $user->getRefgroupe(),
+            $groupe,
             $route
         );
     }
@@ -227,7 +237,7 @@ class GuardService
     public function old(): array
     {
         $results = $this->getLostRoute();
-        $data = [];
+        $data    = [];
         foreach ($results as $result) {
             $data[] = [$result];
         }
@@ -256,9 +266,10 @@ class GuardService
      */
     public function routesEnableGroupe(Groupe $groupe): array
     {
-        $data = $this->routeRepository->findBy([], ['name' => 'ASC']);
+        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
+            /** @var Route $route */
             $state = $this->guardRouteEnableGroupe($route, $groupe);
             if (!$state) {
                 continue;
@@ -275,9 +286,10 @@ class GuardService
      */
     public function routesEnableUser(User $user): array
     {
-        $data = $this->routeRepository->findBy([], ['name' => 'ASC']);
+        $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
         $routes = [];
         foreach ($data as $route) {
+            /** @var Route $route */
             $state = $this->guardRouteEnableUser($route, $user);
             if (!$state) {
                 continue;
@@ -312,11 +324,11 @@ class GuardService
     public function tables(): array
     {
         $data = [];
-        $all = $this->all();
+        $all  = $this->all();
         foreach ($all as $name => $route) {
-            // @var Routing $route
+            /** @var Routing $route */
             $defaults = $route->getDefaults();
-            $data[] = [
+            $data[]   = [
                 $name,
                 $defaults['_controller'],
             ];
@@ -325,7 +337,7 @@ class GuardService
         return $data;
     }
 
-    protected function searchRouteGroupe(Groupe $groupe, string $route): bool
+    protected function searchRouteGroupe(Groupe $groupe, ?string $route): bool
     {
         $entity = $this->routeGroupeRepository->findRoute($groupe, $route);
         if (empty($entity)) {
@@ -335,26 +347,29 @@ class GuardService
         return $entity->isState();
     }
 
-    protected function searchRouteUser(User $user, string $route): bool
+    protected function searchRouteUser(User $user, ?string $route): bool
     {
-        $stateGroupe = $this->searchRouteGroupe($user->getRefgroupe(), $route);
-        $entity = $this->routeUserRepository->findRoute($user, $route);
-        $stateUser = ($entity instanceof RouteUser) ? $entity->isState() : false;
+        $route = (string) $route;
+        /** @var Groupe $groupe */
+        $groupe      = $user->getRefgroupe();
+        $stateGroupe = $this->searchRouteGroupe($groupe, $route);
+        $entity      = $this->routeUserRepository->findRoute($user, $route);
+        $stateUser   = ($entity instanceof RouteUser) ? $entity->isState() : false;
 
         return $stateGroupe || $stateUser;
     }
 
-    private function getLostRoute()
+    private function getLostRoute(): mixed
     {
-        $all = $this->all();
+        $all    = $this->all();
         $routes = array_keys($all);
 
         return $this->routeRepository->findLost($routes);
     }
 
     private function isRouteGroupe(
-        $groupe,
-        $route
+        Groupe $groupe,
+        string $route
     ): bool
     {
         $all = $this->all();
@@ -366,15 +381,15 @@ class GuardService
             return false;
         }
 
-        $data = $all[$route];
+        $data     = $all[$route];
         $defaults = $data->getDefaults();
-        $matches = [];
+        $matches  = [];
         preg_match(self::REGEX_CONTROLLER_ADMIN, (string) $defaults['_controller'], $matches);
 
         return !(0 != count($matches) && 'visiteur' == $groupe->getCode());
     }
 
-    private function regexPublic(string $string)
+    private function regexPublic(string $string): array
     {
         $data = $this->regex($string);
         foreach (self::REGEX_PUBLIC as $regex) {

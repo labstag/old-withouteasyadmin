@@ -2,68 +2,48 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- *
- * @ORM\InheritanceType("SINGLE_TABLE")
- *
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- *
- * @ORM\DiscriminatorMap({"user" = "PhoneUser"})
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-abstract class Phone implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['user' => 'PhoneUser'])]
+#[ApiResource]
+abstract class Phone implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Assert\NotBlank
-     *
-     * @Assert\Country
-     */
-    protected $country;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Country]
+    private ?string $country = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     */
-    protected $numero;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private string $numero;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $principal = false;
+    #[ORM\Column(type: 'boolean')]
+    private bool $principal = false;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     */
-    protected $type;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private string $type;
 
     public function __toString(): string
     {

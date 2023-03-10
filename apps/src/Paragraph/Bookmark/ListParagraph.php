@@ -6,15 +6,17 @@ use Labstag\Entity\Bookmark;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Bookmark\Liste;
 use Labstag\Form\Admin\Paragraph\Bookmark\ListType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\BookmarkRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {
-    public function getCode($liste): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($liste);
+        unset($entityParagraphLib);
 
         return 'bookmark/list';
     }
@@ -46,11 +48,13 @@ class ListParagraph extends ParagraphLib
 
     public function show(Liste $liste): Response
     {
-        /** @var BookmarkRepository $entityRepository */
-        $entityRepository = $this->getRepository(Bookmark::class);
+        /** @var BookmarkRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Bookmark::class);
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
         $pagination = $this->paginator->paginate(
-            $entityRepository->findPublier(),
-            $this->request->query->getInt('page', 1),
+            $serviceEntityRepositoryLib->findPublier(),
+            $request->query->getInt('page', 1),
             10
         );
 

@@ -2,77 +2,61 @@
 
 namespace Labstag\Entity\Paragraph;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\EntityInterface;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\TextImageRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_textimage")
- *
- * @ORM\Entity(repositoryClass=TextImageRepository::class)
- *
- * @Uploadable
- */
-class TextImage
+#[Uploadable()]
+#[ORM\Entity(repositoryClass: TextImageRepository::class)]
+#[ORM\Table(name: 'paragraph_textimage')]
+#[ApiResource(routePrefix: '/paragraph')]
+class TextImage implements ParagraphInterface, EntityInterface, Stringable
 {
 
-    /**
-     * @UploadableField(filename="image", path="paragraph/textimage", slug="title")
-     */
-    protected $file;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphTextImages', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'image_id', nullable: true, onDelete: 'SET NULL')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $content;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[UploadableField(filename: 'image', path: 'paragraph/textimage', slug: 'title')]
+    private mixed $file;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="paragraphTextImages", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
-    private $image;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $leftimage = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="textImages", cascade={"persist"})
-     */
-    private $paragraph;
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'textImages', cascade: ['persist'])]
+    private ?Paragraph $paragraph = null;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"title"})
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $slug;
+    #[Gedmo\Slug(updatable: false, fields: ['title'])]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $slug = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $title = null;
 
-    public function __construct()
+    public function __toString(): string
     {
+        /** @var Paragraph $paragraph */
+        $paragraph = $this->getParagraph();
+
+        return (string) $paragraph->getType();
     }
 
     public function getContent(): ?string
@@ -80,19 +64,19 @@ class TextImage
         return $this->content;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     public function getImage(): ?Attachment
     {
-        return $this->image;
+        return $this->attachment;
     }
 
     public function getLeftimage(): ?bool
@@ -122,7 +106,7 @@ class TextImage
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 
@@ -131,7 +115,7 @@ class TextImage
 
     public function setImage(?Attachment $attachment): self
     {
-        $this->image = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }

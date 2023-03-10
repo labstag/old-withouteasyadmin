@@ -6,15 +6,16 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post;
 use Labstag\Entity\Post as EntityPost;
 use Labstag\Form\Admin\Paragraph\PostType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostParagraph extends ParagraphLib
 {
-    public function getCode($post): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($post);
+        unset($entityParagraphLib);
 
         return 'post';
     }
@@ -46,9 +47,13 @@ class PostParagraph extends ParagraphLib
 
     public function show(Post $post): Response
     {
-        /** @var PostRepository $entityRepository */
-        $entityRepository = $this->getRepository(EntityPost::class);
-        $posts = $entityRepository->getLimitOffsetResult($entityRepository->findPublier(), 5, 0);
+        /** @var PostRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityPost::class);
+        $posts                      = $serviceEntityRepositoryLib->getLimitOffsetResult(
+            $serviceEntityRepositoryLib->findPublier(),
+            5,
+            0
+        );
 
         return $this->render(
             $this->getTemplateFile($this->getCode($post)),

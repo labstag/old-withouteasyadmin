@@ -23,13 +23,13 @@ use Labstag\Service\UserService;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use LogicException;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends ControllerLib
@@ -172,7 +172,7 @@ class SecurityController extends ControllerLib
         $authenticationException = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $form = $this->createForm(
+        $form         = $this->createForm(
             LoginType::class,
             ['username' => $lastUsername]
         );
@@ -220,18 +220,17 @@ class SecurityController extends ControllerLib
     #[Route(path: '/oauth/connect/{oauthCode}', name: 'connect_start', priority: 1)]
     public function oauthConnect(Request $request, string $oauthCode, OauthService $oauthService): RedirectResponse
     {
-        // @var AbstractProvider $provider
+        /** @var AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
-        $session = $request->getSession();
-        // @var string $referer
-        $query = $request->query->all();
+        $session  = $request->getSession();
+        $query    = $request->query->all();
         if (array_key_exists('link', $query)) {
             $session->set('link', 1);
         }
 
         $referer = $request->headers->get('referer');
         $session->set('referer', $referer);
-        // @var string $url
+        /** @var string $url */
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;
@@ -243,12 +242,12 @@ class SecurityController extends ControllerLib
                 $this->translator->trans('security.user.oauth.fail')
             );
 
-            return $this->redirect($referer);
+            return $this->redirect((string) $referer);
         }
 
         $authorizationUrl = $provider->getAuthorizationUrl();
-        $session = $request->getSession();
-        $referer = $request->headers->get('referer');
+        $session          = $request->getSession();
+        $referer          = $request->headers->get('referer');
         $session->set('referer', $referer);
         $session->set('oauth2state', $provider->getState());
 
@@ -270,13 +269,13 @@ class SecurityController extends ControllerLib
         UserService $userService
     ): RedirectResponse
     {
-        // @var AbstractProvider $provider
-        $provider = $oauthService->setProvider($oauthCode);
-        $query = $request->query->all();
-        $session = $request->getSession();
-        $referer = $session->get('referer');
+        /** @var AbstractProvider $provider */
+        $provider    = $oauthService->setProvider($oauthCode);
+        $query       = $request->query->all();
+        $session     = $request->getSession();
+        $referer     = $session->get('referer');
         $oauth2state = $session->get('oauth2state');
-        // @var string $url
+        /** @var string $url */
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;
@@ -295,7 +294,7 @@ class SecurityController extends ControllerLib
         }
 
         try {
-            // @var AccessToken $tokenProvider
+            /** @var AccessToken $accessToken */
             $accessToken = $provider->getAccessToken(
                 'authorization_code',
                 [
@@ -305,8 +304,10 @@ class SecurityController extends ControllerLib
 
             $session->remove('oauth2state');
             $resourceOwner = $provider->getResourceOwner($accessToken);
-            // @var TokenInterface $token
-            $user = $usageTrackingTokenStorage->getToken()->getUser();
+            /** @var TokenInterface $token */
+            $token = $usageTrackingTokenStorage->getToken();
+            /** @var User $user */
+            $user = $token->getUser();
             if (!$user instanceof User) {
                 $this->sessionService->flashBagAdd(
                     'warning',
@@ -347,13 +348,13 @@ class SecurityController extends ControllerLib
     ): RedirectResponse
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        // @var User $user
+        /** @var User $user */
         $user = $security->getUser();
-        // @var string $referer
+        /** @var string $referer */
         $referer = $request->headers->get('referer');
         $session = $request->getSession();
         $session->set('referer', $referer);
-        // @var string $url
+        /** @var string $url */
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;

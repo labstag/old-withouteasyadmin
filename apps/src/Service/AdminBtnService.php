@@ -1,33 +1,25 @@
 <?php
 
-namespace Labstag\Singleton;
+namespace Labstag\Service;
 
-use Labstag\Service\GuardService;
+use Labstag\Interfaces\EntityInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 
-class AdminBtnSingleton
+class AdminBtnService
 {
 
     protected array $bouton = [];
 
-    protected CsrfTokenManagerInterface $csrfTokenManager;
-
-    protected Environment $environment;
-
-    protected GuardService $guardService;
-
-    protected bool $init = false;
-
-    protected static $instance;
-
-    protected RouterInterface $router;
-
-    protected TokenStorageInterface $token;
-
-    protected function __construct()
+    public function __construct(
+        protected Environment $twigEnvironment,
+        protected RouterInterface $router,
+        protected TokenStorageInterface $tokenStorage,
+        protected CsrfTokenManagerInterface $csrfTokenManager,
+        protected GuardService $guardService
+    )
     {
     }
 
@@ -56,7 +48,7 @@ class AdminBtnSingleton
     }
 
     public function addBtnDelete(
-        object $entity,
+        EntityInterface $entity,
         array $route,
         string $text = 'Supprimer',
         array $routeParam = []
@@ -71,17 +63,18 @@ class AdminBtnSingleton
             $route['delete'],
         ];
 
-        if (!$this->isRoutesEnable($routes)) {
+        $methods = get_class_methods($entity);
+        if (!$this->isRoutesEnable($routes) || !in_array('getId', $methods)) {
             return $this;
         }
 
-        $globals = $this->environment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals         = $this->twigEnvironment->getGlobals();
+        $modal           = $globals['modal'] ?? [];
         $modal['delete'] = true;
-        $this->environment->addGlobal('modal', $modal);
-        $code = 'delete'.$entity->getId();
+        $this->twigEnvironment->addGlobal('modal', $modal);
+        $code  = 'delete'.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr = [
+        $attr  = [
             'id'       => 'DeleteForm',
             'is'       => 'link-btnadmindelete',
             'token'    => $token,
@@ -146,13 +139,13 @@ class AdminBtnSingleton
             return $this;
         }
 
-        $globals = $this->environment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals        = $this->twigEnvironment->getGlobals();
+        $modal          = $globals['modal'] ?? [];
         $modal['empty'] = true;
-        $this->environment->addGlobal('modal', $modal);
-        $code = 'empty';
+        $this->twigEnvironment->addGlobal('modal', $modal);
+        $code  = 'empty';
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr = [
+        $attr  = [
             'is'       => 'link-btnadminempty',
             'token'    => $token,
             'redirect' => $this->router->generate($route['list']),
@@ -340,36 +333,6 @@ class AdminBtnSingleton
         return $this->bouton;
     }
 
-    public static function getInstance(): ?AdminBtnSingleton
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new AdminBtnSingleton();
-        }
-
-        return self::$instance;
-    }
-
-    public function isInit(): bool
-    {
-        return $this->init;
-    }
-
-    public function setConf(
-        Environment $environment,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        GuardService $guardService
-    ): void
-    {
-        $this->environment = $environment;
-        $this->router = $router;
-        $this->token = $tokenStorage;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->guardService = $guardService;
-        $this->init = true;
-    }
-
     protected function addBtnVider(
         string $codemodal,
         array $routes,
@@ -382,10 +345,10 @@ class AdminBtnSingleton
             return;
         }
 
-        $globals = $this->environment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals           = $this->twigEnvironment->getGlobals();
+        $modal             = $globals['modal'] ?? [];
         $modal[$codemodal] = true;
-        $this->environment->addGlobal('modal', $modal);
+        $this->twigEnvironment->addGlobal('modal', $modal);
         $this->add(
             'btn-admin-header-'.$codemodal,
             $title,
@@ -404,7 +367,7 @@ class AdminBtnSingleton
         );
     }
 
-    protected function classEntity($entity): string
+    protected function classEntity(mixed $entity): string
     {
         $class = str_replace('Labstag\\Entity\\', '', (string) $entity::class);
 
@@ -413,7 +376,7 @@ class AdminBtnSingleton
 
     protected function isRouteEnable(string $route): bool
     {
-        $token = $this->token->getToken();
+        $token = $this->tokenStorage->getToken();
 
         return $this->guardService->guardRoute($route, $token);
     }
@@ -435,10 +398,16 @@ class AdminBtnSingleton
         return $return;
     }
 
-    private function addBtnDestroyRestore($word, $entity, $route, array $routeParam, string $text)
+    private function addBtnDestroyRestore(
+        string $word,
+        mixed $entity,
+        array $route,
+        array $routeParam,
+        string $text
+    ): void
     {
         if (!isset($route['list']) || !isset($route[$word])) {
-            return $this;
+            return;
         }
 
         $routes = [
@@ -447,16 +416,16 @@ class AdminBtnSingleton
         ];
 
         if (!$this->isRoutesEnable($routes)) {
-            return $this;
+            return;
         }
 
-        $globals = $this->environment->getGlobals();
-        $modal = $globals['modal'] ?? [];
+        $globals      = $this->twigEnvironment->getGlobals();
+        $modal        = $globals['modal'] ?? [];
         $modal[$word] = true;
-        $this->environment->addGlobal('modal', $modal);
-        $code = $word.$entity->getId();
+        $this->twigEnvironment->addGlobal('modal', $modal);
+        $code  = $word.$entity->getId();
         $token = $this->csrfTokenManager->getToken($code)->getValue();
-        $attr = [
+        $attr  = [
             'token'    => $token,
             'is'       => 'link-btnadmin'.$word,
             'redirect' => $this->router->generate($route['list']),
@@ -473,7 +442,7 @@ class AdminBtnSingleton
         );
     }
 
-    private function arrayKeyExistsRedirect($routes): bool
+    private function arrayKeyExistsRedirect(array $routes): bool
     {
         return !array_key_exists('redirect', $routes)
         || !array_key_exists('href', $routes['redirect'])
@@ -481,7 +450,7 @@ class AdminBtnSingleton
         || !$this->isRouteEnable($routes['redirect']['href']);
     }
 
-    private function arrayKeyExistsUrl($routes): bool
+    private function arrayKeyExistsUrl(array $routes): bool
     {
         return !array_key_exists('url', $routes)
         || !array_key_exists('href', $routes['url'])

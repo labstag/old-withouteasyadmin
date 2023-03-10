@@ -2,7 +2,9 @@
 
 namespace Labstag\EventSubscriber;
 
+use Labstag\Entity\User;
 use Labstag\Lib\EventSubscriberLib;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class TwigEventSubscriber extends EventSubscriberLib
@@ -39,10 +41,10 @@ class TwigEventSubscriber extends EventSubscriberLib
         $this->setConfig($controllerEvent);
     }
 
-    protected function isStateConfig(ControllerEvent $controllerEvent)
+    protected function isStateConfig(ControllerEvent $controllerEvent): bool
     {
         $controller = $controllerEvent->getRequest()->attributes->get('_controller');
-        $matches = [];
+        $matches    = [];
         preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
 
         return 0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER);
@@ -56,28 +58,30 @@ class TwigEventSubscriber extends EventSubscriberLib
             return;
         }
 
-        $globals = $this->environment->getGlobals();
-        $config = $globals['config'] ?? $this->dataService->getConfig();
+        $globals = $this->twigEnvironment->getGlobals();
+        $config  = $globals['config'] ?? $this->dataService->getConfig();
         $this->setConfigMeta($config);
         $this->setConfigTac($config);
         $this->setFormatDatetime($config);
-        $this->environment->AddGlobal('config', $config);
+        $this->twigEnvironment->AddGlobal('config', $config);
     }
 
-    protected function setConfigCanonical()
+    protected function setConfigCanonical(): void
     {
-        $globals = $this->environment->getGlobals();
-        $canonical = $globals['canonical'] ?? $this->request->getUri();
-        $this->environment->AddGlobal('canonical', $canonical);
+        /** @var Request $request */
+        $request   = $this->requestStack->getCurrentRequest();
+        $globals   = $this->twigEnvironment->getGlobals();
+        $canonical = $globals['canonical'] ?? $request->getUri();
+        $this->twigEnvironment->AddGlobal('canonical', $canonical);
     }
 
-    protected function setConfigFavicon()
+    protected function setConfigFavicon(): void
     {
-        $favicon = $this->attachmentRepository->getFavicon();
-        $this->environment->AddGlobal('favicon', $favicon);
+        $attachment = $this->attachmentRepository->getFavicon();
+        $this->twigEnvironment->AddGlobal('favicon', $attachment);
     }
 
-    protected function setConfigMeta($config)
+    protected function setConfigMeta(array $config): void
     {
         $config['meta'] = array_key_exists('meta', $config) ? $config['meta'] : [];
         $config['meta'] = $this->frontService->configMeta($config, $config['meta']);
@@ -113,13 +117,13 @@ class TwigEventSubscriber extends EventSubscriberLib
 
         unset($tarteaucitron['job']);
 
-        $this->environment->AddGlobal('configtarteaucitron', $tarteaucitron);
+        $this->twigEnvironment->AddGlobal('configtarteaucitron', $tarteaucitron);
     }
 
     protected function setLoginPage(ControllerEvent $controllerEvent): void
     {
         $currentRoute = $controllerEvent->getRequest()->attributes->get('_route');
-        $routes = [
+        $routes       = [
             'app_login',
             'admin_profil',
         ];
@@ -128,12 +132,14 @@ class TwigEventSubscriber extends EventSubscriberLib
             return;
         }
 
-        $oauthActivated = $this->dataService->getOauthActivated($this->security->getUser());
-        $this->environment->AddGlobal('oauthActivated', $oauthActivated);
+        /** @var User $user */
+        $user           = $this->security->getUser();
+        $oauthActivated = $this->dataService->getOauthActivated($user);
+        $this->twigEnvironment->AddGlobal('oauthActivated', $oauthActivated);
     }
 
-    private function setFormatDatetime($config): void
+    private function setFormatDatetime(array $config): void
     {
-        $this->environment->AddGlobal('formatdatetime', $config['format_datetime']);
+        $this->twigEnvironment->AddGlobal('formatdatetime', $config['format_datetime']);
     }
 }

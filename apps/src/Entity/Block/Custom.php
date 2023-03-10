@@ -2,43 +2,35 @@
 
 namespace Labstag\Entity\Block;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Entity\Layout;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\Block\CustomRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="block_custom")
- *
- * @ORM\Entity(repositoryClass=CustomRepository::class)
- */
-class Custom implements Stringable
+#[ORM\Entity(repositoryClass: CustomRepository::class)]
+#[ORM\Table(name: 'block_custom')]
+#[ApiResource(routePrefix: '/block')]
+class Custom implements Stringable, BlockInterface, EntityInterface
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Block::class, inversedBy="customs", cascade={"persist"})
-     */
-    private $block;
+    #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'customs', cascade: ['persist'])]
+    private ?Block $block = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Layout::class, mappedBy="custom", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $layouts;
+    #[ORM\OneToMany(targetEntity: Layout::class, mappedBy: 'custom', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $layouts;
 
     public function __construct()
     {
@@ -47,7 +39,10 @@ class Custom implements Stringable
 
     public function __toString(): string
     {
-        return (string) $this->getBlock()->getTitle();
+        /** @var Block $block */
+        $block = $this->getBlock();
+
+        return (string) $block->getTitle();
     }
 
     public function addLayout(Layout $layout): self

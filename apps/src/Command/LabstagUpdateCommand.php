@@ -16,16 +16,24 @@ class LabstagUpdateCommand extends CommandLib
     protected function configure(): void
     {
         $this->setDescription('Add a short description for your command');
-        $this->addOption('maintenanceon', null, InputOption::VALUE_NONE, 'Enable maintenance');
-        $this->addOption('maintenanceoff', null, InputOption::VALUE_NONE, 'Disable maintenance');
+        $this->addOption(
+            name: 'maintenanceon',
+            mode: InputOption::VALUE_NONE,
+            description: 'Enable maintenance'
+        );
+        $this->addOption(
+            name: 'maintenanceoff',
+            mode: InputOption::VALUE_NONE,
+            description: 'Disable maintenance'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $symfonyStyle = new SymfonyStyle($input, $output);
-        $publicIndex = 'public/index.php';
+        $symfonyStyle    = new SymfonyStyle($input, $output);
+        $publicIndex     = 'public/index.php';
         $maintenanceFile = 'maintenance.html';
-        $actifFile = 'public.php';
+        $actifFile       = 'public.php';
         if (!is_file($publicIndex)) {
             return Command::FAILURE;
         }

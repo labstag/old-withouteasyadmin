@@ -15,18 +15,41 @@ class FileService
     {
     }
 
-    public function setAttachment($file, $attachment = null, $old = null)
+    public function moveFile(
+        mixed $file,
+        string $path,
+        string $filename,
+        ?Attachment $attachment,
+        ?Attachment $old
+    ): void
+    {
+        $file->move(
+            $path,
+            $filename
+        );
+        $file = $path.'/'.$filename;
+
+        $this->setAttachment($file, $attachment, $old);
+    }
+
+    public function setAttachment(
+        string $file,
+        ?Attachment $attachment = null,
+        ?Attachment $old = null
+    ): Attachment
     {
         if (is_null($attachment) && is_null($old)) {
             $attachment = new Attachment();
-            $old = clone $attachment;
+            $old        = clone $attachment;
         }
 
-        $attachment->setMimeType(mime_content_type($file));
-        $attachment->setSize(filesize($file));
+        /** @var Attachment $attachment */
+        /** @var Attachment $old */
+        $attachment->setMimeType((string) mime_content_type($file));
+        $attachment->setSize((int) filesize($file));
         $attachment->setName(
             str_replace(
-                $this->getParameter('kernel.project_dir').'/public/',
+                $this->containerBag->get('kernel.project_dir').'/public/',
                 '',
                 (string) $file
             )
@@ -34,10 +57,5 @@ class FileService
         $this->attachmentRequestHandler->handle($old, $attachment);
 
         return $attachment;
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
     }
 }

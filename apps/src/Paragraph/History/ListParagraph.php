@@ -6,15 +6,17 @@ use Labstag\Entity\History;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\History\Liste;
 use Labstag\Form\Admin\Paragraph\History\ListType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib
 {
-    public function getCode($liste): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($liste);
+        unset($entityParagraphLib);
 
         return 'history/list';
     }
@@ -46,12 +48,14 @@ class ListParagraph extends ParagraphLib
 
     public function show(Liste $liste): Response
     {
-        /** @var HistoryRepository $entityRepository */
-        $entityRepository = $this->getRepository(History::class);
+        /** @var HistoryRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(History::class);
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
 
         $pagination = $this->paginator->paginate(
-            $entityRepository->findPublier(),
-            $this->request->query->getInt('page', 1),
+            $serviceEntityRepositoryLib->findPublier(),
+            $request->query->getInt('page', 1),
             10
         );
 

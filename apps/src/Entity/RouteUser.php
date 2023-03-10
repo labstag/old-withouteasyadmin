@@ -2,41 +2,34 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\RouteUserRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=RouteUserRepository::class)
- */
-class RouteUser
+#[ORM\Entity(repositoryClass: RouteUserRepository::class)]
+#[ApiResource]
+class RouteUser implements EntityInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="users", cascade={"persist"})
-     */
-    protected $refroute;
+    #[ORM\ManyToOne(targetEntity: Route::class, inversedBy: 'users', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refroute_id', nullable: true)]
+    private ?Route $route = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="routes", cascade={"persist"})
-     */
-    protected $refuser;
+    #[ORM\Column(type: 'boolean')]
+    private bool $state = false;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $state;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'routes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: true)]
+    private ?UserInterface $user = null;
 
     public function getId(): ?string
     {
@@ -45,12 +38,12 @@ class RouteUser
 
     public function getRefroute(): ?Route
     {
-        return $this->refroute;
+        return $this->route;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getState(): ?bool
@@ -65,14 +58,14 @@ class RouteUser
 
     public function setRefroute(?Route $route): self
     {
-        $this->refroute = $route;
+        $this->route = $route;
 
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

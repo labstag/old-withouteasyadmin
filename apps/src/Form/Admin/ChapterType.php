@@ -42,7 +42,7 @@ class ChapterType extends AbstractTypeLib
         );
     }
 
-    protected function setTextType($builder): void
+    protected function setTextType(FormBuilderInterface $formBuilder): void
     {
         $texttype = [
             'name' => [
@@ -62,7 +62,7 @@ class ChapterType extends AbstractTypeLib
             ],
         ];
         foreach ($texttype as $key => $args) {
-            $builder->add($key, TextType::class, $args);
+            $formBuilder->add($key, TextType::class, $args);
         }
     }
 }

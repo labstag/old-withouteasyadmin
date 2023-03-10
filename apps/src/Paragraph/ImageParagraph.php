@@ -12,6 +12,7 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Image;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\ImageType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
@@ -19,9 +20,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ImageParagraph extends ParagraphLib
 {
-    public function getCode($image): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($image);
+        unset($entityParagraphLib);
 
         return 'image';
     }
@@ -53,14 +54,15 @@ class ImageParagraph extends ParagraphLib
 
     public function show(Image $image): Response
     {
-        $package = new Package(new EmptyVersionStrategy());
-        $attachment = ($image->getImage() instanceof Attachment) ? $package->getUrl('/'.$image->getImage()->getName()) : null;
+        $package    = new Package(new EmptyVersionStrategy());
+        $attachment = $image->getImage();
+        $file       = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
 
         return $this->render(
             $this->getTemplateFile($this->getCode($image)),
             [
                 'paragraph'  => $image,
-                'attachment' => $attachment,
+                'attachment' => $file,
             ]
         );
     }

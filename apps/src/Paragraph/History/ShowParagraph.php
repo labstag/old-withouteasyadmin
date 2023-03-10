@@ -6,14 +6,17 @@ use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\Show;
 use Labstag\Form\Admin\Paragraph\History\ShowType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShowParagraph extends ParagraphLib
 {
-    public function getCode($show): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($show);
+        unset($entityParagraphLib);
 
         return 'history/show';
     }
@@ -43,19 +46,21 @@ class ShowParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Show $show)
+    public function show(Show $show): ?Response
     {
-        $all = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
-        $slug = $routeParam['slug'] ?? null;
-        /** @var HistoryRepository $entityRepository */
-        $entityRepository = $this->getRepository(History::class);
-        $history = $entityRepository->findOneBy(
+        $slug       = $routeParam['slug'] ?? null;
+        /** @var HistoryRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(History::class);
+        $history                    = $serviceEntityRepositoryLib->findOneBy(
             ['slug' => $slug]
         );
 
         if (!$history instanceof History) {
-            return;
+            return null;
         }
 
         return $this->render(

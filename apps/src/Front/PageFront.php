@@ -3,13 +3,17 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\Page;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\FrontLib;
 
 class PageFront extends FrontLib
 {
-    public function setBreadcrumb($content, $breadcrumb)
+    public function setBreadcrumb(
+        ?FrontInterface $front,
+        array $breadcrumb
+    ): array
     {
-        if (!$content instanceof Page) {
+        if (!$front instanceof Page) {
             return $breadcrumb;
         }
 
@@ -17,40 +21,55 @@ class PageFront extends FrontLib
             'route' => $this->router->generate(
                 'front',
                 [
-                    'slug' => $content->getSlug(),
+                    'slug' => $front->getSlug(),
                 ]
             ),
-            'title' => $content->getName(),
+            'title' => $front->getName(),
         ];
-        if ($content->getParent() instanceof Page) {
-            $breadcrumb = $this->setBreadcrumbPage($content->getParent(), $breadcrumb);
+        if ($front->getParent() instanceof Page) {
+            $breadcrumb = $this->setBreadcrumbPage($front->getParent(), $breadcrumb);
         }
 
         return $breadcrumb;
     }
 
-    public function setMeta($content, $meta)
+    public function setMeta(
+        ?FrontInterface $front,
+        array $meta
+    ): array
     {
-        if (!$content instanceof Page) {
+        if (!$front instanceof Page) {
             return $meta;
         }
 
-        return $this->getMeta($content->getMetas(), $meta);
+        return $this->getMeta($front->getMetas(), $meta);
     }
 
-    protected function setBreadcrumbPage($content, $breadcrumb)
+    protected function setBreadcrumbPage(
+        ?Page $page,
+        array $breadcrumb
+    ): array
     {
+        if (!$page instanceof Page) {
+            return $breadcrumb;
+        }
+
         $breadcrumb[] = [
             'route' => $this->router->generate(
                 'front',
                 [
-                    'slug' => $content->getSlug(),
+                    'slug' => $page->getSlug(),
                 ]
             ),
-            'title' => $content->getName(),
+            'title' => $page->getName(),
         ];
-        if ($content->getParent() instanceof Page) {
-            $breadcrumb = $this->setBreadcrumbPage($content->getParent(), $breadcrumb);
+        $parent = $page->getParent();
+        if (is_null($parent)) {
+            return $breadcrumb;
+        }
+
+        if ($parent instanceof Page) {
+            $breadcrumb = $this->setBreadcrumbPage($parent, $breadcrumb);
         }
 
         return $breadcrumb;

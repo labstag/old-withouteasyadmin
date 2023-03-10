@@ -2,98 +2,66 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Block\Navbar;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\MenuRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=MenuRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-class Menu implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: MenuRepository::class)]
+#[ApiResource]
+class Menu implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Menu::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
-    protected $children;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $clef;
-
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
     protected array $data = [];
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $icon;
+    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'children', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Menu $menu = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $name;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Menu::class, inversedBy="children", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(
-     *     name="parent_id",
-     *     referencedColumnName="id",
-     *     onDelete="SET NULL"
-     * )
-     *
-     * @var null|Menu
-     */
-    protected $parent;
-
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @Assert\NotNull
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotNull]
     protected int $position = 0;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $separateur = false;
+    #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private Collection $children;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Navbar::class, mappedBy="menu", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $navbars;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $clef = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $icon = null;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $name = null;
+
+    #[ORM\OneToMany(targetEntity: Navbar::class, mappedBy: 'menu', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $navbars;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $separateur = false;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
-        $this->navbars = new ArrayCollection();
+        $this->navbars  = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -130,7 +98,7 @@ class Menu implements Stringable
         return $this;
     }
 
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }
@@ -170,7 +138,7 @@ class Menu implements Stringable
 
     public function getParent(): ?Menu
     {
-        return $this->parent;
+        return $this->menu;
     }
 
     public function getPosition(): ?int
@@ -217,7 +185,9 @@ class Menu implements Stringable
 
     public function setData(?array $data): self
     {
-        $this->data = $data;
+        if (is_array($data)) {
+            $this->data = $data;
+        }
 
         return $this;
     }
@@ -236,9 +206,9 @@ class Menu implements Stringable
         return $this;
     }
 
-    public function setParent(Menu $menu): void
+    public function setParent(?Menu $menu): void
     {
-        $this->parent = $menu;
+        $this->menu = $menu;
     }
 
     public function setPosition(int $position): self

@@ -4,36 +4,34 @@ namespace Labstag\Block;
 
 use Labstag\Entity\Block\Breadcrumb;
 use Labstag\Form\Admin\Block\BreadcrumbType;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\FrontService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class BreadcrumbBlock extends BlockLib
 {
-
-    protected ?Request $request;
-
     public function __construct(
         TranslatorInterface $translator,
-        Environment $environment,
+        Environment $twigEnvironment,
         protected FrontService $frontService,
         protected RequestStack $requestStack,
         protected RouterInterface $router,
         protected PageRepository $pageRepository
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
-        parent::__construct($translator, $environment);
+        parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode($breadcrumb, $content): string
+    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
     {
-        unset($breadcrumb, $content);
+        unset($entityBlockLib, $front);
 
         return 'breadcrumb';
     }
@@ -63,15 +61,15 @@ class BreadcrumbBlock extends BlockLib
         return false;
     }
 
-    public function show(Breadcrumb $breadcrumb, $content)
+    public function show(Breadcrumb $breadcrumb, ?FrontInterface $front): ?Response
     {
-        $breadcrumbs = $this->frontService->setBreadcrumb($content);
+        $breadcrumbs = $this->frontService->setBreadcrumb($front);
         if ((is_countable($breadcrumbs) ? count($breadcrumbs) : 0) <= 1) {
-            return;
+            return null;
         }
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($breadcrumb, $content)),
+            $this->getTemplateFile($this->getCode($breadcrumb, $front)),
             [
                 'breadcrumbs' => $breadcrumbs,
                 'block'       => $breadcrumb,

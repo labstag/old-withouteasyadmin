@@ -2,9 +2,11 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,18 +32,18 @@ class GroupeController extends AdminControllerLib
         WorkflowRepository $workflowRepository
     ): Response
     {
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_groupuser_index',
             'Liste',
         );
-        $this->btnInstance()->addBtnShow(
+        $this->adminBtnService->addBtnShow(
             'admin_groupuser_show',
             'Show',
             [
                 'id' => $groupe->getId(),
             ]
         );
-        $this->btnInstance()->addBtnEdit(
+        $this->adminBtnService->addBtnEdit(
             'admin_groupuser_edit',
             'Editer',
             [
@@ -76,9 +78,7 @@ class GroupeController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_groupuser_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_groupuser_index', methods: ['GET'])]
     public function index(): Response
@@ -89,9 +89,7 @@ class GroupeController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_groupuser_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_groupuser_preview', methods: ['GET'])]
     public function showOrPreview(Groupe $groupe): Response
@@ -103,8 +101,13 @@ class GroupeController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Groupe::class);
+        $domainLib = $this->domainService->getDomain(Groupe::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

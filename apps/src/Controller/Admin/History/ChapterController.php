@@ -2,10 +2,12 @@
 
 namespace Labstag\Controller\Admin\History;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\ChapterRepository;
 use Labstag\RequestHandler\ChapterRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,9 +30,7 @@ class ChapterController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_chapter_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_chapter_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -60,9 +60,7 @@ class ChapterController extends AdminControllerLib
         return $this->redirectToRoute('admin_chapter_edit', ['id' => $chapter->getId()]);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_chapter_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_chapter_preview', methods: ['GET'])]
     public function showOrPreview(Chapter $chapter): Response
@@ -74,8 +72,13 @@ class ChapterController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Chapter::class);
+        $domainLib = $this->domainService->getDomain(Chapter::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

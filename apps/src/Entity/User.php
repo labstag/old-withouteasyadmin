@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +11,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\UserRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -17,149 +19,169 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Uploadable
- */
-class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
+#[Uploadable()]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ApiResource]
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AddressUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $addressUsers;
+    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
+    protected ?Groupe $groupe = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="users", cascade={"persist"})
-     */
-    protected $avatar;
+    #[ORM\Column(type: 'string', nullable: true)]
+    protected string $password;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Edito::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $editos;
+    protected ?string $plainPassword = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $email;
-
-    /**
-     * @ORM\OneToMany(targetEntity=EmailUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $emailUsers;
-
-    /**
-     * @UploadableField(filename="avatar", path="user/avatar", slug="username")
-     */
-    protected $file;
-
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
-
-    /**
-     * @ORM\OneToMany(targetEntity=LinkUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $linkUsers;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $noteInternes;
-
-    /**
-     * @ORM\OneToMany(targetEntity=OauthConnectUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $oauthConnectUsers;
-
-    /**
-     * @var string The hashed password
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $password;
-
-    /**
-     * @ORM\OneToMany(targetEntity=PhoneUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $phoneUsers;
-
-    /**
-     * @var null|string
-     */
-    protected $plainPassword;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="users", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=true)
-     */
-    protected Groupe $refgroupe;
-
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     protected array $roles = ['ROLE_USER'];
 
-    /**
-     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $routes;
+    #[ORM\OneToMany(
+        targetEntity: AddressUser::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $addressUsers;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true, nullable=false)
-     *
-     * @Assert\NotNull
-     */
-    protected $username;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'users', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'avatar_id')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Bookmark::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $bookmarks;
+    #[ORM\OneToMany(
+        targetEntity: Bookmark::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $bookmarks;
 
-    /**
-     * @ORM\OneToMany(targetEntity=History::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $histories;
+    #[ORM\OneToMany(
+        targetEntity: Edito::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $editos;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $posts;
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $email = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=WorkflowUser::class, mappedBy="refuser", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $workflowUsers;
+    #[ORM\OneToMany(
+        targetEntity: EmailUser::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $emailUsers;
+
+    #[UploadableField(filename: 'avatar', path: 'user/avatar', slug: 'username')]
+    private mixed $file;
+
+    #[ORM\OneToMany(
+        targetEntity: History::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $histories;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
+
+    #[ORM\OneToMany(
+        targetEntity: LinkUser::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $linkUsers;
+
+    #[ORM\OneToMany(
+        targetEntity: Memo::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $noteInternes;
+
+    #[ORM\OneToMany(
+        targetEntity: OauthConnectUser::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $oauthConnectUsers;
+
+    #[ORM\OneToMany(
+        targetEntity: PhoneUser::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $phoneUsers;
+
+    #[ORM\OneToMany(
+        targetEntity: Post::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $posts;
+
+    #[ORM\OneToMany(
+        targetEntity: RouteUser::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $routes;
+
+    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
+    #[Assert\NotNull]
+    private string $username;
+
+    #[ORM\OneToMany(
+        targetEntity: WorkflowUser::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $workflowUsers;
 
     public function __construct()
     {
-        $this->editos = new ArrayCollection();
-        $this->noteInternes = new ArrayCollection();
-        $this->linkUsers = new ArrayCollection();
-        $this->emailUsers = new ArrayCollection();
-        $this->phoneUsers = new ArrayCollection();
-        $this->addressUsers = new ArrayCollection();
+        $this->editos            = new ArrayCollection();
+        $this->noteInternes      = new ArrayCollection();
+        $this->linkUsers         = new ArrayCollection();
+        $this->emailUsers        = new ArrayCollection();
+        $this->phoneUsers        = new ArrayCollection();
+        $this->addressUsers      = new ArrayCollection();
         $this->oauthConnectUsers = new ArrayCollection();
-        $this->routes = new ArrayCollection();
-        $this->workflowUsers = new ArrayCollection();
-        $this->posts = new ArrayCollection();
-        $this->bookmarks = new ArrayCollection();
-        $this->histories = new ArrayCollection();
+        $this->routes            = new ArrayCollection();
+        $this->workflowUsers     = new ArrayCollection();
+        $this->posts             = new ArrayCollection();
+        $this->bookmarks         = new ArrayCollection();
+        $this->histories         = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -318,14 +340,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         // $this->plainPassword = null;
     }
 
-    public function getAddressUsers()
+    public function getAddressUsers(): Collection
     {
         return $this->addressUsers;
     }
 
     public function getAvatar(): ?Attachment
     {
-        return $this->avatar;
+        return $this->attachment;
     }
 
     public function getBookmarks(): Collection
@@ -333,7 +355,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->bookmarks;
     }
 
-    public function getEditos()
+    public function getEditos(): Collection
     {
         return $this->editos;
     }
@@ -348,12 +370,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return (string) $this->email;
     }
 
-    public function getEmailUsers()
+    public function getEmailUsers(): Collection
     {
         return $this->emailUsers;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -368,12 +390,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->id;
     }
 
-    public function getLinkUsers()
+    public function getLinkUsers(): Collection
     {
         return $this->linkUsers;
     }
 
-    public function getMemos()
+    public function getMemos(): Collection
     {
         return $this->noteInternes;
     }
@@ -383,7 +405,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->noteInternes;
     }
 
-    public function getOauthConnectUsers()
+    public function getOauthConnectUsers(): Collection
     {
         return $this->oauthConnectUsers;
     }
@@ -396,7 +418,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return (string) $this->password;
     }
 
-    public function getPhoneUsers()
+    public function getPhoneUsers(): Collection
     {
         return $this->phoneUsers;
     }
@@ -413,7 +435,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function getRefgroupe(): ?Groupe
     {
-        return $this->refgroupe;
+        return $this->groupe;
     }
 
     /**
@@ -604,7 +626,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function serialize()
+    public function serialize(): string
     {
         return serialize(
             [
@@ -617,7 +639,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function setAvatar(?Attachment $attachment): self
     {
-        $this->avatar = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }
@@ -629,7 +651,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 
@@ -653,7 +675,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->refgroupe = $groupe;
+        $this->groupe = $groupe;
 
         return $this;
     }
@@ -665,14 +687,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function setUsername(?string $username): self
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 
         return $this;
     }
 
-    public function unserialize($serialized)
+    public function unserialize(string $serialized): void
     {
         [
             $this->id,
@@ -681,7 +703,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         ] = unserialize($serialized);
     }
 
-    private function removeElementUser($element, $variable)
+    private function removeElementUser(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getRefuser() === $this) {
             $variable->setRefuser(null);

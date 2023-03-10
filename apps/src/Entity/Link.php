@@ -5,51 +5,34 @@ namespace Labstag\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- *
- * @ORM\InheritanceType("SINGLE_TABLE")
- *
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- *
- * @ORM\DiscriminatorMap({"user" = "LinkUser"})
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-abstract class Link implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['user' => 'LinkUser'])]
+abstract class Link implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     *
-     * @Assert\Url
-     */
-    protected $address;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Url]
+    private string $address;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     */
-    protected $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private string $name;
 
     public function __toString(): string
     {

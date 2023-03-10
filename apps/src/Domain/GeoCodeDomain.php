@@ -7,6 +7,8 @@ use Labstag\Form\Admin\GeoCodeType;
 
 use Labstag\Form\Admin\Search\GeoCodeType as SearchGeoCodeType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\GeoCodeRepository;
 use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Labstag\Search\GeoCodeSearch;
@@ -17,33 +19,34 @@ class GeoCodeDomain extends DomainLib
     public function __construct(
         protected GeoCodeRequestHandler $geoCodeRequestHandler,
         protected GeoCodeRepository $geoCodeRepository,
+        protected GeoCodeSearch $geoCodeSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return GeoCode::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->geoCodeRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->geoCodeRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): GeoCodeSearch
     {
-        return new GeoCodeSearch();
+        return $this->geoCodeSearch;
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchGeoCodeType::class;
     }
@@ -63,7 +66,7 @@ class GeoCodeDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return GeoCodeType::class;
     }

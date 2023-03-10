@@ -6,14 +6,16 @@ use Labstag\Entity\Edito;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Edito\Header;
 use Labstag\Form\Admin\Paragraph\Edito\HeaderType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\EditoRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class HeaderParagraph extends ParagraphLib
 {
-    public function getCode($header): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($header);
+        unset($entityParagraphLib);
 
         return 'edito/header';
     }
@@ -43,14 +45,14 @@ class HeaderParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Header $header)
+    public function show(Header $header): ?Response
     {
-        /** @var EditoRepository $entityRepository */
-        $entityRepository = $this->getRepository(Edito::class);
-        $edito = $entityRepository->findOnePublier();
+        /** @var EditoRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Edito::class);
+        $edito                      = $serviceEntityRepositoryLib->findOnePublier();
 
         if (!$edito instanceof Edito) {
-            return;
+            return null;
         }
 
         return $this->render(

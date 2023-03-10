@@ -2,18 +2,24 @@
 
 namespace Labstag\Service;
 
+use Labstag\Lib\AbstractTypeLib;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
+
 class FormService
 {
-    public function __construct(protected $formfront, protected $postform)
+    public function __construct(
+        protected RewindableGenerator $formfront,
+        protected RewindableGenerator $postform
+    )
     {
     }
 
-    public function all()
+    public function all(): RewindableGenerator
     {
         return $this->formfront;
     }
 
-    public function get($name)
+    public function get(string $name): mixed
     {
         $form = null;
         foreach ($this->formfront as $form) {
@@ -25,7 +31,7 @@ class FormService
         return $form;
     }
 
-    public function test()
+    public function test(): array
     {
         $success = [];
         foreach ($this->formfront as $form) {
@@ -35,9 +41,13 @@ class FormService
         return $success;
     }
 
-    private function execute($form, $success, $formName)
+    private function execute(
+        AbstractTypeLib $typeLib,
+        array $success,
+        string $formName
+    ): array
     {
-        $formClass = $form::class;
+        $formClass = $typeLib::class;
         foreach ($this->postform as $row) {
             if ($row->getForm() == $formClass) {
                 $success = $row->execute($formClass, $success, $formName);

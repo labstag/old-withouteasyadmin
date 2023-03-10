@@ -4,6 +4,8 @@ namespace Labstag\Block;
 
 use Labstag\Entity\Block\Paragraph;
 use Labstag\Form\Admin\Block\ParagraphType;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\BlockLib;
 use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,16 +16,16 @@ class ParagraphBlock extends BlockLib
 {
     public function __construct(
         TranslatorInterface $translator,
-        Environment $environment,
+        Environment $twigEnvironment,
         protected ParagraphService $paragraphService
     )
     {
-        parent::__construct($translator, $environment);
+        parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode($paragraph, $content): string
+    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
     {
-        unset($paragraph, $content);
+        unset($entityBlockLib, $front);
 
         return 'paragraph';
     }
@@ -53,12 +55,12 @@ class ParagraphBlock extends BlockLib
         return false;
     }
 
-    public function show(Paragraph $paragraph, $content): Response
+    public function show(Paragraph $paragraph, ?FrontInterface $front): Response
     {
-        $data = $this->setParagraphs($content);
+        $data = $this->setParagraphs($front);
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($paragraph, $content)),
+            $this->getTemplateFile($this->getCode($paragraph, $front)),
             [
                 'paragraphs' => $data,
                 'block'      => $paragraph,
@@ -66,18 +68,18 @@ class ParagraphBlock extends BlockLib
         );
     }
 
-    private function setParagraphs($content)
+    private function setParagraphs(?FrontInterface $front): array
     {
         $paragraphs = [];
-        if (is_null($content)) {
+        if (is_null($front)) {
             return $paragraphs;
         }
 
-        $methods = get_class_methods($content);
+        $methods = get_class_methods($front);
         if (!in_array('getParagraphs', $methods)) {
             return $paragraphs;
         }
 
-        return $this->getParagraphsArray($this->paragraphService, $content, $paragraphs);
+        return $this->getParagraphsArray($this->paragraphService, $front, $paragraphs);
     }
 }

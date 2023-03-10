@@ -4,6 +4,8 @@ namespace Labstag\Block;
 
 use Labstag\Entity\Block\Custom;
 use Labstag\Form\Admin\Block\CustomType;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\LayoutRepository;
 use Labstag\Service\ParagraphService;
@@ -15,24 +17,20 @@ use Twig\Environment;
 
 class CustomBlock extends BlockLib
 {
-
-    protected ?Request $request;
-
     public function __construct(
         TranslatorInterface $translator,
-        Environment $environment,
+        Environment $twigEnvironment,
         protected RequestStack $requestStack,
         protected ParagraphService $paragraphService,
         protected LayoutRepository $layoutRepository
     )
     {
-        $this->request = $requestStack->getCurrentRequest();
-        parent::__construct($translator, $environment);
+        parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode($custom, $content): string
+    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
     {
-        unset($custom, $content);
+        unset($entityBlockLib, $front);
 
         return 'custom';
     }
@@ -62,12 +60,12 @@ class CustomBlock extends BlockLib
         return false;
     }
 
-    public function show(Custom $custom, $content): Response
+    public function show(Custom $custom, ?FrontInterface $front): Response
     {
         $paragraphs = $this->setParagraphs($custom);
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($custom, $content)),
+            $this->getTemplateFile($this->getCode($custom, $front)),
             [
                 'paragraphs' => $paragraphs,
                 'block'      => $custom,
@@ -75,12 +73,14 @@ class CustomBlock extends BlockLib
         );
     }
 
-    private function setParagraphs(Custom $custom)
+    private function setParagraphs(Custom $custom): array
     {
-        $all = $this->request->attributes->all();
-        $route = $all['_route'];
+        /** @var Request $request */
+        $request     = $this->requestStack->getCurrentRequest();
+        $all         = $request->attributes->all();
+        $route       = $all['_route'];
         $dataLayouts = $this->layoutRepository->findByCustom($custom);
-        $layouts = [];
+        $layouts     = [];
         foreach ($dataLayouts as $layout) {
             if (!in_array($route, $layout->getUrl())) {
                 continue;

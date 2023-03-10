@@ -5,6 +5,7 @@ namespace Labstag\EventSubscriber;
 use Labstag\Entity\User;
 use Labstag\Lib\EventSubscriberLib;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Component\Workflow\Transition;
 
 class WorkflowSubscriber extends EventSubscriberLib
 {
@@ -29,8 +30,9 @@ class WorkflowSubscriber extends EventSubscriberLib
 
     public function onTransition(Event $event): void
     {
+        /** @var Transition $transition */
         $transition = $event->getTransition();
-        $name = $transition->getName();
+        $name       = $transition->getName();
         if ('submit' == $name) {
             $this->transitionSubmit($event);
 
@@ -53,6 +55,7 @@ class WorkflowSubscriber extends EventSubscriberLib
 
     public function transitionPasswordLost(Event $event): void
     {
+        /** @var User $entity */
         $entity = $event->getSubject();
         $this->userMailService->lostPassword($entity);
         $this->sessionService->flashBagAdd(
@@ -63,6 +66,7 @@ class WorkflowSubscriber extends EventSubscriberLib
 
     public function transitionSubmit(Event $event): void
     {
+        /** @var User $entity */
         $entity = $event->getSubject();
         if (User::class == $entity::class) {
             $this->userMailService->newUser($entity);

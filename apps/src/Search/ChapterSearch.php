@@ -2,14 +2,15 @@
 
 namespace Labstag\Search;
 
+use DateTime;
 use Labstag\Lib\SearchLib;
 
 class ChapterSearch extends SearchLib
 {
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $published;
+    public ?DateTime $published = null;
 
-    public $title;
+    public ?string $title = null;
 }

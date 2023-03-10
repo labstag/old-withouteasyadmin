@@ -8,9 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\History;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_history_trash")
- */
+#[Trashable(url: 'admin_history_trash')]
 class HistoryRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -21,7 +19,7 @@ class HistoryRepository extends ServiceEntityRepositoryLib
     public function findPublier(): Query
     {
         $query = $this->createQueryBuilder('p');
-        $query->innerjoin('p.refuser', 'u');
+        $query->innerjoin('p.user', 'u');
         $query->leftJoin('p.chapters', 'c');
         $query->where('p.state LIKE :state');
         $query->andWhere('c.state LIKE :state');
@@ -34,10 +32,10 @@ class HistoryRepository extends ServiceEntityRepositoryLib
         return $query->getQuery();
     }
 
-    public function findPublierUsername($username): Query
+    public function findPublierUsername(string $username): Query
     {
         $query = $this->createQueryBuilder('p');
-        $query->leftJoin('p.refuser', 'u');
+        $query->leftJoin('p.user', 'u');
         $query->leftJoin('p.chapters', 'c');
         $query->where('p.state LIKE :state');
         $query->andWhere('c.state LIKE :state');

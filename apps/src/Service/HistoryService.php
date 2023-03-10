@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\History;
@@ -17,13 +16,13 @@ class HistoryService
 
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        private readonly Environment $environment,
+        private readonly Environment $twigEnvironment,
         protected HistoryRepository $historyRepository
     )
     {
     }
 
-    public function getFilename(): string
+    public function getFilename(): ?string
     {
         return $this->filename;
     }
@@ -45,7 +44,7 @@ class HistoryService
         }
 
         $html2Pdf = $this->generateHistoryPdf($history, $arrayCollection);
-        $path = sprintf(
+        $path     = sprintf(
             '%s/%s',
             $fileDirectory,
             'history'
@@ -64,10 +63,11 @@ class HistoryService
 
     private function generateHistoryPdf(History $history, Collection $collection): Html2Pdf
     {
-        $tmpfile = tmpfile();
-        $data = stream_get_meta_data($tmpfile);
+        /** @var resource $tmpfile */
+        $tmpfile  = tmpfile();
+        $data     = stream_get_meta_data($tmpfile);
         $html2Pdf = new Html2Pdf();
-        $html = $this->environment->render(
+        $html     = $this->twigEnvironment->render(
             'pdf/history/index.html.twig',
             [
                 'history'  => $history,
@@ -83,7 +83,7 @@ class HistoryService
         return $html2Pdf;
     }
 
-    private function getChapters(History $history, bool $all): ArrayCollection
+    private function getChapters(History $history, bool $all): Collection
     {
         return $all ? $history->getChapters() : $history->getChaptersPublished();
     }

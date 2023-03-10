@@ -6,8 +6,11 @@ use Labstag\Entity\Menu;
 
 use Labstag\Form\Admin\MenuType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;
+use Labstag\Search\MenuSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuDomain extends DomainLib
@@ -15,25 +18,31 @@ class MenuDomain extends DomainLib
     public function __construct(
         protected MenuRequestHandler $menuRequestHandler,
         protected MenuRepository $menuRepository,
+        protected MenuSearch $menuSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Menu::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->menuRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->menuRequestHandler;
+    }
+
+    public function getSearchData(): MenuSearch
+    {
+        return $this->menuSearch;
     }
 
     /**
@@ -52,7 +61,7 @@ class MenuDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return MenuType::class;
     }

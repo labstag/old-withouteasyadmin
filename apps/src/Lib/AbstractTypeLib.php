@@ -23,7 +23,7 @@ abstract class AbstractTypeLib extends AbstractType
     {
     }
 
-    protected function addParagraph(FormBuilderInterface $formBuilder, array $urls)
+    protected function addParagraph(FormBuilderInterface $formBuilder, array $urls): void
     {
         $formBuilder->add(
             'paragraph',
@@ -38,9 +38,9 @@ abstract class AbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addPlainPassword($builder)
+    protected function addPlainPassword(FormBuilderInterface $formBuilder): void
     {
-        $builder->add(
+        $formBuilder->add(
             'plainPassword',
             RepeatedType::class,
             [
@@ -62,9 +62,9 @@ abstract class AbstractTypeLib extends AbstractType
         );
     }
 
-    protected function addPublished($builder)
+    protected function addPublished(FormBuilderInterface $formBuilder): void
     {
-        $builder->add(
+        $formBuilder->add(
             'published',
             DateTimeType::class,
             [
@@ -77,10 +77,13 @@ abstract class AbstractTypeLib extends AbstractType
         );
     }
 
-    protected function setCollectionType($builder, $tab)
+    protected function setCollectionType(
+        FormBuilderInterface $formBuilder,
+        array $tab
+    ): void
     {
         foreach ($tab as $key => $type) {
-            $builder->add(
+            $formBuilder->add(
                 $key,
                 MinMaxCollectionType::class,
                 [
@@ -93,9 +96,9 @@ abstract class AbstractTypeLib extends AbstractType
         }
     }
 
-    protected function setContent($builder)
+    protected function setContent(FormBuilderInterface $formBuilder): void
     {
-        $builder->add(
+        $formBuilder->add(
             'content',
             WysiwygType::class,
             [
@@ -105,10 +108,13 @@ abstract class AbstractTypeLib extends AbstractType
         );
     }
 
-    protected function setInputText($builder, $tab)
+    protected function setInputText(
+        FormBuilderInterface $formBuilder,
+        array $tab
+    ): void
     {
         foreach ($tab as $id => $row) {
-            $builder->add(
+            $formBuilder->add(
                 $id,
                 TextType::class,
                 [
@@ -122,9 +128,9 @@ abstract class AbstractTypeLib extends AbstractType
         }
     }
 
-    protected function setMeta($builder)
+    protected function setMeta(FormBuilderInterface $formBuilder): void
     {
-        $builder->add(
+        $formBuilder->add(
             'metas',
             CollectionType::class,
             [

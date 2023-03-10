@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,103 +10,69 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\ChapterRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ChapterRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-class Chapter
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: ChapterRepository::class)]
+#[ApiResource]
+class Chapter implements FrontInterface, EntityTrashInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $content;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
 
-    /**
-     * @Gedmo\Timestampable(on="create")
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $created;
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $created = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\ManyToOne(targetEntity: History::class, inversedBy: 'chapters', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(name: 'refhistory_id', nullable: false)]
+    private ?History $history = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $metas;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'chapter', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $metas;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(type: 'integer')]
     private int $pages = 0;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="chapter", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
-    private $paragraphs;
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'chapter', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private Collection $paragraphs;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $position;
+    #[ORM\Column(type: 'integer')]
+    private ?int $position = null;
 
-    /**
-     * @Gedmo\Timestampable(on="create")
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $published;
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $published = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="chapters", cascade={"persist"})
-     *
-     * @Assert\NotBlank
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $refhistory;
+    #[Gedmo\Slug(updatable: false, fields: ['name'])]
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $slug = null;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"name"})
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
-
-    /**
-     * @Gedmo\Timestampable(on="create")
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $updated;
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $updated = null;
 
     public function __construct()
     {
-        $this->metas = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
     }
 
@@ -134,7 +101,7 @@ class Chapter
         return $this->content;
     }
 
-    public function getCreated()
+    public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
     }
@@ -182,7 +149,7 @@ class Chapter
 
     public function getRefhistory(): ?History
     {
-        return $this->refhistory;
+        return $this->history;
     }
 
     public function getSlug(): ?string
@@ -253,7 +220,7 @@ class Chapter
 
     public function setRefhistory(?History $history): self
     {
-        $this->refhistory = $history;
+        $this->history = $history;
 
         return $this;
     }
@@ -272,7 +239,10 @@ class Chapter
         return $this;
     }
 
-    private function removeElementChapter($element, $variable)
+    private function removeElementChapter(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getChapter() === $this) {
             $variable->setChapter(null);

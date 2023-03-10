@@ -2,7 +2,7 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
+use ApiPlatform\Metadata\ApiResource;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,121 +12,84 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\PostRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=PostRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Uploadable
- */
-class Post implements Stringable
+#[Uploadable()]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ApiResource]
+class Post implements Stringable, FrontInterface, EntityTrashInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @UploadableField(filename="img", path="post/img", slug="title")
-     */
-    protected $file;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'img_id')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $content;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refcategory_id')]
+    private ?Category $category = null;
 
-    /**
-     * @Gedmo\Timestampable(on="create")
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private DateTime $created;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $created = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="posts", cascade={"persist"})
-     */
-    private $img;
+    #[UploadableField(filename: 'img', path: 'post/img', slug: 'title')]
+    private mixed $file;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, mappedBy="posts", cascade={"persist"})
-     */
-    private $libelles;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $metas;
+    #[ORM\ManyToMany(targetEntity: Libelle::class, mappedBy: 'posts', cascade: ['persist'])]
+    private Collection $libelles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="post", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
-    private $paragraphs;
+    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'post', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $metas;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $published;
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'post', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private Collection $paragraphs;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="posts", cascade={"persist"})
-     */
-    private $refcategory;
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $published = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts", cascade={"persist"})
-     *
-     * @Assert\NotBlank
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $refuser;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $remark = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $remark;
+    #[Gedmo\Slug(updatable: false, fields: ['title'])]
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $slug = null;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"title"})
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
+    private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
-     */
-    private $title;
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $updated = null;
 
-    /**
-     * @Gedmo\Timestampable(on="update")
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private DateTime $updated;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'posts', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    private ?UserInterface $user = null;
 
     public function __construct()
     {
-        $this->libelles = new ArrayCollection();
+        $this->libelles   = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
-        $this->metas = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -169,12 +132,12 @@ class Post implements Stringable
         return $this->content;
     }
 
-    public function getCreated()
+    public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -186,7 +149,7 @@ class Post implements Stringable
 
     public function getImg(): ?Attachment
     {
-        return $this->img;
+        return $this->attachment;
     }
 
     public function getLibelles(): Collection
@@ -217,12 +180,12 @@ class Post implements Stringable
 
     public function getRefcategory(): ?Category
     {
-        return $this->refcategory;
+        return $this->category;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getRemark(): ?bool
@@ -240,7 +203,7 @@ class Post implements Stringable
         return $this->title;
     }
 
-    public function getUpdated()
+    public function getUpdated(): ?DateTimeInterface
     {
         return $this->updated;
     }
@@ -282,7 +245,7 @@ class Post implements Stringable
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 
@@ -291,7 +254,7 @@ class Post implements Stringable
 
     public function setImg(?Attachment $attachment): self
     {
-        $this->img = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }
@@ -305,14 +268,14 @@ class Post implements Stringable
 
     public function setRefcategory(?Category $category): self
     {
-        $this->refcategory = $category;
+        $this->category = $category;
 
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }
@@ -345,7 +308,10 @@ class Post implements Stringable
         return $this;
     }
 
-    private function removeElementPost($element, $variable)
+    private function removeElementPost(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getPost() === $this) {
             $variable->setPost(null);

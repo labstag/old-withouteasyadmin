@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,90 +12,64 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\MemoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=MemoRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Uploadable
- */
-class Memo implements Stringable
+#[Uploadable()]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: MemoRepository::class)]
+#[ApiResource]
+class Memo implements Stringable, FrontInterface, EntityTrashInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     *
-     * @Assert\NotBlank
-     */
-    protected $content;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\GreaterThanOrEqual(propertyPath: 'dateStart')]
+    protected ?DateTime $dateEnd = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Assert\GreaterThanOrEqual(propertyPath="dateStart")
-     */
-    protected DateTime $dateEnd;
-
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Assert\LessThanOrEqual(propertyPath="dateEnd")
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Assert\LessThanOrEqual(propertyPath: 'dateEnd')]
     protected DateTime $dateStart;
 
-    /**
-     * @UploadableField(filename="fond", path="memo/fond", slug="title")
-     */
-    protected $file;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'noteInternes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'fond_id')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="noteInternes", cascade={"persist"})
-     */
-    protected $fond;
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank]
+    private ?string $content = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[UploadableField(filename: 'fond', path: 'memo/fond', slug: 'title')]
+    private string $file;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="noteInternes", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
-    protected $refuser;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
-     *
-     * @Assert\NotBlank
-     */
-    protected $title;
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'memo', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private Collection $paragraphs;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="memo", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
-    private $paragraphs;
+    #[ORM\Column(type: 'string', length: 255, unique: true, nullable: false)]
+    #[Assert\NotBlank]
+    private string $title;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'noteInternes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    private ?UserInterface $user = null;
 
     public function __construct()
     {
-        $this->dateStart = new DateTime();
-        $this->dateEnd = new DateTime();
+        $this->dateStart  = new DateTime();
+        $this->dateEnd    = new DateTime();
         $this->paragraphs = new ArrayCollection();
     }
 
@@ -128,14 +103,14 @@ class Memo implements Stringable
         return $this->dateStart;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
 
     public function getFond(): ?Attachment
     {
-        return $this->fond;
+        return $this->attachment;
     }
 
     public function getId(): ?string
@@ -151,9 +126,9 @@ class Memo implements Stringable
         return $this->paragraphs;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getTitle(): ?string
@@ -192,7 +167,7 @@ class Memo implements Stringable
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 
@@ -201,14 +176,14 @@ class Memo implements Stringable
 
     public function setFond(?Attachment $attachment): self
     {
-        $this->fond = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

@@ -8,9 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Menu;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_menu_trash")
- */
+#[Trashable(url: 'admin_menu_trash')]
 class MenuRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -18,7 +16,7 @@ class MenuRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Menu::class);
     }
 
-    public function findAllCode()
+    public function findAllCode(): mixed
     {
         $queryBuilder = $this->findAllCodeQuery();
 

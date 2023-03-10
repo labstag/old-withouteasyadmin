@@ -8,9 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Page;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_page_trash")
- */
+#[Trashable(url: 'admin_page_trash')]
 class PageRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -21,7 +19,7 @@ class PageRepository extends ServiceEntityRepositoryLib
     public function formType(array $options): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('p');
-        $id = $options['data']->getId();
+        $id           = $options['data']->getId();
         if (empty($id)) {
             return $queryBuilder;
         }

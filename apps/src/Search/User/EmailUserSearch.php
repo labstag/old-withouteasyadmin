@@ -3,11 +3,12 @@
 namespace Labstag\Search\User;
 
 use Labstag\Lib\SearchLib;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class EmailUserSearch extends SearchLib
 {
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $refuser;
+    public ?UserInterface $user = null;
 }

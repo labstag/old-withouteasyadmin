@@ -2,11 +2,13 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
 use Labstag\Form\Admin\NewLayoutType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\Block\CustomRepository;
 use Labstag\Repository\LayoutRepository;
 use Labstag\RequestHandler\LayoutRequestHandler;
@@ -32,14 +34,12 @@ class LayoutController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_layout_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_layout_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    public function indexOrTrash(Request $request): Response
     {
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-header-new',
             'Nouveau',
             [
@@ -55,11 +55,10 @@ class LayoutController extends AdminControllerLib
             ]
         );
 
-        $domain = $this->getDomainEntity();
-        $url = $domain->getUrlAdmin();
-        $request = $this->requeststack->getCurrentRequest();
-        $all = $request->attributes->all();
-        $route = $all['_route'];
+        $domain    = $this->getDomainEntity();
+        $url       = $domain->getUrlAdmin();
+        $all       = $request->attributes->all();
+        $route     = $all['_route'];
         $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($routeType, $domain);
         $pagination = $this->setPagination($routeType, $domain);
@@ -89,7 +88,7 @@ class LayoutController extends AdminControllerLib
         CustomRepository $customRepository
     ): RedirectResponse
     {
-        $post = $request->request->all('new_layout');
+        $post   = $request->request->all('new_layout');
         $custom = $customRepository->findOneBy(
             [
                 'id' => $post['custom'],
@@ -110,9 +109,7 @@ class LayoutController extends AdminControllerLib
         return $this->redirectToRoute('admin_layout_edit', ['id' => $layout->getId()]);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_layout_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_layout_preview', methods: ['GET'])]
     public function showOrPreview(Layout $layout): Response
@@ -124,8 +121,13 @@ class LayoutController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Layout::class);
+        $domainLib = $this->domainService->getDomain(Layout::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

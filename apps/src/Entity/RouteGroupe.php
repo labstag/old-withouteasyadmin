@@ -2,41 +2,33 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\RouteGroupeRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=RouteGroupeRepository::class)
- */
-class RouteGroupe
+#[ORM\Entity(repositoryClass: RouteGroupeRepository::class)]
+#[ApiResource]
+class RouteGroupe implements EntityInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'routes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
+    private ?Groupe $groupe = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="routes", cascade={"persist"})
-     */
-    protected $refgroupe;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Route::class, inversedBy="groupes", cascade={"persist"})
-     */
-    protected $refroute;
+    #[ORM\ManyToOne(targetEntity: Route::class, inversedBy: 'groupes', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refroute_id', nullable: true)]
+    private ?Route $route = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $state;
+    #[ORM\Column(type: 'boolean')]
+    private bool $state = false;
 
     public function getId(): ?string
     {
@@ -45,12 +37,12 @@ class RouteGroupe
 
     public function getRefgroupe(): ?Groupe
     {
-        return $this->refgroupe;
+        return $this->groupe;
     }
 
     public function getRefroute(): ?Route
     {
-        return $this->refroute;
+        return $this->route;
     }
 
     public function getState(): ?bool
@@ -65,14 +57,14 @@ class RouteGroupe
 
     public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->refgroupe = $groupe;
+        $this->groupe = $groupe;
 
         return $this;
     }
 
     public function setRefroute(?Route $route): self
     {
-        $this->refroute = $route;
+        $this->route = $route;
 
         return $this;
     }

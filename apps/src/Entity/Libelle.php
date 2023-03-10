@@ -2,60 +2,46 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\LibelleRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=LibelleRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-class Libelle implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: LibelleRepository::class)]
+#[ApiResource]
+class Libelle implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Bookmark::class, mappedBy="libelles", cascade={"persist"})
-     */
-    private $bookmarks;
+    #[ORM\ManyToMany(targetEntity: Bookmark::class, mappedBy: 'libelles', cascade: ['persist'])]
+    private Collection $bookmarks;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Post::class, inversedBy="libelles", cascade={"persist"})
-     */
-    private $posts;
+    #[ORM\ManyToMany(targetEntity: Post::class, inversedBy: 'libelles', cascade: ['persist'])]
+    private Collection $posts;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"name"})
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
+    #[Gedmo\Slug(updatable: false, fields: ['name'])]
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $slug = null;
 
     public function __construct()
     {
-        $this->posts = new ArrayCollection();
+        $this->posts     = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
     }
 

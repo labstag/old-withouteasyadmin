@@ -2,39 +2,36 @@
 
 namespace Labstag\Entity\Paragraph\History;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\EntityInterface;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\History\UserRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Table(name="paragraph_history_user")
- *
- * @ORM\Entity(repositoryClass=UserRepository::class)
- */
-class User implements Stringable
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'paragraph_history_user')]
+#[ApiResource(routePrefix: '/paragraph/history')]
+class User implements Stringable, ParagraphInterface, EntityInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Paragraph::class, inversedBy="historyUsers", cascade={"persist"})
-     */
-    private $paragraph;
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'historyUsers', cascade: ['persist'])]
+    private ?Paragraph $paragraph = null;
 
     public function __toString(): string
     {
-        return (string) $this->getParagraph()->getType();
+        /** @var Paragraph $paragraph */
+        $paragraph = $this->getParagraph();
+
+        return (string) $paragraph->getType();
     }
 
     public function getId(): ?string

@@ -2,55 +2,58 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\WorkflowUserRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=WorkflowUserRepository::class)
- */
-class WorkflowUser
+#[ORM\Entity(repositoryClass: WorkflowUserRepository::class)]
+#[ApiResource]
+class WorkflowUser implements EntityInterface
 {
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="workflowUsers", cascade={"persist"})
-     */
-    private $refuser;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $state = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Workflow::class, inversedBy="workflowUsers", cascade={"persist"})
-     */
-    private $refworkflow;
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        inversedBy: 'workflowUsers',
+        cascade: ['persist']
+    )
+    ]
+    #[ORM\JoinColumn(name: 'refuser_id')]
+    private ?UserInterface $user = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $state;
+    #[ORM\ManyToOne(
+        targetEntity: Workflow::class,
+        inversedBy: 'workflowUsers',
+        cascade: ['persist']
+    )
+    ]
+    #[ORM\JoinColumn(name: 'refworkflow_id')]
+    private ?Workflow $workflow = null;
 
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getRefworkflow(): ?Workflow
     {
-        return $this->refworkflow;
+        return $this->workflow;
     }
 
     public function getState(): ?bool
@@ -58,16 +61,16 @@ class WorkflowUser
         return $this->state;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }
 
     public function setRefworkflow(?Workflow $workflow): self
     {
-        $this->refworkflow = $workflow;
+        $this->workflow = $workflow;
 
         return $this;
     }

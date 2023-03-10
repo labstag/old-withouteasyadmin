@@ -2,16 +2,17 @@
 
 namespace Labstag\Search;
 
+use Labstag\Entity\Groupe;
 use Labstag\Lib\SearchLib;
 
 class UserSearch extends SearchLib
 {
 
-    public $email;
+    public ?string $email = null;
 
-    public $etape;
+    public ?string $etape = null;
 
-    public $refgroup;
+    public ?Groupe $groupe = null;
 
-    public $username;
+    public ?string $username = null;
 }

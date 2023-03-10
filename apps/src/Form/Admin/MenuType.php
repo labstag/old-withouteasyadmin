@@ -37,7 +37,7 @@ class MenuType extends AbstractTypeLib
         );
     }
 
-    private function setChildren(FormBuilderInterface $formBuilder)
+    private function setChildren(FormBuilderInterface $formBuilder): void
     {
         $formBuilder->add(
             'name',
@@ -73,7 +73,7 @@ class MenuType extends AbstractTypeLib
         );
     }
 
-    private function setNew(FormBuilderInterface $formBuilder)
+    private function setNew(FormBuilderInterface $formBuilder): void
     {
         $formBuilder->add(
             'clef',

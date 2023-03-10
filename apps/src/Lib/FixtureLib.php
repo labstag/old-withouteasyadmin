@@ -6,6 +6,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
+use finfo;
 use Labstag\DataFixtures\CategoryFixtures;
 use Labstag\DataFixtures\DataFixtures;
 use Labstag\DataFixtures\LibelleFixtures;
@@ -133,7 +134,7 @@ abstract class FixtureLib extends Fixture
         protected UserRepository $userRepository,
         protected GroupeRepository $groupeRepository,
         protected GuardService $guardService,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected BlockService $blockService,
         protected EmailUserRequestHandler $emailUserRequestHandler,
         protected LinkUserRequestHandler $linkUserRequestHandler,
@@ -162,7 +163,7 @@ abstract class FixtureLib extends Fixture
     {
     }
 
-    public function getDependenciesBookmarkPost()
+    public function getDependenciesBookmarkPost(): array
     {
         return [
             DataFixtures::class,
@@ -172,16 +173,11 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
-    protected function addParagraphs($entity, $paragraphs)
+    protected function addParagraphs(mixed $entity, array $paragraphs): void
     {
         foreach ($paragraphs as $paragraph) {
             $this->paragraphService->add($entity, $paragraph);
         }
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->containerBag->get($name);
     }
 
     protected function getRefgroupe(array $groupes, string $code): ?Groupe
@@ -195,7 +191,7 @@ abstract class FixtureLib extends Fixture
         return null;
     }
 
-    protected function getStatesData()
+    protected function getStatesData(): array
     {
         return [
             ['submit'],
@@ -221,29 +217,39 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
-    protected function loadForeach($number, $method)
+    protected function loadForeach(int $number, string $method): void
     {
-        $faker = $this->setFaker();
+        $faker     = $this->setFaker();
         $statesTab = $this->getStatesData();
         for ($index = 0; $index < $number; ++$index) {
             $stateId = array_rand($statesTab);
-            $states = $statesTab[$stateId];
-            call_user_func([$this, $method], $faker, $index, $states);
+            $states  = $statesTab[$stateId];
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $method,
+            ];
+            call_user_func_array($callable, [$faker, $index, $states]);
         }
     }
 
-    protected function loadForeachUser($number, $method)
+    protected function loadForeachUser(int $number, string $method): void
     {
         $faker = $this->setFaker();
         $users = $this->installService->getData('user');
         for ($index = 0; $index < $number; ++$index) {
             $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
-            $user = $this->getReference('user_'.$indexUser);
-            call_user_func([$this, $method], $faker, $user);
+            $user      = $this->getReference('user_'.$indexUser);
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $method,
+            ];
+            call_user_func_array($callable, [$faker, $user]);
         }
     }
 
-    protected function setFaker()
+    protected function setFaker(): Generator
     {
         $generator = Factory::create('fr_FR');
         $generator->addProvider(new PicsumProvider($generator));
@@ -252,70 +258,80 @@ abstract class FixtureLib extends Fixture
         return $generator;
     }
 
-    protected function setLibelles($faker, $entity): void
+    protected function setLibelles(Generator $generator, mixed $entity): void
     {
         if (1 != random_int(0, 1)) {
             return;
         }
 
-        $nbr = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
+        $nbr = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
         for ($i = 0; $i < $nbr; ++$i) {
-            $indexLibelle = $faker->numberBetween(0, self::NUMBER_LIBELLE - 1);
-            $libelle = $this->getReference('libelle_'.$indexLibelle);
+            $indexLibelle = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
+            $libelle      = $this->getReference('libelle_'.$indexLibelle);
             $entity->addLibelle($libelle);
         }
     }
 
-    protected function setMeta(Meta $meta)
+    protected function setMeta(Meta $meta): void
     {
         $faker = $this->setFaker();
         $meta->setTitle($faker->unique()->colorName());
         $meta->setDescription($faker->unique()->sentence());
-        $meta->setKeywords($faker->unique()->words(random_int(1, 5), true));
+
+        $keywords = $faker->unique()->words(random_int(1, 5), true);
+        if (is_string($keywords)) {
+            $meta->setKeywords($keywords);
+        }
     }
 
-    protected function upload($entity, Generator $generator): void
+    protected function upload(mixed $entity, Generator $generator): void
     {
-        // @var resource $finfo
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
+        /** @var finfo $finfo */
+        $finfo        = finfo_open(FILEINFO_MIME_TYPE);
+        $annotations  = $this->uploadAnnotationReader->getUploadableFields($entity);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $path     = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
-            $title = $accessor->getValue($entity, $annotation->getSlug());
-            $slug = $asciiSlugger->slug($title);
+            $title    = $accessor->getValue($entity, $annotation->getSlug());
+            $slug     = $asciiSlugger->slug($title);
 
             try {
-                $image = $generator->picsum(null, 640, 480, true);
-                $content = file_get_contents($image);
-                // @var resource $tmpfile
-                $tmpfile = tmpfile();
-                $data = stream_get_meta_data($tmpfile);
-                file_put_contents($data['uri'], $content);
-                $file = new UploadedFile(
-                    $data['uri'],
-                    $slug.'.jpg',
-                    (string) finfo_file($finfo, $data['uri']),
-                    null,
-                    true
+                /** @var PicsumProvider $generator */
+                $image = $generator->picsum(
+                    width: 640,
+                    height: 480,
+                    fullPath: true
                 );
-                $filename = $file->getClientOriginalName();
-                if (!is_dir($path)) {
-                    mkdir($path, 0777, true);
-                }
+                if (!empty($image)) {
+                    $content = file_get_contents($image);
+                    /** @var resource $tmpfile */
+                    $tmpfile = tmpfile();
+                    $data    = stream_get_meta_data($tmpfile);
+                    file_put_contents($data['uri'], $content);
+                    $file = new UploadedFile(
+                        path: $data['uri'],
+                        originalName: $slug.'.jpg',
+                        mimeType: (string) finfo_file($finfo, $data['uri']),
+                        test: true
+                    );
+                    $filename = $file->getClientOriginalName();
+                    if (!is_dir($path)) {
+                        mkdir($path, 0777, true);
+                    }
 
-                $file->move(
-                    $path,
-                    $filename
-                );
-                $file = $path.'/'.$filename;
+                    $file->move(
+                        $path,
+                        $filename
+                    );
+                    $file = $path.'/'.$filename;
+                }
             } catch (Exception $exception) {
                 $this->errorService->set($exception);
                 echo $exception->getMessage();
             }
 
-            if (isset($filename)) {
+            if (isset($file)) {
                 $attachment = $this->fileService->setAttachment($file);
                 $accessor->setValue($entity, $annotation->getFilename(), $attachment);
             }

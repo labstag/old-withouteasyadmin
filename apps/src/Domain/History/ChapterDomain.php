@@ -7,6 +7,8 @@ use Labstag\Entity\Chapter;
 use Labstag\Form\Admin\ChapterType;
 use Labstag\Form\Admin\Search\ChapterType as SearchChapterType;
 use Labstag\Lib\DomainLib;
+use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\ChapterRepository;
 use Labstag\RequestHandler\ChapterRequestHandler;
 use Labstag\Search\ChapterSearch;
@@ -17,33 +19,34 @@ class ChapterDomain extends DomainLib
     public function __construct(
         protected ChapterRequestHandler $chapterRequestHandler,
         protected ChapterRepository $chapterRepository,
+        protected ChapterSearch $chapterSearch,
         TranslatorInterface $translator
     )
     {
         parent::__construct($translator);
     }
 
-    public function getEntity()
+    public function getEntity(): string
     {
         return Chapter::class;
     }
 
-    public function getRepository()
+    public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->chapterRepository;
     }
 
-    public function getRequestHandler()
+    public function getRequestHandler(): RequestHandlerLib
     {
         return $this->chapterRequestHandler;
     }
 
-    public function getSearchData()
+    public function getSearchData(): ChapterSearch
     {
-        return new ChapterSearch();
+        return $this->chapterSearch;
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
         return SearchChapterType::class;
     }
@@ -63,7 +66,7 @@ class ChapterDomain extends DomainLib
         ];
     }
 
-    public function getType()
+    public function getType(): string
     {
         return ChapterType::class;
     }

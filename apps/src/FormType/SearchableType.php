@@ -5,6 +5,8 @@ namespace Labstag\FormType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -18,6 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SearchableType extends AbstractType
 {
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected RouterInterface $router,
         protected TranslatorInterface $translator,
         protected EntityManagerInterface $entityManager
@@ -29,26 +32,29 @@ class SearchableType extends AbstractType
     {
         $formBuilder->addModelTransformer(
             new CallbackTransformer(
-                static function ($value) {
+                static function ($value)
+                {
                     if ($value instanceof Collection) {
                         return $value->map(
                             static fn ($d) => (string) $d->getId()
                         )->toArray();
                     }
                 },
-                function ($ids) use ($options) {
+                function ($ids) use ($options)
+                {
                     if (empty($ids)) {
                         return is_array($ids) ? new ArrayCollection([]) : null;
                     }
 
-                    $entityRepository = $this->entityManager->getRepository($options['class']);
+                    /** @var ServiceEntityRepositoryLib $serviceEntityRepositoryLib */
+                    $serviceEntityRepositoryLib = $this->repositoryService->get($options['class']);
                     if ($options['add'] && is_array($ids)) {
                         $ids = $this->addToentity($ids, $options);
                     }
 
                     return is_array($ids) ? new ArrayCollection(
-                        $entityRepository->findBy(['id' => $ids])
-                    ) : $entityRepository->find($ids);
+                        $serviceEntityRepositoryLib->findBy(['id' => $ids])
+                    ) : $serviceEntityRepositoryLib->find($ids);
                 }
             )
         );
@@ -60,11 +66,11 @@ class SearchableType extends AbstractType
 
         $placeholder = $options['placeholder'] ?? null;
 
-        $formView->vars['placeholder'] = $placeholder;
-        $formView->vars['placeholder_in_choices'] = false;
-        $formView->vars['multiple'] = $options['multiple'];
-        $formView->vars['preferred_choices'] = [];
-        $formView->vars['choices'] = $this->choices($form->getData(), $options);
+        $formView->vars['placeholder']               = $placeholder;
+        $formView->vars['placeholder_in_choices']    = false;
+        $formView->vars['multiple']                  = $options['multiple'];
+        $formView->vars['preferred_choices']         = [];
+        $formView->vars['choices']                   = $this->choices($form->getData(), $options);
         $formView->vars['choice_translation_domain'] = false;
         if ($options['multiple']) {
             $formView->vars['full_name'] .= '[]';
@@ -111,14 +117,14 @@ class SearchableType extends AbstractType
     /**
      * @return mixed[]
      */
-    protected function addToentity(array $ids, $options): array
+    protected function addToentity(array $ids, array $options): array
     {
         if (is_null($options['new'])) {
             return $ids;
         }
 
-        $entityManager = $this->entityManager;
-        $entityRepository = $entityManager->getRepository($options['class']);
+        /** @var ServiceEntityRepositoryLib $entityRepository */
+        $entityRepository = $this->repositoryService->get($options['class']);
         foreach ($ids as $id => $key) {
             $entity = $entityRepository->find($key);
             if ($entity instanceof $options['class']) {
@@ -134,7 +140,7 @@ class SearchableType extends AbstractType
         return $ids;
     }
 
-    private function choices($values, array $options): ?array
+    private function choices(mixed $values, array $options): ?array
     {
         if (is_null($values)) {
             return ($options['multiple']) ? [] : null;

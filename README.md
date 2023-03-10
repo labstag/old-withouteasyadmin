@@ -50,6 +50,7 @@ npm run docker_getpull-image
 
 ```sh
 npm run cmd:install:dev
+```
 
 ## Users
 
@@ -118,4 +119,3 @@ specification. Contributions of any kind welcome!
 
 _This README was generated with ❤️ by
 [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
-```

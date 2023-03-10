@@ -3,6 +3,7 @@
 namespace Labstag\Entity\Traits\Paragraph;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\History;
 use Labstag\Entity\Paragraph\History as ParagraphHistory;
 use Labstag\Entity\Paragraph\History\Chapter as HistoryChapter;
@@ -13,35 +14,58 @@ use Labstag\Entity\Paragraph\History\User as HistoryUser;
 trait HistoryEntity
 {
 
-    /**
-     * @ORM\OneToMany(targetEntity=ParagraphHistory::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $histories;
+    #[ORM\OneToMany(
+        targetEntity: ParagraphHistory::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $histories;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="paragraphs", cascade={"persist"})
-     */
-    private $history;
+    #[ORM\ManyToOne(
+        targetEntity: History::class,
+        inversedBy: 'paragraphs',
+        cascade: ['persist']
+    )
+    ]
+    private ?History $history = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=HistoryChapter::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $historyChapters;
+    #[ORM\OneToMany(
+        targetEntity: HistoryChapter::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $historyChapters;
 
-    /**
-     * @ORM\OneToMany(targetEntity=HistoryList::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $historyLists;
+    #[ORM\OneToMany(
+        targetEntity: HistoryList::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $historyLists;
 
-    /**
-     * @ORM\OneToMany(targetEntity=HistoryShow::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $historyShows;
+    #[ORM\OneToMany(
+        targetEntity: HistoryShow::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $historyShows;
 
-    /**
-     * @ORM\OneToMany(targetEntity=HistoryUser::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $historyUsers;
+    #[ORM\OneToMany(
+        targetEntity: HistoryUser::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $historyUsers;
 
     public function addHistory(ParagraphHistory $paragraphHistory): self
     {
@@ -180,7 +204,10 @@ trait HistoryEntity
         return $this;
     }
 
-    private function removeElementHistory($element, $variable)
+    private function removeElementHistory(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);

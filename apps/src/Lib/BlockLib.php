@@ -2,6 +2,9 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\FrontInterface;
+use Labstag\Service\ParagraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -10,34 +13,46 @@ abstract class BlockLib extends AbstractController
 {
     public function __construct(
         protected TranslatorInterface $translator,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected array $template = []
     )
     {
     }
 
-    public function getCode($block, $content): string
+    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
     {
-        unset($block, $content);
+        unset($entityBlockLib, $front);
 
         return '';
     }
 
-    public function template($entity, $content)
+    public function template(
+        BlockInterface $entityBlockLib,
+        ?FrontInterface $front
+    ): array
     {
-        return $this->showTemplateFile($this->getCode($entity, $content));
+        return $this->showTemplateFile($this->getCode($entityBlockLib, $front));
     }
 
-    protected function getParagraphsArray($service, $content, $paragraphs)
+    protected function getParagraphsArray(
+        ParagraphService $paragraphService,
+        FrontInterface $front,
+        array $paragraphs
+    ): array
     {
-        $paragraphsArray = $content->getParagraphs();
+        $methods = get_class_methods($front);
+        if (!in_array('getParagraphs', $methods)) {
+            return $paragraphs;
+        }
+
+        $paragraphsArray = $front->getParagraphs();
         foreach ($paragraphsArray as $paragraphArray) {
-            $data = $service->showContent($paragraphArray);
+            $data = $paragraphService->showContent($paragraphArray);
             if (is_null($data)) {
                 continue;
             }
 
-            $template = $service->showTemplate($paragraphArray);
+            $template = $paragraphService->showTemplate($paragraphArray);
 
             $paragraphs[] = [
                 'template' => $template,
@@ -54,7 +69,7 @@ abstract class BlockLib extends AbstractController
             return $this->template[$type];
         }
 
-        $folder = __DIR__.'/../../templates/';
+        $folder   = __DIR__.'/../../templates/';
         $htmltwig = '.html.twig';
 
         $files = [
@@ -91,8 +106,8 @@ abstract class BlockLib extends AbstractController
 
     protected function showTemplateFile(string $type): array
     {
-        $data = $this->getTemplateData($type);
-        $globals = $this->environment->getGlobals();
+        $data    = $this->getTemplateData($type);
+        $globals = $this->twigEnvironment->getGlobals();
         if ('dev' == $globals['app']->getDebug()) {
             return $data;
         }

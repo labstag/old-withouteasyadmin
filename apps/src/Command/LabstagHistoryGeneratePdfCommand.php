@@ -3,9 +3,11 @@
 namespace Labstag\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\History;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Service\HistoryService;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,13 +21,14 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class LabstagHistoryGeneratePdfCommand extends CommandLib
 {
     public function __construct(
+        RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected ParameterBagInterface $parameterBag,
         protected HistoryService $historyService,
         protected HistoryRepository $historyRepository
     )
     {
-        parent::__construct($entityManager);
+        parent::__construct($repositoryService, $entityManager);
     }
 
     protected function configure(): void
@@ -36,18 +39,27 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
-        $histories = $this->historyRepository->findAll();
+        $histories    = $this->historyRepository->findAll();
         $symfonyStyle->title('Génération des PDF');
         $symfonyStyle->progressStart(is_countable($histories) ? count($histories) : 0);
+
+        $fileDirectory = $this->parameterBag->get('file_directory');
+        if (!is_string($fileDirectory)) {
+            $symfonyStyle->progressFinish();
+
+            return Command::SUCCESS;
+        }
+
+        /** @var History $history */
         foreach ($histories as $history) {
             $this->historyService->process(
-                $this->getParameter('file_directory'),
-                $history->getId(),
+                (string) $fileDirectory,
+                (string) $history->getId(),
                 true
             );
             $this->historyService->process(
-                $this->getParameter('file_directory'),
-                $history->getId(),
+                (string) $fileDirectory,
+                (string) $history->getId(),
                 false
             );
             $symfonyStyle->progressAdvance();
@@ -56,10 +68,5 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
         $symfonyStyle->progressFinish();
 
         return Command::SUCCESS;
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->parameterBag->get($name);
     }
 }

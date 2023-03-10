@@ -3,28 +3,37 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\AddressUser;
+use Labstag\Entity\EmailUser;
+use Labstag\Entity\LinkUser;
+use Labstag\Entity\OauthConnectUser;
+use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
 use Labstag\Event\UserCollectionEvent;
+use Labstag\Service\RepositoryService;
+use Labstag\Service\WorkflowService;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Workflow\Registry;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 abstract class RequestHandlerLib
 {
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected EntityManagerInterface $entityManager,
-        protected Registry $registry,
+        protected WorkflowService $workflowService,
         protected EventDispatcherInterface $eventDispatcher
     )
     {
     }
 
-    public function changeWorkflowState($entity, array $states): void
+    public function changeWorkflowState(mixed $entity, array $states): void
     {
-        if (!$this->registry->has($entity)) {
+        if (!$this->workflowService->has($entity)) {
             return;
         }
 
-        $workflow = $this->registry->get($entity);
+        /** @var WorkflowInterface $workflow */
+        $workflow = $this->workflowService->get($entity);
         foreach ($states as $state) {
             if (!$workflow->can($entity, $state)) {
                 continue;
@@ -33,32 +42,30 @@ abstract class RequestHandlerLib
             $workflow->apply($entity, $state);
         }
 
-        $repository = $this->getRepository($entity::class);
+        /** @var ServiceEntityRepositoryLib $repository */
+        $repository = $this->repositoryService->get($entity::class);
         $repository->add($entity);
     }
 
-    public function handle($oldEntity, $entity)
+    public function handle(mixed $oldEntity, mixed $entity): void
     {
-        $repository = $this->getRepository($entity::class);
+        /** @var ServiceEntityRepositoryLib $repository */
+        $repository = $this->repositoryService->get($entity::class);
         $repository->add($entity);
         if ($oldEntity->getId() != $entity->getId()) {
             $this->initWorkflow($entity);
         }
     }
 
-    protected function getRepository(string $entity)
+    protected function initWorkflow(mixed $entity): void
     {
-        return $this->entityManager->getRepository($entity);
-    }
-
-    protected function initWorkflow($entity): void
-    {
-        if (!$this->registry->has($entity)) {
+        if (!$this->workflowService->has($entity)) {
             return;
         }
 
-        $workflow = $this->registry->get($entity);
-        $definition = $workflow->getDefinition();
+        /** @var WorkflowInterface $workflow */
+        $workflow    = $this->workflowService->get($entity);
+        $definition  = $workflow->getDefinition();
         $transitions = $definition->getTransitions();
         foreach ($transitions as $transition) {
             $name = $transition->getName();
@@ -67,27 +74,28 @@ abstract class RequestHandlerLib
             }
 
             $workflow->apply($entity, $name);
-            $repository = $this->getRepository($entity::class);
+            /** @var ServiceEntityRepositoryLib $repository */
+            $repository = $this->repositoryService->get($entity::class);
             $repository->add($entity);
 
             break;
         }
     }
 
-    protected function setArrayCollectionUser(User $user)
+    protected function setArrayCollectionUser(User $user): void
     {
         $userCollectionEvent = new UserCollectionEvent();
-        $oauthConnectUsers = $user->getOauthConnectUsers();
+        $oauthConnectUsers   = $user->getOauthConnectUsers();
         foreach ($oauthConnectUsers as $oauthConnectUser) {
-            // @var OauthConnectUser $row
+            /** @var OauthConnectUser $oauthConnectUser */
             $old = clone $oauthConnectUser;
             $oauthConnectUser->setRefuser($user);
             $userCollectionEvent->addOauthConnectUser($old, $oauthConnectUser);
         }
 
-        $linksUsers = $user->getLinkUsers();
-        foreach ($linksUsers as $linkUser) {
-            // @var LinkUser $row
+        $linkUsers = $user->getLinkUsers();
+        foreach ($linkUsers as $linkUser) {
+            /** @var LinkUser $linkUser */
             $old = clone $linkUser;
             $linkUser->setRefuser($user);
             $userCollectionEvent->addLinkUser($old, $linkUser);
@@ -95,7 +103,7 @@ abstract class RequestHandlerLib
 
         $emailUsers = $user->getEmailUsers();
         foreach ($emailUsers as $emailUser) {
-            // @var EmailUser $row
+            /** @var EmailUser $emailUser */
             $old = clone $emailUser;
             $emailUser->setRefuser($user);
             $userCollectionEvent->addEmailUser($old, $emailUser);
@@ -103,7 +111,7 @@ abstract class RequestHandlerLib
 
         $phoneUsers = $user->getPhoneUsers();
         foreach ($phoneUsers as $phoneUser) {
-            // @var PhoneUser $row
+            /** @var PhoneUser $phoneUser */
             $old = clone $phoneUser;
             $phoneUser->setRefuser($user);
             $userCollectionEvent->addPhoneUser($old, $phoneUser);
@@ -111,7 +119,7 @@ abstract class RequestHandlerLib
 
         $addressUsers = $user->getAddressUsers();
         foreach ($addressUsers as $addressUser) {
-            // @var AddressUser $row
+            /** @var AddressUser $addressUser */
             $old = clone $addressUser;
             $addressUser->setRefuser($user);
             $userCollectionEvent->addAddressUser($old, $addressUser);

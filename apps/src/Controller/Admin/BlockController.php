@@ -2,10 +2,13 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
+use Labstag\Domain\BlockDomain;
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\NewBlockType;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\Service\BlockService;
@@ -29,21 +32,19 @@ class BlockController extends AdminControllerLib
 
         return $this->form(
             $this->getDomainEntity(),
-            is_null($block) ? new Block() : $block,
+            $block,
             'admin/block/form.html.twig',
             ['field' => $field]
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_block_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_block_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    public function indexOrTrash(Request $request): Response
     {
         $region = null;
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-header-new',
             'Nouveau',
             [
@@ -51,7 +52,7 @@ class BlockController extends AdminControllerLib
                 'data-url' => $this->router->generate('admin_block_new'),
             ]
         );
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_block_move',
             'Move',
         );
@@ -62,15 +63,16 @@ class BlockController extends AdminControllerLib
                 'action' => $this->router->generate('admin_block_new'),
             ]
         );
+        /** @var BlockDomain $domain */
         $domain = $this->getDomainEntity();
-        $url = $domain->getUrlAdmin();
-        $repository = $domain->getRepository();
-        $request = $this->requeststack->getCurrentRequest();
-        $all = $request->attributes->all();
-        $route = $all['_route'];
-        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $url    = $domain->getUrlAdmin();
+        /** @var BlockRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $domain->getRepository();
+        $all                        = $request->attributes->all();
+        $route                      = $all['_route'];
+        $routeType                  = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
         $this->setBtnListOrTrash($routeType, $domain);
-        $data = $repository->getDataByRegion();
+        $data  = $serviceEntityRepositoryLib->getDataByRegion();
         $total = 0;
         foreach ($data as $region) {
             $total += is_countable($region) ? count($region) : 0;
@@ -101,11 +103,11 @@ class BlockController extends AdminControllerLib
             $this->setPositionEntity($request, Block::class);
         }
 
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_block_index',
             'Liste',
         );
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-save-move',
             'Enregistrer',
             [
@@ -130,9 +132,9 @@ class BlockController extends AdminControllerLib
         BlockRequestHandler $blockRequestHandler
     ): RedirectResponse
     {
-        $post = $request->request->all('new_block');
+        $post  = $request->request->all('new_block');
         $block = new Block();
-        $old = clone $block;
+        $old   = clone $block;
         $block->setTitle(Uuid::v1());
         $block->setRegion($post['region']);
         $block->setType($post['type']);
@@ -143,8 +145,13 @@ class BlockController extends AdminControllerLib
         return $this->redirectToRoute('admin_block_edit', ['id' => $block->getId()]);
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Block::class);
+        $domainLib = $this->domainService->getDomain(Block::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

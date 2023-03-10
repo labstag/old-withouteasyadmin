@@ -7,27 +7,31 @@ use Labstag\Entity\Workflow;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\WorkflowRequestHandler;
+use Labstag\Service\RepositoryService;
+use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Workflow\Registry;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 #[AsCommand(name: 'labstag:workflows-show')]
 class LabstagWorkflowsShowCommand extends CommandLib
 {
     public function __construct(
-        protected $entitiesclass,
+        protected RewindableGenerator $rewindableGenerator,
+        RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
-        protected Registry $registry,
+        protected WorkflowService $workflowService,
         protected EventDispatcherInterface $eventDispatcher,
         protected WorkflowRequestHandler $workflowRequestHandler,
         protected WorkflowRepository $workflowRepository
     )
     {
-        parent::__construct($entityManager);
+        parent::__construct($repositoryService, $entityManager);
     }
 
     protected function configure(): void
@@ -40,14 +44,15 @@ class LabstagWorkflowsShowCommand extends CommandLib
         $symfonyStyle = new SymfonyStyle($input, $output);
         $symfonyStyle->title('Ajout des workflows dans la base de données');
 
-        $data = [];
+        $data     = [];
         $entities = [];
-        foreach ($this->entitiesclass as $entity) {
-            if ($this->registry->has($entity)) {
-                $workflow = $this->registry->get($entity);
-                $definition = $workflow->getDefinition();
-                $name = $workflow->getName();
-                $entities[] = $name;
+        foreach ($this->rewindableGenerator as $entity) {
+            if ($this->workflowService->has($entity)) {
+                /** @var WorkflowInterface $workflow */
+                $workflow    = $this->workflowService->get($entity);
+                $definition  = $workflow->getDefinition();
+                $name        = $workflow->getName();
+                $entities[]  = $name;
                 $transitions = $definition->getTransitions();
                 foreach ($transitions as $transition) {
                     $data[$name][] = $transition->getName();
@@ -81,7 +86,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         return Command::SUCCESS;
     }
 
-    private function delete(array $entities, $data): void
+    private function delete(array $entities, array $data): void
     {
         $toDelete = $this->workflowRepository->toDeleteEntities($entities);
         foreach ($toDelete as $entity) {

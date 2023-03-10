@@ -2,16 +2,17 @@
 
 namespace Labstag\Service;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use ReflectionClass;
+use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class TrashService
 {
     public function __construct(
-        protected $repositories,
+        protected RewindableGenerator $rewindableGenerator,
         protected ManagerRegistry $managerRegistry,
         protected CsrfTokenManagerInterface $csrfTokenManager
     )
@@ -24,23 +25,20 @@ class TrashService
     public function all(): array
     {
         $data = [];
-        foreach ($this->repositories as $repository) {
-            $isTrashable = $this->isTrashable($repository::class);
+        foreach ($this->rewindableGenerator as $repository) {
+            $isTrashable = $this->isTrashable($repository);
             if (!$isTrashable) {
                 continue;
             }
 
             $entity = $repository->getClassName();
-            $trash = $repository->findTrashForAdmin([]);
+            $trash  = $repository->findTrashForAdmin([]);
             $result = $trash->getQuery()->getResult();
-            $test = is_countable($result) ? count($result) : 0;
-            if (0 == $test) {
-                continue;
-            }
+            $test   = is_countable($result) ? count($result) : 0;
 
             $data[] = [
                 'name'       => strtolower(substr((string) $entity, strrpos((string) $entity, '\\') + 1)),
-                'properties' => $this->getProperties($repository::class),
+                'properties' => $this->getProperties($repository),
                 'entity'     => substr((string) $entity, strrpos((string) $entity, '\\') + 1),
                 'total'      => $test,
                 'token'      => $this->csrfTokenManager->getToken('empty')->getValue(),
@@ -50,31 +48,43 @@ class TrashService
         return $data;
     }
 
-    public function getProperties(string $repository)
+    protected function getProperties(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): array
     {
-        $annotationReader = new AnnotationReader();
         $properties = [];
-        if (!$this->isTrashable($repository)) {
+        if (!$this->isTrashable($serviceEntityRepositoryLib)) {
             return $properties;
         }
 
-        $reflection = $this->setReflection($repository);
-        $properties = $annotationReader->getClassAnnotations($reflection);
+        $reflectionClass = new ReflectionClass($serviceEntityRepositoryLib);
+        $attributes      = $reflectionClass->getAttributes();
+        foreach ($attributes as $attribute) {
+            if (Trashable::class != $attribute->getName()) {
+                continue;
+            }
 
-        return $properties[0];
+            $properties = $attribute->getArguments();
+
+            break;
+        }
+
+        return $properties;
     }
 
-    public function isTrashable(string $repository): bool
+    private function isTrashable(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): bool
     {
-        $annotationReader = new AnnotationReader();
-        $reflection = $this->setReflection($repository);
-        $trashable = $annotationReader->getClassAnnotation($reflection, Trashable::class);
+        $reflectionClass = new ReflectionClass($serviceEntityRepositoryLib);
+        $attributes      = $reflectionClass->getAttributes();
+        $find            = false;
+        foreach ($attributes as $attribute) {
+            if (Trashable::class != $attribute->getName()) {
+                continue;
+            }
 
-        return !is_null($trashable);
-    }
+            $find = true;
 
-    protected function setReflection(string $repository): ReflectionClass
-    {
-        return new ReflectionClass($repository);
+            break;
+        }
+
+        return $find;
     }
 }

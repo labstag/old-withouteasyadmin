@@ -11,15 +11,12 @@ use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\OauthConnectUserRequestHandler;
 use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserService
 {
-
-    protected FlashBagInterface $flashbag;
-
     public function __construct(
         protected OauthService $oauthService,
         protected SessionService $sessionService,
@@ -37,19 +34,18 @@ class UserService
     public function addOauthToUser(
         string $client,
         User $user,
-        $userOauth
+        ResourceOwnerInterface $resourceOwner
     ): void
     {
-        $data = is_array($userOauth) ? $userOauth : $userOauth->toArray();
-        $identity = $this->oauthService->getIdentity($data, $client);
-        $find = $this->findOAuthIdentity(
+        $identity = $this->oauthService->getIdentity($resourceOwner->toArray(), $client);
+        $find     = $this->findOAuthIdentity(
             $user,
             $identity,
             $client,
             $oauthConnect
         );
         if (false === $find) {
-            // @var null|OauthConnectUser $oauthConnect
+            /** @var null|OauthConnectUser $oauthConnect */
             $oauthConnect = $this->oauthConnectUserRepository->findOauthNotUser(
                 $user,
                 $identity,
@@ -62,7 +58,7 @@ class UserService
                 $oauthConnect->setName($client);
             }
 
-            // @var User $refuser
+            /** @var User $refuser */
             $refuser = $oauthConnect->getRefuser();
             if ($refuser->getId() !== $user->getId()) {
                 $oauthConnect = null;
@@ -71,7 +67,7 @@ class UserService
 
         if ($oauthConnect instanceof OauthConnectUser) {
             $old = clone $oauthConnect;
-            $oauthConnect->setData($data);
+            $oauthConnect->setData($resourceOwner->toArray());
             $this->oauthConnectUserRequestHandler->handle($old, $oauthConnect);
             $this->sessionService->flashBagAdd(
                 'success',
@@ -87,10 +83,13 @@ class UserService
         );
     }
 
-    public function create(array $groupes, $dataUser): User
+    public function create(
+        array $groupes,
+        array $dataUser
+    ): User
     {
         $user = new User();
-        $old = clone $user;
+        $old  = clone $user;
 
         $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
         $user->setUsername($dataUser['username']);
@@ -126,7 +125,7 @@ class UserService
             return;
         }
 
-        // @var User $user
+        /** @var User $user */
         $user = $this->userRepository->findUserEnable($post['value']);
         if (!$user instanceof User) {
             return;
@@ -139,17 +138,17 @@ class UserService
         User $user,
         string $identity,
         string $client,
-        &$oauthConnect = null
+        ?OauthConnectUser &$oauthConnectUser = null
     ): bool
     {
-        $return = false;
-        $oauthConnect = null;
-        $oauthConnects = $user->getOauthConnectUsers();
-        foreach ($oauthConnects as $oauthConnect) {
+        $return            = false;
+        $oauthConnectUsers = $user->getOauthConnectUsers();
+        foreach ($oauthConnectUsers as $oauthConnect) {
             $test1 = ($oauthConnect->getName() == $client);
             $test2 = ($oauthConnect->getIdentity() == $identity);
             if ($test1 && $test2) {
-                $return = true;
+                $return           = true;
+                $oauthConnectUser = $oauthConnect;
 
                 break;
             }

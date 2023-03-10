@@ -6,15 +6,17 @@ use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\User;
 use Labstag\Form\Admin\Paragraph\History\UserType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib
 {
-    public function getCode($user): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($user);
+        unset($entityParagraphLib);
 
         return 'history/user';
     }
@@ -46,14 +48,16 @@ class UserParagraph extends ParagraphLib
 
     public function show(User $user): Response
     {
-        $all = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
-        $username = $routeParam['username'] ?? null;
-        /** @var HistoryRepository $entityRepository */
-        $entityRepository = $this->getRepository(History::class);
-        $pagination = $this->paginator->paginate(
-            $entityRepository->findPublierUsername($username),
-            $this->request->query->getInt('page', 1),
+        $username   = $routeParam['username'] ?? null;
+        /** @var HistoryRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(History::class);
+        $pagination                 = $this->paginator->paginate(
+            $serviceEntityRepositoryLib->findPublierUsername($username),
+            $request->query->getInt('page', 1),
             10
         );
 

@@ -5,8 +5,10 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Reader\UploadAnnotationReader;
+use Labstag\Service\AdminBtnService;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
+use Labstag\Service\BreadcrumbService;
 use Labstag\Service\DataService;
 use Labstag\Service\DomainService;
 use Labstag\Service\ErrorService;
@@ -15,8 +17,8 @@ use Labstag\Service\FrontService;
 use Labstag\Service\GuardService;
 use Labstag\Service\MenuService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\SessionService;
-use Labstag\Singleton\BreadcrumbsSingleton;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -29,17 +31,16 @@ use Twig\Environment;
 abstract class ControllerLib extends AbstractController
 {
 
-    protected BreadcrumbsSingleton $breadcrumbsInstance;
-
     protected Request $request;
 
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected FrontService $frontService,
         protected DomainService $domainService,
         protected AttachFormService $attachFormService,
         protected FileService $fileService,
-        protected Environment $environment,
+        protected Environment $twigEnvironment,
         protected ErrorService $errorService,
         protected SessionService $sessionService,
         protected EntityManagerInterface $entityManager,
@@ -53,19 +54,10 @@ abstract class ControllerLib extends AbstractController
         protected PaginatorInterface $paginator,
         protected TranslatorInterface $translator,
         protected BlockService $blockService,
-        protected MenuService $menuService
+        protected MenuService $menuService,
+        protected BreadcrumbService $breadcrumbService,
+        protected AdminBtnService $adminBtnService
     )
     {
-        $this->breadcrumbsInstance = BreadcrumbsSingleton::getInstance();
-    }
-
-    protected function getRepository(string $entity)
-    {
-        return $this->entityManager->getRepository($entity);
-    }
-
-    protected function setSingletons()
-    {
-        return $this->breadcrumbsInstance;
     }
 }

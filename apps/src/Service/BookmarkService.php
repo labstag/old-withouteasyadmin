@@ -4,7 +4,9 @@ namespace Labstag\Service;
 
 use DateTime;
 use Exception;
+use finfo;
 use Labstag\Entity\Bookmark;
+use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\Repository\UserRepository;
@@ -41,7 +43,8 @@ class BookmarkService
         DateTime $dateTime
     ): void
     {
-        $user = $this->userRepository->find($userid);
+        /** @var User $user */
+        $user     = $this->userRepository->find($userid);
         $bookmark = $this->bookmarkRepository->findOneBy(
             ['url' => $url]
         );
@@ -50,7 +53,7 @@ class BookmarkService
         }
 
         $bookmark = new bookmark();
-        $old = clone $bookmark;
+        $old      = clone $bookmark;
         $bookmark->setRefuser($user);
         $bookmark->setUrl($url);
         $bookmark->setIcon($icon);
@@ -58,14 +61,14 @@ class BookmarkService
         $bookmark->setPublished($dateTime);
 
         try {
-            $headers = get_headers($url, 1);
-            if (self::CLIENTNUMBER < substr((string) $headers[0], 9, 3)) {
+            $headers = get_headers($url, true);
+            if (!isset($headers[0]) || self::CLIENTNUMBER < substr((string) $headers[0], 9, 3)) {
                 return;
             }
 
-            $meta = get_meta_tags($url);
+            $meta        = get_meta_tags($url);
             $description = $meta['description'] ?? null;
-            $code = 'twitter:description';
+            $code        = 'twitter:description';
             $description = (is_null($description) && isset($meta[$code])) ? $meta[$code] : $description;
             $bookmark->setContent($description);
             $image = $meta['twitter:image'] ?? null;
@@ -78,54 +81,55 @@ class BookmarkService
         }
     }
 
-    protected function getParameter(string $name)
+    protected function upload(
+        Bookmark $bookmark,
+        string $image
+    ): void
     {
-        return $this->containerBag->get($name);
-    }
-
-    protected function upload(Bookmark $bookmark, $image): void
-    {
-        // @var resource $finfo
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $annotations = $this->uploadAnnotationReader->getUploadableFields($bookmark);
+        /** @var finfo $finfo */
+        $finfo        = finfo_open(FILEINFO_MIME_TYPE);
+        $annotations  = $this->uploadAnnotationReader->getUploadableFields($bookmark);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
-            $path = $this->getParameter('file_directory').'/'.$annotation->getPath();
+            $path     = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
-            $title = $accessor->getValue($bookmark, $annotation->getSlug());
-            $slug = $asciiSlugger->slug($title);
+            $title    = $accessor->getValue($bookmark, $annotation->getSlug());
+            $slug     = $asciiSlugger->slug($title);
 
             try {
                 $pathinfo = pathinfo((string) $image);
-                $content = file_get_contents($image);
-                // @var resource $tmpfile
-                $tmpfile = tmpfile();
-                $data = stream_get_meta_data($tmpfile);
-                file_put_contents($data['uri'], $content);
-                $file = new UploadedFile(
-                    $data['uri'],
-                    $slug.'.'.$pathinfo['extension'],
-                    (string) finfo_file($finfo, $data['uri']),
-                    null,
-                    true
-                );
-                $filename = $file->getClientOriginalName();
-                if (!is_dir($path)) {
-                    mkdir($path, 0777, true);
-                }
+                if (isset($pathinfo['extension'])) {
+                    $content = file_get_contents($image);
+                    /** @var resource $tmpfile */
+                    $tmpfile = tmpfile();
+                    $data    = stream_get_meta_data($tmpfile);
+                    file_put_contents((string) $data['uri'], $content);
+                    $file = new UploadedFile(
+                        $data['uri'],
+                        $slug.'.'.$pathinfo['extension'],
+                        (string) finfo_file($finfo, (string) $data['uri']),
+                        null,
+                        true
+                    );
+                    $filename = $file->getClientOriginalName();
+                    if (!is_dir($path)) {
+                        mkdir($path, 0777, true);
+                    }
 
-                $file->move(
-                    $path,
-                    $filename
-                );
-                $file = $path.'/'.$filename;
+                    $file->move(
+                        $path,
+                        $filename
+                    );
+                    $file = $path.'/'.$filename;
+                }
             } catch (Exception $exception) {
                 $this->errorService->set($exception);
             }
 
-            $file = $path.'/'.$filename;
-            $attachment = $this->fileService->setAttachment($file);
-            $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
+            if (isset($file)) {
+                $attachment = $this->fileService->setAttachment($file);
+                $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
+            }
         }
     }
 }

@@ -2,95 +2,70 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Sluggable\Handler\TreeSlugHandler;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\PageRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=PageRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-class Page implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: PageRepository::class)]
+#[ApiResource]
+class Page implements Stringable, FrontInterface, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Page::class, mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $children;
+    #[ORM\OneToMany(targetEntity: Page::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $children;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $metas;
+    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $metas;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private ?string $name = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Paragraph::class, mappedBy="page", cascade={"persist"}, orphanRemoval=true)
-     *
-     * @ORM\OrderBy({"position" = "ASC"})
-     */
-    private $paragraphs;
+    #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'children', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?Page $page = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="children", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(
-     *     name="parent_id",
-     *     referencedColumnName="id",
-     *     onDelete="SET NULL"
-     * )
-     */
-    private $parent;
+    #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    private Collection $paragraphs;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $password;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $password = null;
 
-    /**
-     * @Gedmo\Slug(handlers={
-     *
-     * @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\TreeSlugHandler", options={
-     *
-     * @Gedmo\SlugHandlerOption(name="parentRelationField", value="parent"),
-     * @Gedmo\SlugHandlerOption(name="separator", value="/")
-     *      })
-     * }, fields={"name"})
-     *
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    private $slug;
+    #[Gedmo\Slug(fields: ['name'])]
+    #[Gedmo\SlugHandler(
+        class: TreeSlugHandler::class,
+        options: [
+            'parentRelationField' => 'page',
+            'separator'           => '/',
+        ]
+    )]
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
+    private ?string $slug = null;
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
+        $this->children   = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
-        $this->metas = new ArrayCollection();
+        $this->metas      = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -161,7 +136,7 @@ class Page implements Stringable
 
     public function getParent(): ?Page
     {
-        return $this->parent;
+        return $this->page;
     }
 
     public function getPassword(): ?string
@@ -207,7 +182,7 @@ class Page implements Stringable
 
     public function setParent(?self $parent): self
     {
-        $this->parent = $parent;
+        $this->page = $parent;
 
         return $this;
     }
@@ -226,7 +201,10 @@ class Page implements Stringable
         return $this;
     }
 
-    private function removeElementPage($element, $variable)
+    private function removeElementPage(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getPage() === $this) {
             $variable->setPage(null);

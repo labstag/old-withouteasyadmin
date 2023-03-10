@@ -2,7 +2,7 @@
 
 namespace Labstag\Entity;
 
-use DateTime;
+use ApiPlatform\Metadata\ApiResource;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,104 +11,70 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=BookmarkRepository::class)
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @Uploadable
- */
-class Bookmark
+#[Uploadable()]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: BookmarkRepository::class)]
+#[ApiResource]
+class Bookmark implements EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @UploadableField(filename="img", path="bookmark/img", slug="name")
-     */
-    protected $file;
+    #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'bookmarks', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'img_id')]
+    private ?Attachment $attachment = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $content;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'bookmarks', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refcategory_id')]
+    private ?Category $category = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $icon;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[UploadableField(filename: 'img', path: 'bookmark/img', slug: 'name')]
+    private mixed $file;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Attachment::class, inversedBy="bookmarks", cascade={"persist"})
-     */
-    private $img;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $icon = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Libelle::class, inversedBy="bookmarks", cascade={"persist"})
-     */
-    private $libelles;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\ManyToMany(targetEntity: Libelle::class, inversedBy: 'bookmarks', cascade: ['persist'])]
+    private Collection $libelles;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $published;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bookmarks", cascade={"persist"})
-     */
-    private $refcategory;
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $published = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookmarks", cascade={"persist"})
-     *
-     * @Assert\NotBlank
-     *
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $refuser;
+    #[Gedmo\Slug(updatable: false, fields: ['name'])]
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $slug = null;
 
-    /**
-     * @Gedmo\Slug(updatable=false, fields={"name"})
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
+    #[ORM\Column(type: 'array')]
+    private mixed $state;
 
-    /**
-     * @ORM\Column(type="array")
-     */
-    private $state;
+    #[Gedmo\Timestampable(on: 'change', field: ['state'])]
+    #[ORM\Column(name: 'state_changed', type: 'datetime', nullable: true)]
+    private ?DateTimeInterface $stateChanged = null;
 
-    /**
-     * @ORM\Column(name="state_changed", type="datetime", nullable=true)
-     *
-     * @Gedmo\Timestampable(on="change", field={"state"})
-     */
-    private DateTime $stateChanged;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $url = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $url;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bookmarks', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    private ?UserInterface $user = null;
 
     public function __construct()
     {
@@ -129,7 +95,7 @@ class Bookmark
         return $this->content;
     }
 
-    public function getFile()
+    public function getFile(): mixed
     {
         return $this->file;
     }
@@ -146,7 +112,7 @@ class Bookmark
 
     public function getImg(): ?Attachment
     {
-        return $this->img;
+        return $this->attachment;
     }
 
     public function getLibelles(): Collection
@@ -166,12 +132,12 @@ class Bookmark
 
     public function getRefcategory(): ?Category
     {
-        return $this->refcategory;
+        return $this->category;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function getSlug(): ?string
@@ -179,12 +145,12 @@ class Bookmark
         return $this->slug;
     }
 
-    public function getState()
+    public function getState(): mixed
     {
         return $this->state;
     }
 
-    public function getStateChanged()
+    public function getStateChanged(): ?DateTimeInterface
     {
         return $this->stateChanged;
     }
@@ -208,7 +174,7 @@ class Bookmark
         return $this;
     }
 
-    public function setFile($file): self
+    public function setFile(mixed $file): self
     {
         $this->file = $file;
 
@@ -224,7 +190,7 @@ class Bookmark
 
     public function setImg(?Attachment $attachment): self
     {
-        $this->img = $attachment;
+        $this->attachment = $attachment;
 
         return $this;
     }
@@ -245,14 +211,14 @@ class Bookmark
 
     public function setRefcategory(?Category $category): self
     {
-        $this->refcategory = $category;
+        $this->category = $category;
 
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }
@@ -264,7 +230,7 @@ class Bookmark
         return $this;
     }
 
-    public function setState($state): self
+    public function setState(mixed $state): self
     {
         $this->state = $state;
 

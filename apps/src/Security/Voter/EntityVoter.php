@@ -39,12 +39,15 @@ class EntityVoter extends Voter
     protected function canMoveHistory(History $history, TokenInterface $token): bool
     {
         unset($token);
-        $collection = $history->getChapters();
+        $chapters = $history->getChapters();
 
-        return count($collection) >= self::NBR_CHAPTER;
+        return count($chapters) >= self::NBR_CHAPTER;
     }
 
-    protected function supports($attribute, $subject): bool
+    protected function supports(
+        mixed $attribute,
+        mixed $subject
+    ): bool
     {
         unset($attribute);
         $entities = [
@@ -91,7 +94,7 @@ class EntityVoter extends Voter
         $state = true;
         if ($subject instanceof History) {
             $state = match ($attribute) {
-                'move' => $this->canMoveHistory($subject, $token),
+                'move'  => $this->canMoveHistory($subject, $token),
                 default => true,
             };
         }

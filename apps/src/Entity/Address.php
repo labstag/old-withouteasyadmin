@@ -5,82 +5,52 @@ namespace Labstag\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- *
- * @ORM\InheritanceType("SINGLE_TABLE")
- *
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- *
- * @ORM\DiscriminatorMap({"user" = "AddressUser"})
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-abstract class Address implements Stringable
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['user' => 'AddressUser'])]
+abstract class Address implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     */
-    protected $city;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    protected string $city;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     *
-     * @Assert\Country
-     */
-    protected $country;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Country]
+    protected string $country;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $gps;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    protected string $gps;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Column(type: 'boolean')]
+    protected bool $pmr;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $pmr;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    protected string $street;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     */
-    protected $street;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    protected string $type;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Assert\NotBlank
-     */
-    protected $type;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    protected string $zipcode;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     */
-    protected $zipcode;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
     public function __toString(): string
     {

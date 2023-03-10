@@ -2,49 +2,39 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\RouteRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=RouteRepository::class)
- */
-class Route implements Stringable
+#[ORM\Entity(repositoryClass: RouteRepository::class)]
+#[ApiResource]
+class Route implements Stringable, EntityInterface
 {
 
-    /**
-     * @ORM\OneToMany(targetEntity=RouteGroupe::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $groupes;
+    #[ORM\OneToMany(targetEntity: RouteGroupe::class, mappedBy: 'route', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $groupes;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=RouteUser::class, mappedBy="refroute", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $users;
+    #[ORM\OneToMany(targetEntity: RouteUser::class, mappedBy: 'route', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $users;
 
     public function __construct()
     {
         $this->groupes = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->users   = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -113,7 +103,10 @@ class Route implements Stringable
         return $this;
     }
 
-    private function removeElementRoute($element, $variable)
+    private function removeElementRoute(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getRefroute() === $this) {
             $variable->setRefroute(null);

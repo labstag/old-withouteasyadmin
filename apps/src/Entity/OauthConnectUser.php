@@ -2,57 +2,36 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Labstag\Interfaces\EntityInterface;
+use Labstag\Repository\OauthConnectUserRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass="Labstag\Repository\OauthConnectUserRepository")
- */
-class OauthConnectUser
+#[ORM\Entity(repositoryClass: OauthConnectUserRepository::class)]
+#[ApiResource]
+class OauthConnectUser implements EntityInterface
 {
 
-    /**
-     * @ORM\Column(type="array")
-     *
-     * @var array
-     */
-    protected $data = [];
+    #[ORM\Column(type: 'array')]
+    protected array $data = [];
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     *
-     * @var string
-     */
-    protected $id;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    protected string $identity;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @var string
-     */
-    protected $identity;
+    #[ORM\Column(type: 'string', length: 255)]
+    protected string $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @var string
-     */
-    protected $name;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'oauthConnectUsers', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: true)]
+    protected ?UserInterface $user = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="oauthConnectUsers", cascade={"persist"})
-     *
-     * @ORM\JoinColumn(nullable=false)
-     *
-     * @var User
-     */
-    protected $refuser;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
     public function getData(): ?array
     {
@@ -74,9 +53,9 @@ class OauthConnectUser
         return $this->name;
     }
 
-    public function getRefuser(): ?User
+    public function getRefuser(): ?UserInterface
     {
-        return $this->refuser;
+        return $this->user;
     }
 
     public function setData(array $data): self
@@ -100,9 +79,9 @@ class OauthConnectUser
         return $this;
     }
 
-    public function setRefuser(?User $user): self
+    public function setRefuser(?UserInterface $user): self
     {
-        $this->refuser = $user;
+        $this->user = $user;
 
         return $this;
     }

@@ -3,15 +3,17 @@
 namespace Labstag\Controller\Admin;
 
 use DateTime;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/post')]
@@ -22,8 +24,6 @@ class PostController extends AdminControllerLib
         ?Post $post
     ): Response
     {
-        dump($post);
-
         return $this->form(
             $this->getDomainEntity(),
             is_null($post) ? new Post() : $post,
@@ -31,9 +31,7 @@ class PostController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_post_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_post_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -52,6 +50,9 @@ class PostController extends AdminControllerLib
     ): RedirectResponse
     {
         $user = $security->getUser();
+        if (is_null($user)) {
+            return $this->redirectToRoute('admin_post_index');
+        }
 
         $post = new Post();
         $post->setPublished(new DateTime());
@@ -66,9 +67,7 @@ class PostController extends AdminControllerLib
         return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_post_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_post_preview', methods: ['GET'])]
     public function showOrPreview(Post $post): Response
@@ -80,8 +79,13 @@ class PostController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Post::class);
+        $domainLib = $this->domainService->getDomain(Post::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

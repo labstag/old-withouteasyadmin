@@ -2,45 +2,35 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\RenderRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=RenderRepository::class)
- */
-class Render
+#[ORM\Entity(repositoryClass: RenderRepository::class)]
+#[ApiResource]
+class Render implements EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Meta::class, mappedBy="render", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $metas;
+    #[ORM\OneToMany(targetEntity: Meta::class, mappedBy: 'render', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $metas;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $url;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $url = null;
 
     public function __construct()
     {
@@ -73,6 +63,11 @@ class Render
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function getParagraphs(): Collection
+    {
+        return new ArrayCollection();
     }
 
     public function getUrl(): ?string

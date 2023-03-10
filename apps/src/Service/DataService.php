@@ -43,6 +43,21 @@ class DataService
         return $this->config;
     }
 
+    public function getConfigWithMetatags(array $metatags): array
+    {
+        $config = $this->getConfig();
+        foreach ($metatags as $metatag) {
+            /** @var string $metatag */
+            if (isset($config[$metatag])) {
+                $config[$metatag] = [
+                    $config[$metatag],
+                ];
+            }
+        }
+
+        return $config;
+    }
+
     /**
      * @return mixed[]
      */
@@ -52,12 +67,12 @@ class DataService
             return $this->oauthActivated;
         }
 
-        $oauthActivateds = $this->oauthActivated;
-        $oauthUsers = $user->getOauthConnectUsers();
+        $oauthActivateds   = $this->oauthActivated;
+        $oauthConnectUsers = $user->getOauthConnectUsers();
         foreach ($oauthActivateds as $index => $oauthActivated) {
             $trouver = 0;
-            foreach ($oauthUsers as $oauthUser) {
-                if ($oauthUser->getName() == $oauthActivated['type']) {
+            foreach ($oauthConnectUsers as $oauthConnectUser) {
+                if ($oauthConnectUser->getName() == $oauthActivated['type']) {
                     $trouver = 1;
 
                     break;
@@ -77,12 +92,12 @@ class DataService
      */
     protected function getConfiguration(): array
     {
-        $data = $this->configurationRepository->findAll();
+        $data   = $this->configurationRepository->findAll();
         $config = [];
-        // @var Configuration $row
+        /** @var Configuration $row */
         foreach ($data as $row) {
-            $key = $row->getName();
-            $value = $row->getValue();
+            $key          = $row->getName();
+            $value        = $row->getValue();
             $config[$key] = $value;
         }
 
@@ -111,13 +126,13 @@ class DataService
         }
 
         $oauth = [];
-        $data = $config['oauth'];
+        $data  = $config['oauth'];
         foreach ($data as $row) {
             if (1 != $row['activate']) {
                 continue;
             }
 
-            $type = $row['type'];
+            $type         = $row['type'];
             $oauth[$type] = $row;
         }
 

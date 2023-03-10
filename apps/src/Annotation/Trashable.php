@@ -2,29 +2,35 @@
 
 namespace Labstag\Annotation;
 
-use Doctrine\Common\Annotations\Annotation\Target;
+use Attribute;
+use Doctrine\Common\Annotations\Annotation;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
+use Doctrine\ORM\Mapping\MappingAttribute;
 use InvalidArgumentException;
 
 /**
  * @Annotation
  *
- * @Target("CLASS")
+ * @NamedArgumentConstructor
  */
-class Trashable
+#[Attribute(Attribute::TARGET_CLASS)]
+final class Trashable implements MappingAttribute
 {
 
-    protected string $url;
+    private ?string $url = null;
 
-    public function __construct(array $options)
+    public function __construct(
+        ?string $url = null
+    )
     {
-        if (empty($options['url'])) {
+        if (empty($url)) {
             throw new InvalidArgumentException("L'annotation Trashable doit avoir un attribut 'url'");
         }
 
-        $this->url = $options['url'];
+        $this->url = $url;
     }
 
-    public function getUrl(): string
+    public function getUrl(): ?string
     {
         return $this->url;
     }

@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 use Labstag\Entity\Memo;
+use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
 
 class MemoFixtures extends FixtureLib implements DependentFixtureInterface
@@ -34,10 +35,10 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $dateTime = $generator->unique()->dateTimeInInterval('now', '+30 years');
-        $users = $this->userRepository->findAll();
-        $memo = new Memo();
-        $old = clone $memo;
-        $random = $generator->numberBetween(5, 50);
+        $users    = $this->userRepository->findAll();
+        $memo     = new Memo();
+        $old      = clone $memo;
+        $random   = $generator->numberBetween(5, 50);
         $memo->setTitle($generator->unique()->text($random));
         $dateStart = $generator->dateTime($dateTime);
         $memo->setDateStart($dateStart);
@@ -46,12 +47,12 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         $dateEnd->modify('+'.$generator->numberBetween(2, 24).' hours');
 
         $memo->setDateEnd($dateEnd);
-        // @var string $content
+        /** @var string $content */
         $content = $generator->paragraphs(4, true);
         $memo->setContent(str_replace("\n\n", "<br />\n", (string) $content));
         $this->addReference('memo_'.$index, $memo);
         $tabIndex = array_rand($users);
-        // @var User $user
+        /** @var User $user */
         $user = $users[$tabIndex];
         $memo->setRefuser($user);
         $this->upload($memo, $generator);

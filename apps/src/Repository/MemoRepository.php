@@ -7,9 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Memo;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 
-/**
- * @Trashable(url="admin_memo_trash")
- */
+#[Trashable(url: 'admin_memo_trash')]
 class MemoRepository extends ServiceEntityRepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -17,10 +15,10 @@ class MemoRepository extends ServiceEntityRepositoryLib
         parent::__construct($managerRegistry, Memo::class);
     }
 
-    public function findPublier()
+    public function findPublier(): mixed
     {
         $queryBuilder = $this->createQueryBuilder('n');
-        $queryBuilder->innerJoin('n.refuser', 'u');
+        $queryBuilder->innerJoin('n.user', 'u');
         $queryBuilder->where(
             'n.state LIKE :state'
         );

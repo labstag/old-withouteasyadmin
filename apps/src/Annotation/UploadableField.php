@@ -2,48 +2,56 @@
 
 namespace Labstag\Annotation;
 
-use Doctrine\Common\Annotations\Annotation\Target;
+use Attribute;
+use Doctrine\Common\Annotations\Annotation;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
+use Doctrine\ORM\Mapping\MappingAttribute;
 use InvalidArgumentException;
 
 /**
  * @Annotation
  *
- * @Target("PROPERTY")
+ * @NamedArgumentConstructor()
  */
-class UploadableField
+#[Attribute(Attribute::TARGET_PROPERTY)]
+final class UploadableField implements MappingAttribute
 {
 
-    protected $filename;
+    private ?string $filename = null;
 
-    protected $path;
+    private ?string $path = null;
 
-    protected $slug;
+    private ?string $slug = null;
 
-    public function __construct(array $options)
+    public function __construct(
+        ?string $filename = null,
+        ?string $path = null,
+        ?string $slug = null
+    )
     {
-        if (empty($options['filename'])) {
+        if (empty($filename)) {
             throw new InvalidArgumentException("L'annotation UplodableField doit avoir un attribut 'filename'");
         }
 
-        if (empty($options['path'])) {
+        if (empty($path)) {
             throw new InvalidArgumentException("L'annotation UplodableField doit avoir un attribut 'path'");
         }
 
-        if (empty($options['slug'])) {
+        if (empty($slug)) {
             throw new InvalidArgumentException("L'annotation UplodableField doit avoir un attribut 'slug'");
         }
 
-        $this->filename = $options['filename'];
-        $this->path = $options['path'];
-        $this->slug = $options['slug'];
+        $this->filename = $filename;
+        $this->path     = $path;
+        $this->slug     = $slug;
     }
 
-    public function getFilename()
+    public function getFilename(): ?string
     {
         return $this->filename;
     }
 
-    public function getPath()
+    public function getPath(): ?string
     {
         return $this->path;
     }

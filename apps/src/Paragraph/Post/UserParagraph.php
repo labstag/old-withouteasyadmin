@@ -6,15 +6,17 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\User;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\UserType;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib
 {
-    public function getCode($user): string
+    public function getCode(ParagraphInterface $entityParagraphLib): string
     {
-        unset($user);
+        unset($entityParagraphLib);
 
         return 'post/user';
     }
@@ -46,14 +48,16 @@ class UserParagraph extends ParagraphLib
 
     public function show(User $user): Response
     {
-        $all = $this->request->attributes->all();
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
-        $username = $routeParam['username'] ?? null;
-        /** @var PostRepository $entityRepository */
-        $entityRepository = $this->getRepository(Post::class);
-        $pagination = $this->paginator->paginate(
-            $entityRepository->findPublierUsername($username),
-            $this->request->query->getInt('page', 1),
+        $username   = $routeParam['username'] ?? null;
+        /** @var PostRepository $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
+        $pagination                 = $this->paginator->paginate(
+            $serviceEntityRepositoryLib->findPublierUsername($username),
+            $request->query->getInt('page', 1),
             10
         );
 

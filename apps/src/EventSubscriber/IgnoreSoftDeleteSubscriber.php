@@ -2,20 +2,14 @@
 
 namespace Labstag\EventSubscriber;
 
-use Doctrine\Common\Util\ClassUtils;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Lib\EventSubscriberLib;
 use ReflectionClass;
-use ReflectionObject;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
 {
-    /**
-     * @var class-string<IgnoreSoftDelete>
-     */
-    final public const ANNOTATION = 'Labstag\Annotation\IgnoreSoftDelete';
-
     /**
      * @return array<string, string>
      */
@@ -39,10 +33,15 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
         $this->ignoreSoftDeleteAnnotation($controller, $method);
     }
 
-    protected function ignoreSoftDeleteAnnotation($controller, $method): void
+    protected function ignoreSoftDeleteAnnotation(
+        mixed $controller,
+        string $method
+    ): void
     {
-        $routeCurrent = $this->request->attributes->get('_route');
-        $routes = [
+        /** @var Request $request */
+        $request      = $this->requestStack->getCurrentRequest();
+        $routeCurrent = $request->attributes->get('_route');
+        $routes       = [
             'api_action_destroies',
             'api_action_restories',
             'api_action_deleties',
@@ -68,30 +67,30 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
             return;
         }
 
-        if ($this->readAnnotation($controller, $method, self::ANNOTATION)) {
+        if ($this->readAnnotation($controller, $method)) {
             $this->entityManager->getFilters()->disable('softdeleteable');
         }
     }
 
-    protected function readAnnotation($controller, $method, $annotation): bool|array
+    protected function readAnnotation(
+        mixed $controller,
+        string $method
+    ): bool
     {
-        $classUtils = new ClassUtils();
-        $reflectionClass = new ReflectionClass($classUtils->getClass($controller));
-        $classAnnotation = $this->reader->getClassAnnotation($reflectionClass, $annotation);
+        $status           = false;
+        $reflectionClass  = new ReflectionClass($controller::class);
+        $reflectionMethod = $reflectionClass->getMethod($method);
+        $attributes       = $reflectionMethod->getAttributes();
+        foreach ($attributes as $attribute) {
+            if (IgnoreSoftDelete::class != $attribute->getName()) {
+                continue;
+            }
 
-        $reflectionObject = new ReflectionObject($controller);
-        $reflectionMethod = $reflectionObject->getMethod($method);
-        $methodAnnotation = $this->reader->getMethodAnnotation($reflectionMethod, $annotation);
+            $status = true;
 
-        if (!$classAnnotation && !$methodAnnotation) {
-            return false;
+            break;
         }
 
-        return [
-            $classAnnotation,
-            $reflectionClass,
-            $methodAnnotation,
-            $reflectionMethod,
-        ];
+        return $status;
     }
 }

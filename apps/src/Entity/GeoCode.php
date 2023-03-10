@@ -2,111 +2,64 @@
 
 namespace Labstag\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\GeoCodeRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=GeoCodeRepository::class)
- *
- * @ApiResource(
- *     collectionOperations={
- *         "get"
- *     },
- *     itemOperations={
- *         "get"
- *     }
- * )
- *
- * @ApiFilter(
- *     SearchFilter::class,
- *     properties={"countryCode" = "exact", "postalCode" = "exact", "placeName" = "partial"}
- * )
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
-class GeoCode
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: GeoCodeRepository::class)]
+#[ApiResource]
+class GeoCode implements EntityTrashInterface
 {
     use SoftDeleteableEntity;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $accuracy;
+    #[ORM\Column(type: 'integer')]
+    private int $accuracy;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    protected $communityCode;
+    #[ORM\Column(type: 'string', length: 20)]
+    private string $communityCode;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    protected $communityName;
+    #[ORM\Column(type: 'string', length: 100)]
+    private string $communityName;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     *
-     * @Assert\Country
-     */
-    protected $countryCode;
+    #[ORM\Column(type: 'string', length: 2)]
+    #[Assert\Country]
+    private string $countryCode;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $latitude;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $latitude;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $longitude;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $longitude;
 
-    /**
-     * @ORM\Column(type="string", length=180)
-     */
-    protected $placeName;
+    #[ORM\Column(type: 'string', length: 180)]
+    private string $placeName;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    protected $postalCode;
+    #[ORM\Column(type: 'string', length: 20)]
+    private string $postalCode;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    protected $provinceCode;
+    #[ORM\Column(type: 'string', length: 20)]
+    private string $provinceCode;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    protected $provinceName;
+    #[ORM\Column(type: 'string', length: 100)]
+    private string $provinceName;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    protected $stateCode;
+    #[ORM\Column(type: 'string', length: 20)]
+    private string $stateCode;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    protected $stateName;
+    #[ORM\Column(type: 'string', length: 100)]
+    private string $stateName;
 
     public function getAccuracy(): ?int
     {
@@ -173,7 +126,7 @@ class GeoCode
         return $this->stateName;
     }
 
-    public function setAccuracy($accuracy): self
+    public function setAccuracy(int $accuracy): self
     {
         $this->accuracy = $accuracy;
 

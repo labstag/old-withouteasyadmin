@@ -2,6 +2,7 @@
 
 namespace Labstag\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,117 +14,88 @@ use Labstag\Entity\Traits\Paragraph\BookmarkEntity;
 use Labstag\Entity\Traits\Paragraph\EditoEntity;
 use Labstag\Entity\Traits\Paragraph\HistoryEntity;
 use Labstag\Entity\Traits\Paragraph\PostEntity;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\ParagraphRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=ParagraphRepository::class)
- */
-class Paragraph
+#[ORM\Entity(repositoryClass: ParagraphRepository::class)]
+#[ApiResource]
+class Paragraph implements EntityInterface
 {
     use BookmarkEntity;
     use EditoEntity;
     use HistoryEntity;
     use PostEntity;
 
-    /**
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     *
-     * @ORM\Column(type="guid", unique=true)
-     *
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    protected $id;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $background = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $background;
+    #[ORM\ManyToOne(targetEntity: Chapter::class, inversedBy: 'paragraphs', cascade: ['persist'])]
+    private ?Chapter $chapter = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Chapter::class, inversedBy="paragraphs", cascade={"persist"})
-     */
-    private $chapter;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $color = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $color;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    private ?string $id = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $images;
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $images;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Layout::class, inversedBy="paragraphs", cascade={"persist"})
-     */
-    private $layout;
+    #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'paragraphs', cascade: ['persist'])]
+    private ?Layout $layout = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Memo::class, inversedBy="paragraphs", cascade={"persist"})
-     */
-    private $memo;
+    #[ORM\ManyToOne(targetEntity: Memo::class, inversedBy: 'paragraphs', cascade: ['persist'])]
+    private ?Memo $memo = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="paragraphs", cascade={"persist"})
-     */
-    private $page;
+    #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'paragraphs', cascade: ['persist'])]
+    private ?Page $page = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $position = 0;
 
-    /**
-     * @ORM\OneToMany(targetEntity=TextImage::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $textImages;
+    #[ORM\OneToMany(targetEntity: TextImage::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $textImages;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Text::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $texts;
+    #[ORM\OneToMany(targetEntity: Text::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $texts;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $type;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $type = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $videos;
+    #[ORM\OneToMany(targetEntity: Video::class, mappedBy: 'paragraph', cascade: ['persist'], orphanRemoval: true)]
+    private Collection $videos;
 
     public function __construct()
     {
-        $this->texts = new ArrayCollection();
-        $this->bookmarks = new ArrayCollection();
-        $this->histories = new ArrayCollection();
-        $this->editos = new ArrayCollection();
-        $this->posts = new ArrayCollection();
-        $this->postLists = new ArrayCollection();
-        $this->historyLists = new ArrayCollection();
-        $this->bookmarkLists = new ArrayCollection();
-        $this->postArchives = new ArrayCollection();
-        $this->postUsers = new ArrayCollection();
-        $this->postLibelles = new ArrayCollection();
-        $this->bookmarkLibelles = new ArrayCollection();
+        $this->texts              = new ArrayCollection();
+        $this->bookmarks          = new ArrayCollection();
+        $this->histories          = new ArrayCollection();
+        $this->editos             = new ArrayCollection();
+        $this->posts              = new ArrayCollection();
+        $this->postLists          = new ArrayCollection();
+        $this->historyLists       = new ArrayCollection();
+        $this->bookmarkLists      = new ArrayCollection();
+        $this->postArchives       = new ArrayCollection();
+        $this->postUsers          = new ArrayCollection();
+        $this->postLibelles       = new ArrayCollection();
+        $this->bookmarkLibelles   = new ArrayCollection();
         $this->bookmarkCategories = new ArrayCollection();
-        $this->postYears = new ArrayCollection();
-        $this->postShows = new ArrayCollection();
-        $this->postCategories = new ArrayCollection();
-        $this->postHeaders = new ArrayCollection();
-        $this->historyUsers = new ArrayCollection();
-        $this->historyChapters = new ArrayCollection();
-        $this->historyShows = new ArrayCollection();
-        $this->editoShows = new ArrayCollection();
-        $this->editoHeaders = new ArrayCollection();
-        $this->videos = new ArrayCollection();
-        $this->images = new ArrayCollection();
-        $this->textImages = new ArrayCollection();
+        $this->postYears          = new ArrayCollection();
+        $this->postShows          = new ArrayCollection();
+        $this->postCategories     = new ArrayCollection();
+        $this->postHeaders        = new ArrayCollection();
+        $this->historyUsers       = new ArrayCollection();
+        $this->historyChapters    = new ArrayCollection();
+        $this->historyShows       = new ArrayCollection();
+        $this->editoShows         = new ArrayCollection();
+        $this->editoHeaders       = new ArrayCollection();
+        $this->videos             = new ArrayCollection();
+        $this->images             = new ArrayCollection();
+        $this->textImages         = new ArrayCollection();
     }
 
     public function addImage(Image $image): self

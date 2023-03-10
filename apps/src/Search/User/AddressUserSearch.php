@@ -3,13 +3,14 @@
 namespace Labstag\Search\User;
 
 use Labstag\Lib\SearchLib;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AddressUserSearch extends SearchLib
 {
 
-    public $city;
+    public ?string $city = null;
 
-    public $country;
+    public ?string $country = null;
 
-    public $refuser;
+    public ?UserInterface $user = null;
 }

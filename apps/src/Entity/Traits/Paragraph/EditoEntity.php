@@ -3,6 +3,7 @@
 namespace Labstag\Entity\Traits\Paragraph;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Paragraph\Edito as ParagraphEdito;
 use Labstag\Entity\Paragraph\Edito\Header as EditoHeader;
@@ -11,25 +12,40 @@ use Labstag\Entity\Paragraph\Edito\Show as EditoShow;
 trait EditoEntity
 {
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Edito::class, inversedBy="paragraphs", cascade={"persist"})
-     */
-    private $edito;
+    #[ORM\ManyToOne(
+        targetEntity: Edito::class,
+        inversedBy: 'paragraphs',
+        cascade: ['persist']
+    )
+    ]
+    private ?Edito $edito = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=EditoHeader::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $editoHeaders;
+    #[ORM\OneToMany(
+        targetEntity: EditoHeader::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $editoHeaders;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ParagraphEdito::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $editos;
+    #[ORM\OneToMany(
+        targetEntity: ParagraphEdito::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $editos;
 
-    /**
-     * @ORM\OneToMany(targetEntity=EditoShow::class, mappedBy="paragraph", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $editoShows;
+    #[ORM\OneToMany(
+        targetEntity: EditoShow::class,
+        mappedBy: 'paragraph',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $editoShows;
 
     public function addEdito(ParagraphEdito $paragraphEdito): self
     {
@@ -66,9 +82,6 @@ trait EditoEntity
         return $this->edito;
     }
 
-    /**
-     * @return Collection<int, Header>
-     */
     public function getEditoHeaders(): Collection
     {
         return $this->editoHeaders;
@@ -82,9 +95,6 @@ trait EditoEntity
         return $this->editos;
     }
 
-    /**
-     * @return Collection<int, Show>
-     */
     public function getEditoShows(): Collection
     {
         return $this->editoShows;
@@ -118,7 +128,10 @@ trait EditoEntity
         return $this;
     }
 
-    private function removeElementEdito($element, $variable)
+    private function removeElementEdito(
+        Collection $element,
+        mixed $variable
+    ): void
     {
         if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);

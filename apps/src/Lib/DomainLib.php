@@ -2,9 +2,10 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Interfaces\DomainInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-abstract class DomainLib
+abstract class DomainLib implements DomainInterface
 {
     public function __construct(
         protected TranslatorInterface $translator
@@ -12,11 +13,12 @@ abstract class DomainLib
     {
     }
 
-    public function getSearchForm()
+    public function getSearchForm(): string
     {
+        return '';
     }
 
-    public function getUrlAdmin()
+    public function getUrlAdmin(): array
     {
         return [];
     }

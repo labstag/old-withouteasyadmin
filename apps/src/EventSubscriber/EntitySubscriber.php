@@ -2,7 +2,6 @@
 
 namespace Labstag\EventSubscriber;
 
-use Doctrine\ORM\EntityRepository;
 use Exception;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Configuration;
@@ -27,7 +26,10 @@ use Labstag\Event\ParagraphEntityEvent;
 use Labstag\Event\PostEntityEvent;
 use Labstag\Event\RenderEntityEvent;
 use Labstag\Event\UserEntityEvent;
+use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\EventSubscriberLib;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\HistoryService;
 
 class EntitySubscriber extends EventSubscriberLib
@@ -58,7 +60,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     public function onBlockEntityEvent(BlockEntityEvent $blockEntityEvent): void
     {
-        $block = $blockEntityEvent->getNewEntity();
+        $block       = $blockEntityEvent->getNewEntity();
         $classentity = $this->blockService->getTypeEntity($block);
         if (is_null($classentity)) {
             $this->entityManager->remove($block);
@@ -72,6 +74,7 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
+        /** @var BlockInterface $entity */
         $entity = new $classentity();
         $entity->setBlock($block);
 
@@ -88,12 +91,14 @@ class EntitySubscriber extends EventSubscriberLib
     {
         $chapter = $chapterEntityEvent->getNewEntity();
         $this->verifMetas($chapter);
+        /** @var History $history */
+        $history = $chapter->getRefhistory();
         $this->enqueueMethod->enqueue(
             HistoryService::class,
             'process',
             [
-                'fileDirectory' => $this->getParameter('file_directory'),
-                'historyId'     => $chapter->getRefhistory()->getId(),
+                'fileDirectory' => $this->parameterBag->get('file_directory'),
+                'historyId'     => $history->getId(),
                 'all'           => false,
             ]
         );
@@ -121,7 +126,7 @@ class EntitySubscriber extends EventSubscriberLib
             HistoryService::class,
             'process',
             [
-                'fileDirectory' => $this->getParameter('file_directory'),
+                'fileDirectory' => $this->parameterBag->get('file_directory'),
                 'historyId'     => $history->getId(),
                 'all'           => false,
             ]
@@ -130,13 +135,13 @@ class EntitySubscriber extends EventSubscriberLib
 
     public function onMenuEntityEvent(MenuEntityEvent $menuEntityEvent): void
     {
-        $menu = $menuEntityEvent->getNewEntity();
-        $data = $menu->getData();
-        if (0 == count((array) $data)) {
+        $menu     = $menuEntityEvent->getNewEntity();
+        $dataMenu = $menu->getData();
+        if (0 == count((array) $dataMenu)) {
             return;
         }
 
-        $data = $data[0];
+        $data = $dataMenu[0] ?? [];
         foreach ($data as $key => $value) {
             if (!is_null($value)) {
                 continue;
@@ -146,7 +151,11 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         if (isset($data['param'], $data['route'])) {
-            $data['params'] = json_decode((string) $data['param'], null, 512, JSON_THROW_ON_ERROR);
+            $data['params'] = json_decode(
+                json: (string) $data['param'],
+                depth: 512,
+                flags: JSON_THROW_ON_ERROR
+            );
             unset($data['param']);
         }
 
@@ -195,7 +204,7 @@ class EntitySubscriber extends EventSubscriberLib
 
     public function onUserEntityEvent(UserEntityEvent $userEntityEvent): void
     {
-        $user = $userEntityEvent->getOldEntity();
+        $user      = $userEntityEvent->getOldEntity();
         $newEntity = $userEntityEvent->getNewEntity();
         $this->setPassword($newEntity);
         $this->setPrincipalMail($user, $newEntity);
@@ -216,7 +225,8 @@ class EntitySubscriber extends EventSubscriberLib
                 $configuration->setName($key);
             }
 
-            if (in_array($key, $this->getParameter('metatags'))) {
+            $metatags = (array) $this->parameterBag->get('metatags');
+            if (in_array($key, $metatags)) {
                 $value = $value[0];
             }
 
@@ -228,16 +238,6 @@ class EntitySubscriber extends EventSubscriberLib
             'success',
             $this->translator->trans('param.change')
         );
-    }
-
-    protected function getParameter(string $name)
-    {
-        return $this->parameterBag->get($name);
-    }
-
-    protected function getRepository(string $entity): EntityRepository
-    {
-        return $this->entityManager->getRepository($entity);
     }
 
     protected function setChangePassword(User $oldEntity, User $newEntity): void
@@ -278,7 +278,8 @@ class EntitySubscriber extends EventSubscriberLib
         foreach ($states as $state) {
             foreach ($state as $entity) {
                 $entity->setDeletedAt($datetime);
-                $repository = $this->getRepository($entity::class);
+                /** @var ServiceEntityRepositoryLib $repository */
+                $repository = $this->repositoryService->get($entity::class);
                 $repository->add($entity);
             }
         }
@@ -315,17 +316,18 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $address = $newEntity->getEmail();
-        $emails = $newEntity->getEmailUsers();
+        $emails  = $newEntity->getEmailUsers();
         $trouver = false;
         foreach ($emails as $emailUser) {
-            // @var EmailUser $emailUser
+            /** @var EmailUser $emailUser */
             $emailUser->setPrincipal(false);
             if ($emailUser->getAddress() === $address) {
                 $emailUser->setPrincipal(true);
                 $trouver = true;
             }
 
-            $repository = $this->getRepository($emailUser::class);
+            /** @var ServiceEntityRepositoryLib $repository */
+            $repository = $this->repositoryService->get($emailUser::class);
             $repository->add($emailUser);
         }
 
@@ -344,7 +346,7 @@ class EntitySubscriber extends EventSubscriberLib
         }
 
         $emailUser = new EmailUser();
-        $old = clone $emailUser;
+        $old       = clone $emailUser;
         $emailUser->setRefuser($newEntity);
         $emailUser->setPrincipal(true);
         $emailUser->setAddress($address);
@@ -361,7 +363,7 @@ class EntitySubscriber extends EventSubscriberLib
 
         try {
             $value = $post['robotstxt'];
-            $file = 'robots.txt';
+            $file  = 'robots.txt';
             if (is_file($file)) {
                 unlink($file);
             }
@@ -402,6 +404,7 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
+        /** @var ParagraphInterface $entity */
         $entity = new $classentity();
         $entity->setParagraph($paragraph);
 
@@ -409,7 +412,9 @@ class EntitySubscriber extends EventSubscriberLib
         $this->entityManager->flush();
     }
 
-    private function verifMetas($entity)
+    private function verifMetas(
+        mixed $entity
+    ): void
     {
         $title = null;
         $metas = $entity->getMetas();
@@ -417,9 +422,9 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
-        $meta = new Meta();
+        $meta   = new Meta();
         $method = '';
-        $title = '';
+        $title  = '';
         $this->verifMetasChapter($entity, $method, $title);
         $this->verifMetasEdito($entity, $method, $title);
         $this->verifMetasHistory($entity, $method, $title);
@@ -427,7 +432,12 @@ class EntitySubscriber extends EventSubscriberLib
         $this->verifMetasPost($entity, $method, $title);
         $this->verifMetasRender($entity, $method, $title);
         if ('' != $method) {
-            call_user_func([$meta, $method], $entity);
+            /** @var callable $callable */
+            $callable = [
+                $meta,
+                $method,
+            ];
+            call_user_func($callable, $entity);
         }
 
         $meta->setTitle($title);
@@ -435,63 +445,87 @@ class EntitySubscriber extends EventSubscriberLib
         $this->entityManager->flush();
     }
 
-    private function verifMetasChapter($entity, &$method, &$title)
+    private function verifMetasChapter(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Chapter) {
             return;
         }
 
         $method = 'setChapter';
-        $title = $entity->getName();
+        $title  = $entity->getName();
     }
 
-    private function verifMetasEdito($entity, &$method, &$title)
+    private function verifMetasEdito(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Edito) {
             return;
         }
 
         $method = 'setEdito';
-        $title = $entity->getTitle();
+        $title  = $entity->getTitle();
     }
 
-    private function verifMetasHistory($entity, &$method, &$title)
+    private function verifMetasHistory(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof History) {
             return;
         }
 
         $method = 'setHistory';
-        $title = $entity->getName();
+        $title  = $entity->getName();
     }
 
-    private function verifMetasPage($entity, &$method, &$title)
+    private function verifMetasPage(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Page) {
             return;
         }
 
         $method = 'setPage';
-        $title = $entity->getName();
+        $title  = $entity->getName();
     }
 
-    private function verifMetasPost($entity, &$method, &$title)
+    private function verifMetasPost(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Post) {
             return;
         }
 
         $method = 'setPost';
-        $title = $entity->getTitle();
+        $title  = $entity->getTitle();
     }
 
-    private function verifMetasRender($entity, &$method, &$title)
+    private function verifMetasRender(
+        mixed $entity,
+        string &$method,
+        string &$title
+    ): void
     {
         if (!$entity instanceof Render) {
             return;
         }
 
         $method = 'setRender';
-        $title = $entity->getName();
+        $title  = $entity->getName();
     }
 }

@@ -3,18 +3,20 @@
 namespace Labstag\Controller\Admin\History;
 
 use DateTime;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Lib\DomainLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Service\HistoryService;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/history')]
@@ -32,9 +34,7 @@ class HistoryController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'admin_history_trash', methods: ['GET'])]
     #[Route(path: '/', name: 'admin_history_index', methods: ['GET'])]
     public function indexOrTrash(): Response
@@ -53,6 +53,9 @@ class HistoryController extends AdminControllerLib
     ): RedirectResponse
     {
         $user = $security->getUser();
+        if (is_null($user)) {
+            return $this->redirectToRoute('admin_history_index');
+        }
 
         $history = new History();
         $history->setPublished(new DateTime());
@@ -69,9 +72,15 @@ class HistoryController extends AdminControllerLib
     #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]
     public function pdf(HistoryService $historyService, History $history): RedirectResponse
     {
+        $fileDirectory    = $this->getParameter('file_directory');
+        $kernelProjectDir = $this->getParameter('kernel.project_dir');
+        if (!is_string($fileDirectory) || !is_string($kernelProjectDir)) {
+            throw $this->createNotFoundException('Pas de fichier');
+        }
+
         $historyService->process(
-            $this->getParameter('file_directory'),
-            $history->getId(),
+            (string) $fileDirectory,
+            (string) $history->getId(),
             true
         );
         $filename = $historyService->getFilename();
@@ -80,7 +89,7 @@ class HistoryController extends AdminControllerLib
         }
 
         $filename = str_replace(
-            $this->getParameter('kernel.project_dir').'/public/',
+            ((string) $kernelProjectDir).'/public/',
             '/',
             $filename
         );
@@ -101,11 +110,11 @@ class HistoryController extends AdminControllerLib
             $this->setPositionEntity($request, Chapter::class);
         }
 
-        $this->btnInstance()->addBtnList(
+        $this->adminBtnService->addBtnList(
             'admin_history_index',
             'Liste',
         );
-        $this->btnInstance()->add(
+        $this->adminBtnService->add(
             'btn-admin-save-move',
             'Enregistrer',
             [
@@ -120,9 +129,7 @@ class HistoryController extends AdminControllerLib
         );
     }
 
-    /**
-     * @IgnoreSoftDelete
-     */
+    #[IgnoreSoftDelete]
     #[Route(path: '/{id}', name: 'admin_history_show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'admin_history_preview', methods: ['GET'])]
     public function showOrPreview(History $history): Response
@@ -134,8 +141,13 @@ class HistoryController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity()
+    protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(History::class);
+        $domainLib = $this->domainService->getDomain(History::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }
