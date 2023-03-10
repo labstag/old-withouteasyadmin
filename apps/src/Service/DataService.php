@@ -43,6 +43,21 @@ class DataService
         return $this->config;
     }
 
+    public function getConfigWithMetatags(array $metatags): array
+    {
+        $config = $this->getConfig();
+        foreach ($metatags as $metatag) {
+            /** @var string $index */
+            if (isset($config[$metatag])) {
+                $config[$metatag] = [
+                    $config[$metatag],
+                ];
+            }
+        }
+
+        return $config;
+    }
+
     /**
      * @return mixed[]
      */

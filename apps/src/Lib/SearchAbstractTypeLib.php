@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Workflow\WorkflowInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class SearchAbstractTypeLib extends AbstractType
@@ -145,6 +146,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
         string $placeholder
     ): void
     {
+        /** @var WorkflowInterface $workflow */
         $workflow   = $this->workflowService->get($entityclass);
         $definition = $workflow->getDefinition();
         $places     = $definition->getPlaces();

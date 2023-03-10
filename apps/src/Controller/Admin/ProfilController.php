@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Entity\Profil;
 use Labstag\Entity\User;
 use Labstag\Lib\AdminControllerLib;
@@ -30,6 +31,11 @@ class ProfilController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Profil::class);
+        $domainLib = $this->domainService->getDomain(Profil::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 #[Route(path: '/api/actions')]
 class ActionsController extends ApiControllerLib
@@ -106,6 +107,7 @@ class ActionsController extends ApiControllerLib
         $entities = explode(',', (string) $request->request->get('entities'));
         $error    = [];
         foreach ($entities as $entity) {
+            /** @var ServiceEntityRepositoryLib $repository */
             $repository = $this->repositoryService->get($entity);
 
             try {
@@ -131,6 +133,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
+        /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
         $tokenValid = $this->tokenVerif('empty');
         if (!$tokenValid) {
@@ -221,6 +224,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
+        /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
         $entity     = $repository->find($id);
         $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
@@ -239,6 +243,7 @@ class ActionsController extends ApiControllerLib
 
         $data['action'] = true;
         if ($this->workflowService->has($entity)) {
+            /** @var WorkflowInterface $workflow */
             $workflow = $this->workflowService->get($entity);
             $workflow->apply($entity, $state);
             $this->entityManager->flush();
@@ -255,7 +260,8 @@ class ActionsController extends ApiControllerLib
         $all   = $trashService->all();
         $error = [];
         foreach ($all as $data) {
-            $entity     = $data['name'];
+            $entity = $data['name'];
+            /** @var ServiceEntityRepositoryLib $repository */
             $repository = $this->repositoryService->get($entity);
 
             try {
@@ -298,6 +304,7 @@ class ActionsController extends ApiControllerLib
         }
 
         foreach ($files as $file) {
+            /** @var string $file */
             if ('' == $file && is_file($file)) {
                 continue;
             }
@@ -320,8 +327,9 @@ class ActionsController extends ApiControllerLib
             return new JsonResponse($data);
         }
 
-        $entities   = explode(',', (string) $request->request->get('entities'));
-        $error      = [];
+        $entities = explode(',', (string) $request->request->get('entities'));
+        $error    = [];
+        /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
         $method     = match ($token) {
             'deleties'  => 'deleteEntity',
@@ -367,6 +375,7 @@ class ActionsController extends ApiControllerLib
             $file = $entity->getName();
         }
 
+        /** @var string $file */
         if ('' != $file && is_file($file)) {
             unlink($file);
         }
@@ -374,6 +383,7 @@ class ActionsController extends ApiControllerLib
 
     private function getDataRestoreDelete(string $entity, mixed $id): mixed
     {
+        /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
 
         return $repository->find($id);
@@ -393,7 +403,7 @@ class ActionsController extends ApiControllerLib
 
     private function tokenVerif(string $action, mixed $entity = null): bool
     {
-        /** @Var Request $request */
+        /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $token   = $request->get('_token');
 

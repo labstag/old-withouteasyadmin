@@ -3,6 +3,7 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\Chapter;
+use Labstag\Entity\History;
 use Labstag\Interfaces\FrontInterface;
 
 class ChapterFront extends HistoryFront
@@ -16,18 +17,20 @@ class ChapterFront extends HistoryFront
             return $breadcrumb;
         }
 
+        /** @var History $history */
+        $history      = $front->getRefhistory();
         $breadcrumb[] = [
             'route' => $this->router->generate(
                 'front_history_chapter',
                 [
-                    'history' => $front->getRefhistory()->getSlug(),
+                    'history' => $history->getSlug(),
                     'chapter' => $front->getSlug(),
                 ]
             ),
             'title' => $front->getName(),
         ];
 
-        return $this->setBreadcrumbHistory($front->getRefhistory(), $breadcrumb);
+        return $this->setBreadcrumbHistory($history, $breadcrumb);
     }
 
     public function setMeta(
@@ -39,10 +42,12 @@ class ChapterFront extends HistoryFront
             return $meta;
         }
 
-        $history = $this->getMeta($front->getRefhistory()->getMetas(), $meta);
-        $meta    = $this->getMeta($front->getMetas(), $meta);
-        if (isset($history['title'])) {
-            $meta['title'] = $meta['title'].' - '.$history['title'];
+        /** @var History $history */
+        $history     = $front->getRefhistory();
+        $metahistory = $this->getMeta($history->getMetas(), $meta);
+        $meta        = $this->getMeta($front->getMetas(), $meta);
+        if (isset($metahistory['title'])) {
+            $meta['title'] = $meta['title'].' - '.$metahistory['title'];
         }
 
         return $meta;

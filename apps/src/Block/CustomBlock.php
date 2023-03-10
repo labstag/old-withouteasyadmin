@@ -75,7 +75,7 @@ class CustomBlock extends BlockLib
 
     private function setParagraphs(Custom $custom): array
     {
-        /** @Var Request $request */
+        /** @var Request $request */
         $request     = $this->requestStack->getCurrentRequest();
         $all         = $request->attributes->all();
         $route       = $all['_route'];

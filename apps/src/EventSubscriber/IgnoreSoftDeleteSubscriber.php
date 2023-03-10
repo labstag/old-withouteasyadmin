@@ -38,7 +38,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
         string $method
     ): void
     {
-        /** @Var Request $request */
+        /** @var Request $request */
         $request      = $this->requestStack->getCurrentRequest();
         $routeCurrent = $request->attributes->get('_route');
         $routes       = [

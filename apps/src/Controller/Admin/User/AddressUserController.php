@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\AddressUser;
 use Labstag\Lib\AdminControllerLib;
@@ -49,6 +50,11 @@ class AddressUserController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(AddressUser::class);
+        $domainLib = $this->domainService->getDomain(AddressUser::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

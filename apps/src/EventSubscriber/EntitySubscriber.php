@@ -91,12 +91,14 @@ class EntitySubscriber extends EventSubscriberLib
     {
         $chapter = $chapterEntityEvent->getNewEntity();
         $this->verifMetas($chapter);
+        /** @var History $history */
+        $history = $chapter->getRefhistory();
         $this->enqueueMethod->enqueue(
             HistoryService::class,
             'process',
             [
                 'fileDirectory' => $this->parameterBag->get('file_directory'),
-                'historyId'     => $chapter->getRefhistory()->getId(),
+                'historyId'     => $history->getId(),
                 'all'           => false,
             ]
         );
@@ -133,13 +135,13 @@ class EntitySubscriber extends EventSubscriberLib
 
     public function onMenuEntityEvent(MenuEntityEvent $menuEntityEvent): void
     {
-        $menu = $menuEntityEvent->getNewEntity();
-        $data = $menu->getData();
-        if (0 == count((array) $data)) {
+        $menu     = $menuEntityEvent->getNewEntity();
+        $dataMenu = $menu->getData();
+        if (0 == count((array) $dataMenu)) {
             return;
         }
 
-        $data = $data[0];
+        $data = $dataMenu[0] ?? [];
         foreach ($data as $key => $value) {
             if (!is_null($value)) {
                 continue;

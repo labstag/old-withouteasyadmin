@@ -98,9 +98,13 @@ class GuardRouteController extends ApiControllerLib
         $results = $this->getResultWorkflow($request, RouteGroupe::class);
         foreach ($results as $result) {
             /** @var RouteGroupe $result */
+            /** @var Groupe $groupe */
+            $groupe = $result->getRefgroupe();
+            /** @var EntityRoute $route */
+            $route           = $result->getRefroute();
             $data['group'][] = [
-                'groupe' => $result->getRefgroupe()->getCode(),
-                'route'  => $result->getRefroute()->getName(),
+                'groupe' => $groupe->getCode(),
+                'route'  => $route->getName(),
             ];
         }
 
@@ -223,6 +227,8 @@ class GuardRouteController extends ApiControllerLib
             return $data;
         }
 
+        /** @var Groupe $groupe */
+        /** @var EntityRoute $entityRoute */
         $enable = $guardService->guardRouteEnableGroupe($entityRoute, $groupe);
         if ('superadmin' === $groupe->getCode() || !$enable) {
             return $data;
@@ -262,8 +268,10 @@ class GuardRouteController extends ApiControllerLib
         }
 
         /** @var User $user */
-        $enable = $guardService->guardRouteEnableGroupe($entityRoute, $user->getRefgroupe());
-        if ('superadmin' === $user->getRefgroupe()->getCode() || !$enable) {
+        /** @var Groupe $groupe */
+        $groupe = $user->getRefgroupe();
+        $enable = $guardService->guardRouteEnableGroupe($entityRoute, $groupe);
+        if ('superadmin' === $groupe->getCode() || !$enable) {
             return $data;
         }
 

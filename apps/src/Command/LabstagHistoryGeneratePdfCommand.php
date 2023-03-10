@@ -54,12 +54,12 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
         foreach ($histories as $history) {
             $this->historyService->process(
                 (string) $fileDirectory,
-                $history->getId(),
+                (string) $history->getId(),
                 true
             );
             $this->historyService->process(
                 (string) $fileDirectory,
-                $history->getId(),
+                (string) $history->getId(),
                 false
             );
             $symfonyStyle->progressAdvance();

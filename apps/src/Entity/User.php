@@ -30,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
-    protected Groupe $groupe;
+    protected ?Groupe $groupe = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     protected string $password;
@@ -687,7 +687,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function setUsername(?string $username): self
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 

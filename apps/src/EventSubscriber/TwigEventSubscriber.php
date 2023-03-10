@@ -68,7 +68,7 @@ class TwigEventSubscriber extends EventSubscriberLib
 
     protected function setConfigCanonical(): void
     {
-        /** @Var Request $request */
+        /** @var Request $request */
         $request   = $this->requestStack->getCurrentRequest();
         $globals   = $this->twigEnvironment->getGlobals();
         $canonical = $globals['canonical'] ?? $request->getUri();

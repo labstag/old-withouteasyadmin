@@ -22,6 +22,7 @@ use Labstag\Lib\ParagraphLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\Paragraph\VideoRepository;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -69,8 +70,9 @@ class VideoParagraph extends ParagraphLib
         /** @var AttachmentRepository $attachmentRepository */
         $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
         $videos               = $paragraph->getVideos();
-        $video                = $videos[0];
-        $url                  = $video->getUrl();
+        /** @var Video $video */
+        $video = $videos[0];
+        $url   = (string) $video->getUrl();
         if ('' == $url) {
             return;
         }
@@ -78,13 +80,15 @@ class VideoParagraph extends ParagraphLib
         $slug = null;
 
         try {
-            $embed        = new Embed();
-            $info         = $embed->get($url);
-            $image        = $info->image->__toString();
-            $title        = $info->title;
+            $embed = new Embed();
+            $info  = $embed->get($url);
+            /** @var UriInterface $infoimage */
+            $infoimage    = $info->image;
+            $image        = $infoimage->__toString();
+            $title        = (string) $info->title;
             $asciiSlugger = new AsciiSlugger();
             $video->setTitle($title);
-            $slug = (string) $asciiSlugger->slug($video->getTitle());
+            $slug = (string) $asciiSlugger->slug($title);
             $video->setSlug($slug);
             $videoRepository->add($video);
         } catch (Exception) {
@@ -123,7 +127,9 @@ class VideoParagraph extends ParagraphLib
         $image      = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
 
         if (is_null($image)) {
-            $image = $extractor->image->__toString();
+            /** @var UriInterface $extractorImage */
+            $extractorImage = $extractor->image;
+            $image          = $extractorImage->__toString();
         }
 
         $metas = $extractor->getMetas();
@@ -160,7 +166,7 @@ class VideoParagraph extends ParagraphLib
 
     private function getData(Video $video): ?Extractor
     {
-        $url = $video->getUrl();
+        $url = (string) $video->getUrl();
         if ('' == $url) {
             return null;
         }

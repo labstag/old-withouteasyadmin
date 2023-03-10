@@ -7,6 +7,7 @@ use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Event\UserCollectionEvent;
 use Labstag\Lib\EventSubscriberLib;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserCollectionSubscriber extends EventSubscriberLib
 {
@@ -43,7 +44,10 @@ class UserCollectionSubscriber extends EventSubscriberLib
             return;
         }
 
-        $this->userMailService->checkNewAddress($new->getRefuser(), $new);
+        /** @var UserInterface $newuser */
+        $newuser = $new->getRefuser();
+
+        $this->userMailService->checkNewAddress($newuser, $new);
     }
 
     protected function setLinkUser(array $data): void
@@ -60,7 +64,10 @@ class UserCollectionSubscriber extends EventSubscriberLib
             return;
         }
 
-        $this->userMailService->checkNewLink($new->getRefuser(), $new);
+        /** @var UserInterface $newuser */
+        $newuser = $new->getRefuser();
+
+        $this->userMailService->checkNewLink($newuser, $new);
     }
 
     protected function setOauthConnectUser(array $data): void
@@ -77,8 +84,10 @@ class UserCollectionSubscriber extends EventSubscriberLib
             return;
         }
 
+        /** @var UserInterface $newuser */
+        $newuser = $new->getRefuser();
         $this->userMailService->checkNewOauthConnectUser(
-            $new->getRefuser(),
+            $newuser,
             $new
         );
     }

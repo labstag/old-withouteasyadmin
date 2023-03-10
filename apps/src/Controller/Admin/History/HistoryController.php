@@ -3,6 +3,7 @@
 namespace Labstag\Controller\Admin\History;
 
 use DateTime;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
@@ -79,7 +80,7 @@ class HistoryController extends AdminControllerLib
 
         $historyService->process(
             (string) $fileDirectory,
-            $history->getId(),
+            (string) $history->getId(),
             true
         );
         $filename = $historyService->getFilename();
@@ -142,6 +143,11 @@ class HistoryController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(History::class);
+        $domainLib = $this->domainService->getDomain(History::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

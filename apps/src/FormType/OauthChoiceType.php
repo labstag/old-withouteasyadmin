@@ -24,7 +24,9 @@ class OauthChoiceType extends AbstractType
         array $options
     ): void
     {
-        $entity  = $form->getParent()->getData();
+        /** @var FormInterface $parent */
+        $parent  = $form->getParent();
+        $entity  = $parent->getData();
         $types   = $this->oauthService->getTypes();
         $choices = [];
         foreach ($types as $type) {

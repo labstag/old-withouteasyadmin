@@ -32,6 +32,7 @@ class PhoneService
      */
     public function verif(?string $numero, ?string $locale): array
     {
+        $locale                       = (string) $locale;
         $numero                       = str_replace([' ', '-', '.'], '', (string) $numero);
         $data                         = [];
         $phoneNumberToTimeZonesMapper = PhoneNumberToTimeZonesMapper::getInstance();

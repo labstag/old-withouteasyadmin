@@ -106,7 +106,7 @@ class UserMailService
             'address_street'  => $addressUser->getStreet(),
             'address_zipcode' => $addressUser->getZipcode(),
             'address_city'    => $addressUser->getCity(),
-            'address_country' => Countries::getName($addressUser->getCountry()),
+            'address_country' => Countries::getName((string) $addressUser->getCountry()),
             'address_gps'     => $addressUser->getGps(),
             'address_pmr'     => $addressUser->isPmr() ? 'Oui' : 'Non',
         ];
@@ -273,9 +273,9 @@ class UserMailService
     ): void
     {
         /** @var User $user */
-        $html  = $template->getHtml();
-        $text  = $template->getText();
-        $name  = $template->getName();
+        $html  = (string) $template->getHtml();
+        $text  = (string) $template->getText();
+        $name  = (string) $template->getName();
         $email = $this->mailerService->createEmail(
             [
                 'html' => $this->changeValue($user, $html, $change),

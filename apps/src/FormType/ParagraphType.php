@@ -26,7 +26,9 @@ class ParagraphType extends AbstractType
         array $options
     ): void
     {
-        $entity     = $form->getParent()->getData();
+        /** @var FormInterface $parent */
+        $parent     = $form->getParent();
+        $entity     = $parent->getData();
         $paragraphs = $this->paragraphService->getAll($entity);
         $choices    = [];
         foreach ($paragraphs as $name => $type) {

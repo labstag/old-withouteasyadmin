@@ -28,7 +28,10 @@ class History implements Stringable, ParagraphInterface, EntityInterface
 
     public function __toString(): string
     {
-        return (string) $this->getParagraph()->getType();
+        /** @var Paragraph $paragraph */
+        $paragraph = $this->getParagraph();
+
+        return (string) $paragraph->getType();
     }
 
     public function getId(): ?string

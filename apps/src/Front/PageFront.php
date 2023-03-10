@@ -50,6 +50,10 @@ class PageFront extends FrontLib
         array $breadcrumb
     ): array
     {
+        if (!$page instanceof Page) {
+            return $breadcrumb;
+        }
+
         $breadcrumb[] = [
             'route' => $this->router->generate(
                 'front',

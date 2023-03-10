@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
 use Labstag\Lib\AdminControllerLib;
@@ -103,6 +104,11 @@ class UserController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(User::class);
+        $domainLib = $this->domainService->getDomain(User::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

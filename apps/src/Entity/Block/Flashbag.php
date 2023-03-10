@@ -28,7 +28,10 @@ class Flashbag implements Stringable, BlockInterface, EntityInterface
 
     public function __toString(): string
     {
-        return (string) $this->getBlock()->getTitle();
+        /** @var Block $block */
+        $block = $this->getBlock();
+
+        return (string) $block->getTitle();
     }
 
     public function getBlock(): ?Block

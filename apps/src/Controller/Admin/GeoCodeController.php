@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\GeoCode;
 use Labstag\Lib\AdminControllerLib;
@@ -49,6 +50,11 @@ class GeoCodeController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(GeoCode::class);
+        $domainLib = $this->domainService->getDomain(GeoCode::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

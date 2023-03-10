@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 #[AsCommand(name: 'labstag:workflows-show')]
 class LabstagWorkflowsShowCommand extends CommandLib
@@ -47,6 +48,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         $entities = [];
         foreach ($this->rewindableGenerator as $entity) {
             if ($this->workflowService->has($entity)) {
+                /** @var WorkflowInterface $workflow */
                 $workflow    = $this->workflowService->get($entity);
                 $definition  = $workflow->getDefinition();
                 $name        = $workflow->getName();

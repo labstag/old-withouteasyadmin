@@ -21,15 +21,15 @@ class RouteUser implements EntityInterface
     private ?string $id = null;
 
     #[ORM\ManyToOne(targetEntity: Route::class, inversedBy: 'users', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refroute_id')]
-    private Route $route;
+    #[ORM\JoinColumn(name: 'refroute_id', nullable: true)]
+    private ?Route $route = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $state = false;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'routes', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refuser_id')]
-    private UserInterface $user;
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: true)]
+    private ?UserInterface $user = null;
 
     public function getId(): ?string
     {

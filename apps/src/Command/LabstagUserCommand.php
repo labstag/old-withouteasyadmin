@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 #[AsCommand(name: 'labstag:user')]
 class LabstagUserCommand extends CommandLib
@@ -237,6 +238,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
+        /** @var WorkflowInterface $workflow */
         $workflow = $this->workflowService->get($entity);
         if (!$workflow->can($entity, 'desactiver')) {
             $symfonyStyle->warning(
@@ -287,6 +289,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
+        /** @var WorkflowInterface $workflow */
         $workflow = $this->workflowService->get($entity);
         if (!$workflow->can($entity, 'activer')) {
             $symfonyStyle->warning(
@@ -342,10 +345,12 @@ class LabstagUserCommand extends CommandLib
         $table = [];
         /** @var User $user */
         foreach ($users as $user) {
+            /** @var Groupe $groupe */
+            $groupe  = $user->getRefgroupe();
             $table[] = [
                 'username' => $user->getUsername(),
                 'email'    => $user->getEmail(),
-                'groupe'   => $user->getRefgroupe()->getName(),
+                'groupe'   => $groupe->getName(),
                 'state'    => $user->getState(),
             ];
         }
@@ -379,7 +384,8 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $states      = [];
+        $states = [];
+        /** @var WorkflowInterface $workflow */
         $workflow    = $this->workflowService->get($entity);
         $transitions = $workflow->getEnabledTransitions($entity);
         foreach ($transitions as $transition) {
@@ -414,11 +420,13 @@ class LabstagUserCommand extends CommandLib
         $table = [];
         /** @var User $user */
         foreach ($users as $user) {
+            /** @var Groupe $groupe */
+            $groupe                      = $user->getRefgroupe();
             $table[$user->getUsername()] = json_encode(
                 [
                     'username' => $user->getUsername(),
                     'email'    => $user->getEmail(),
-                    'groupe'   => $user->getRefgroupe()->getName(),
+                    'groupe'   => $groupe->getName(),
                     'state'    => $user->getState(),
                 ],
                 JSON_THROW_ON_ERROR

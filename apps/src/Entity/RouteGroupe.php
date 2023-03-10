@@ -14,8 +14,8 @@ class RouteGroupe implements EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'routes', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refgroupe_id')]
-    private Groupe $groupe;
+    #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
+    private ?Groupe $groupe = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -24,8 +24,8 @@ class RouteGroupe implements EntityInterface
     private ?string $id = null;
 
     #[ORM\ManyToOne(targetEntity: Route::class, inversedBy: 'groupes', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refroute_id')]
-    private Route $route;
+    #[ORM\JoinColumn(name: 'refroute_id', nullable: true)]
+    private ?Route $route = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $state = false;

@@ -8,6 +8,8 @@ use Labstag\Entity\Libelle;
 use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Interfaces\FrontInterface;
+use Labstag\Repository\CategoryRepository;
+use Labstag\Repository\LibelleRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class PostFront extends PageFront
@@ -67,6 +69,7 @@ class PostFront extends PageFront
             return $breadcrumb;
         }
 
+        /** @var CategoryRepository $repository */
         $repository = $this->repositoryService->get(Category::class);
         /** @var Category $category */
         $category = $repository->findOneBy(
@@ -100,6 +103,7 @@ class PostFront extends PageFront
             return $breadcrumb;
         }
 
+        /** @var LibelleRepository $repository */
         $repository = $this->repositoryService->get(Libelle::class);
         /** @var Libelle $libelle */
         $libelle = $repository->findOneBy(

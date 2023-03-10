@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Render;
 use Labstag\Lib\AdminControllerLib;
@@ -50,6 +51,11 @@ class RenderController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Render::class);
+        $domainLib = $this->domainService->getDomain(Render::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

@@ -43,6 +43,8 @@ class FileService
             $old        = clone $attachment;
         }
 
+        /** @var Attachment $attachment */
+        /** @var Attachment $old */
         $attachment->setMimeType((string) mime_content_type($file));
         $attachment->setSize((int) filesize($file));
         $attachment->setName(

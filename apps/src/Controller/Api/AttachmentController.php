@@ -38,7 +38,7 @@ class AttachmentController extends ApiControllerLib
 
     protected function verifToken(Attachment $attachment): bool
     {
-        /** @Var Request $request */
+        /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $token   = (string) $request->request->get('_token');
 

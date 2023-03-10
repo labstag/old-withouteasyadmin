@@ -24,8 +24,8 @@ class OauthConnectUser implements EntityInterface
     protected string $name;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'oauthConnectUsers', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
-    protected UserInterface $user;
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: true)]
+    protected ?UserInterface $user = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]

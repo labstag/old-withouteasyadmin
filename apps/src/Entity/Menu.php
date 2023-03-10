@@ -185,7 +185,9 @@ class Menu implements Stringable, EntityTrashInterface
 
     public function setData(?array $data): self
     {
-        $this->data = $data;
+        if (is_array($data)) {
+            $this->data = $data;
+        }
 
         return $this;
     }

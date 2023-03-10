@@ -4,6 +4,7 @@ namespace Labstag\Controller\Admin;
 
 use DateTime;
 use DOMDocument;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
@@ -79,7 +80,12 @@ class BookmarkController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Bookmark::class);
+        $domainLib = $this->domainService->getDomain(Bookmark::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 
     private function uploadFile(

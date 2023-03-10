@@ -3,8 +3,10 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\Route;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
+use Labstag\Entity\Workflow;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Repository\UserRepository;
 use Labstag\RequestHandler\AttachmentRequestHandler;
@@ -45,13 +47,16 @@ abstract class ApiControllerLib extends AbstractController
             return $data;
         }
 
+        /** @var ServiceEntityRepositoryLib $entityRepository */
         $entityRepository = $this->repositoryService->get($entityClass);
         $results          = $entityRepository->findEnableByUser($user);
         if (RouteUser::class == $entityClass) {
             foreach ($results as $row) {
                 /** @var RouteUser $row */
+                /** @var Route $route */
+                $route          = $row->getRefroute();
                 $data['user'][] = [
-                    'route' => $row->getRefroute()->getName(),
+                    'route' => $route->getName(),
                 ];
             }
 
@@ -60,6 +65,7 @@ abstract class ApiControllerLib extends AbstractController
 
         foreach ($results as $result) {
             /** @var WorkflowGroupe $result */
+            /** @var Workflow $workflow */
             $workflow        = $result->getRefworkflow();
             $data['group'][] = [
                 'entity'     => $workflow->getEntity(),
@@ -72,7 +78,9 @@ abstract class ApiControllerLib extends AbstractController
 
     protected function getResultWorkflow(Request $request, mixed $entity): mixed
     {
-        $userRepository   = $this->repositoryService->get(User::class);
+        /** @var ServiceEntityRepositoryLib $userRepository */
+        $userRepository = $this->repositoryService->get(User::class);
+        /** @var ServiceEntityRepositoryLib $entityRepository */
         $entityRepository = $this->repositoryService->get($entity);
         $get              = $request->query->all();
         if (array_key_exists('user', $get)) {

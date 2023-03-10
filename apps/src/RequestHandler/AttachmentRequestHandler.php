@@ -3,6 +3,7 @@
 namespace Labstag\RequestHandler;
 
 use Labstag\Lib\RequestHandlerLib;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class AttachmentRequestHandler extends RequestHandlerLib
 {
@@ -15,6 +16,7 @@ class AttachmentRequestHandler extends RequestHandlerLib
             unlink($oldFile);
         }
 
+        /** @var WorkflowInterface $workflow */
         $workflow = $this->workflowService->get($entity);
         if ($workflow->can($entity, 'reenvoyer')) {
             $workflow->apply($entity, 'reenvoyer');

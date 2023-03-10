@@ -106,14 +106,8 @@ class AdminController extends AdminControllerLib
             $attachmentRepository->add($images[$key]);
         }
 
-        $config = $dataService->getConfig();
-        $tab    = $this->getParameter('metatags');
-        foreach ($tab as $index) {
-            $config[$index] = [
-                $config[$index],
-            ];
-        }
-
+        $metatags = (array) $this->getParameter('metatags');
+        $config   = $dataService->getConfigWithMetatags($metatags);
         foreach ($images as $key => $value) {
             $images[$key] = $value;
         }

@@ -5,6 +5,7 @@ namespace Labstag\FormType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\RepositoryService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -45,6 +46,7 @@ class SearchableType extends AbstractType
                         return is_array($ids) ? new ArrayCollection([]) : null;
                     }
 
+                    /** @var ServiceEntityRepositoryLib $serviceEntityRepositoryLib */
                     $serviceEntityRepositoryLib = $this->repositoryService->get($options['class']);
                     if ($options['add'] && is_array($ids)) {
                         $ids = $this->addToentity($ids, $options);
@@ -121,6 +123,7 @@ class SearchableType extends AbstractType
             return $ids;
         }
 
+        /** @var ServiceEntityRepositoryLib $entityRepository */
         $entityRepository = $this->repositoryService->get($options['class']);
         foreach ($ids as $id => $key) {
             $entity = $entityRepository->find($key);

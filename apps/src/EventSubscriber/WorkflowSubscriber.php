@@ -5,6 +5,7 @@ namespace Labstag\EventSubscriber;
 use Labstag\Entity\User;
 use Labstag\Lib\EventSubscriberLib;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Component\Workflow\Transition;
 
 class WorkflowSubscriber extends EventSubscriberLib
 {
@@ -29,6 +30,7 @@ class WorkflowSubscriber extends EventSubscriberLib
 
     public function onTransition(Event $event): void
     {
+        /** @var Transition $transition */
         $transition = $event->getTransition();
         $name       = $transition->getName();
         if ('submit' == $name) {

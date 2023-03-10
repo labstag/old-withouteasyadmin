@@ -69,10 +69,12 @@ class HistoryController extends FrontControllerLib
             ['slug' => $chapter]
         );
 
-        $test = [
+        /** @var History $chapterHistory */
+        $chapterHistory = $chapter->getRefhistory();
+        $test           = [
             !$history instanceof History,
             !$chapter instanceof Chapter,
-            $chapter->getRefhistory()->getId() !== $history->getId(),
+            $chapterHistory->getId() !== $history->getId(),
         ];
 
         foreach ($test as $row) {
@@ -111,11 +113,11 @@ class HistoryController extends FrontControllerLib
 
         $historyService->process(
             (string) $fileDirectory,
-            $history->getId(),
+            (string) $history->getId(),
             false
         );
 
-        $filename = $historyService->getFilename();
+        $filename = (string) $historyService->getFilename();
 
         $filename = str_replace(
             $kernelProjectDir.'/public/',

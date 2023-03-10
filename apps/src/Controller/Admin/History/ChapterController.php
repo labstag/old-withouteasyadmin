@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\History;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
@@ -73,6 +74,11 @@ class ChapterController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Chapter::class);
+        $domainLib = $this->domainService->getDomain(Chapter::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

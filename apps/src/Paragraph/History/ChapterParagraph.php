@@ -62,7 +62,9 @@ class ChapterParagraph extends ParagraphLib
             return null;
         }
 
-        $prevnext = $this->getPrevNext($chapter, $chapter->getRefhistory());
+        /** @var History $history */
+        $history  = $chapter->getRefhistory();
+        $prevnext = $this->getPrevNext($chapter, $history);
 
         return $this->render(
             $this->getTemplateFile($this->getcode($historychapter)),

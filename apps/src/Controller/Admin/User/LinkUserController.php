@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\LinkUser;
 use Labstag\Lib\AdminControllerLib;
@@ -49,6 +50,11 @@ class LinkUserController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(LinkUser::class);
+        $domainLib = $this->domainService->getDomain(LinkUser::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

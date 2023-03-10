@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
 use Labstag\Lib\AdminControllerLib;
@@ -77,6 +78,11 @@ class MemoController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Memo::class);
+        $domainLib = $this->domainService->getDomain(Memo::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

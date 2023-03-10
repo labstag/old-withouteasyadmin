@@ -43,7 +43,7 @@ class BlockType extends BlockAbstractTypeLib
         );
         if ((!is_null($formType) || is_null($field)) && $show) {
             $formBuilder->add(
-                $field,
+                (string) $field,
                 CollectionType::class,
                 [
                     'label'         => $label,

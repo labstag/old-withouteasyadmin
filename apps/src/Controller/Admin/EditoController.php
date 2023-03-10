@@ -3,6 +3,7 @@
 namespace Labstag\Controller\Admin;
 
 use DateTime;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Lib\AdminControllerLib;
@@ -79,6 +80,11 @@ class EditoController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Edito::class);
+        $domainLib = $this->domainService->getDomain(Edito::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

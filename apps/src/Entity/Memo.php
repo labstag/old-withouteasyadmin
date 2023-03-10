@@ -31,7 +31,7 @@ class Memo implements Stringable, FrontInterface, EntityTrashInterface
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     #[Assert\GreaterThanOrEqual(propertyPath: 'dateStart')]
-    protected DateTime $dateEnd;
+    protected ?DateTime $dateEnd = null;
 
     #[ORM\Column(type: 'datetime')]
     #[Assert\LessThanOrEqual(propertyPath: 'dateEnd')]

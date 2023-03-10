@@ -38,7 +38,7 @@ class BookmarkController extends FrontControllerLib
             return $this->page('mes-liens', $pageRepository);
         }
 
-        return new RedirectResponse($bookmark->getUrl(), 302);
+        return new RedirectResponse((string) $bookmark->getUrl(), 302);
     }
 
     #[Route(

@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
 use Labstag\Lib\AdminControllerLib;
@@ -25,6 +26,11 @@ class AttachmentController extends AdminControllerLib
 
     protected function getDomainEntity(): DomainLib
     {
-        return $this->domainService->getDomain(Attachment::class);
+        $domainLib = $this->domainService->getDomain(Attachment::class);
+        if (!$domainLib instanceof DomainLib) {
+            throw new Exception('Domain not found');
+        }
+
+        return $domainLib;
     }
 }

@@ -9,6 +9,7 @@ use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Provider\LinkedIn;
 use Omines\OAuth2\Client\Provider\Gitlab;
 use Rudolf\OAuth2\Client\Provider\Reddit;
+use RuntimeException;
 use Stevenmaguire\OAuth2\Client\Provider\Bitbucket;
 use Stevenmaguire\OAuth2\Client\Provider\Dropbox;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -290,6 +291,11 @@ class OauthService
             UrlGeneratorInterface::NETWORK_PATH
         );
 
-        return $this->generateProvider($clientName, $url, $oauth);
+        $provider = $this->generateProvider($clientName, $url, $oauth);
+        if (!$provider instanceof AbstractProvider) {
+            throw new RuntimeException('Provider not found');
+        }
+
+        return $provider;
     }
 }

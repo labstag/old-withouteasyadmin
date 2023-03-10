@@ -11,6 +11,7 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\User;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Repository\ParagraphRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -127,7 +128,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         /** @var EntityTrashInterface $entity */
         $url = $domainLib->getUrlAdmin();
-        /** @Var Request $request */
+        /** @var Request $request */
         $request      = $this->requeststack->getCurrentRequest();
         $routeCurrent = $request->get('_route');
         $routeType    = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
@@ -295,7 +296,7 @@ abstract class AdminControllerLib extends ControllerLib
         $modal['destroy'] = (isset($url['destroy']));
         $modal['restore'] = (isset($url['restore']));
         $this->twigEnvironment->addGlobal('modal', $modal);
-
+        /** @var Request $request */
         $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $route       = $all['_route'];
@@ -374,11 +375,12 @@ abstract class AdminControllerLib extends ControllerLib
         $routeCollection     = $this->router->getRouteCollection();
         $requestContext      = $this->router->getContext();
         $traceableUrlMatcher = new TraceableUrlMatcher($routeCollection, $requestContext);
-        $request             = $this->requeststack->getCurrentRequest();
-        $attributes          = $request->attributes->all();
-        $pathinfo            = $request->getPathInfo();
-        $breadcrumb          = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
-        $breadcrumb          = array_reverse($breadcrumb);
+        /** @var Request $request */
+        $request    = $this->requeststack->getCurrentRequest();
+        $attributes = $request->attributes->all();
+        $pathinfo   = $request->getPathInfo();
+        $breadcrumb = $this->getBreadcrumb($traceableUrlMatcher, $pathinfo, []);
+        $breadcrumb = array_reverse($breadcrumb);
 
         $all         = $routeCollection->all();
         $routeParams = $attributes['_route_params'];
@@ -484,7 +486,7 @@ abstract class AdminControllerLib extends ControllerLib
     {
         $url                        = $domainLib->getUrlAdmin();
         $serviceEntityRepositoryLib = $domainLib->getRepository();
-        /** @Var Request $request */
+        /** @var Request $request */
         $request     = $this->requeststack->getCurrentRequest();
         $all         = $request->attributes->all();
         $route       = $all['_route'];
@@ -557,7 +559,7 @@ abstract class AdminControllerLib extends ControllerLib
         $serviceEntityRepositoryLib = $domainLib->getRepository();
         $methods                    = $this->getMethodsList();
         $method                     = $methods[$routeType];
-        /** @Var Request $request */
+        /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $query   = $request->query;
         $get     = $query->all();
@@ -584,8 +586,9 @@ abstract class AdminControllerLib extends ControllerLib
 
         if (is_array($position)) {
             foreach ($position as $row) {
-                $id         = $row['id'];
-                $position   = (int) $row['position'];
+                $id       = $row['id'];
+                $position = (int) $row['position'];
+                /** @var ServiceEntityRepositoryLib $repository */
                 $repository = $this->repositoryService->get($entityclass);
                 /** @var Block|Chapter|Menu $entity */
                 $entity = $repository->find($id);
@@ -890,13 +893,14 @@ abstract class AdminControllerLib extends ControllerLib
 
     private function setPositionParagraphs(): void
     {
-        /** @Var Request $request */
+        /** @var Request $request */
         $request    = $this->requeststack->getCurrentRequest();
         $paragraphs = $request->request->all('paragraphs');
         if (!is_array($paragraphs)) {
             return;
         }
 
+        /** @var ParagraphRepository $repository */
         $repository = $this->repositoryService->get(Paragraph::class);
         foreach ($paragraphs as $id => $position) {
             $paragraph = $repository->find($id);
@@ -911,7 +915,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     private function setTitleHeader(array $parameters): array
     {
-        /** @Var Request $request */
+        /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $all     = $request->attributes->all();
         $route   = $all['_route'];

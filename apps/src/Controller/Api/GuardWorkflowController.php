@@ -81,10 +81,14 @@ class GuardWorkflowController extends ApiControllerLib
         $results = $this->getResultWorkflow($request, WorkflowGroupe::class);
         foreach ($results as $result) {
             /** @var WorkflowGroupe $result */
+            /** @var Groupe $groupe */
+            $groupe = $result->getRefgroupe();
+            /** @var Workflow $workflow */
+            $workflow        = $result->getRefworkflow();
             $data['group'][] = [
-                'groupe'     => $result->getRefgroupe()->getCode(),
-                'entity'     => $result->getRefworkflow()->getEntity(),
-                'transition' => $result->getRefworkflow()->getTransition(),
+                'groupe'     => $groupe->getCode(),
+                'entity'     => $workflow->getEntity(),
+                'transition' => $workflow->getTransition(),
             ];
         }
 
@@ -253,7 +257,10 @@ class GuardWorkflowController extends ApiControllerLib
             return $data;
         }
 
-        if ('superadmin' === $user->getRefgroupe()->getCode()) {
+        /** @var Groupe $groupe */
+        /** @var User $user */
+        $groupe = $user->getRefgroupe();
+        if ('superadmin' === $groupe->getCode()) {
             return $data;
         }
 

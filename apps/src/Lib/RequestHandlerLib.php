@@ -13,6 +13,7 @@ use Labstag\Event\UserCollectionEvent;
 use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 abstract class RequestHandlerLib
 {
@@ -31,6 +32,7 @@ abstract class RequestHandlerLib
             return;
         }
 
+        /** @var WorkflowInterface $workflow */
         $workflow = $this->workflowService->get($entity);
         foreach ($states as $state) {
             if (!$workflow->can($entity, $state)) {
@@ -40,12 +42,14 @@ abstract class RequestHandlerLib
             $workflow->apply($entity, $state);
         }
 
+        /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->repositoryService->get($entity::class);
         $repository->add($entity);
     }
 
     public function handle(mixed $oldEntity, mixed $entity): void
     {
+        /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->repositoryService->get($entity::class);
         $repository->add($entity);
         if ($oldEntity->getId() != $entity->getId()) {
@@ -59,6 +63,7 @@ abstract class RequestHandlerLib
             return;
         }
 
+        /** @var WorkflowInterface $workflow */
         $workflow    = $this->workflowService->get($entity);
         $definition  = $workflow->getDefinition();
         $transitions = $definition->getTransitions();
@@ -69,6 +74,7 @@ abstract class RequestHandlerLib
             }
 
             $workflow->apply($entity, $name);
+            /** @var ServiceEntityRepositoryLib $repository */
             $repository = $this->repositoryService->get($entity::class);
             $repository->add($entity);
 

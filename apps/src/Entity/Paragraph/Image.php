@@ -12,13 +12,14 @@ use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Repository\Paragraph\ImageRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[Uploadable()]
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[ORM\Table(name: 'paragraph_image')]
 #[ApiResource(routePrefix: '/paragraph')]
-class Image implements ParagraphInterface, EntityInterface
+class Image implements ParagraphInterface, EntityInterface, Stringable
 {
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphImages', cascade: ['persist'])]
@@ -43,6 +44,14 @@ class Image implements ParagraphInterface, EntityInterface
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $title = null;
+
+    public function __toString(): string
+    {
+        /** @var Paragraph $paragraph */
+        $paragraph = $this->getParagraph();
+
+        return (string) $paragraph->getType();
+    }
 
     public function getFile(): mixed
     {

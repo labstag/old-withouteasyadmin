@@ -77,7 +77,7 @@ abstract class ParagraphControllerLib extends ControllerLib
             $paragraph
         );
         $this->modalAttachmentDelete($paragraph, $form);
-        /** @Var Request $request */
+        /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         /** @var ParagraphRepository $repository */
         $repository = $this->repositoryService->get(Paragraph::class);
@@ -89,7 +89,7 @@ abstract class ParagraphControllerLib extends ControllerLib
             $this->attachFormService->upload($entity);
             $this->addFlash('success', 'Paragraph sauvegardé.');
             $paragraphRequestHandler->handle($old, $paragraph);
-            $referer = $request->headers->get('referer');
+            $referer = (string) $request->headers->get('referer');
 
             return new RedirectResponse($referer);
         }

@@ -3,7 +3,9 @@
 namespace Labstag\Twig;
 
 use Labstag\Entity\Attachment;
+use Labstag\Entity\Block;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Paragraph;
 use Labstag\Entity\Route;
 use Labstag\Entity\User;
 use Labstag\Interfaces\BlockInterface;
@@ -151,7 +153,7 @@ class LabstagExtension extends AbstractExtension
         }
 
         /** @var Attachment $attachment */
-        $name = $attachment->getName();
+        $name = (string) $attachment->getName();
         if (!is_file($name)) {
             return null;
         }
@@ -161,6 +163,7 @@ class LabstagExtension extends AbstractExtension
 
     public function getBlockClass(BlockInterface $entityBlockLib): string
     {
+        /** @var Block $block */
         $block = $entityBlockLib->getBlock();
 
         return 'block-'.$block->getType();
@@ -168,6 +171,7 @@ class LabstagExtension extends AbstractExtension
 
     public function getBlockId(BlockInterface $entityBlockLib): string
     {
+        /** @var Block $block */
         $block = $entityBlockLib->getBlock();
 
         return 'block-'.$block->getType().'-'.$block->getId();
@@ -213,6 +217,7 @@ class LabstagExtension extends AbstractExtension
 
     public function getParagraphClass(ParagraphInterface $entityParagraphLib): string
     {
+        /** @var Paragraph $paragraph */
         $paragraph = $entityParagraphLib->getParagraph();
         $dataClass = [
             'paragraph-'.$paragraph->getType(),
@@ -233,6 +238,7 @@ class LabstagExtension extends AbstractExtension
 
     public function getParagraphId(ParagraphInterface $entityParagraphLib): string
     {
+        /** @var Paragraph $paragraph */
         $paragraph = $entityParagraphLib->getParagraph();
 
         return 'paragraph-'.$paragraph->getType().'-'.$paragraph->getId();
@@ -245,6 +251,7 @@ class LabstagExtension extends AbstractExtension
 
     public function getTextColorSection(ParagraphInterface $entityParagraphLib): string
     {
+        /** @var Paragraph $paragraph */
         $paragraph = $entityParagraphLib->getParagraph();
         $code      = $paragraph->getColor();
 
