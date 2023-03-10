@@ -37,6 +37,8 @@ class LabstagExtension extends AbstractExtension
      */
     final public const REGEX_CONTROLLER_ADMIN = '/(Controller\\\Admin)/';
 
+    protected array $templates = [];
+
     public function __construct(
         protected ContainerBagInterface $containerBag,
         protected RouterInterface $router,
@@ -68,17 +70,27 @@ class LabstagExtension extends AbstractExtension
             return '';
         }
 
-        $html = "<!--\nTHEME DEBUG\n";
-        $html .= "THEME HOOK : '".$data['hook']."'\n";
-        if (0 != (is_countable($data['files']) ? count($data['files']) : 0)) {
-            $html .= "FILE NAME SUGGESTIONS: \n";
-            foreach ($data['files'] as $file) {
-                $checked = ($data['view'] == $file) ? 'X' : '*';
-                $html .= ' '.$checked.' '.$file."\n";
-            }
+        return $this->beginDebug($data);
+    }
+
+    public function debugBeginForm(mixed $class): string
+    {
+        $data = $this->getformClassData($class);
+        if (0 == (is_countable($data) ? count($data) : 0)) {
+            return '';
         }
 
-        return $html.("BEGIN OUTPUT from '".$data['view']."' -->\n");
+        return $this->beginDebug($data);
+    }
+
+    public function debugBeginPrototype(array $blockPrefixes): string
+    {
+        $data = $this->formPrototypeData($blockPrefixes);
+        if (0 == (is_countable($data) ? count($data) : 0)) {
+            return '';
+        }
+
+        return $this->beginDebug($data);
     }
 
     public function debugEnd(array $data): string
@@ -87,57 +99,41 @@ class LabstagExtension extends AbstractExtension
             return '';
         }
 
-        return "\n<!-- END OUTPUT from '".$data['view']."' -->\n";
+        return $this->endDebug($data);
+    }
+
+    public function debugEndForm(mixed $class): string
+    {
+        $data = $this->getformClassData($class);
+        if (0 == (is_countable($data) ? count($data) : 0)) {
+            return '';
+        }
+
+        return $this->endDebug($data);
+    }
+
+    public function debugEndPrototype(array $blockPrefixes): string
+    {
+        $data = $this->formPrototypeData($blockPrefixes);
+        if (0 == (is_countable($data) ? count($data) : 0)) {
+            return '';
+        }
+
+        return $this->endDebug($data);
     }
 
     public function formClass(mixed $class): string
     {
-        $file = 'forms/default.html.twig';
+        $data = $this->getformClassData($class);
 
-        $methods = get_class_vars($class::class);
-        if (!array_key_exists('vars', $methods)
-            || !array_key_exists('data', $class->vars)
-            || is_null($class->vars['data'])
-        ) {
-            return $file;
-        }
-
-        $vars   = $class->vars;
-        $type   = strtolower($this->setTypeformClass($vars));
-        $folder = __DIR__.'/../../templates/';
-        $files  = $this->setFilesformClass($type, $class);
-        $view   = end($files);
-
-        foreach ($files as $file) {
-            if (is_file($folder.$file)) {
-                $view = $file;
-
-                break;
-            }
-        }
-
-        $this->dump(['templates-form', $type, $files, $view]);
-
-        return $view;
+        return $data['view'];
     }
 
     public function formPrototype(array $blockPrefixes): string
     {
-        $file = '';
-        if ('collection_entry' != $blockPrefixes[1]) {
-            return $file;
-        }
+        $data = $this->formPrototypeData($blockPrefixes);
 
-        $type = $blockPrefixes[2];
-
-        $newFile = 'prototype/'.$type.'.html.twig';
-        if (!is_file(__DIR__.'/../../templates/'.$newFile)) {
-            $this->logger->info('Fichier manquant : '.__DIR__.'/../../templates/'.$newFile);
-
-            return $file;
-        }
-
-        return $newFile;
+        return $data['view'];
     }
 
     public function getAttachment(mixed $data): ?Attachment
@@ -331,18 +327,65 @@ class LabstagExtension extends AbstractExtension
         return $class['form']->vars['unique_block_prefix'];
     }
 
-    private function dump(mixed $var): void
+    private function beginDebug(array $data): string
     {
-        if ('dev' != $this->containerBag->get('kernel.debug')) {
-            return;
+        $html = "<!--\nTHEME DEBUG\n";
+        $html .= "THEME HOOK : '".$data['hook']."'\n";
+        if (0 != (is_countable($data['files']) ? count($data['files']) : 0)) {
+            $html .= "FILE NAME SUGGESTIONS: \n";
+            foreach ($data['files'] as $file) {
+                $checked = ($data['view'] == $file) ? 'X' : '*';
+                $html .= ' '.$checked.' '.$file."\n";
+            }
         }
 
-        dump($var);
+        return $html.("BEGIN OUTPUT from '".$data['view']."' -->\n");
+    }
+
+    private function endDebug(array $data): string
+    {
+        return "\n<!-- END OUTPUT from '".$data['view']."' -->\n";
+    }
+
+    private function formPrototypeData(array $blockPrefixes): array
+    {
+        $type = ('collection_entry' != $blockPrefixes[1]) ? $blockPrefixes[2] : 'other';
+        if (isset($this->templates['prototype'][$type])) {
+            return $this->templates['prototype'][$type];
+        }
+
+        $files = [
+            'prototype/'.$type.'.html.twig',
+            'prototype/default.html.twig',
+        ];
+
+        $folder = __DIR__.'/../../templates/';
+        $view   = end($files);
+        foreach ($files as $file) {
+            if (is_file($folder.$file)) {
+                $view = $file;
+
+                break;
+            }
+        }
+
+        $this->templates['prototype'][$type] = [
+            'hook'  => 'prototype',
+            'type'  => $type,
+            'files' => $files,
+            'view'  => $view,
+        ];
+
+        return $this->templates['prototype'][$type];
     }
 
     private function getFiltersFunctions(): array
     {
         return [
+            'debug_begin_prototype'    => 'debugBeginPrototype',
+            'debug_end_prototype'      => 'debugEndPrototype',
+            'debug_begin_form'         => 'debugBeginForm',
+            'debug_end_form'           => 'debugEndForm',
             'debug_begin'              => 'debugBegin',
             'debug_end'                => 'debugEnd',
             'paragraph_name'           => 'getParagraphName',
@@ -363,6 +406,46 @@ class LabstagExtension extends AbstractExtension
             'verifPhone'               => 'verifPhone',
             'workflow_has'             => 'workflowHas',
         ];
+    }
+
+    private function getformClassData(mixed $class): array
+    {
+        $file = 'forms/default.html.twig';
+
+        $methods = get_class_vars($class::class);
+        if (!array_key_exists('vars', $methods)
+            || !array_key_exists('data', $class->vars)
+            || is_null($class->vars['data'])
+        ) {
+            return $file;
+        }
+
+        $vars   = $class->vars;
+        $type   = strtolower($this->setTypeformClass($vars));
+        $folder = __DIR__.'/../../templates/';
+        if (isset($this->templates['form'][$type])) {
+            return $this->templates['form'][$type];
+        }
+
+        $files = $this->setFilesformClass($type, $class);
+        $view  = end($files);
+
+        foreach ($files as $file) {
+            if (is_file($folder.$file)) {
+                $view = $file;
+
+                break;
+            }
+        }
+
+        $this->templates['form'][$type] = [
+            'hook'  => 'form',
+            'type'  => $type,
+            'files' => $files,
+            'view'  => $view,
+        ];
+
+        return $this->templates['form'][$type];
     }
 
     /**

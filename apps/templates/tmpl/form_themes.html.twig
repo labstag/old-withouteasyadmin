@@ -65,10 +65,12 @@
 
 {% block form_rows %}
     {% set template = formClass(form) %}
+    {{ debug_begin_form(class) }}
     {% include template with {
         'row': form|filter(child => not child.rendered),
         'allow_delete': false
     } %}
+    {{ debug_end_form(class) }}
 {% endblock %}
 
 {% block fieldset_widget %}
@@ -455,26 +457,13 @@
 
 {% block collection_item_widget %}
 	<div class="collection-row">
+        {{ debug_begin_prototype(prototype.vars.block_prefixes) }}
         {% set template = formPrototype(prototype.vars.block_prefixes) %}
-        {% if template == '' %}
-            <div class="row">
-                {% for input in prototype %}
-                    <div class="col-auto">
-                        {{ form_row(input) }}
-                    </div>
-                {% endfor %}
-                {% if allow_delete %}
-                    <div class="text-center col-12">
-                        {{ block('collection_delete') }}
-                    </div>
-                {% endif %}
-            </div>
-        {% else %}
-            {% include template with {
-                'allow_delete': allow_delete,
-                'prototype': prototype
-            } %}
-        {% endif %}
+        {% include template with {
+            'allow_delete': allow_delete,
+            'prototype': prototype
+        } %}
+        {{ debug_end_prototype(prototype.vars.block_prefixes) }}
 	</div>
 {% endblock %}
 
@@ -489,7 +478,9 @@
             {% if prototype is defined %}
                 <div class="collection-row">
             {% endif %}
+            {{ debug_begin_form(row) }}
             {% include template with {'row': row, 'allow_delete': allow_delete} %}
+            {{ debug_end_form(row) }}
             {% if prototype is defined %}
                 </div>
             {% endif %}
