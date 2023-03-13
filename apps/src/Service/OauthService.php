@@ -97,7 +97,7 @@ class OauthService
 
     public function setConfigProvider(): void
     {
-        $file = __DIR__.'/../../json/oauth.json';
+        $file = dirname(__DIR__, 2).'/json/oauth.json';
         $data = [];
         if (is_file($file)) {
             $data = json_decode(

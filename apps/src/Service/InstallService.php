@@ -48,7 +48,7 @@ class InstallService
 
     public function getData(string $file): array
     {
-        $file = __DIR__.'/../../json/'.$file.'.json';
+        $file = dirname(__DIR__, 2).'/json/'.$file.'.json';
         $data = [];
         if (is_file($file)) {
             $data = json_decode(
@@ -67,7 +67,7 @@ class InstallService
      */
     public function getEnv(array $serverEnv): array
     {
-        $file   = __DIR__.'/../../.env';
+        $file   = dirname(__DIR__, 2).'/.env';
         $data   = [];
         $dotenv = new Dotenv();
         if (is_file($file)) {

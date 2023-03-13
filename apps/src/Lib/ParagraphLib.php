@@ -63,7 +63,7 @@ abstract class ParagraphLib extends AbstractController
             return $this->template[$type];
         }
 
-        $folder   = __DIR__.'/../../templates/';
+        $loader   = $this->twigEnvironment->getLoader();
         $htmltwig = '.html.twig';
         $files    = [
             'paragraph/'.$type.$htmltwig,
@@ -73,11 +73,13 @@ abstract class ParagraphLib extends AbstractController
         $view = end($files);
 
         foreach ($files as $file) {
-            if (is_file($folder.$file)) {
-                $view = $file;
-
-                break;
+            if (!$loader->exists($file)) {
+                continue;
             }
+
+            $view = $file;
+
+            break;
         }
 
         $this->template[$type] = [

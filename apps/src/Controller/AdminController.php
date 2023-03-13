@@ -32,7 +32,7 @@ class AdminController extends AdminControllerLib
         $config = $dataService->getConfig();
         ksort($config);
         $content = json_encode($config, JSON_PRETTY_PRINT);
-        $file    = '../json/config.json';
+        $file    = dirname(__DIR__, 1).'/json/config.json';
         if (is_file($file)) {
             try {
                 file_put_contents($file, $content);
@@ -47,6 +47,8 @@ class AdminController extends AdminControllerLib
                 $msg = $this->translator->trans('admin.flashbag.data.export.fail', $paramtrans);
                 $this->sessionService->flashBagAdd('danger', $msg);
             }
+        } else {
+            throw new Exception('File not found');
         }
 
         return $this->redirectToRoute('admin_param');
