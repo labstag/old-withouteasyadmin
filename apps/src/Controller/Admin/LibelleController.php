@@ -10,11 +10,11 @@ use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/libelle')]
+#[Route(path: '/admin/libelle', name: 'admin_libelle_')]
 class LibelleController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_libelle_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_libelle_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function edit(
         ?Libelle $libelle
     ): Response
@@ -26,8 +26,8 @@ class LibelleController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_libelle_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_libelle_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
@@ -37,8 +37,8 @@ class LibelleController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_libelle_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_libelle_preview', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
     public function showOrPreview(Libelle $libelle): Response
     {
         return $this->renderShowOrPreview(

@@ -44,8 +44,12 @@ class TwigEventSubscriber extends EventSubscriberLib
     protected function isStateConfig(ControllerEvent $controllerEvent): bool
     {
         $controller = $controllerEvent->getRequest()->attributes->get('_controller');
-        $matches    = [];
-        preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
+        if (!is_string($controller)) {
+            return false;
+        }
+
+        $matches = [];
+        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
 
         return 0 == count($matches) && !in_array($controller, self::ERROR_CONTROLLER);
     }
@@ -60,6 +64,10 @@ class TwigEventSubscriber extends EventSubscriberLib
 
         $globals = $this->twigEnvironment->getGlobals();
         $config  = $globals['config'] ?? $this->dataService->getConfig();
+        if (!is_array($config)) {
+            $config = [];
+        }
+
         $this->setConfigMeta($config);
         $this->setConfigTac($config);
         $this->setFormatDatetime($config);

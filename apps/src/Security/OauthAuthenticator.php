@@ -85,10 +85,17 @@ class OauthAuthenticator extends AbstractAuthenticator
             $data          = $resourceOwner->toArray();
             $client        = $attributes['_route_params']['oauthCode'];
             $identity      = $this->oauthService->getIdentity($data, $client);
-            $user          = $this->userRepository->findOauth(
+            if (!is_string($identity)) {
+                throw new CustomUserMessageAuthenticationException('No API token provided');
+            }
+
+            $user = $this->userRepository->findOauth(
                 $identity,
                 $client
             );
+            if (!$user instanceof User) {
+                throw new CustomUserMessageAuthenticationException('No API token provided');
+            }
 
             return new SelfValidatingPassport(
                 new UserBadge($user->getUsername())
@@ -156,10 +163,11 @@ class OauthAuthenticator extends AbstractAuthenticator
         $request = $this->requestStack->getCurrentRequest();
         /** @var ParameterBag $parameterBag */
         $parameterBag = $request->attributes;
-        if ($parameterBag->has('oauthCode')) {
-            return $parameterBag->get('oauthCode');
+        $oauthCode    = $parameterBag->get('oauthCode', '');
+        if (!is_string($oauthCode)) {
+            return '';
         }
 
-        return '';
+        return $oauthCode;
     }
 }

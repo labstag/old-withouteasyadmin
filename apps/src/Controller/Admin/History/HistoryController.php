@@ -19,10 +19,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/history')]
+#[Route(path: '/admin/history', name: 'admin_history_')]
 class HistoryController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         ?History $history
     ): Response
@@ -35,8 +35,8 @@ class HistoryController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_history_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_history_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
@@ -45,7 +45,7 @@ class HistoryController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/new', name: 'admin_history_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         HistoryRepository $historyRepository,
         HistoryRequestHandler $historyRequestHandler,
@@ -69,7 +69,7 @@ class HistoryController extends AdminControllerLib
         return $this->redirectToRoute('admin_history_edit', ['id' => $history->getId()]);
     }
 
-    #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]
+    #[Route(path: '/{id}/pdf', name: 'pdf', methods: ['GET'])]
     public function pdf(HistoryService $historyService, History $history): RedirectResponse
     {
         $fileDirectory    = $this->getParameter('file_directory');
@@ -97,7 +97,7 @@ class HistoryController extends AdminControllerLib
         return $this->redirect($filename);
     }
 
-    #[Route(path: '/{id}/move', name: 'admin_history_move', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/move', name: 'move', methods: ['GET', 'POST'])]
     public function position(History $history, Request $request): Response
     {
         $currentUrl = $this->generateUrl(
@@ -130,8 +130,8 @@ class HistoryController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_history_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_history_preview', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
     public function showOrPreview(History $history): Response
     {
         return $this->renderShowOrPreview(

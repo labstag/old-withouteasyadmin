@@ -9,9 +9,6 @@ use Labstag\Lib\FixtureLib;
 
 class PageFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [

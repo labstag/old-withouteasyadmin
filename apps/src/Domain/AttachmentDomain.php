@@ -44,9 +44,6 @@ class AttachmentDomain extends DomainLib
         return $this->attachmentSearch;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

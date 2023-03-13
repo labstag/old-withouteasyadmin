@@ -43,7 +43,7 @@ class SearchableType extends AbstractType
                 function ($ids) use ($options)
                 {
                     if (empty($ids)) {
-                        return is_array($ids) ? new ArrayCollection([]) : null;
+                        return is_iterable($ids) ? new ArrayCollection([]) : null;
                     }
 
                     /** @var ServiceEntityRepositoryLib $serviceEntityRepositoryLib */
@@ -52,7 +52,7 @@ class SearchableType extends AbstractType
                         $ids = $this->addToentity($ids, $options);
                     }
 
-                    return is_array($ids) ? new ArrayCollection(
+                    return is_iterable($ids) ? new ArrayCollection(
                         $serviceEntityRepositoryLib->findBy(['id' => $ids])
                     ) : $serviceEntityRepositoryLib->find($ids);
                 }
@@ -114,9 +114,6 @@ class SearchableType extends AbstractType
         return 'choice';
     }
 
-    /**
-     * @return mixed[]
-     */
     protected function addToentity(array $ids, array $options): array
     {
         if (is_null($options['new'])) {

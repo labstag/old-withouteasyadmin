@@ -51,9 +51,6 @@ class EditoDomain extends DomainLib
         return SearchEditoType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

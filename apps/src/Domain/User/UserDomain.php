@@ -50,9 +50,6 @@ class UserDomain extends DomainLib
         return SearchUserType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

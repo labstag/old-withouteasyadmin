@@ -27,7 +27,9 @@ use Labstag\Event\PostEntityEvent;
 use Labstag\Event\RenderEntityEvent;
 use Labstag\Event\UserEntityEvent;
 use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
+use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Lib\EventSubscriberLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Service\HistoryService;
@@ -277,6 +279,7 @@ class EntitySubscriber extends EventSubscriberLib
         $datetime = $newEntity->getDeletedAt();
         foreach ($states as $state) {
             foreach ($state as $entity) {
+                /** @var EntityTrashInterface $entity */
                 $entity->setDeletedAt($datetime);
                 /** @var ServiceEntityRepositoryLib $repository */
                 $repository = $this->repositoryService->get($entity::class);
@@ -404,7 +407,7 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
-        /** @var ParagraphInterface $entity */
+        /** @var EntityParagraphInterface $entity */
         $entity = new $classentity();
         $entity->setParagraph($paragraph);
 
@@ -413,11 +416,11 @@ class EntitySubscriber extends EventSubscriberLib
     }
 
     private function verifMetas(
-        mixed $entity
+        PublicInterface $public
     ): void
     {
         $title = null;
-        $metas = $entity->getMetas();
+        $metas = $public->getMetas();
         if (0 != count($metas)) {
             return;
         }
@@ -425,19 +428,19 @@ class EntitySubscriber extends EventSubscriberLib
         $meta   = new Meta();
         $method = '';
         $title  = '';
-        $this->verifMetasChapter($entity, $method, $title);
-        $this->verifMetasEdito($entity, $method, $title);
-        $this->verifMetasHistory($entity, $method, $title);
-        $this->verifMetasPage($entity, $method, $title);
-        $this->verifMetasPost($entity, $method, $title);
-        $this->verifMetasRender($entity, $method, $title);
+        $this->verifMetasChapter($public, $method, $title);
+        $this->verifMetasEdito($public, $method, $title);
+        $this->verifMetasHistory($public, $method, $title);
+        $this->verifMetasPage($public, $method, $title);
+        $this->verifMetasPost($public, $method, $title);
+        $this->verifMetasRender($public, $method, $title);
         if ('' != $method) {
             /** @var callable $callable */
             $callable = [
                 $meta,
                 $method,
             ];
-            call_user_func($callable, $entity);
+            call_user_func($callable, $public);
         }
 
         $meta->setTitle($title);

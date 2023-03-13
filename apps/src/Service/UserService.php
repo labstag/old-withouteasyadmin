@@ -38,7 +38,11 @@ class UserService
     ): void
     {
         $identity = $this->oauthService->getIdentity($resourceOwner->toArray(), $client);
-        $find     = $this->findOAuthIdentity(
+        if (!is_string($identity)) {
+            return;
+        }
+
+        $find = $this->findOAuthIdentity(
             $user,
             $identity,
             $client,
@@ -144,6 +148,7 @@ class UserService
         $return            = false;
         $oauthConnectUsers = $user->getOauthConnectUsers();
         foreach ($oauthConnectUsers as $oauthConnect) {
+            /** @var OauthConnectUser $oauthConnect */
             $test1 = ($oauthConnect->getName() == $client);
             $test2 = ($oauthConnect->getIdentity() == $identity);
             if ($test1 && $test2) {

@@ -19,10 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/block')]
+#[Route(path: '/admin/block', name: 'admin_block_')]
 class BlockController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_block_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         BlockService $blockService,
         Block $block
@@ -39,8 +39,8 @@ class BlockController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_block_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_block_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(Request $request): Response
     {
         $region = null;
@@ -92,7 +92,7 @@ class BlockController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/move', name: 'admin_block_move', methods: ['GET', 'POST'])]
+    #[Route(path: '/move', name: 'move', methods: ['GET', 'POST'])]
     public function move(
         BlockRepository $blockRepository,
         Request $request
@@ -124,7 +124,7 @@ class BlockController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/new', name: 'admin_block_new', methods: ['POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['POST'])]
     public function new(
         Request $request,
         ?Block $block,
@@ -135,6 +135,10 @@ class BlockController extends AdminControllerLib
         $post  = $request->request->all('new_block');
         $block = new Block();
         $old   = clone $block;
+        if (!is_string($post['region']) || !is_string($post['type'])) {
+            throw new Exception('Region or type not found');
+        }
+
         $block->setTitle(Uuid::v1());
         $block->setRegion($post['region']);
         $block->setType($post['type']);

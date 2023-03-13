@@ -6,17 +6,18 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post\Liste;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\ListType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListParagraph extends ParagraphLib
+class ListParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'post/list';
     }
@@ -46,7 +47,7 @@ class ListParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Liste $liste): Response
+    public function show(EntityParagraphInterface $entityParagraph): Response
     {
         /** @var PostRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
@@ -59,17 +60,14 @@ class ListParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($liste)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $liste,
+                'paragraph'  => $entityParagraph,
             ]
         );
     }
 
-    /**
-     * @return array<class-string<Page>>
-     */
     public function useIn(): array
     {
         return [

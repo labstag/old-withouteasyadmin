@@ -10,11 +10,11 @@ use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/template')]
+#[Route(path: '/admin/template', name: 'admin_template_')]
 class TemplateController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_template_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_template_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function edit(
         ?Template $template
     ): Response
@@ -26,8 +26,8 @@ class TemplateController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_template_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_template_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
@@ -37,8 +37,8 @@ class TemplateController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_template_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_template_preview', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
     public function showOrPreview(Template $template): Response
     {
         return $this->renderShowOrPreview(

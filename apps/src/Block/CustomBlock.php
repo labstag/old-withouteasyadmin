@@ -2,7 +2,9 @@
 
 namespace Labstag\Block;
 
+use Exception;
 use Labstag\Entity\Block\Custom;
+use Labstag\Entity\Layout;
 use Labstag\Form\Admin\Block\CustomType;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\FrontInterface;
@@ -81,8 +83,14 @@ class CustomBlock extends BlockLib
         $route       = $all['_route'];
         $dataLayouts = $this->layoutRepository->findByCustom($custom);
         $layouts     = [];
+        if (!is_iterable($dataLayouts)) {
+            throw new Exception('Layouts invalide');
+        }
+
         foreach ($dataLayouts as $layout) {
-            if (!in_array($route, $layout->getUrl())) {
+            /** @var Layout $layout */
+            $urls = $layout->getUrl();
+            if (!is_iterable($urls) || !in_array($route, $urls)) {
                 continue;
             }
 
@@ -91,7 +99,11 @@ class CustomBlock extends BlockLib
 
         $paragraphs = [];
         foreach ($layouts as $layout) {
-            $paragraphs = $this->getParagraphsArray($this->paragraphService, $layout, $paragraphs);
+            $paragraphs = $this->getParagraphsArray(
+                $this->paragraphService,
+                $layout,
+                $paragraphs
+            );
         }
 
         return $paragraphs;

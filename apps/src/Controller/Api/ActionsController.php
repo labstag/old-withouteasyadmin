@@ -5,6 +5,7 @@ namespace Labstag\Controller\Api;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Lib\ApiControllerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -15,10 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-#[Route(path: '/api/actions')]
+#[Route(path: '/api/actions', name: 'api_action_')]
 class ActionsController extends ApiControllerLib
 {
-    #[Route(path: '/delete/{entity}/{id}', name: 'api_action_delete', methods: ['DELETE'])]
+    #[Route(path: '/delete/{entity}/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(string $entity, string $id): JsonResponse
     {
         $data = [
@@ -45,21 +46,21 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/deleties/{entity}/', name: 'api_action_deleties', methods: ['DELETE'])]
+    #[Route(path: '/deleties/{entity}/', name: 'deleties', methods: ['DELETE'])]
     public function deleties(string $entity, Request $request): JsonResponse
     {
         return $this->deleteOrRestore($entity, $request, 'deleties');
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/destroies/{entity}', name: 'api_action_destroies', methods: ['DELETE'])]
+    #[Route(path: '/destroies/{entity}', name: 'destroies', methods: ['DELETE'])]
     public function destroies(string $entity, Request $request): JsonResponse
     {
         return $this->deleteOrRestore($entity, $request, 'destroies');
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/destroy/{entity}/{id}', name: 'api_action_destroy', methods: ['DELETE'])]
+    #[Route(path: '/destroy/{entity}/{id}', name: 'destroy', methods: ['DELETE'])]
     public function destroy(string $entity, string $id): JsonResponse
     {
         $data = [
@@ -90,7 +91,7 @@ class ActionsController extends ApiControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/empties', name: 'api_action_empties', methods: ['DELETE'])]
+    #[Route(path: '/empties', name: 'empties', methods: ['DELETE'])]
     public function empties(Request $request): JsonResponse
     {
         $data = [
@@ -126,7 +127,7 @@ class ActionsController extends ApiControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/empty/{entity}', name: 'api_action_empty', methods: ['DELETE'])]
+    #[Route(path: '/empty/{entity}', name: 'empty', methods: ['DELETE'])]
     public function empty(string $entity): JsonResponse
     {
         $data = [
@@ -159,7 +160,7 @@ class ActionsController extends ApiControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/emptyall', name: 'api_action_emptyall', methods: ['DELETE'])]
+    #[Route(path: '/emptyall', name: 'emptyall', methods: ['DELETE'])]
     public function emptyall(TrashService $trashService): JsonResponse
     {
         $tokenValid = $this->tokenVerif('emptyall');
@@ -183,7 +184,7 @@ class ActionsController extends ApiControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/restore/{entity}/{id}', name: 'api_action_restore', methods: ['POST'])]
+    #[Route(path: '/restore/{entity}/{id}', name: 'restore', methods: ['POST'])]
     public function restore(string $entity, string $id): JsonResponse
     {
         $data = [
@@ -211,13 +212,13 @@ class ActionsController extends ApiControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/restories/{entity}', name: 'api_action_restories', methods: ['POST'])]
+    #[Route(path: '/restories/{entity}', name: 'restories', methods: ['POST'])]
     public function restories(string $entity, Request $request): JsonResponse
     {
         return $this->deleteOrRestore($entity, $request, 'restories');
     }
 
-    #[Route(path: '/workflow/{entity}/{state}/{id}', name: 'api_action_workflow', methods: ['POST'])]
+    #[Route(path: '/workflow/{entity}/{state}/{id}', name: 'workflow', methods: ['POST'])]
     public function workflow(string $entity, string $state, string $id): JsonResponse
     {
         $data = [
@@ -228,7 +229,7 @@ class ActionsController extends ApiControllerLib
         $repository = $this->repositoryService->get($entity);
         $entity     = $repository->find($id);
         $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
-        if (is_null($entity)) {
+        if (is_null($entity) || !$entity instanceof EntityInterface) {
             $data['error'] = 'entité inconnu';
 
             return new JsonResponse($data);
@@ -252,9 +253,6 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    /**
-     * @return string[]
-     */
     private function deleteAll(TrashService $trashService): array
     {
         $all   = $trashService->all();
@@ -274,15 +272,15 @@ class ActionsController extends ApiControllerLib
         return $error;
     }
 
-    private function deleteEntity(mixed $entity): void
+    private function deleteEntity(?EntityTrashInterface $entityTrash): void
     {
-        if (is_null($entity) || !is_null($entity->getDeletedAt())) {
+        if (is_null($entityTrash) || !is_null($entityTrash->getDeletedAt())) {
             return;
         }
 
         /** @var ServiceEntityRepositoryLib $repository */
-        $repository = $this->repositoryService->get($entity::class);
-        $repository->remove($entity);
+        $repository = $this->repositoryService->get($entityTrash::class);
+        $repository->remove($entityTrash);
     }
 
     private function deleteEntityByRepository(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): void
@@ -290,6 +288,10 @@ class ActionsController extends ApiControllerLib
         $queryBuilder = $serviceEntityRepositoryLib->findTrashForAdmin([]);
         $result       = $queryBuilder->getQuery()->getResult();
         $files        = [];
+        if (!is_iterable($result)) {
+            return;
+        }
+
         foreach ($result as $entity) {
             $serviceEntityRepositoryLib->remove($entity);
             if (!$entity instanceof Attachment) {
@@ -361,18 +363,18 @@ class ActionsController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    private function destroyEntity(mixed $entity): void
+    private function destroyEntity(?EntityTrashInterface $entityTrash): void
     {
-        if (is_null($entity) || is_null($entity->getDeletedAt())) {
+        if (is_null($entityTrash) || is_null($entityTrash->getDeletedAt())) {
             return;
         }
 
         $file = '';
         /** @var ServiceEntityRepositoryLib $repository */
-        $repository = $this->repositoryService->get($entity::class);
-        $repository->remove($entity);
-        if ($entity instanceof Attachment) {
-            $file = $entity->getName();
+        $repository = $this->repositoryService->get($entityTrash::class);
+        $repository->remove($entityTrash);
+        if ($entityTrash instanceof Attachment) {
+            $file = $entityTrash->getName();
         }
 
         /** @var string $file */
@@ -381,31 +383,39 @@ class ActionsController extends ApiControllerLib
         }
     }
 
-    private function getDataRestoreDelete(string $entity, mixed $id): mixed
+    private function getDataRestoreDelete(string $entity, mixed $id): ?EntityTrashInterface
     {
         /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
 
-        return $repository->find($id);
+        $data = $repository->find($id);
+        if (!$data instanceof EntityTrashInterface) {
+            return null;
+        }
+
+        return $data;
     }
 
-    private function restoreEntity(mixed $entity): void
+    private function restoreEntity(?EntityTrashInterface $entityTrash): void
     {
-        if (is_null($entity) || is_null($entity->getDeletedAt())) {
+        if (is_null($entityTrash) || is_null($entityTrash->getDeletedAt())) {
             return;
         }
 
-        $entity->setDeletedAt(null);
+        $entityTrash->setDeletedAt(null);
         /** @var ServiceEntityRepositoryLib $repository */
-        $repository = $this->repositoryService->get($entity::class);
-        $repository->add($entity);
+        $repository = $this->repositoryService->get($entityTrash::class);
+        $repository->add($entityTrash);
     }
 
-    private function tokenVerif(string $action, mixed $entity = null): bool
+    private function tokenVerif(string $action, ?EntityInterface $entity = null): bool
     {
         /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $token   = $request->get('_token');
+        if (!is_string($token)) {
+            return false;
+        }
 
         $csrfToken = new CsrfToken(
             $action.(is_null($entity) ? '' : $entity->getId()),

@@ -3,10 +3,25 @@
 namespace Labstag\Interfaces;
 
 use Labstag\Entity\Paragraph;
+use Symfony\Component\HttpFoundation\Response;
 
 interface ParagraphInterface
 {
-    public function getParagraph(): ?Paragraph;
+    public function getEntity(): string;
 
-    public function setParagraph(?Paragraph $paragraph): self;
+    public function getForm(): string;
+
+    public function getName(): string;
+
+    public function getType(): string;
+
+    public function isShowForm(): bool;
+
+    public function setData(Paragraph $paragraph): void;
+
+    public function show(EntityParagraphInterface $entityParagraph): ?Response;
+
+    public function template(mixed $entity): array;
+
+    public function useIn(): array;
 }

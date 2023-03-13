@@ -51,9 +51,6 @@ class LinkUserDomain extends DomainLib
         return SearchLinkUserType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

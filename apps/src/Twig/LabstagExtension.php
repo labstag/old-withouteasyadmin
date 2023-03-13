@@ -3,6 +3,7 @@
 namespace Labstag\Twig;
 
 use Labstag\Entity\Attachment;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\ExtensionLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\PhoneService;
@@ -51,13 +52,13 @@ class LabstagExtension extends ExtensionLib
         return $data['view'];
     }
 
-    public function getAttachment(mixed $data): ?Attachment
+    public function getAttachment(?EntityInterface $entity): ?Attachment
     {
-        if (is_null($data)) {
+        if (is_null($entity)) {
             return null;
         }
 
-        $id         = $data->getId();
+        $id         = $entity->getId();
         $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;

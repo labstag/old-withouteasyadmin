@@ -34,9 +34,6 @@ class AttachmentOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     public function setParameters(): array
     {
         return [

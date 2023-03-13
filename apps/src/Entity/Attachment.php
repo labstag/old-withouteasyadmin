@@ -30,7 +30,7 @@ class Attachment implements EntityTrashInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $code = null;
 
-    #[ORM\OneToMany(targetEntity: Edito::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Edito::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
     private Collection $editos;
 
     #[ORM\Id]
@@ -45,7 +45,7 @@ class Attachment implements EntityTrashInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: Memo::class, mappedBy: 'fond', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Memo::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
     private Collection $noteInternes;
 
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
@@ -63,7 +63,7 @@ class Attachment implements EntityTrashInterface
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $size = null;
 
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'avatar', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'attachment', cascade: ['persist'], orphanRemoval: true)]
     private Collection $users;
 
     public function __construct()

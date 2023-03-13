@@ -362,9 +362,6 @@ abstract class AdminControllerLib extends ControllerLib
         return parent::render($view, $parameters, $response);
     }
 
-    /**
-     * @return mixed[]
-     */
     protected function searchForm(): array
     {
         return [];
@@ -537,9 +534,6 @@ abstract class AdminControllerLib extends ControllerLib
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     protected function setHeaderTitle(): array
     {
         return [
@@ -584,7 +578,7 @@ abstract class AdminControllerLib extends ControllerLib
             $position = json_decode((string) $position, true, 512, JSON_THROW_ON_ERROR);
         }
 
-        if (is_array($position)) {
+        if (is_iterable($position)) {
             foreach ($position as $row) {
                 $id       = $row['id'];
                 $position = (int) $row['position'];
@@ -821,9 +815,6 @@ abstract class AdminControllerLib extends ControllerLib
         return $breadcrumb;
     }
 
-    /**
-     * @return mixed[]
-     */
     private function generateMenus(array $parameters = []): array
     {
         return array_merge(
@@ -896,7 +887,7 @@ abstract class AdminControllerLib extends ControllerLib
         /** @var Request $request */
         $request    = $this->requeststack->getCurrentRequest();
         $paragraphs = $request->request->all('paragraphs');
-        if (!is_array($paragraphs)) {
+        if (!is_iterable($paragraphs)) {
             return;
         }
 

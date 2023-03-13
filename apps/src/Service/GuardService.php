@@ -102,14 +102,15 @@ class GuardService
     public function delete(): void
     {
         $results = $this->getLostRoute();
+        if (!is_iterable($results)) {
+            return;
+        }
+
         foreach ($results as $result) {
             $this->routeRepository->remove($result);
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getGuardRoutesForGroupe(Groupe $groupe): array
     {
         $routes = $this->routesEnableGroupe($groupe);
@@ -120,9 +121,6 @@ class GuardService
         return $routes;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getGuardRoutesForUser(User $user): array
     {
         $routes = $this->routesEnableUser($user);
@@ -231,13 +229,14 @@ class GuardService
         );
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     public function old(): array
     {
         $results = $this->getLostRoute();
         $data    = [];
+        if (!is_iterable($results)) {
+            return $data;
+        }
+
         foreach ($results as $result) {
             $data[] = [$result];
         }
@@ -245,9 +244,6 @@ class GuardService
         return $data;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function regex(string $string): array
     {
         $data = [];
@@ -261,9 +257,6 @@ class GuardService
         return $data;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function routesEnableGroupe(Groupe $groupe): array
     {
         $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
@@ -281,9 +274,6 @@ class GuardService
         return $routes;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function routesEnableUser(User $user): array
     {
         $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
@@ -318,9 +308,6 @@ class GuardService
         $this->routeRepository->add($route);
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     public function tables(): array
     {
         $data = [];

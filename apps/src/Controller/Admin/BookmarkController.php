@@ -20,11 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/bookmark')]
+#[Route(path: '/admin/bookmark', name: 'admin_bookmark_')]
 class BookmarkController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_bookmark_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_bookmark_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function edit(
         ?Bookmark $bookmark
     ): Response
@@ -36,7 +36,7 @@ class BookmarkController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/import', name: 'admin_bookmark_import', methods: ['GET', 'POST'])]
+    #[Route(path: '/import', name: 'import', methods: ['GET', 'POST'])]
     public function import(Request $request, Security $security, EnqueueMethod $enqueueMethod): Response
     {
         $domain = $this->getDomainEntity();
@@ -56,8 +56,8 @@ class BookmarkController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_bookmark_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_bookmark_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
@@ -67,8 +67,8 @@ class BookmarkController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_bookmark_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_bookmark_preview', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
     public function showOrPreview(Bookmark $bookmark): Response
     {
         return $this->renderShowOrPreview(

@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\Edito;
 
+use Exception;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Paragraph;
 use Labstag\Lib\ParagraphControllerLib;
@@ -12,22 +13,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/edito/paragraph')]
+#[Route(path: '/admin/edito/paragraph', name: 'admin_edito_paragraph_')]
 class ParagraphController extends ParagraphControllerLib
 {
-    #[Route(path: '/add/{id}', name: 'admin_edito_paragraph_add')]
+    #[Route(path: '/add/{id}', name: 'add')]
     public function add(
         ParagraphService $paragraphService,
         Edito $edito,
         Request $request
     ): RedirectResponse
     {
-        $paragraphService->add($edito, $request->get('data'));
+        $data = $request->get('data');
+        if (!is_string($data)) {
+            throw new Exception('data is not string');
+        }
+
+        $paragraphService->add($edito, $data);
 
         return $this->redirectToRoute('admin_edito_paragraph_list', ['id' => $edito->getId()]);
     }
 
-    #[Route(path: '/delete/{id}', name: 'admin_edito_paragraph_delete')]
+    #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
         return $this->deleteParagraph(
@@ -37,7 +43,7 @@ class ParagraphController extends ParagraphControllerLib
         );
     }
 
-    #[Route(path: '/list/{id}', name: 'admin_edito_paragraph_list')]
+    #[Route(path: '/list/{id}', name: 'list')]
     public function list(Edito $edito): Response
     {
         return $this->listTwig(
@@ -47,7 +53,7 @@ class ParagraphController extends ParagraphControllerLib
         );
     }
 
-    #[Route(path: '/show/{id}', name: 'admin_edito_paragraph_show')]
+    #[Route(path: '/show/{id}', name: 'show')]
     public function show(
         Paragraph $paragraph,
         ParagraphRequestHandler $paragraphRequestHandler

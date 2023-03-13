@@ -2,6 +2,7 @@
 
 namespace Labstag\FormType;
 
+use Labstag\Interfaces\FrontInterface;
 use Labstag\Service\ParagraphService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -27,8 +28,12 @@ class ParagraphType extends AbstractType
     ): void
     {
         /** @var FormInterface $parent */
-        $parent     = $form->getParent();
-        $entity     = $parent->getData();
+        $parent = $form->getParent();
+        $entity = $parent->getData();
+        if (!$entity instanceof FrontInterface) {
+            return;
+        }
+
         $paragraphs = $this->paragraphService->getAll($entity);
         $choices    = [];
         foreach ($paragraphs as $name => $type) {
@@ -36,7 +41,7 @@ class ParagraphType extends AbstractType
         }
 
         $formView->vars['label'] = 'Paragraphs';
-        if (!is_null($entity->getId())) {
+        if (!is_null($entity->getId()) && is_string($options['add'])) {
             $formView->vars['urlAdd'] = $this->router->generate($options['add'], ['id' => $entity->getId()]);
         }
 

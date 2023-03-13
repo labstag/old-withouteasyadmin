@@ -93,7 +93,12 @@ abstract class ExtensionLib extends AbstractExtension
             || !array_key_exists('data', $class->vars)
             || is_null($class->vars['data'])
         ) {
-            return $file;
+            return [
+                'hook'  => 'form',
+                'type'  => 'other',
+                'files' => [$file],
+                'view'  => $file,
+            ];
         }
 
         $vars = $class->vars;
@@ -115,7 +120,7 @@ abstract class ExtensionLib extends AbstractExtension
         return $this->templates['form'][$type];
     }
 
-    protected function getViewByFiles($files): string
+    protected function getViewByFiles(array $files): string
     {
         $loader = $this->twigEnvironment->getLoader();
         $view   = end($files);
@@ -132,12 +137,9 @@ abstract class ExtensionLib extends AbstractExtension
         return $view;
     }
 
-    /**
-     * @return mixed[]
-     */
     protected function setFilesformClass(
         string $type,
-        object $class
+        mixed $class
     ): array
     {
         $htmltwig = '.html.twig';

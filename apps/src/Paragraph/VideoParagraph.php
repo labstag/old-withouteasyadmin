@@ -17,6 +17,7 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\VideoType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -29,11 +30,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
-class VideoParagraph extends ParagraphLib
+class VideoParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'video';
     }
@@ -115,15 +116,19 @@ class VideoParagraph extends ParagraphLib
         }
     }
 
-    public function show(Video $video): ?Response
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
-        $extractor = $this->getData($video);
+        if (!$entityParagraph instanceof Video) {
+            return null;
+        }
+
+        $extractor = $this->getData($entityParagraph);
         if (is_null($extractor)) {
             return null;
         }
 
         $package    = new Package(new EmptyVersionStrategy());
-        $attachment = $video->getImage();
+        $attachment = $entityParagraph->getImage();
         $image      = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
 
         if (is_null($image)) {
@@ -138,9 +143,9 @@ class VideoParagraph extends ParagraphLib
         $embed = (0 != count($datas)) ? $datas[0] : null;
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($video)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
-                'paragraph' => $video,
+                'paragraph' => $entityParagraph,
                 'image'     => $image,
                 'data'      => $extractor,
                 'embed'     => $embed,
@@ -148,9 +153,6 @@ class VideoParagraph extends ParagraphLib
         );
     }
 
-    /**
-     * @return class-string[]
-     */
     public function useIn(): array
     {
         return [

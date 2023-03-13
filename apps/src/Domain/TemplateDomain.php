@@ -51,9 +51,6 @@ class TemplateDomain extends DomainLib
         return SearchTemplateType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

@@ -6,17 +6,18 @@ use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\User;
 use Labstag\Form\Admin\Paragraph\History\UserType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserParagraph extends ParagraphLib
+class UserParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'history/user';
     }
@@ -46,7 +47,7 @@ class UserParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(User $user): Response
+    public function show(EntityParagraphInterface $entityParagraph): Response
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
@@ -62,10 +63,10 @@ class UserParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($user)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $user,
+                'paragraph'  => $entityParagraph,
             ]
         );
     }

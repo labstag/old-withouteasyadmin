@@ -3,6 +3,7 @@
 namespace Labstag\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Labstag\Lib\CommandLib;
 use Labstag\Service\GeocodeService;
 use Labstag\Service\RepositoryService;
@@ -37,7 +38,11 @@ class LabstagGeocodeInstallCommand extends CommandLib
         $symfonyStyle = new SymfonyStyle($input, $output);
         $symfonyStyle->title('Récupération des code postaux');
 
-        $country = (string) $input->getArgument('country');
+        $country = $input->getArgument('country');
+        if (!is_string($country)) {
+            throw new Exception('Argument country invalide');
+        }
+
         if (empty($country)) {
             $symfonyStyle->note(
                 sprintf(

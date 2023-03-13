@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Handler\TreeSlugHandler;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\PageRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: PageRepository::class)]
 #[ApiResource]
-class Page implements Stringable, FrontInterface, EntityTrashInterface
+class Page implements Stringable, PublicInterface, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 

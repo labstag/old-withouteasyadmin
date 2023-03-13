@@ -18,8 +18,9 @@ class AttachmentRequestHandler extends RequestHandlerLib
 
         /** @var WorkflowInterface $workflow */
         $workflow = $this->workflowService->get($entity);
-        if ($workflow->can($entity, 'reenvoyer')) {
-            $workflow->apply($entity, 'reenvoyer');
+        $code     = 'reenvoyer';
+        if ($workflow->can($entity, $code)) {
+            $workflow->apply($entity, $code);
         }
     }
 }

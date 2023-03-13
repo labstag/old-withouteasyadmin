@@ -95,7 +95,7 @@ class AdminBtnService
     }
 
     public function addBtnDestroy(
-        object $entity,
+        EntityInterface $entity,
         array $route,
         string $text = 'Destroy',
         array $routeParam = []
@@ -237,7 +237,7 @@ class AdminBtnService
     }
 
     public function addBtnRestore(
-        object $entity,
+        EntityInterface $entity,
         array $route,
         string $text = 'Restore',
         array $routeParam = []
@@ -367,7 +367,7 @@ class AdminBtnService
         );
     }
 
-    protected function classEntity(mixed $entity): string
+    protected function classEntity(EntityInterface $entity): string
     {
         $class = str_replace('Labstag\\Entity\\', '', (string) $entity::class);
 
@@ -400,7 +400,7 @@ class AdminBtnService
 
     private function addBtnDestroyRestore(
         string $word,
-        mixed $entity,
+        EntityInterface $entity,
         array $route,
         array $routeParam,
         string $text

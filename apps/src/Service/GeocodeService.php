@@ -85,9 +85,6 @@ class GeocodeService
         return $csv;
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     public function tables(array $csv): array
     {
         $data = [];

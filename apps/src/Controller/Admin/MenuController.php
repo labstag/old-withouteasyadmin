@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-#[Route(path: '/admin/menu')]
+#[Route(path: '/admin/menu', name: 'admin_menu_')]
 class MenuController extends AdminControllerLib
 {
-    #[Route(path: '/add', name: 'admin_menu_add', methods: ['GET', 'POST'])]
+    #[Route(path: '/add', name: 'add', methods: ['GET', 'POST'])]
     public function add(
         Request $request,
         MenuRepository $menuRepository
@@ -52,7 +52,7 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/divider/{id}', name: 'admin_menu_divider')]
+    #[Route(path: '/divider/{id}', name: 'divider')]
     public function divider(Menu $menu, MenuRequestHandler $menuRequestHandler): RedirectResponse
     {
         $entity    = new Menu();
@@ -70,7 +70,7 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/update/{id}', name: 'admin_menu_update', methods: ['GET', 'POST'])]
+    #[Route(path: '/update/{id}', name: 'update', methods: ['GET', 'POST'])]
     public function edit(
         Menu $menu
     ): Response
@@ -86,7 +86,7 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/', name: 'admin_menu_index', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(
         Environment $twigEnvironment,
         MenuRepository $menuRepository
@@ -105,7 +105,7 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/move/{id}', name: 'admin_menu_move', methods: ['GET', 'POST'])]
+    #[Route(path: '/move/{id}', name: 'move', methods: ['GET', 'POST'])]
     public function move(Menu $menu, Request $request): Response
     {
         $currentUrl = $this->generateUrl(
@@ -137,7 +137,7 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/new', name: 'admin_menu_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(): Response
     {
         return $this->form(
@@ -147,7 +147,7 @@ class MenuController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_menu_trash', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
     public function trash(): Response
     {
         return $this->listOrTrash(

@@ -19,10 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[Route(path: '/api/guard/route')]
+#[Route(path: '/api/guard/route', name: 'api_guard_')]
 class GuardRouteController extends ApiControllerLib
 {
-    #[Route(path: '/group/{group}', name: 'api_guard_routegroup', methods: ['POST'])]
+    #[Route(path: '/group/{group}', name: 'routegroup', methods: ['POST'])]
     public function group(
         RouteGroupeRepository $routeGroupeRepository,
         Groupe $groupe,
@@ -54,7 +54,7 @@ class GuardRouteController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/groups/{route}', name: 'api_guard_routegroups', methods: ['POST'])]
+    #[Route(path: '/groups/{route}', name: 'routegroups', methods: ['POST'])]
     public function groups(
         RouteGroupeRepository $routeGroupeRepository,
         GuardService $guardService,
@@ -87,7 +87,7 @@ class GuardRouteController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/', name: 'api_guard_route')]
+    #[Route(path: '/', name: 'route')]
     public function index(Request $request): JsonResponse
     {
         $data = [
@@ -96,6 +96,10 @@ class GuardRouteController extends ApiControllerLib
         $get     = $request->query->all();
         $data    = $this->getGuardRouteOrWorkflow($data, $get, RouteUser::class);
         $results = $this->getResultWorkflow($request, RouteGroupe::class);
+        if (!is_iterable($results)) {
+            return new JsonResponse($data);
+        }
+
         foreach ($results as $result) {
             /** @var RouteGroupe $result */
             /** @var Groupe $groupe */
@@ -111,7 +115,7 @@ class GuardRouteController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/setgroup/{group}/{route}', name: 'api_guard_routesetgroup', methods: ['POST'])]
+    #[Route(path: '/setgroup/{group}/{route}', name: 'routesetgroup', methods: ['POST'])]
     public function setgroup(
         RouteGroupeRepository $routeGroupeRepository,
         GuardService $guardService,
@@ -140,7 +144,7 @@ class GuardRouteController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/setuser/{user}/{route}', name: 'api_guard_routesetuser', methods: ['POST'])]
+    #[Route(path: '/setuser/{user}/{route}', name: 'routesetuser', methods: ['POST'])]
     public function setuser(
         RouteUserRepository $routeUserRepository,
         GuardService $guardService,
@@ -169,7 +173,7 @@ class GuardRouteController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/user/{user}', name: 'api_guard_routeuser', methods: ['POST'])]
+    #[Route(path: '/user/{user}', name: 'routeuser', methods: ['POST'])]
     public function user(
         RouteUserRepository $routeUserRepository,
         GuardService $guardService,

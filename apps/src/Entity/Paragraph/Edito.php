@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityInterface;
-use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Repository\Paragraph\EditoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: EditoRepository::class)]
 #[ORM\Table(name: 'paragraph_edito')]
 #[ApiResource(routePrefix: '/paragraph')]
-class Edito implements Stringable, ParagraphInterface, EntityInterface
+class Edito implements Stringable, EntityParagraphInterface, EntityInterface
 {
 
     #[ORM\Id]

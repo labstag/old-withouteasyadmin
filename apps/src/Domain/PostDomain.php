@@ -51,9 +51,6 @@ class PostDomain extends DomainLib
         return SearchPostType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

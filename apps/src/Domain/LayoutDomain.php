@@ -51,9 +51,6 @@ class LayoutDomain extends DomainLib
         return SearchLayoutType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

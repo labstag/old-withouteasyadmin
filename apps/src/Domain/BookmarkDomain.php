@@ -51,9 +51,6 @@ class BookmarkDomain extends DomainLib
         return SearchBookmarkType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

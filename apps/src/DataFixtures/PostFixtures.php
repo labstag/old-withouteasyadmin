@@ -13,9 +13,6 @@ use Labstag\Lib\FixtureLib;
 
 class PostFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return $this->getDependenciesBookmarkPost();

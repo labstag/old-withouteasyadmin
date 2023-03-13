@@ -6,16 +6,17 @@ use Labstag\Entity\Bookmark as EntityBookmark;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Bookmark;
 use Labstag\Form\Admin\Paragraph\BookmarkType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Component\HttpFoundation\Response;
 
-class BookmarkParagraph extends ParagraphLib
+class BookmarkParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'bookmark';
     }
@@ -45,7 +46,7 @@ class BookmarkParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Bookmark $bookmark): Response
+    public function show(EntityParagraphInterface $entityParagraph): Response
     {
         /** @var BookmarkRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get(EntityBookmark::class);
@@ -56,17 +57,14 @@ class BookmarkParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getTemplateFile($this->getcode($bookmark)),
+            $this->getTemplateFile($this->getcode($entityParagraph)),
             [
-                'paragraph' => $bookmark,
+                'paragraph' => $entityParagraph,
                 'bookmarks' => $bookmarks,
             ]
         );
     }
 
-    /**
-     * @return array<class-string<Page>>
-     */
     public function useIn(): array
     {
         return [

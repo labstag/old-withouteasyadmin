@@ -33,17 +33,11 @@ class BreadcrumbService
         $this->data = $newbreadcrumbs;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function get(): array
     {
         return $this->data;
     }
 
-    /**
-     * @param mixed[] $breadcrumbs
-     */
     public function set(array $breadcrumbs): void
     {
         $this->data = $breadcrumbs;

@@ -16,7 +16,18 @@ class WysiwygType extends AbstractType
     ): void
     {
         $attr = $options['attr'];
-        $attr['class'] ??= '';
+        if (!is_array($attr)) {
+            $attr = [];
+        }
+
+        if (!isset($attr['class'])) {
+            $attr['class'] = '';
+        }
+
+        if (!is_string($attr['class'])) {
+            return;
+        }
+
         $attr['class'] = trim($attr['class'].' wysiwyg');
 
         $formView->vars['attr'] = $attr;

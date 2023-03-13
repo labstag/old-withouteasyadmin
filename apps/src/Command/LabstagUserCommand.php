@@ -53,8 +53,14 @@ class LabstagUserCommand extends CommandLib
         $choiceQuestion->setMultiselect(true);
 
         $usernames = $helper->ask($input, $output, $choiceQuestion);
+        if (!is_iterable($usernames)) {
+            $symfonyStyle->error('Username incorrect');
+
+            return;
+        }
+
         foreach ($usernames as $username) {
-            if ('' == $username) {
+            if (!is_string($username) || '' == $username) {
                 continue;
             }
 
@@ -84,6 +90,12 @@ class LabstagUserCommand extends CommandLib
             $this->tableQuestionUser()
         );
         $username = $helper->ask($input, $output, $choiceQuestion);
+        if (!is_string($username)) {
+            $symfonyStyle->error('Username incorrect');
+
+            return;
+        }
+
         $this->state($helper, $username, $symfonyStyle, $input, $output);
     }
 
@@ -100,6 +112,12 @@ class LabstagUserCommand extends CommandLib
             $this->tableQuestionUser()
         );
         $username = $helper->ask($input, $output, $choiceQuestion);
+        if (!is_string($username)) {
+            $symfonyStyle->error('Username incorrect');
+
+            return;
+        }
+
         $this->updatePassword($helper, $username, $symfonyStyle, $input, $output);
     }
 
@@ -120,6 +138,12 @@ class LabstagUserCommand extends CommandLib
         $old          = clone $user;
         $question     = new Question("Entrer le username de l'utilisateur : ");
         $username     = $questionHelper->ask($input, $output, $question);
+        if (!is_string($username)) {
+            $symfonyStyle->error('Username incorrect');
+
+            return;
+        }
+
         $user->setUsername($username);
         $question = new Question("Entrer le password de l'utilisateur : ");
         $question->setHidden(true);
@@ -129,7 +153,7 @@ class LabstagUserCommand extends CommandLib
         $question->setHidden(true);
 
         $password2 = $questionHelper->ask($input, $output, $question);
-        if ($password1 !== $password2) {
+        if (!is_string($password1) || !is_string($password2) || $password1 !== $password2) {
             $symfonyStyle->error('Mot de passe incorrect');
 
             return;
@@ -138,6 +162,12 @@ class LabstagUserCommand extends CommandLib
         $user->setPlainPassword($password1);
         $question = new Question("Entrer l'email de l'utilisateur : ");
         $email    = $questionHelper->ask($input, $output, $question);
+        if (!is_string($email)) {
+            $symfonyStyle->error('Email incorrect');
+
+            return;
+        }
+
         $user->setEmail($email);
         $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
         $data    = [];
@@ -325,7 +355,13 @@ class LabstagUserCommand extends CommandLib
             ]
         );
 
-        $action = (string) $helper->ask($input, $output, $choiceQuestion);
+        $action = $helper->ask($input, $output, $choiceQuestion);
+        if (!is_string($action)) {
+            $output->writeln('Action inconnue');
+
+            return Command::FAILURE;
+        }
+
         match ($action) {
             'list'           => $this->list($symfonyStyle, $output),
             'create'         => $this->create($helper, $symfonyStyle, $input, $output),
@@ -398,7 +434,7 @@ class LabstagUserCommand extends CommandLib
             $states
         );
         $state = $questionHelper->ask($input, $output, $choiceQuestion);
-        if (!$workflow->can($entity, $state)) {
+        if (!is_string($state) || !$workflow->can($entity, $state)) {
             $symfonyStyle->warning(
                 ['Action impossible']
             );
@@ -411,9 +447,6 @@ class LabstagUserCommand extends CommandLib
         $symfonyStyle->success('Utilisateur passé au stade "'.$state.'"');
     }
 
-    /**
-     * @return array<int|string, string>
-     */
     protected function tableQuestionUser(): array
     {
         $users = $this->userRepository->findBy([], ['username' => 'ASC']);
@@ -461,7 +494,7 @@ class LabstagUserCommand extends CommandLib
         $question->setHidden(true);
 
         $password2 = $questionHelper->ask($input, $output, $question);
-        if ($password1 !== $password2) {
+        if (!is_string($password1) || !is_string($password2) || $password1 !== $password2) {
             $symfonyStyle->error('Mot de passe incorrect');
 
             return;

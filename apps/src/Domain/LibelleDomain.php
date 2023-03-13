@@ -51,9 +51,6 @@ class LibelleDomain extends DomainLib
         return SearchLibelleType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

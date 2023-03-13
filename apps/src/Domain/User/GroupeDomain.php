@@ -51,9 +51,6 @@ class GroupeDomain extends DomainLib
         return SearchGroupeType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

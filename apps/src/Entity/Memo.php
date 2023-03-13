@@ -46,7 +46,7 @@ class Memo implements Stringable, FrontInterface, EntityTrashInterface
     private ?string $content = null;
 
     #[UploadableField(filename: 'fond', path: 'memo/fond', slug: 'title')]
-    private string $file;
+    private mixed $file;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]

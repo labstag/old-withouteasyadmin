@@ -44,9 +44,6 @@ class BlockDomain extends DomainLib
         return $this->blockSearch;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

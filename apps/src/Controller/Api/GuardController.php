@@ -20,10 +20,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
-#[Route(path: '/api/guard')]
+#[Route(path: '/api/guard', name: 'api_guard_')]
 class GuardController extends ApiControllerLib
 {
-    #[Route(path: '/groups/{groupe}', name: 'api_guard_group')]
+    #[Route(path: '/groups/{groupe}', name: 'group')]
     public function groupe(
         RouteGroupeRepository $routeGroupeRepository,
         Groupe $groupe
@@ -32,13 +32,13 @@ class GuardController extends ApiControllerLib
         return $this->getRefgroupe($routeGroupeRepository, $groupe);
     }
 
-    #[Route(path: '/groups', name: 'api_guard_groups')]
+    #[Route(path: '/groups', name: 'groups')]
     public function groupes(RouteGroupeRepository $routeGroupeRepository): JsonResponse
     {
         return $this->getRefgroupe($routeGroupeRepository);
     }
 
-    #[Route(path: '/setgroup/{route}/{groupe}', name: 'api_guard_setgroup')]
+    #[Route(path: '/setgroup/{route}/{groupe}', name: 'setgroup')]
     public function setgroup(
         string $route,
         string $groupe,
@@ -93,7 +93,7 @@ class GuardController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/setuser/{route}/{user}', name: 'api_guard_setuser', methods: ['POST'])]
+    #[Route(path: '/setuser/{route}/{user}', name: 'setuser', methods: ['POST'])]
     public function setuser(
         string $route,
         string $user,
@@ -148,7 +148,7 @@ class GuardController extends ApiControllerLib
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/users/{user}', name: 'api_guard_user')]
+    #[Route(path: '/users/{user}', name: 'user')]
     public function user(
         User $user,
         RouteGroupeRepository $routeGroupeRepository,
@@ -160,6 +160,10 @@ class GuardController extends ApiControllerLib
             'user'   => [],
         ];
         $results = $routeGroupeRepository->findEnableByGroupe($user->getRefgroupe());
+        if (!is_iterable($results)) {
+            return new JsonResponse($data);
+        }
+
         foreach ($results as $row) {
             /** @var RouteGroupe $row */
             /** @var EntityRoute $route */
@@ -170,6 +174,10 @@ class GuardController extends ApiControllerLib
         }
 
         $results = $routeUserRepository->findEnableByUser($user);
+        if (!is_iterable($results)) {
+            return new JsonResponse($data);
+        }
+
         foreach ($results as $result) {
             /** @var RouteUser $row */
             $data['user'][] = [
@@ -187,6 +195,10 @@ class GuardController extends ApiControllerLib
     {
         $results = $routeGroupeRepository->findEnableByGroupe($groupe);
         $data    = [];
+        if (!is_iterable($results)) {
+            return new JsonResponse($data);
+        }
+
         foreach ($results as $result) {
             /** @var RouteGroupe $result */
             /** @var Groupe $groupe */

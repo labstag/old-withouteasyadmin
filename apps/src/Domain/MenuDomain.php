@@ -45,9 +45,6 @@ class MenuDomain extends DomainLib
         return $this->menuSearch;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

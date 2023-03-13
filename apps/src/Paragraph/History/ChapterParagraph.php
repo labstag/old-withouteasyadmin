@@ -7,17 +7,18 @@ use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\Chapter as HistoryChapter;
 use Labstag\Form\Admin\Paragraph\History\ChapterType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\ChapterRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ChapterParagraph extends ParagraphLib
+class ChapterParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'history/chapter';
     }
@@ -47,7 +48,7 @@ class ChapterParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(HistoryChapter $historychapter): ?Response
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
@@ -67,13 +68,13 @@ class ChapterParagraph extends ParagraphLib
         $prevnext = $this->getPrevNext($chapter, $history);
 
         return $this->render(
-            $this->getTemplateFile($this->getcode($historychapter)),
+            $this->getTemplateFile($this->getcode($entityParagraph)),
             [
                 'prev'      => $prevnext['prev'],
                 'next'      => $prevnext['next'],
                 'chapter'   => $chapter,
                 'history'   => $chapter->getRefhistory(),
-                'paragraph' => $historychapter,
+                'paragraph' => $entityParagraph,
             ]
         );
     }
@@ -100,7 +101,8 @@ class ChapterParagraph extends ParagraphLib
         $prev     = null;
         $next     = null;
         foreach ($chapters as $i => $row) {
-            if ($row->getSlug() == $chapter->getSlug()) {
+            /** @var Chapter $row */
+            if ($row->getSlug() === $chapter->getSlug()) {
                 $prev    = $chapters[$i - 1] ?? null;
                 $next    = $chapters[$i + 1] ?? null;
                 $chapter = $row;

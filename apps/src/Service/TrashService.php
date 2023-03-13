@@ -26,6 +26,7 @@ class TrashService
     {
         $data = [];
         foreach ($this->rewindableGenerator as $repository) {
+            /** @var ServiceEntityRepositoryLib $repository */
             $isTrashable = $this->isTrashable($repository);
             if (!$isTrashable) {
                 continue;
@@ -35,6 +36,9 @@ class TrashService
             $trash  = $repository->findTrashForAdmin([]);
             $result = $trash->getQuery()->getResult();
             $test   = is_countable($result) ? count($result) : 0;
+            if (0 == $test) {
+                continue;
+            }
 
             $data[] = [
                 'name'       => strtolower(substr((string) $entity, strrpos((string) $entity, '\\') + 1)),

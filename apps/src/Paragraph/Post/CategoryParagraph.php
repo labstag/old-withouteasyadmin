@@ -6,17 +6,18 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Category;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\CategoryType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryParagraph extends ParagraphLib
+class CategoryParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'post/category';
     }
@@ -46,7 +47,7 @@ class CategoryParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Category $category): Response
+    public function show(EntityParagraphInterface $entityParagraph): Response
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
@@ -62,10 +63,10 @@ class CategoryParagraph extends ParagraphLib
         );
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($category)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $category,
+                'paragraph'  => $entityParagraph,
             ]
         );
     }

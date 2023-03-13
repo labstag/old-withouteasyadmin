@@ -51,9 +51,6 @@ class RenderDomain extends DomainLib
         return SearchRenderType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

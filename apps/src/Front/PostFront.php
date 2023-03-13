@@ -2,6 +2,7 @@
 
 namespace Labstag\Front;
 
+use Exception;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
@@ -172,6 +173,9 @@ class PostFront extends PageFront
                 $function,
             ];
             $breadcrumb = call_user_func_array($callable, [$route, $params, $breadcrumb]);
+            if (!is_array($breadcrumb)) {
+                throw new Exception('breadcrumb must be an array');
+            }
         }
 
         return $breadcrumb;

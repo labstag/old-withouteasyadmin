@@ -51,9 +51,6 @@ class EmailUserDomain extends DomainLib
         return SearchEmailUserType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

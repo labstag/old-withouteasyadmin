@@ -10,9 +10,6 @@ use Labstag\Lib\FixtureLib;
 
 class MenuFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [

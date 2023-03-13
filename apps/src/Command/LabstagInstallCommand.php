@@ -3,6 +3,7 @@
 namespace Labstag\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Labstag\Lib\CommandLib;
 use Labstag\Service\InstallService;
 use Labstag\Service\RepositoryService;
@@ -34,6 +35,9 @@ class LabstagInstallCommand extends CommandLib
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
         $symfonyStyle->note('Ajout de la configuration');
+        if (!is_array($this->serverenv)) {
+            throw new Exception('Argument serverenv invalide');
+        }
 
         $this->installService->config($this->serverenv);
         $symfonyStyle->success('You have a new command! Now make it your own! Pass --help to see your options.');

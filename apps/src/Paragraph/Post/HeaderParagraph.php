@@ -6,17 +6,18 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Header;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\HeaderType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class HeaderParagraph extends ParagraphLib
+class HeaderParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'post/header';
     }
@@ -46,7 +47,7 @@ class HeaderParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Header $header): ?Response
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
@@ -64,10 +65,10 @@ class HeaderParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($header)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
                 'post'      => $post,
-                'paragraph' => $header,
+                'paragraph' => $entityParagraph,
             ]
         );
     }

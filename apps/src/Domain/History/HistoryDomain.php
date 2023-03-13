@@ -51,9 +51,6 @@ class HistoryDomain extends DomainLib
         return SearchHistoryType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

@@ -200,9 +200,6 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     protected function setParametersDeleteDestroyRestore(): array
     {
         return [
@@ -230,9 +227,6 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         ];
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     protected function setParametersDeletiesEmpties(): array
     {
         return [
@@ -253,9 +247,6 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         ];
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     protected function setParametersRestoreDestroy(): array
     {
         return [

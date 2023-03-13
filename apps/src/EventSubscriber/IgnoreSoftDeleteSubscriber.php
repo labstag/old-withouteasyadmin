@@ -5,6 +5,7 @@ namespace Labstag\EventSubscriber;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Lib\EventSubscriberLib;
 use ReflectionClass;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
@@ -34,14 +35,18 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     }
 
     protected function ignoreSoftDeleteAnnotation(
-        mixed $controller,
+        AbstractController $controller,
         string $method
     ): void
     {
         /** @var Request $request */
         $request      = $this->requestStack->getCurrentRequest();
         $routeCurrent = $request->attributes->get('_route');
-        $routes       = [
+        if (!is_string($routeCurrent)) {
+            return;
+        }
+
+        $routes = [
             'api_action_destroies',
             'api_action_restories',
             'api_action_deleties',
@@ -56,7 +61,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
 
         $find = 0;
         foreach ($routes as $route) {
-            if (0 != substr_count((string) $routeCurrent, $route)) {
+            if (0 != substr_count($routeCurrent, $route)) {
                 $find = 1;
 
                 break;
@@ -73,7 +78,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     }
 
     protected function readAnnotation(
-        mixed $controller,
+        AbstractController $controller,
         string $method
     ): bool
     {

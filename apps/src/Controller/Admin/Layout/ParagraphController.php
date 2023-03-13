@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\Layout;
 
+use Exception;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph;
 use Labstag\Lib\ParagraphControllerLib;
@@ -12,22 +13,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/layout/paragraph')]
+#[Route(path: '/admin/layout/paragraph', name: 'admin_layout_paragraph_')]
 class ParagraphController extends ParagraphControllerLib
 {
-    #[Route(path: '/add/{id}', name: 'admin_layout_paragraph_add')]
+    #[Route(path: '/add/{id}', name: 'add')]
     public function add(
         ParagraphService $paragraphService,
         Layout $layout,
         Request $request
     ): RedirectResponse
     {
-        $paragraphService->add($layout, $request->get('data'));
+        $data = $request->get('data');
+        if (!is_string($data)) {
+            throw new Exception('data is not string');
+        }
+
+        $paragraphService->add($layout, $data);
 
         return $this->redirectToRoute('admin_layout_paragraph_list', ['id' => $layout->getId()]);
     }
 
-    #[Route(path: '/delete/{id}', name: 'admin_layout_paragraph_delete')]
+    #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
         return $this->deleteParagraph(
@@ -37,7 +43,7 @@ class ParagraphController extends ParagraphControllerLib
         );
     }
 
-    #[Route(path: '/list/{id}', name: 'admin_layout_paragraph_list')]
+    #[Route(path: '/list/{id}', name: 'list')]
     public function list(Layout $layout): Response
     {
         return $this->listTwig(
@@ -47,7 +53,7 @@ class ParagraphController extends ParagraphControllerLib
         );
     }
 
-    #[Route(path: '/show/{id}', name: 'admin_layout_paragraph_show')]
+    #[Route(path: '/show/{id}', name: 'show')]
     public function show(
         Paragraph $paragraph,
         ParagraphRequestHandler $paragraphRequestHandler

@@ -4,6 +4,7 @@ namespace Labstag\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Workflow;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\RequestHandler\WorkflowRequestHandler;
@@ -47,7 +48,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
         $data     = [];
         $entities = [];
         foreach ($this->rewindableGenerator as $entity) {
-            if ($this->workflowService->has($entity)) {
+            if ($entity instanceof EntityInterface && $this->workflowService->has($entity)) {
                 /** @var WorkflowInterface $workflow */
                 $workflow    = $this->workflowService->get($entity);
                 $definition  = $workflow->getDefinition();
@@ -89,12 +90,20 @@ class LabstagWorkflowsShowCommand extends CommandLib
     private function delete(array $entities, array $data): void
     {
         $toDelete = $this->workflowRepository->toDeleteEntities($entities);
+        if (!is_iterable($toDelete)) {
+            return;
+        }
+
         foreach ($toDelete as $entity) {
             $this->workflowRepository->remove($entity);
         }
 
         foreach ($data as $entity => $transitions) {
             $toDelete = $this->workflowRepository->toDeleteTransition($entity, $transitions);
+            if (!is_iterable($toDelete)) {
+                continue;
+            }
+
             foreach ($toDelete as $entity) {
                 $this->workflowRepository->remove($entity);
             }

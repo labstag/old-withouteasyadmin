@@ -2,6 +2,7 @@
 
 namespace Labstag\Controller\Admin\History\Paragraph;
 
+use Exception;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Paragraph;
 use Labstag\Lib\ParagraphControllerLib;
@@ -12,22 +13,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/history/chapter/paragraph')]
+#[Route(path: '/admin/history/chapter/paragraph', name: 'admin_chapter_paragraph_')]
 class ChapterController extends ParagraphControllerLib
 {
-    #[Route(path: '/add/{id}', name: 'admin_chapter_paragraph_add')]
+    #[Route(path: '/add/{id}', name: 'add')]
     public function add(
         ParagraphService $paragraphService,
         Chapter $chapter,
         Request $request
     ): RedirectResponse
     {
-        $paragraphService->add($chapter, $request->get('data'));
+        $data = $request->get('data');
+        if (!is_string($data)) {
+            throw new Exception('data is not string');
+        }
+
+        $paragraphService->add($chapter, $data);
 
         return $this->redirectToRoute('admin_chapter_paragraph_list', ['id' => $chapter->getId()]);
     }
 
-    #[Route(path: '/delete/{id}', name: 'admin_chapter_paragraph_delete')]
+    #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
         return $this->deleteParagraph(
@@ -37,7 +43,7 @@ class ChapterController extends ParagraphControllerLib
         );
     }
 
-    #[Route(path: '/list/{id}', name: 'admin_chapter_paragraph_list')]
+    #[Route(path: '/list/{id}', name: 'list')]
     public function list(Chapter $chapter): Response
     {
         return $this->listTwig(
@@ -47,7 +53,7 @@ class ChapterController extends ParagraphControllerLib
         );
     }
 
-    #[Route(path: '/show/{id}', name: 'admin_chapter_paragraph_show')]
+    #[Route(path: '/show/{id}', name: 'show')]
     public function show(
         Paragraph $paragraph,
         ParagraphRequestHandler $paragraphRequestHandler

@@ -11,11 +11,11 @@ use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/user')]
+#[Route(path: '/admin/user', name: 'admin_user_')]
 class UserController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function edit(
         ?User $user
     ): Response
@@ -27,7 +27,7 @@ class UserController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/{id}/guard', name: 'admin_user_guard')]
+    #[Route(path: '/{id}/guard', name: 'guard')]
     public function guard(
         User $user,
         WorkflowRepository $workflowRepository
@@ -80,8 +80,8 @@ class UserController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_user_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_user_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
@@ -91,8 +91,8 @@ class UserController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_user_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_user_preview', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
     public function showOrPreview(User $user): Response
     {
         return $this->renderShowOrPreview(

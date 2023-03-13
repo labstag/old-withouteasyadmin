@@ -10,12 +10,12 @@ use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/attachment')]
+#[Route(path: '/admin/attachment', name: 'admin_attachment_')]
 class AttachmentController extends AdminControllerLib
 {
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_attachment_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_attachment_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(

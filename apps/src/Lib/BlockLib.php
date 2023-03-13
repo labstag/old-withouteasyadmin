@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\FrontInterface;
 use Labstag\Service\ParagraphService;
@@ -47,6 +48,7 @@ abstract class BlockLib extends AbstractController
 
         $paragraphsArray = $front->getParagraphs();
         foreach ($paragraphsArray as $paragraphArray) {
+            /** @var Paragraph $paragraphArray */
             $data = $paragraphService->showContent($paragraphArray);
             if (is_null($data)) {
                 continue;

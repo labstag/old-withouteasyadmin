@@ -34,7 +34,12 @@ class HistoryService
     ): void
     {
         $history = $this->historyRepository->find($historyId);
-        if (!$history instanceof History || (false == $all && !in_array('publie', (array) $history->getState()))) {
+        if (!$history instanceof History) {
+            return;
+        }
+
+        $state = (array) $history->getState();
+        if (false == $all && !in_array('publie', $state)) {
             return;
         }
 

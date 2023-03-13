@@ -51,6 +51,10 @@ abstract class ApiControllerLib extends AbstractController
         $entityRepository = $this->repositoryService->get($entityClass);
         $results          = $entityRepository->findEnableByUser($user);
         if (RouteUser::class == $entityClass) {
+            if (!is_iterable($results)) {
+                return $data;
+            }
+
             foreach ($results as $row) {
                 /** @var RouteUser $row */
                 /** @var Route $route */
@@ -60,6 +64,10 @@ abstract class ApiControllerLib extends AbstractController
                 ];
             }
 
+            return $data;
+        }
+
+        if (!is_iterable($results)) {
             return $data;
         }
 
@@ -76,7 +84,7 @@ abstract class ApiControllerLib extends AbstractController
         return $data;
     }
 
-    protected function getResultWorkflow(Request $request, mixed $entity): mixed
+    protected function getResultWorkflow(Request $request, string $entity): mixed
     {
         /** @var ServiceEntityRepositoryLib $userRepository */
         $userRepository = $this->repositoryService->get(User::class);

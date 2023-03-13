@@ -15,9 +15,6 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 
     protected array $position = [];
 
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [

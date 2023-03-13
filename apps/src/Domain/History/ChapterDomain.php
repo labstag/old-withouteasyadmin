@@ -51,9 +51,6 @@ class ChapterDomain extends DomainLib
         return SearchChapterType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

@@ -10,12 +10,12 @@ use Labstag\Repository\RenderRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/mes-articles')]
+#[Route(path: '/mes-articles', name: 'front_article')]
 class PostController extends FrontControllerLib
 {
     #[Route(
         path: '/{slug}',
-        name: 'front_article',
+        name: '',
         priority: 2,
         defaults: ['slug' => '']
     )]
@@ -45,7 +45,7 @@ class PostController extends FrontControllerLib
 
     #[Route(
         path: '/categorie/{slug}',
-        name: 'front_article_category',
+        name: '_category',
         priority: 2
     )]
     public function category(
@@ -66,7 +66,7 @@ class PostController extends FrontControllerLib
 
     #[Route(
         path: '/libelle/{slug}',
-        name: 'front_article_libelle',
+        name: '_libelle',
         priority: 2
     )]
     public function libelle(
@@ -87,7 +87,7 @@ class PostController extends FrontControllerLib
 
     #[Route(
         path: '/user/{username}',
-        name: 'front_article_user',
+        name: '_user',
         priority: 2
     )]
     public function user(
@@ -108,7 +108,7 @@ class PostController extends FrontControllerLib
 
     #[Route(
         path: '/archive/{year}',
-        name: 'front_article_year',
+        name: '_year',
         priority: 2
     )]
     public function year(

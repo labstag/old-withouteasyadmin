@@ -180,11 +180,20 @@ class AdminController extends AdminControllerLib
             return $this->redirectToRoute('admin');
         }
 
-        $globals        = $twigEnvironment->getGlobals();
-        $modal          = $globals['modal'] ?? [];
+        $globals = $twigEnvironment->getGlobals();
+        $modal   = $globals['modal'] ?? [];
+        if (!isset($modal['empty'])) {
+            $modal['empty'] = false;
+        }
+
         $modal['empty'] = true;
         if ($this->isRouteEnable('api_action_emptyall')) {
-            $value             = $csrfTokenManager->getToken('emptyall')->getValue();
+            $value = $csrfTokenManager->getToken('emptyall')->getValue();
+
+            if (!isset($modal['emptyall'])) {
+                $modal['emptyall'] = false;
+            }
+
             $modal['emptyall'] = true;
             $this->adminBtnService->add(
                 'btn-admin-header-emptyall',

@@ -19,6 +19,10 @@ class MenuType extends AbstractTypeLib
     {
         unset($options);
         $entity = $formBuilder->getData();
+        if (!$entity instanceof Menu) {
+            return;
+        }
+
         if (empty($entity->getClef())) {
             $this->setChildren($formBuilder);
 

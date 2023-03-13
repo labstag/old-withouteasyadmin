@@ -12,9 +12,6 @@ use Labstag\Lib\FixtureLib;
 
 class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [

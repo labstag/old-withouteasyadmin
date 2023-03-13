@@ -29,7 +29,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(mixed $entity): void
+    public function add(object $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
@@ -117,7 +117,7 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(mixed $entity): void
+    public function remove(object $entity): void
     {
         $this->_em->remove($entity);
         $this->_em->flush();

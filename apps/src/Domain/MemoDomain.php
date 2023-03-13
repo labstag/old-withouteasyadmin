@@ -51,9 +51,6 @@ class MemoDomain extends DomainLib
         return SearchMemoType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

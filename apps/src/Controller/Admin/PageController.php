@@ -14,10 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/page')]
+#[Route(path: '/admin/page', name: 'admin_page_')]
 class PageController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         ?Page $page
     ): Response
@@ -30,8 +30,8 @@ class PageController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_page_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_page_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
@@ -40,7 +40,7 @@ class PageController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/new', name: 'admin_page_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(PageRepository $pageRepository, PageRequestHandler $pageRequestHandler): RedirectResponse
     {
         $page = new Page();
@@ -54,8 +54,8 @@ class PageController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_page_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_page_preview', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
     public function showOrPreview(Page $page): Response
     {
         return $this->renderShowOrPreview(

@@ -12,13 +12,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/api/search')]
+#[Route(path: '/api/search', name: 'api_search_')]
 class SearchController extends ApiControllerLib
 {
-    #[Route(path: '/category', name: 'api_search_category')]
-    #[Route(path: '/group', name: 'api_search_group')]
-    #[Route(path: '/libelle', name: 'api_search_postlibelle')]
-    #[Route(path: '/user', name: 'api_search_user')]
+    #[Route(path: '/category', name: 'category')]
+    #[Route(path: '/group', name: 'group')]
+    #[Route(path: '/libelle', name: 'postlibelle')]
+    #[Route(path: '/user', name: 'user')]
     public function libelle(Request $request): JsonResponse
     {
         $attributes = $request->attributes->all();
@@ -65,6 +65,9 @@ class SearchController extends ApiControllerLib
             $method,
         ];
         $data = call_user_func($callable, $get['name']);
+        if (!is_iterable($data)) {
+            return $this->json($return);
+        }
 
         foreach ($data as $user) {
             $return['results'][] = [

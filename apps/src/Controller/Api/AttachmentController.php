@@ -10,10 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
-#[Route(path: '/api/attachment')]
+#[Route(path: '/api/attachment', name: 'api_attachment_')]
 class AttachmentController extends ApiControllerLib
 {
-    #[Route(path: '/delete/{attachment}', name: 'api_attachment_delete')]
+    #[Route(path: '/delete/{attachment}', name: 'delete')]
     public function delete(
         AttachmentRepository $attachmentRepository,
         Attachment $attachment

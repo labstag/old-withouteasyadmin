@@ -64,41 +64,26 @@ class UserCollectionEvent
         ];
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getAddressUser(): array
     {
         return $this->addressUser;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getEmailUser(): array
     {
         return $this->emailUser;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getLinkUser(): array
     {
         return $this->linkUser;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getOauthConnectUser(): array
     {
         return $this->oauthConnectUser;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getPhoneUser(): array
     {
         return $this->phoneUser;

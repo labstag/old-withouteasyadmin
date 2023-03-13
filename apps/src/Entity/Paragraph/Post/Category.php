@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityInterface;
-use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Repository\Paragraph\Post\CategoryRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'paragraph_post_category')]
 #[ApiResource(routePrefix: '/paragraph/post')]
-class Category implements Stringable, ParagraphInterface, EntityInterface
+class Category implements Stringable, EntityParagraphInterface, EntityInterface
 {
 
     #[ORM\Id]

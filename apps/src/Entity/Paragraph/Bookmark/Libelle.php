@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityInterface;
-use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Repository\Paragraph\Bookmark\LibelleRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: LibelleRepository::class)]
 #[ORM\Table(name: 'paragraph_bookmark_libelle')]
 #[ApiResource(routePrefix: '/paragraph/bookmark')]
-class Libelle implements Stringable, ParagraphInterface, EntityInterface
+class Libelle implements Stringable, EntityParagraphInterface, EntityInterface
 {
 
     #[ORM\Id]

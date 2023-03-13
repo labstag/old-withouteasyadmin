@@ -51,9 +51,6 @@ class PhoneUserDomain extends DomainLib
         return SearchPhoneUserType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

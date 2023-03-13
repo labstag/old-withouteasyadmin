@@ -51,9 +51,6 @@ class PageDomain extends DomainLib
         return SearchPageType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

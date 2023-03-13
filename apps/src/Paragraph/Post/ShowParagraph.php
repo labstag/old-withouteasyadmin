@@ -6,17 +6,18 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Show;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\ShowType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ShowParagraph extends ParagraphLib
+class ShowParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'post/show';
     }
@@ -46,7 +47,7 @@ class ShowParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Show $show): ?Response
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
@@ -64,10 +65,10 @@ class ShowParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($show)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
                 'post'      => $post,
-                'paragraph' => $show,
+                'paragraph' => $entityParagraph,
             ]
         );
     }

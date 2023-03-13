@@ -19,9 +19,6 @@ class BlockService
     {
     }
 
-    /**
-     * @return array<int|string, mixed>
-     */
     public function getAll(): array
     {
         $data = [];
@@ -34,9 +31,6 @@ class BlockService
         return $data;
     }
 
-    /**
-     * @return array<int|string, mixed>
-     */
     public function getCustomBlock(): array
     {
         $blocks = $this->blockRepository->findBy(

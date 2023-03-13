@@ -62,9 +62,6 @@ class InstallService
         return $data;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getEnv(array $serverEnv): array
     {
         $file   = dirname(__DIR__, 2).'/.env';

@@ -51,9 +51,6 @@ class GeoCodeDomain extends DomainLib
         return SearchGeoCodeType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

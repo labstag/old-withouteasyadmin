@@ -25,9 +25,6 @@ class DataService
         $this->setData();
     }
 
-    /**
-     * @return array<int|string, mixed>
-     */
     public function compute(ItemInterface $item): array
     {
         $item->expiresAfter(1800);
@@ -35,9 +32,6 @@ class DataService
         return $this->getConfiguration();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getConfig(): array
     {
         return $this->config;
@@ -58,9 +52,6 @@ class DataService
         return $config;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getOauthActivated(?User $user = null): array
     {
         if (is_null($user)) {
@@ -87,9 +78,6 @@ class DataService
         return $oauthActivateds;
     }
 
-    /**
-     * @return array<int|string, mixed>
-     */
     protected function getConfiguration(): array
     {
         $data   = $this->configurationRepository->findAll();
@@ -121,7 +109,7 @@ class DataService
 
     protected function setOauth(array $config): void
     {
-        if (!isset($config['oauth']) || !is_array($config['oauth'])) {
+        if (!in_array('oauth', $config) || !is_iterable($config['oauth'])) {
             return;
         }
 

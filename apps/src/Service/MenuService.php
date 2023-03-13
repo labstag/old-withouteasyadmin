@@ -36,6 +36,10 @@ class MenuService
     {
         $menus = [];
         $all   = $this->menuRepository->findAllCode();
+        if (!is_iterable($all)) {
+            return $menus;
+        }
+
         foreach ($all as $row) {
             $key         = $row->getClef();
             $menus[$key] = $this->createMenu($row);
@@ -59,6 +63,7 @@ class MenuService
 
         $childrens = $data->getChildren();
         foreach ($childrens as $children) {
+            /** @var Menu $children */
             $this->addMenu($item, $children);
         }
 

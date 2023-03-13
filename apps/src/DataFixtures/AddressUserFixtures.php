@@ -13,9 +13,6 @@ use Labstag\Lib\FixtureLib;
 
 class AddressUserFixtures extends FixtureLib implements DependentInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [

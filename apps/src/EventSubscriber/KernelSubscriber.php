@@ -119,10 +119,14 @@ class KernelSubscriber extends EventSubscriberLib
         $response   = $responseEvent->getResponse();
         $request    = $responseEvent->getRequest();
         $controller = $request->attributes->get('_controller');
-        preg_match(self::LABSTAG_CONTROLLER, (string) $controller, $matches);
-        preg_match(self::API_CONTROLLER, (string) $controller, $apis);
-        preg_match(self::PARAGRAPH_CONTROLLER, (string) $controller, $paragraphs);
-        preg_match(self::BLOCK_CONTROLLER, (string) $controller, $blocks);
+        if (!is_string($controller)) {
+            return;
+        }
+
+        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
+        preg_match(self::API_CONTROLLER, $controller, $apis);
+        preg_match(self::PARAGRAPH_CONTROLLER, $controller, $paragraphs);
+        preg_match(self::BLOCK_CONTROLLER, $controller, $blocks);
         $count = count($apis) + count($paragraphs) + count($blocks);
         $test1 = (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != $count);
         $test2 = ('html' != $request->getRequestFormat() || $response->getStatusCode() >= self::CLIENTNUMBER);

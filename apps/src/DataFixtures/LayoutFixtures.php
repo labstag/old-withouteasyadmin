@@ -5,14 +5,12 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Labstag\Entity\Block;
+use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
 use Labstag\Lib\FixtureLib;
 
 class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [
@@ -41,7 +39,16 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
         $layout  = new Layout();
         $old     = clone $layout;
         $customs = $block->getCustoms();
-        $layout->setCustom($customs[0]);
+        if (!is_iterable($customs) || !isset($customs[0])) {
+            return;
+        }
+
+        $custom = $customs[0];
+        if (!$custom instanceof Custom) {
+            return;
+        }
+
+        $layout->setCustom($custom);
         $layout->setName($dataLayout['name']);
         $layout->setUrl($dataLayout['url']);
 

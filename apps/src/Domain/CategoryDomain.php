@@ -51,9 +51,6 @@ class CategoryDomain extends DomainLib
         return SearchCategoryType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

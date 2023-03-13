@@ -12,6 +12,7 @@ use Labstag\Entity\Memo;
 use Labstag\Entity\Phone;
 use Labstag\Entity\Post;
 use Labstag\Entity\User;
+use Labstag\Interfaces\EntityInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 class WorkflowService
@@ -46,7 +47,7 @@ class WorkflowService
         ];
     }
 
-    public function get(mixed $entity): ?WorkflowInterface
+    public function get(EntityInterface $entity): ?WorkflowInterface
     {
         if (isset($this->data[$entity::class])) {
             return $this->data[$entity::class];
@@ -55,7 +56,7 @@ class WorkflowService
         return null;
     }
 
-    public function has(mixed $entity): bool
+    public function has(EntityInterface $entity): bool
     {
         return isset($this->data[$entity::class]);
     }

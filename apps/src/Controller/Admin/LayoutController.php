@@ -19,10 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/layout')]
+#[Route(path: '/admin/layout', name: 'admin_layout_')]
 class LayoutController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_layout_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         ?Layout $layout
     ): Response
@@ -35,8 +35,8 @@ class LayoutController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_layout_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_layout_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(Request $request): Response
     {
         $this->adminBtnService->add(
@@ -80,7 +80,7 @@ class LayoutController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/new', name: 'admin_layout_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
         LayoutRepository $layoutRepository,
@@ -110,8 +110,8 @@ class LayoutController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_layout_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_layout_preview', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
     public function showOrPreview(Layout $layout): Response
     {
         return $this->renderShowOrPreview(

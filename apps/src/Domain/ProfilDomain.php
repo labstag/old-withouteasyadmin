@@ -44,9 +44,6 @@ class ProfilDomain extends DomainLib
         return $this->profilSearch;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [

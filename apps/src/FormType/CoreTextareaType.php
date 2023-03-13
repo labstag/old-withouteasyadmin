@@ -21,7 +21,14 @@ class CoreTextareaType extends AbstractType
     ): void
     {
         $attr = $options['attr'];
-        $attr['rows'] ??= self::ROWS;
+        if (!is_array($attr)) {
+            $attr = [];
+        }
+
+        if (!in_array('rows', $attr)) {
+            $attr['rows'] = self::ROWS;
+        }
+
         $formView->vars['attr'] = $attr;
         unset($form);
     }

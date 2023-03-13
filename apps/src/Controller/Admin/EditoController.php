@@ -16,10 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/edito')]
+#[Route(path: '/admin/edito', name: 'admin_edito_')]
 class EditoController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_edito_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         ?Edito $edito
     ): Response
@@ -32,8 +32,8 @@ class EditoController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_edito_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_edito_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function indexOrTrash(): Response
     {
         return $this->listOrTrash(
@@ -42,7 +42,7 @@ class EditoController extends AdminControllerLib
         );
     }
 
-    #[Route(path: '/new', name: 'admin_edito_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         EditoRepository $editoRepository,
         EditoRequestHandler $editoRequestHandler,
@@ -67,8 +67,8 @@ class EditoController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_edito_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_edito_preview', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
     public function showOrPreview(Edito $edito): Response
     {
         return $this->renderShowOrPreview(

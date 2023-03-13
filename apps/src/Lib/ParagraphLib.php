@@ -5,7 +5,7 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Paragraph;
-use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
@@ -40,9 +40,9 @@ abstract class ParagraphLib extends AbstractController
     {
     }
 
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return '';
     }

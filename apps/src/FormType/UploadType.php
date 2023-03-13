@@ -28,6 +28,10 @@ class UploadType extends AbstractType
     {
         /** @var FormInterface $parent */
         $parent = $form->getParent();
+        if (is_null($parent)) {
+            return;
+        }
+
         $entity = $parent->getData();
         $name   = $form->getName();
         $field  = null;
@@ -43,7 +47,7 @@ class UploadType extends AbstractType
 
         $formView->vars['field'] = $field;
         $formView->vars['url']   = null;
-        if (null != $field) {
+        if ($field instanceof Attachment) {
             $route = $this->router->generate(
                 'api_attachment_delete',
                 ['attachment' => $field->getId()]

@@ -10,11 +10,11 @@ use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/geocode')]
+#[Route(path: '/admin/geocode', name: 'admin_geocode_')]
 class GeoCodeController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_geocode_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_geocode_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function edit(
         ?GeoCode $geoCode
     ): Response
@@ -26,8 +26,8 @@ class GeoCodeController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_geocode_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_geocode_index', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->listOrTrash(
@@ -37,8 +37,8 @@ class GeoCodeController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_geocode_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_geocode_preview', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
     public function showOrPreview(GeoCode $geoCode): Response
     {
         return $this->renderShowOrPreview(

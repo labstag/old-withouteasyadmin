@@ -36,25 +36,29 @@ class DisclaimerSubscriber extends EventSubscriberLib
     {
         $config     = $this->dataService->getConfig();
         $controller = $request->attributes->get('_controller');
-        $key        = 'disclaimer';
-        $session    = $request->getSession();
+        if (!is_string($controller)) {
+            return false;
+        }
+
+        $key     = 'disclaimer';
+        $session = $request->getSession();
         if (!isset($config[$key]) || !isset($config[$key])) {
             return false;
         }
 
-        if (0 === substr_count((string) $controller, 'Labstag')) {
+        if (0 === substr_count($controller, 'Labstag')) {
             return false;
         }
 
-        if (0 !== substr_count((string) $controller, 'Controller\\Api')) {
+        if (0 !== substr_count($controller, 'Controller\\Api')) {
             return false;
         }
 
-        if (0 !== substr_count((string) $controller, 'Controller\\Admin')) {
+        if (0 !== substr_count($controller, 'Controller\\Admin')) {
             return false;
         }
 
-        if (0 !== substr_count((string) $controller, 'SecurityController')) {
+        if (0 !== substr_count($controller, 'SecurityController')) {
             return false;
         }
 

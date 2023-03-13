@@ -51,9 +51,6 @@ class AddressUserDomain extends DomainLib
         return SearchAddressUserType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getTitles(): array
     {
         return [
