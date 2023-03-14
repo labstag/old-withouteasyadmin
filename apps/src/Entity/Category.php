@@ -150,7 +150,8 @@ class Category implements Stringable, EntityTrashInterface
     {
         $this->removeElementCategory(
             element: $this->posts,
-            post: $post);
+            post: $post
+        );
 
         return $this;
     }

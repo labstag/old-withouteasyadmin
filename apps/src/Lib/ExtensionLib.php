@@ -105,6 +105,7 @@ abstract class ExtensionLib extends AbstractExtension
         if (!is_array($vars)) {
             $vars = [];
         }
+
         $type = strtolower($this->setTypeformClass($vars));
         if (isset($this->templates['form'][$type])) {
             return $this->templates['form'][$type];
@@ -152,7 +153,7 @@ abstract class ExtensionLib extends AbstractExtension
 
         if (isset($class->vars)) {
             /** @var array $vars */
-            $vars      = $class->vars;
+            $vars = $class->vars;
             if (!is_array($vars)) {
                 $vars = [];
             }

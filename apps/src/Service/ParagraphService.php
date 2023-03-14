@@ -83,7 +83,7 @@ class ParagraphService
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() === $field) {
                 $entities = $propertyAccessor->getValue($paragraph, $field);
-                $entity = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
 
                 break;
             }
@@ -283,7 +283,7 @@ class ParagraphService
             $entityFront instanceof Memo    => 'setMemo',
             $entityFront instanceof Page    => 'setPage',
             $entityFront instanceof Post    => 'setPost',
-            default                   => null,
+            default                         => null,
         };
     }
 }
