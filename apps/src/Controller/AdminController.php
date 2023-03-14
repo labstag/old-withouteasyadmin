@@ -33,22 +33,22 @@ class AdminController extends AdminControllerLib
         ksort($config);
         $content = json_encode($config, JSON_PRETTY_PRINT);
         $file    = dirname(__DIR__, 1).'/json/config.json';
-        if (is_file($file)) {
-            try {
-                file_put_contents($file, $content);
-                $this->sessionService->flashBagAdd(
-                    'success',
-                    $this->translator->trans('admin.flashbag.data.export.success')
-                );
-            } catch (Exception $exception) {
-                $this->errorService->set($exception);
-                $paramtrans = ['%file%' => $file];
-
-                $msg = $this->translator->trans('admin.flashbag.data.export.fail', $paramtrans);
-                $this->sessionService->flashBagAdd('danger', $msg);
-            }
-        } else {
+        if (!is_file($file)) {
             throw new Exception('File not found');
+        }
+
+        try {
+            file_put_contents($file, $content);
+            $this->sessionService->flashBagAdd(
+                'success',
+                $this->translator->trans('admin.flashbag.data.export.success')
+            );
+        } catch (Exception $exception) {
+            $this->errorService->set($exception);
+            $paramtrans = ['%file%' => $file];
+
+            $msg = $this->translator->trans('admin.flashbag.data.export.fail', $paramtrans);
+            $this->sessionService->flashBagAdd('danger', $msg);
         }
 
         return $this->redirectToRoute('admin_param');

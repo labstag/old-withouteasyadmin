@@ -36,6 +36,81 @@ class LabstagUserCommand extends CommandLib
         parent::__construct($repositoryService, $entityManager);
     }
 
+    public function setUserEmail(
+        SymfonyStyle $symfonyStyle,
+        QuestionHelper $questionHelper,
+        InputInterface $input,
+        OutputInterface $output,
+        User $user
+    ): void
+    {
+        $accept = false;
+        while (!$accept) {
+            $question = new Question("Entrer l'email de l'utilisateur : ");
+            $email    = $questionHelper->ask($input, $output, $question);
+            if (!is_string($email)) {
+                $symfonyStyle->error('Email incorrect');
+
+                continue;
+            }
+
+            $accept = true;
+            $user->setEmail($email);
+        }
+    }
+
+    public function setUserPassword(
+        SymfonyStyle $symfonyStyle,
+        QuestionHelper $questionHelper,
+        InputInterface $input,
+        OutputInterface $output,
+        User $user
+    ): void
+    {
+        $accept = false;
+        while (!$accept) {
+            $question = new Question("Entrer le password de l'utilisateur : ");
+            $question->setHidden(true);
+
+            $password1 = $questionHelper->ask($input, $output, $question);
+            $question  = new Question("Resaisir le password de l'utilisateur : ");
+            $question->setHidden(true);
+
+            $password2 = $questionHelper->ask($input, $output, $question);
+            if (!is_string($password1) || !is_string($password2) || $password1 !== $password2) {
+                $symfonyStyle->error('Mot de passe incorrect');
+
+                continue;
+            }
+
+            $accept = true;
+            $user->setPlainPassword($password1);
+        }
+    }
+
+    public function setUserUsername(
+        SymfonyStyle $symfonyStyle,
+        QuestionHelper $questionHelper,
+        InputInterface $input,
+        OutputInterface $output,
+        User $user
+    ): void
+    {
+        $accept = false;
+        while (!$accept) {
+            $question = new Question("Entrer le username de l'utilisateur : ");
+            $username = $questionHelper->ask($input, $output, $question);
+            if (!is_string($username)) {
+                $symfonyStyle->error('Username incorrect');
+
+                continue;
+            }
+
+            $accept = true;
+            $user->setUsername($username);
+        }
+    }
+
     protected function actionEnableDisableDelete(
         InputInterface $input,
         OutputInterface $output,
@@ -135,64 +210,21 @@ class LabstagUserCommand extends CommandLib
         $symfonyStyle = new SymfonyStyle($input, $output);
         $user         = new User();
         $old          = clone $user;
-        $question     = new Question("Entrer le username de l'utilisateur : ");
-        $username     = $questionHelper->ask($input, $output, $question);
-        if (!is_string($username)) {
-            $symfonyStyle->error('Username incorrect');
-
-            return;
+        $functions    = [
+            'setUserUsername',
+            'setUserPassword',
+            'setUserEmail',
+        ];
+        foreach ($functions as $function) {
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            call_user_func_array($callable, [$symfonyStyle, $questionHelper, $input, $output, $user]);
         }
 
-        $user->setUsername($username);
-        $question = new Question("Entrer le password de l'utilisateur : ");
-        $question->setHidden(true);
-
-        $password1 = $questionHelper->ask($input, $output, $question);
-        $question  = new Question("Resaisir le password de l'utilisateur : ");
-        $question->setHidden(true);
-
-        $password2 = $questionHelper->ask($input, $output, $question);
-        if (!is_string($password1) || !is_string($password2) || $password1 !== $password2) {
-            $symfonyStyle->error('Mot de passe incorrect');
-
-            return;
-        }
-
-        $user->setPlainPassword($password1);
-        $question = new Question("Entrer l'email de l'utilisateur : ");
-        $email    = $questionHelper->ask($input, $output, $question);
-        if (!is_string($email)) {
-            $symfonyStyle->error('Email incorrect');
-
-            return;
-        }
-
-        $user->setEmail($email);
-        $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
-        $data    = [];
-        foreach ($groupes as $groupe) {
-            /** @var Groupe $groupe */
-            if ('visiteur' == $groupe->getCode()) {
-                continue;
-            }
-
-            $data[$groupe->getCode()] = $groupe->getName();
-        }
-
-        $question = new ChoiceQuestion(
-            "Groupe à attribuer à l'utilisateur",
-            $data
-        );
-        $selection = $questionHelper->ask($input, $output, $question);
-        foreach ($groupes as $groupe) {
-            /** @var Groupe $groupe */
-            if ($selection != $groupe->getCode()) {
-                continue;
-            }
-
-            $user->setRefgroupe($groupe);
-        }
-
+        $this->setUserGroup($questionHelper, $input, $output, $user);
         $this->userRequestHandler->handle($old, $user);
         $symfonyStyle->success('Utilisateur ajouté');
     }
@@ -503,5 +535,38 @@ class LabstagUserCommand extends CommandLib
         $entity->setPlainPassword($password1);
         $this->userRequestHandler->handle($old, $entity);
         $symfonyStyle->success('Mot de passe changé');
+    }
+
+    private function setUserGroup(
+        QuestionHelper $questionHelper,
+        InputInterface $input,
+        OutputInterface $output,
+        User $user
+    ): void
+    {
+        $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
+        $data    = [];
+        foreach ($groupes as $groupe) {
+            /** @var Groupe $groupe */
+            if ('visiteur' == $groupe->getCode()) {
+                continue;
+            }
+
+            $data[$groupe->getCode()] = $groupe->getName();
+        }
+
+        $choiceQuestion = new ChoiceQuestion(
+            "Groupe à attribuer à l'utilisateur",
+            $data
+        );
+        $selection = $questionHelper->ask($input, $output, $choiceQuestion);
+        foreach ($groupes as $groupe) {
+            /** @var Groupe $groupe */
+            if ($selection != $groupe->getCode()) {
+                continue;
+            }
+
+            $user->setRefgroupe($groupe);
+        }
     }
 }

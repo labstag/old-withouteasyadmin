@@ -54,6 +54,66 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         parent::__construct($repositoryService, $entityManager);
     }
 
+    public function executeChapter(): void
+    {
+        $all = $this->chapterRepository->findAll();
+        foreach ($all as $entity) {
+            /** @var Chapter $entity */
+            $old = clone $entity;
+            $this->chapterRequestHandler->handle($old, $entity);
+        }
+    }
+
+    public function executeEdito(): void
+    {
+        $all = $this->editoRepository->findAll();
+        foreach ($all as $entity) {
+            /** @var Edito $entity */
+            $old = clone $entity;
+            $this->editoRequestHandler->handle($old, $entity);
+        }
+    }
+
+    public function executeHistory(): void
+    {
+        $all = $this->historyRepository->findAll();
+        foreach ($all as $entity) {
+            /** @var History $entity */
+            $old = clone $entity;
+            $this->historyRequestHandler->handle($old, $entity);
+        }
+    }
+
+    public function executePage(): void
+    {
+        $all = $this->pageRepository->findAll();
+        foreach ($all as $entity) {
+            /** @var Page $entity */
+            $old = clone $entity;
+            $this->pageRequestHandler->handle($old, $entity);
+        }
+    }
+
+    public function executePost(): void
+    {
+        $all = $this->postRepository->findAll();
+        foreach ($all as $entity) {
+            /** @var Post $entity */
+            $old = clone $entity;
+            $this->postRequestHandler->handle($old, $entity);
+        }
+    }
+
+    public function executeRender(): void
+    {
+        $all = $this->renderRepository->findAll();
+        foreach ($all as $entity) {
+            /** @var Render $entity */
+            $old = clone $entity;
+            $this->renderRequestHandler->handle($old, $entity);
+        }
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
@@ -77,65 +137,5 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
         $symfonyStyle->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
-    }
-
-    private function executeChapter(): void
-    {
-        $all = $this->chapterRepository->findAll();
-        foreach ($all as $entity) {
-            /** @var Chapter $entity */
-            $old = clone $entity;
-            $this->chapterRequestHandler->handle($old, $entity);
-        }
-    }
-
-    private function executeEdito(): void
-    {
-        $all = $this->editoRepository->findAll();
-        foreach ($all as $entity) {
-            /** @var Edito $entity */
-            $old = clone $entity;
-            $this->editoRequestHandler->handle($old, $entity);
-        }
-    }
-
-    private function executeHistory(): void
-    {
-        $all = $this->historyRepository->findAll();
-        foreach ($all as $entity) {
-            /** @var History $entity */
-            $old = clone $entity;
-            $this->historyRequestHandler->handle($old, $entity);
-        }
-    }
-
-    private function executePage(): void
-    {
-        $all = $this->pageRepository->findAll();
-        foreach ($all as $entity) {
-            /** @var Page $entity */
-            $old = clone $entity;
-            $this->pageRequestHandler->handle($old, $entity);
-        }
-    }
-
-    private function executePost(): void
-    {
-        $all = $this->postRepository->findAll();
-        foreach ($all as $entity) {
-            /** @var Post $entity */
-            $old = clone $entity;
-            $this->postRequestHandler->handle($old, $entity);
-        }
-    }
-
-    private function executeRender(): void
-    {
-        $all = $this->renderRepository->findAll();
-        foreach ($all as $entity) {
-            /** @var Render $entity */
-            $old = clone $entity;
-            $this->renderRequestHandler->handle($old, $entity);
-        }
     }
 }
