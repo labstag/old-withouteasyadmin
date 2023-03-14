@@ -5,6 +5,7 @@ namespace Labstag\Domain\User;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -13,7 +14,7 @@ use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Search\UserSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class UserDomain extends DomainLib
+class UserDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected UserRequestHandler $userRequestHandler,

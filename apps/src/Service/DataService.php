@@ -4,6 +4,7 @@ namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
+use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -63,6 +64,7 @@ class DataService
         foreach ($oauthActivateds as $index => $oauthActivated) {
             $trouver = 0;
             foreach ($oauthConnectUsers as $oauthConnectUser) {
+                /** @var OauthConnectUser $oauthConnectUser */
                 if ($oauthConnectUser->getName() == $oauthActivated['type']) {
                     $trouver = 1;
 

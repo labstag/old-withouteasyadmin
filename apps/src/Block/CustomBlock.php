@@ -7,7 +7,8 @@ use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
 use Labstag\Form\Admin\Block\CustomType;
 use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityBlockInterface;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\LayoutRepository;
 use Labstag\Service\ParagraphService;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class CustomBlock extends BlockLib
+class CustomBlock extends BlockLib implements BlockInterface
 {
     public function __construct(
         TranslatorInterface $translator,
@@ -30,9 +31,9 @@ class CustomBlock extends BlockLib
         parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
+    public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
-        unset($entityBlockLib, $front);
+        unset($entityBlock, $entityFront);
 
         return 'custom';
     }
@@ -62,15 +63,19 @@ class CustomBlock extends BlockLib
         return false;
     }
 
-    public function show(Custom $custom, ?FrontInterface $front): Response
+    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
     {
-        $paragraphs = $this->setParagraphs($custom);
+        if (!$entityBlock instanceof Custom) {
+            return null;
+        }
+
+        $paragraphs = $this->setParagraphs($entityBlock);
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($custom, $front)),
+            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
             [
                 'paragraphs' => $paragraphs,
-                'block'      => $custom,
+                'block'      => $entityBlock,
             ]
         );
     }

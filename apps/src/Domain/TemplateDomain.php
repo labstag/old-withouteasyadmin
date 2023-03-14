@@ -6,6 +6,7 @@ use Labstag\Entity\Template;
 
 use Labstag\Form\Admin\Search\TemplateType as SearchTemplateType;
 use Labstag\Form\Admin\TemplateType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\Search\TemplateSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class TemplateDomain extends DomainLib
+class TemplateDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected TemplateRequestHandler $templateRequestHandler,

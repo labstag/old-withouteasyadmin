@@ -6,8 +6,8 @@ use DateTime;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
 use Labstag\Repository\EditoRepository;
 use Labstag\RequestHandler\EditoRequestHandler;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -78,10 +78,10 @@ class EditoController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function getDomainEntity(): DomainInterface
     {
         $domainLib = $this->domainService->getDomain(Edito::class);
-        if (!$domainLib instanceof DomainLib) {
+        if (!$domainLib instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

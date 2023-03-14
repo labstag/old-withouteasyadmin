@@ -52,9 +52,9 @@ abstract class ParagraphLib extends AbstractController
         unset($paragraph);
     }
 
-    public function template(mixed $entity): array
+    public function template(EntityParagraphInterface $entityParagraph): array
     {
-        return $this->showTemplateFile($this->getCode($entity));
+        return $this->showTemplateFile($this->getCode($entityParagraph));
     }
 
     protected function getTemplateData(string $type): array
@@ -103,7 +103,8 @@ abstract class ParagraphLib extends AbstractController
     {
         $data    = $this->getTemplateData($type);
         $globals = $this->twigEnvironment->getGlobals();
-        if ('dev' == $globals['app']->getDebug()) {
+        $app     = $globals['app'];
+        if ('dev' == $app->getDebug()) {
             return $data;
         }
 

@@ -5,15 +5,16 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Flashbag;
 use Labstag\Form\Admin\Block\FlashbagType;
 use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityBlockInterface;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
 use Symfony\Component\HttpFoundation\Response;
 
-class FlashbagBlock extends BlockLib
+class FlashbagBlock extends BlockLib implements BlockInterface
 {
-    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
+    public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
-        unset($entityBlockLib, $front);
+        unset($entityBlock, $entityFront);
 
         return 'flashbag';
     }
@@ -43,11 +44,15 @@ class FlashbagBlock extends BlockLib
         return false;
     }
 
-    public function show(Flashbag $flashbag, ?FrontInterface $front): Response
+    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
     {
+        if (!$entityBlock instanceof Flashbag) {
+            return null;
+        }
+
         return $this->render(
-            $this->getTemplateFile($this->getCode($flashbag, $front)),
-            ['block' => $flashbag]
+            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
+            ['block' => $entityBlock]
         );
     }
 }

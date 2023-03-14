@@ -6,6 +6,7 @@ use Labstag\Entity\Libelle;
 use Labstag\Form\Admin\LibelleType;
 
 use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\Search\LibelleSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class LibelleDomain extends DomainLib
+class LibelleDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected LibelleRequestHandler $libelleRequestHandler,

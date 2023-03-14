@@ -8,14 +8,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Block\Custom;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\EntityTrashInterface;
-use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\LayoutRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: LayoutRepository::class)]
 #[ApiResource]
-class Layout implements FrontInterface, EntityTrashInterface
+class Layout implements EntityFrontInterface, EntityTrashInterface
 {
     use SoftDeleteableEntity;
 

@@ -102,6 +102,9 @@ abstract class ExtensionLib extends AbstractExtension
         }
 
         $vars = $class->vars;
+        if (!is_array($vars)) {
+            $vars = [];
+        }
         $type = strtolower($this->setTypeformClass($vars));
         if (isset($this->templates['form'][$type])) {
             return $this->templates['form'][$type];
@@ -150,6 +153,10 @@ abstract class ExtensionLib extends AbstractExtension
         if (isset($class->vars)) {
             /** @var array $vars */
             $vars      = $class->vars;
+            if (!is_array($vars)) {
+                $vars = [];
+            }
+
             $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
             if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
                 $files[] = 'forms/paragraph/'.$type.$htmltwig;

@@ -7,8 +7,8 @@ use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Service\HistoryService;
@@ -141,10 +141,10 @@ class HistoryController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function getDomainEntity(): DomainInterface
     {
         $domainLib = $this->domainService->getDomain(History::class);
-        if (!$domainLib instanceof DomainLib) {
+        if (!$domainLib instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

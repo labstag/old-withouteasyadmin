@@ -2,18 +2,27 @@
 
 namespace Labstag\RequestHandler;
 
+use Labstag\Entity\Attachment;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\RequestHandlerLib;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 class AttachmentRequestHandler extends RequestHandlerLib
 {
-    public function handle(mixed $oldEntity, mixed $entity): void
+    public function handle(EntityInterface $oldEntity, EntityInterface $entity): void
     {
         parent::handle($oldEntity, $entity);
+        if (!$oldEntity instanceof Attachment || !$entity instanceof Attachment) {
+            return;
+        }
 
-        $oldFile = $oldEntity->getName();
-        if ('' != $oldFile && is_file($oldFile)) {
-            unlink($oldFile);
+        $name = $oldEntity->getName();
+        if (!is_string($name)) {
+            return;
+        }
+
+        if ('' != $name && is_file($name)) {
+            unlink($name);
         }
 
         /** @var WorkflowInterface $workflow */

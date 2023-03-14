@@ -6,6 +6,7 @@ use Labstag\Entity\Bookmark;
 
 use Labstag\Form\Admin\Bookmark\PrincipalType;
 use Labstag\Form\Admin\Search\BookmarkType as SearchBookmarkType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\BookmarkRequestHandler;
 use Labstag\Search\BookmarkSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class BookmarkDomain extends DomainLib
+class BookmarkDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected BookmarkRequestHandler $bookmarkRequestHandler,

@@ -5,6 +5,7 @@ namespace Labstag\Service;
 use Labstag\Entity\Attachment;
 use Labstag\RequestHandler\AttachmentRequestHandler;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileService
 {
@@ -16,20 +17,20 @@ class FileService
     }
 
     public function moveFile(
-        mixed $file,
+        UploadedFile $uploadedFile,
         string $path,
         string $filename,
         ?Attachment $attachment,
         ?Attachment $old
     ): void
     {
-        $file->move(
+        $uploadedFile->move(
             $path,
             $filename
         );
-        $file = $path.'/'.$filename;
+        $uploadedFile = $path.'/'.$filename;
 
-        $this->setAttachment($file, $attachment, $old);
+        $this->setAttachment($uploadedFile, $attachment, $old);
     }
 
     public function setAttachment(

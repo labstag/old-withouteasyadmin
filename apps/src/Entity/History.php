@@ -119,6 +119,7 @@ class History implements PublicInterface, EntityTrashInterface
         $arrayCollection = new ArrayCollection();
         $chapters        = $this->getChapters();
         foreach ($chapters as $chapter) {
+            /** @var Chapter $chapter */
             $state     = in_array('publie', (array) $chapter->getState());
             $published = $chapter->getPublished() <= new DateTime();
             if ($state && $published) {

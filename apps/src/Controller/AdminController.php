@@ -170,7 +170,6 @@ class AdminController extends AdminControllerLib
     ): Response
     {
         $all = $trashService->all();
-        dump($all);
         if (0 == (is_countable($all) ? count($all) : 0)) {
             $this->sessionService->flashBagAdd(
                 'danger',
@@ -182,6 +181,10 @@ class AdminController extends AdminControllerLib
 
         $globals = $twigEnvironment->getGlobals();
         $modal   = $globals['modal'] ?? [];
+        if (!is_array($modal)) {
+            $modal = [];
+        }
+
         if (!isset($modal['empty'])) {
             $modal['empty'] = false;
         }

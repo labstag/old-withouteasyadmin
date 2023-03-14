@@ -164,14 +164,20 @@ class Chapter implements PublicInterface, EntityTrashInterface
 
     public function removeMeta(Meta $meta): self
     {
-        $this->removeElementChapter($this->metas, $meta);
+        $this->removeElementChapter(
+            element: $this->metas,
+            meta: $meta
+        );
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        $this->removeElementChapter($this->paragraphs, $paragraph);
+        $this->removeElementChapter(
+            element: $this->paragraphs,
+            paragraph: $paragraph
+        );
 
         return $this;
     }
@@ -241,9 +247,15 @@ class Chapter implements PublicInterface, EntityTrashInterface
 
     private function removeElementChapter(
         Collection $element,
-        mixed $variable
+        ?Meta $meta = null,
+        ?Paragraph $paragraph = null
     ): void
     {
+        if (is_null($meta) && is_null($paragraph)) {
+            return;
+        }
+
+        $variable = is_null($meta) ? $paragraph : $meta;
         if ($element->removeElement($variable) && $variable->getChapter() === $this) {
             $variable->setChapter(null);
         }

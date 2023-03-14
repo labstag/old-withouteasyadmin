@@ -6,6 +6,7 @@ use Labstag\Entity\Category;
 use Labstag\Form\Admin\CategoryType;
 
 use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\Search\CategorySearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CategoryDomain extends DomainLib
+class CategoryDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected CategoryRequestHandler $categoryRequestHandler,

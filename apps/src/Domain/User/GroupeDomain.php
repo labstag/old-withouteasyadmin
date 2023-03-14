@@ -6,6 +6,7 @@ use Labstag\Entity\Groupe;
 
 use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\Search\GroupeSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class GroupeDomain extends DomainLib
+class GroupeDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected GroupeRequestHandler $groupeRequestHandler,

@@ -6,8 +6,8 @@ use DateTime;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
 use Labstag\Repository\PostRepository;
 use Labstag\RequestHandler\PostRequestHandler;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -79,10 +79,10 @@ class PostController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function getDomainEntity(): DomainInterface
     {
         $domainLib = $this->domainService->getDomain(Post::class);
-        if (!$domainLib instanceof DomainLib) {
+        if (!$domainLib instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

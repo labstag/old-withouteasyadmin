@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin\Page;
 use Exception;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Lib\ParagraphControllerLib;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use Labstag\Service\ParagraphService;
@@ -36,9 +37,14 @@ class ParagraphController extends ParagraphControllerLib
     #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
+        $page = $paragraph->getPage();
+        if (!$page instanceof PublicInterface) {
+            throw new Exception('edito is not public interface');
+        }
+
         return $this->deleteParagraph(
             $paragraph,
-            $paragraph->getPage(),
+            $page,
             'admin_page_edit'
         );
     }

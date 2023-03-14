@@ -2,11 +2,21 @@
 
 namespace Labstag\Interfaces;
 
-use Labstag\Entity\Block;
+use Symfony\Component\HttpFoundation\Response;
 
 interface BlockInterface
 {
-    public function getBlock(): ?Block;
+    public function getEntity(): string;
 
-    public function setBlock(?Block $block): self;
+    public function getForm(): string;
+
+    public function getName(): string;
+
+    public function getType(): string;
+
+    public function isShowForm(): bool;
+
+    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response;
+
+    public function template(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): array;
 }

@@ -26,7 +26,7 @@ use Labstag\Event\ParagraphEntityEvent;
 use Labstag\Event\PostEntityEvent;
 use Labstag\Event\RenderEntityEvent;
 use Labstag\Event\UserEntityEvent;
-use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Interfaces\PublicInterface;
@@ -76,7 +76,7 @@ class EntitySubscriber extends EventSubscriberLib
             return;
         }
 
-        /** @var BlockInterface $entity */
+        /** @var EntityBlockInterface $entity */
         $entity = new $classentity();
         $entity->setBlock($block);
 

@@ -6,6 +6,7 @@ use Labstag\Entity\Chapter;
 
 use Labstag\Form\Admin\ChapterType;
 use Labstag\Form\Admin\Search\ChapterType as SearchChapterType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\ChapterRequestHandler;
 use Labstag\Search\ChapterSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ChapterDomain extends DomainLib
+class ChapterDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected ChapterRequestHandler $chapterRequestHandler,

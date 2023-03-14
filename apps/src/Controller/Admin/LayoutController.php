@@ -7,8 +7,8 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
 use Labstag\Form\Admin\NewLayoutType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
 use Labstag\Repository\Block\CustomRepository;
 use Labstag\Repository\LayoutRepository;
 use Labstag\RequestHandler\LayoutRequestHandler;
@@ -121,10 +121,10 @@ class LayoutController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function getDomainEntity(): DomainInterface
     {
         $domainLib = $this->domainService->getDomain(Layout::class);
-        if (!$domainLib instanceof DomainLib) {
+        if (!$domainLib instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

@@ -5,7 +5,6 @@ namespace Labstag\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
-use Labstag\Form\Admin\Paragraph\Post\UserType;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
@@ -207,7 +206,7 @@ class LabstagUserCommand extends CommandLib
     ): void
     {
         $entity = $this->userRepository->findOneBy(['username' => $username]);
-        if (!$entity instanceof UserType) {
+        if (!$entity instanceof User) {
             $symfonyStyle->warning(
                 ['Utilisateur introuvable']
             );

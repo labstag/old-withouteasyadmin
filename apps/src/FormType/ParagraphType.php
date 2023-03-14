@@ -2,7 +2,7 @@
 
 namespace Labstag\FormType;
 
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Service\ParagraphService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -30,7 +30,7 @@ class ParagraphType extends AbstractType
         /** @var FormInterface $parent */
         $parent = $form->getParent();
         $entity = $parent->getData();
-        if (!$entity instanceof FrontInterface) {
+        if (!$entity instanceof EntityFrontInterface) {
             return;
         }
 

@@ -5,8 +5,8 @@ namespace Labstag\Controller\Admin;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,10 +24,10 @@ class AttachmentController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function getDomainEntity(): DomainInterface
     {
         $domainLib = $this->domainService->getDomain(Attachment::class);
-        if (!$domainLib instanceof DomainLib) {
+        if (!$domainLib instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

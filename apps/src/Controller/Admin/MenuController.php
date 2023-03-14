@@ -5,8 +5,8 @@ namespace Labstag\Controller\Admin;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
 use Labstag\Repository\MenuRepository;
 use Labstag\RequestHandler\MenuRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -92,9 +92,13 @@ class MenuController extends AdminControllerLib
         MenuRepository $menuRepository
     ): Response
     {
-        $all             = $menuRepository->findAllCode();
-        $globals         = $twigEnvironment->getGlobals();
-        $modal           = $globals['modal'] ?? [];
+        $all     = $menuRepository->findAllCode();
+        $globals = $twigEnvironment->getGlobals();
+        $modal   = $globals['modal'] ?? [];
+        if (is_array($modal)) {
+            $modal = [];
+        }
+
         $modal['delete'] = true;
         $twigEnvironment->addGlobal('modal', $modal);
         $this->adminBtnService->addBtnNew('admin_menu_new');
@@ -156,10 +160,10 @@ class MenuController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function getDomainEntity(): DomainInterface
     {
         $domainLib = $this->domainService->getDomain(Menu::class);
-        if (!$domainLib instanceof DomainLib) {
+        if (!$domainLib instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

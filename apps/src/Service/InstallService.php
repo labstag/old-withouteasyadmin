@@ -59,6 +59,10 @@ class InstallService
             );
         }
 
+        if (!is_array($data)) {
+            $data = [];
+        }
+
         return $data;
     }
 

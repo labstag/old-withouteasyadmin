@@ -136,7 +136,10 @@ class Groupe implements Stringable, EntityTrashInterface
 
     public function removeRoute(RouteGroupe $routeGroupe): self
     {
-        $this->removeElementGroupe($this->routes, $routeGroupe);
+        $this->removeElementGroupe(
+            element: $this->routes,
+            routeGroupe: $routeGroupe
+        );
 
         return $this;
     }
@@ -156,7 +159,10 @@ class Groupe implements Stringable, EntityTrashInterface
 
     public function removeWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
     {
-        $this->removeElementGroupe($this->workflowGroupes, $workflowGroupe);
+        $this->removeElementGroupe(
+            element: $this->workflowGroupes,
+            workflowGroupe: $workflowGroupe
+        );
 
         return $this;
     }
@@ -177,9 +183,15 @@ class Groupe implements Stringable, EntityTrashInterface
 
     private function removeElementGroupe(
         Collection $element,
-        mixed $variable
+        ?RouteGroupe $routeGroupe = null,
+        ?WorkflowGroupe $workflowGroupe = null
     ): void
     {
+        if (is_null($routeGroupe) && is_null($workflowGroupe)) {
+            return;
+        }
+
+        $variable = is_null($routeGroupe) ? $workflowGroupe : $routeGroupe;
         if ($element->removeElement($variable) && $variable->getRefgroupe() === $this) {
             $variable->setRefgroupe(null);
         }

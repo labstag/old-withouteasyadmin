@@ -6,6 +6,7 @@ use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
 
 use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\Search\EditoSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EditoDomain extends DomainLib
+class EditoDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected EditoRequestHandler $editoRequestHandler,

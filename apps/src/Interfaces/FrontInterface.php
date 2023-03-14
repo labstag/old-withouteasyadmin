@@ -2,9 +2,9 @@
 
 namespace Labstag\Interfaces;
 
-use Doctrine\Common\Collections\Collection;
-
-interface FrontInterface extends EntityInterface
+interface FrontInterface
 {
-    public function getParagraphs(): Collection;
+    public function setBreadcrumb(?EntityFrontInterface $entityFront, array $breadcrumb): array;
+
+    public function setMeta(?EntityFrontInterface $entityFront, array $meta): array;
 }

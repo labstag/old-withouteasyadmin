@@ -10,6 +10,7 @@ use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\PhoneUser;
 use Labstag\Entity\User;
 use Labstag\Event\UserCollectionEvent;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -26,7 +27,7 @@ abstract class RequestHandlerLib
     {
     }
 
-    public function changeWorkflowState(mixed $entity, array $states): void
+    public function changeWorkflowState(EntityInterface $entity, array $states): void
     {
         if (!$this->workflowService->has($entity)) {
             return;
@@ -47,17 +48,17 @@ abstract class RequestHandlerLib
         $repository->add($entity);
     }
 
-    public function handle(mixed $oldEntity, mixed $entity): void
+    public function handle(EntityInterface $oldEntity, EntityInterface $entity): void
     {
         /** @var ServiceEntityRepositoryLib $repository */
         $repository = $this->repositoryService->get($entity::class);
         $repository->add($entity);
-        if ($oldEntity->getId() != $entity->getId()) {
+        if ($oldEntity->getId() !== $entity->getId()) {
             $this->initWorkflow($entity);
         }
     }
 
-    protected function initWorkflow(mixed $entity): void
+    protected function initWorkflow(EntityInterface $entity): void
     {
         if (!$this->workflowService->has($entity)) {
             return;

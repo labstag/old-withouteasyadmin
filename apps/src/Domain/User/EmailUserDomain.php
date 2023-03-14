@@ -6,6 +6,7 @@ use Labstag\Entity\EmailUser;
 
 use Labstag\Form\Admin\Search\User\EmailUserType as SearchEmailUserType;
 use Labstag\Form\Admin\User\EmailUserType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Search\User\EmailUserSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EmailUserDomain extends DomainLib
+class EmailUserDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected EmailUserRequestHandler $emailUserRequestHandler,

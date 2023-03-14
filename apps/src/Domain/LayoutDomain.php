@@ -6,6 +6,7 @@ use Labstag\Entity\Layout;
 use Labstag\Form\Admin\LayoutType;
 
 use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\Search\LayoutSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class LayoutDomain extends DomainLib
+class LayoutDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected LayoutRequestHandler $layoutRequestHandler,

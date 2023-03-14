@@ -53,7 +53,11 @@ abstract class FrontControllerLib extends ControllerLib
 
         $globals = $this->twigEnvironment->getGlobals();
 
-        $config   = $globals['config'] ?? $this->dataService->getConfig();
+        $config = $globals['config'] ?? $this->dataService->getConfig();
+        if (!is_array($config)) {
+            $config = [];
+        }
+
         $tagsmeta = $config['meta'] ?? [];
         $tagsmeta = array_merge(
             $tagsmeta,
@@ -61,6 +65,9 @@ abstract class FrontControllerLib extends ControllerLib
         );
 
         $config['meta'] = $this->frontService->configMeta($config, $tagsmeta);
+        if (!is_array($config['meta'])) {
+            $config['meta'] = [];
+        }
 
         $this->frontService->setMetatags($config['meta']);
         $this->twigEnvironment->AddGlobal('config', $config);
@@ -70,6 +77,7 @@ abstract class FrontControllerLib extends ControllerLib
             $key                        = ('content' == $key) ? 'main' : $key;
             $parameters['blocks'][$key] = [];
             foreach ($blocks as $block) {
+                /** @var Block $block */
                 $data = $this->blockService->showContent($block, $content);
                 if (is_null($data)) {
                     continue;

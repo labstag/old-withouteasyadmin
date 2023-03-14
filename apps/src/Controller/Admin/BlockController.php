@@ -7,8 +7,8 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Domain\BlockDomain;
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\NewBlockType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
 use Labstag\Repository\BlockRepository;
 use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\Service\BlockService;
@@ -149,10 +149,10 @@ class BlockController extends AdminControllerLib
         return $this->redirectToRoute('admin_block_edit', ['id' => $block->getId()]);
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function getDomainEntity(): DomainInterface
     {
         $domainLib = $this->domainService->getDomain(Block::class);
-        if (!$domainLib instanceof DomainLib) {
+        if (!$domainLib instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

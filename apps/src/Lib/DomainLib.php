@@ -2,10 +2,9 @@
 
 namespace Labstag\Lib;
 
-use Labstag\Interfaces\DomainInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-abstract class DomainLib implements DomainInterface
+abstract class DomainLib
 {
     public function __construct(
         protected TranslatorInterface $translator

@@ -5,22 +5,23 @@ namespace Labstag\Front;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Page;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\FrontInterface;
 
-class EditoFront extends PageFront
+class EditoFront extends PageFront implements FrontInterface
 {
     public function setBreadcrumb(
-        ?FrontInterface $front,
+        ?EntityFrontInterface $entityFront,
         array $breadcrumb
     ): array
     {
-        if (!$front instanceof Edito) {
+        if (!$entityFront instanceof Edito) {
             return $breadcrumb;
         }
 
         $breadcrumb[] = [
             'route' => $this->router->generate('front_edito'),
-            'title' => $front->getTitle(),
+            'title' => $entityFront->getTitle(),
         ];
 
         /** @var Page $page */
@@ -32,17 +33,17 @@ class EditoFront extends PageFront
     }
 
     public function setMeta(
-        ?FrontInterface $front,
+        ?EntityFrontInterface $entityFront,
         array $meta
     ): array
     {
-        if (!$front instanceof Edito) {
+        if (!$entityFront instanceof Edito) {
             return $meta;
         }
 
-        $meta = $this->getMeta($front->getMetas(), $meta);
-        if ($front->getFond() instanceof Attachment) {
-            $meta['image'] = $front->getFond()->getName();
+        $meta = $this->getMeta($entityFront->getMetas(), $meta);
+        if ($entityFront->getFond() instanceof Attachment) {
+            $meta['image'] = $entityFront->getFond()->getName();
         }
 
         return $meta;

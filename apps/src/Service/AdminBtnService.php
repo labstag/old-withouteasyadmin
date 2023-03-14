@@ -68,8 +68,12 @@ class AdminBtnService
             return $this;
         }
 
-        $globals         = $this->twigEnvironment->getGlobals();
-        $modal           = $globals['modal'] ?? [];
+        $globals = $this->twigEnvironment->getGlobals();
+        $modal   = $globals['modal'] ?? [];
+        if (!is_array($modal)) {
+            $modal = [];
+        }
+
         $modal['delete'] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
         $code  = 'delete'.$entity->getId();
@@ -139,8 +143,12 @@ class AdminBtnService
             return $this;
         }
 
-        $globals        = $this->twigEnvironment->getGlobals();
-        $modal          = $globals['modal'] ?? [];
+        $globals = $this->twigEnvironment->getGlobals();
+        $modal   = $globals['modal'] ?? [];
+        if (!is_array($modal)) {
+            $modal = [];
+        }
+
         $modal['empty'] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
         $code  = 'empty';
@@ -345,8 +353,12 @@ class AdminBtnService
             return;
         }
 
-        $globals           = $this->twigEnvironment->getGlobals();
-        $modal             = $globals['modal'] ?? [];
+        $globals = $this->twigEnvironment->getGlobals();
+        $modal   = $globals['modal'] ?? [];
+        if (!is_array($modal)) {
+            $modal = [];
+        }
+
         $modal[$codemodal] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
         $this->add(
@@ -419,8 +431,12 @@ class AdminBtnService
             return;
         }
 
-        $globals      = $this->twigEnvironment->getGlobals();
-        $modal        = $globals['modal'] ?? [];
+        $globals = $this->twigEnvironment->getGlobals();
+        $modal   = $globals['modal'] ?? [];
+        if (!is_array($modal)) {
+            $modal = [];
+        }
+
         $modal[$word] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
         $code  = $word.$entity->getId();

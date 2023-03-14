@@ -6,6 +6,7 @@ use Labstag\Entity\Post;
 
 use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\Search\PostSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PostDomain extends DomainLib
+class PostDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected PostRequestHandler $postRequestHandler,

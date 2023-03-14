@@ -3,8 +3,8 @@
 namespace Labstag\Lib;
 
 use Labstag\Entity\Paragraph;
-use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityBlockInterface;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Service\ParagraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -20,33 +20,33 @@ abstract class BlockLib extends AbstractController
     {
     }
 
-    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
+    public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
-        unset($entityBlockLib, $front);
+        unset($entityBlock, $entityFront);
 
         return '';
     }
 
     public function template(
-        BlockInterface $entityBlockLib,
-        ?FrontInterface $front
+        EntityBlockInterface $entityBlock,
+        ?EntityFrontInterface $entityFront
     ): array
     {
-        return $this->showTemplateFile($this->getCode($entityBlockLib, $front));
+        return $this->showTemplateFile($this->getCode($entityBlock, $entityFront));
     }
 
     protected function getParagraphsArray(
         ParagraphService $paragraphService,
-        FrontInterface $front,
+        EntityFrontInterface $entityFront,
         array $paragraphs
     ): array
     {
-        $methods = get_class_methods($front);
+        $methods = get_class_methods($entityFront);
         if (!in_array('getParagraphs', $methods)) {
             return $paragraphs;
         }
 
-        $paragraphsArray = $front->getParagraphs();
+        $paragraphsArray = $entityFront->getParagraphs();
         foreach ($paragraphsArray as $paragraphArray) {
             /** @var Paragraph $paragraphArray */
             $data = $paragraphService->showContent($paragraphArray);

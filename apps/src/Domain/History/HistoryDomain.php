@@ -6,6 +6,7 @@ use Labstag\Entity\History;
 
 use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class HistoryDomain extends DomainLib
+class HistoryDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected HistoryRequestHandler $historyRequestHandler,

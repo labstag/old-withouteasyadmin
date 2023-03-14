@@ -6,6 +6,7 @@ use Labstag\Entity\LinkUser;
 
 use Labstag\Form\Admin\Search\User\LinkUserType as SearchLinkUserType;
 use Labstag\Form\Admin\User\LinkUserType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\LinkUserRequestHandler;
 use Labstag\Search\User\LinkUserSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class LinkUserDomain extends DomainLib
+class LinkUserDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected LinkUserRequestHandler $linkUserRequestHandler,

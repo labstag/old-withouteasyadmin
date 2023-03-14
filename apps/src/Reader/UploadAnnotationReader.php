@@ -5,6 +5,7 @@ namespace Labstag\Reader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
+use Labstag\Interfaces\EntityInterface;
 use ReflectionClass;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
@@ -14,7 +15,7 @@ class UploadAnnotationReader
     {
     }
 
-    public function enableAttachment(mixed $annotations, array $fields): bool
+    public function enableAttachment(array $annotations, array $fields): bool
     {
         $enable = false;
         foreach (array_keys($annotations) as $key) {
@@ -49,7 +50,7 @@ class UploadAnnotationReader
      *
      * @return mixed[]
      */
-    public function getUploadableFields(mixed $entity): array
+    public function getUploadableFields(EntityInterface $entity): array
     {
         $properties = [];
         if (!$this->isUploadable($entity)) {
@@ -69,7 +70,7 @@ class UploadAnnotationReader
         return $properties;
     }
 
-    private function isUploadable(mixed $entity): bool
+    private function isUploadable(EntityInterface $entity): bool
     {
         $reflectionClass = new ReflectionClass($entity::class);
 

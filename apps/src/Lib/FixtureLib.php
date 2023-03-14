@@ -7,12 +7,18 @@ use Exception;
 use Faker\Factory;
 use Faker\Generator;
 use finfo;
+use Labstag\Annotation\UploadableField;
 use Labstag\DataFixtures\CategoryFixtures;
 use Labstag\DataFixtures\DataFixtures;
 use Labstag\DataFixtures\LibelleFixtures;
 use Labstag\DataFixtures\UserFixtures;
+use Labstag\Entity\Bookmark;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Libelle;
 use Labstag\Entity\Meta;
+use Labstag\Entity\Post;
+use Labstag\Interfaces\EntityFrontInterface;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
@@ -173,10 +179,10 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
-    protected function addParagraphs(mixed $entity, array $paragraphs): void
+    protected function addParagraphs(EntityFrontInterface $entityFront, array $paragraphs): void
     {
         foreach ($paragraphs as $paragraph) {
-            $this->paragraphService->add($entity, $paragraph);
+            $this->paragraphService->add($entityFront, $paragraph);
         }
     }
 
@@ -258,16 +264,26 @@ abstract class FixtureLib extends Fixture
         return $generator;
     }
 
-    protected function setLibelles(Generator $generator, mixed $entity): void
+    protected function setLibelles(
+        Generator $generator,
+        ?Bookmark $bookmark = null,
+        ?Post $post = null
+    ): void
     {
-        if (1 != random_int(0, 1)) {
+        if (1 != random_int(0, 1) || (is_null($bookmark) && is_null($post))) {
+            return;
+        }
+
+        $entity = is_null($bookmark) ? $post : $bookmark;
+        if (is_null($entity)) {
             return;
         }
 
         $nbr = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
         for ($i = 0; $i < $nbr; ++$i) {
             $indexLibelle = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
-            $libelle      = $this->getReference('libelle_'.$indexLibelle);
+            /** @var Libelle $libelle */
+            $libelle = $this->getReference('libelle_'.$indexLibelle);
             $entity->addLibelle($libelle);
         }
     }
@@ -284,17 +300,27 @@ abstract class FixtureLib extends Fixture
         }
     }
 
-    protected function upload(mixed $entity, Generator $generator): void
+    protected function upload(EntityInterface $entity, Generator $generator): void
     {
         /** @var finfo $finfo */
         $finfo        = finfo_open(FILEINFO_MIME_TYPE);
         $annotations  = $this->uploadAnnotationReader->getUploadableFields($entity);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
+            /** @var UploadableField $annotation */
             $path     = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
-            $title    = $accessor->getValue($entity, $annotation->getSlug());
-            $slug     = $asciiSlugger->slug($title);
+            $slug     = $annotation->getSlug();
+            if (!is_string($slug)) {
+                continue;
+            }
+
+            $title = $accessor->getValue($entity, $slug);
+            if (!is_string($title)) {
+                continue;
+            }
+
+            $slug = $asciiSlugger->slug($title);
 
             try {
                 /** @var PicsumProvider $generator */
@@ -333,7 +359,12 @@ abstract class FixtureLib extends Fixture
 
             if (isset($file)) {
                 $attachment = $this->fileService->setAttachment($file);
-                $accessor->setValue($entity, $annotation->getFilename(), $attachment);
+                $filename   = $annotation->getFilename();
+                if (!is_string($filename)) {
+                    continue;
+                }
+
+                $accessor->setValue($entity, $filename, $attachment);
             }
         }
     }

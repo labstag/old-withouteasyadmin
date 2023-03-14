@@ -4,6 +4,7 @@ namespace Labstag\Domain;
 
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\BlockType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -12,7 +13,7 @@ use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\Search\BlockSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class BlockDomain extends DomainLib
+class BlockDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected BlockRequestHandler $blockRequestHandler,

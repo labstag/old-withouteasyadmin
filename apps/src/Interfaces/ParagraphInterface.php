@@ -21,7 +21,7 @@ interface ParagraphInterface
 
     public function show(EntityParagraphInterface $entityParagraph): ?Response;
 
-    public function template(mixed $entity): array;
+    public function template(EntityParagraphInterface $entityParagraph): array;
 
     public function useIn(): array;
 }

@@ -2,7 +2,7 @@
 
 namespace Labstag\Service;
 
-use Labstag\Lib\DomainLib;
+use Labstag\Interfaces\DomainInterface;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 
 class DomainService
@@ -13,11 +13,12 @@ class DomainService
     {
     }
 
-    public function getDomain(string $entity): ?DomainLib
+    public function getDomain(string $entity): ?DomainInterface
     {
         $return = null;
         foreach ($this->rewindableGenerator as $domain) {
-            if ($domain->getEntity() == $entity) {
+            /** @var DomainInterface $domain */
+            if ($domain->getEntity() === $entity) {
                 $return = $domain;
 
                 break;
@@ -31,6 +32,7 @@ class DomainService
     {
         $titles = [];
         foreach ($this->rewindableGenerator as $domain) {
+            /** @var DomainInterface $domain */
             $titles = array_merge($titles, $domain->getTitles());
         }
 

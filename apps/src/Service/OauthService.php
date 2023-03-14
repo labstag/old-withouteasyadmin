@@ -100,6 +100,10 @@ class OauthService
             );
         }
 
+        if (!is_array($data)) {
+            $data = [];
+        }
+
         $this->configProvider = $data;
     }
 
@@ -155,6 +159,10 @@ class OauthService
                 $function,
             ];
             $provider = call_user_func_array($callable, [$clientName, $params, $provider]);
+        }
+
+        if (!$provider instanceof AbstractProvider) {
+            $provider = null;
         }
 
         return $provider;

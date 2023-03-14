@@ -77,11 +77,21 @@ class SearchableType extends AbstractType
         }
 
         $attr = $options['attr'];
+        if (!is_array($attr)) {
+            $attr = [];
+        }
 
-        $attr['data-url'] = $this->router->generate(
-            $options['route'],
-            $options['route_param'] ?? []
-        );
+        if (is_string($options['route'])) {
+            $params = $options['route_param'] ?? [];
+            if (!is_array($params)) {
+                $params = [];
+            }
+
+            $attr['data-url'] = $this->router->generate(
+                $options['route'],
+                $params
+            );
+        }
 
         $attr['data-add'] = $options['add'] ? 1 : 0;
         if ($options['add']) {

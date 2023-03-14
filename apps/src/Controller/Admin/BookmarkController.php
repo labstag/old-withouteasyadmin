@@ -9,8 +9,8 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Bookmark\ImportType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Service\BookmarkService;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -78,10 +78,10 @@ class BookmarkController extends AdminControllerLib
         );
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function getDomainEntity(): DomainInterface
     {
         $domainLib = $this->domainService->getDomain(Bookmark::class);
-        if (!$domainLib instanceof DomainLib) {
+        if (!$domainLib instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

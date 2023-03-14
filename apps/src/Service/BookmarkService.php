@@ -5,6 +5,7 @@ namespace Labstag\Service;
 use DateTime;
 use Exception;
 use finfo;
+use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
@@ -91,10 +92,15 @@ class BookmarkService
         $annotations  = $this->uploadAnnotationReader->getUploadableFields($bookmark);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
+            /** @var UploadableField $annotation */
             $path     = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
             $title    = $accessor->getValue($bookmark, $annotation->getSlug());
-            $slug     = $asciiSlugger->slug($title);
+            if (!is_string($title)) {
+                continue;
+            }
+
+            $slug = $asciiSlugger->slug($title);
 
             try {
                 $pathinfo = pathinfo((string) $image);
@@ -126,9 +132,10 @@ class BookmarkService
                 $this->errorService->set($exception);
             }
 
-            if (isset($file)) {
+            $filename = $annotation->getFilename();
+            if (isset($file) && is_string($filename)) {
                 $attachment = $this->fileService->setAttachment($file);
-                $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
+                $accessor->setValue($bookmark, $filename, $attachment);
             }
         }
     }

@@ -6,6 +6,7 @@ use Labstag\Entity\PhoneUser;
 
 use Labstag\Form\Admin\Search\User\PhoneUserType as SearchPhoneUserType;
 use Labstag\Form\Admin\User\PhoneUserType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\PhoneUserRequestHandler;
 use Labstag\Search\User\PhoneUserSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PhoneUserDomain extends DomainLib
+class PhoneUserDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected PhoneUserRequestHandler $phoneUserRequestHandler,

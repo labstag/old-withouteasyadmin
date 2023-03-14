@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin\History\Paragraph;
 use Exception;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Lib\ParagraphControllerLib;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use Labstag\Service\ParagraphService;
@@ -36,9 +37,14 @@ class ChapterController extends ParagraphControllerLib
     #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
+        $chapter = $paragraph->getChapter();
+        if (!$chapter instanceof PublicInterface) {
+            throw new Exception('chapter is not public interface');
+        }
+
         return $this->deleteParagraph(
             $paragraph,
-            $paragraph->getChapter(),
+            $chapter,
             'admin_chapter_edit'
         );
     }

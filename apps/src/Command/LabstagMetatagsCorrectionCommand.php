@@ -3,6 +3,12 @@
 namespace Labstag\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Entity\Chapter;
+use Labstag\Entity\Edito;
+use Labstag\Entity\History;
+use Labstag\Entity\Page;
+use Labstag\Entity\Post;
+use Labstag\Entity\Render;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\ChapterRepository;
 use Labstag\Repository\EditoRepository;
@@ -51,12 +57,22 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
-        $this->executeChapter();
-        $this->executeEdito();
-        $this->executeHistory();
-        $this->executePage();
-        $this->executePost();
-        $this->executeRender();
+        $functions    = [
+            'executeChapter',
+            'executeEdito',
+            'executeHistory',
+            'executePage',
+            'executePost',
+            'executeRender',
+        ];
+        foreach ($functions as $function) {
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            call_user_func($callable);
+        }
 
         $symfonyStyle->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
@@ -67,6 +83,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         $all = $this->chapterRepository->findAll();
         foreach ($all as $entity) {
+            /** @var Chapter $entity */
             $old = clone $entity;
             $this->chapterRequestHandler->handle($old, $entity);
         }
@@ -76,6 +93,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         $all = $this->editoRepository->findAll();
         foreach ($all as $entity) {
+            /** @var Edito $entity */
             $old = clone $entity;
             $this->editoRequestHandler->handle($old, $entity);
         }
@@ -85,6 +103,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         $all = $this->historyRepository->findAll();
         foreach ($all as $entity) {
+            /** @var History $entity */
             $old = clone $entity;
             $this->historyRequestHandler->handle($old, $entity);
         }
@@ -94,6 +113,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         $all = $this->pageRepository->findAll();
         foreach ($all as $entity) {
+            /** @var Page $entity */
             $old = clone $entity;
             $this->pageRequestHandler->handle($old, $entity);
         }
@@ -103,6 +123,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         $all = $this->postRepository->findAll();
         foreach ($all as $entity) {
+            /** @var Post $entity */
             $old = clone $entity;
             $this->postRequestHandler->handle($old, $entity);
         }
@@ -112,6 +133,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         $all = $this->renderRepository->findAll();
         foreach ($all as $entity) {
+            /** @var Render $entity */
             $old = clone $entity;
             $this->renderRequestHandler->handle($old, $entity);
         }

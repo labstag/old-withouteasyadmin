@@ -6,6 +6,7 @@ use Labstag\Entity\Page;
 
 use Labstag\Form\Admin\PageType;
 use Labstag\Form\Admin\Search\PageType as SearchPageType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\Search\PageSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PageDomain extends DomainLib
+class PageDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected PageRequestHandler $pageRequestHandler,

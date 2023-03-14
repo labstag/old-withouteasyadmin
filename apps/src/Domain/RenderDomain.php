@@ -6,6 +6,7 @@ use Labstag\Entity\Render;
 
 use Labstag\Form\Admin\RenderType;
 use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -14,7 +15,7 @@ use Labstag\RequestHandler\RenderRequestHandler;
 use Labstag\Search\RenderSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class RenderDomain extends DomainLib
+class RenderDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected RenderRequestHandler $renderRequestHandler,

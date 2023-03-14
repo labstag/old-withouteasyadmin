@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin\Post;
 use Exception;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\Post;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Lib\ParagraphControllerLib;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use Labstag\Service\ParagraphService;
@@ -36,9 +37,14 @@ class ParagraphController extends ParagraphControllerLib
     #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
+        $post = $paragraph->getPost();
+        if (!$post instanceof PublicInterface) {
+            throw new Exception('post is not public interface');
+        }
+
         return $this->deleteParagraph(
             $paragraph,
-            $paragraph->getPost(),
+            $post,
             'admin_post_edit'
         );
     }

@@ -35,7 +35,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     }
 
     protected function ignoreSoftDeleteAnnotation(
-        AbstractController $controller,
+        object $controller,
         string $method
     ): void
     {
@@ -78,7 +78,7 @@ class IgnoreSoftDeleteSubscriber extends EventSubscriberLib
     }
 
     protected function readAnnotation(
-        AbstractController $controller,
+        object $controller,
         string $method
     ): bool
     {

@@ -8,20 +8,21 @@ use Labstag\Entity\Category;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\Page;
 use Labstag\Entity\Post;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\CategoryRepository;
 use Labstag\Repository\LibelleRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-class PostFront extends PageFront
+class PostFront extends PageFront implements FrontInterface
 {
     public function setBreadcrumb(
-        ?FrontInterface $front,
+        ?EntityFrontInterface $entityFront,
         array $breadcrumb
     ): array
     {
         $breadcrumb = $this->setBreadcrumbRouting($breadcrumb);
-        if (!$front instanceof Post) {
+        if (!$entityFront instanceof Post) {
             return $breadcrumb;
         }
 
@@ -29,10 +30,10 @@ class PostFront extends PageFront
             'route' => $this->router->generate(
                 'front_article',
                 [
-                    'slug' => $front->getSlug(),
+                    'slug' => $entityFront->getSlug(),
                 ]
             ),
-            'title' => $front->getTitle(),
+            'title' => $entityFront->getTitle(),
         ];
 
         /** @var Page $page */
@@ -44,17 +45,17 @@ class PostFront extends PageFront
     }
 
     public function setMeta(
-        ?FrontInterface $front,
+        ?EntityFrontInterface $entityFront,
         array $meta
     ): array
     {
-        if (!$front instanceof Post) {
+        if (!$entityFront instanceof Post) {
             return $meta;
         }
 
-        $meta = $this->getMeta($front->getMetas(), $meta);
-        if ($front->getImg() instanceof Attachment) {
-            $meta['image'] = $front->getImg()->getName();
+        $meta = $this->getMeta($entityFront->getMetas(), $meta);
+        if ($entityFront->getImg() instanceof Attachment) {
+            $meta['image'] = $entityFront->getImg()->getName();
         }
 
         return $meta;

@@ -39,7 +39,10 @@ class UploadType extends AbstractType
             $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
             if (isset($annotations[$name])) {
                 $propertyAccessor = PropertyAccess::createPropertyAccessor();
-                $field            = $propertyAccessor->getValue($entity, $annotations[$name]->getFileName());
+                $filename         = $annotations[$name]->getFileName();
+                if (is_string($filename)) {
+                    $field = $propertyAccessor->getValue($entity, $filename);
+                }
             }
         } elseif (isset($entity[$name]) && $entity[$name] instanceof Attachment) {
             $field = $entity[$name];

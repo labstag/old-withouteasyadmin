@@ -6,6 +6,7 @@ use Embed\Embed;
 use Embed\Extractor;
 use Exception;
 use finfo;
+use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
@@ -112,6 +113,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
 
         $annotations = $this->uploadAnnotationReader->getUploadableFields($video);
         foreach ($annotations as $annotation) {
+            /** @var UploadableField $annotation */
             $this->setDataAnnotation($annotation, $image, $video, $videoRepository, $slug);
         }
     }
@@ -179,7 +181,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
     }
 
     private function setDataAnnotation(
-        mixed $annotation,
+        UploadableField $uploadableField,
         string $image,
         Video $video,
         ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
@@ -194,7 +196,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
         }
 
         try {
-            $path    = $fileDirectory.'/'.$annotation->getPath();
+            $path    = $fileDirectory.'/'.$uploadableField->getPath();
             $content = file_get_contents($image);
             /** @var resource $tmpfile */
             $tmpfile = tmpfile();

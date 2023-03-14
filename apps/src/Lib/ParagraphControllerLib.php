@@ -5,6 +5,8 @@ namespace Labstag\Lib;
 use Doctrine\Common\Collections\Collection;
 use Labstag\Entity\Paragraph;
 use Labstag\Form\Admin\ParagraphType;
+use Labstag\Interfaces\EntityInterface;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\ParagraphRepository;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use Symfony\Component\Form\FormInterface;
@@ -16,6 +18,7 @@ abstract class ParagraphControllerLib extends ControllerLib
 {
     public function modalAttachmentDelete(Paragraph $paragraph, FormInterface $form): void
     {
+        /** @var EntityInterface $entity */
         $entity      = $this->paragraphService->getEntity($paragraph);
         $annotations = array_merge(
             $this->uploadAnnotationReader->getUploadableFields($paragraph),
@@ -31,15 +34,19 @@ abstract class ParagraphControllerLib extends ControllerLib
             return;
         }
 
-        $globals                   = $this->twigEnvironment->getGlobals();
-        $modal                     = $globals['modal'] ?? [];
+        $globals = $this->twigEnvironment->getGlobals();
+        $modal   = $globals['modal'] ?? [];
+        if (!is_array($modal)) {
+            $modal = [];
+        }
+
         $modal['attachmentdelete'] = true;
         $this->twigEnvironment->mergeGlobals(['modal' => $modal]);
     }
 
     protected function deleteParagraph(
         Paragraph $paragraph,
-        mixed $entity,
+        PublicInterface $public,
         string $urledit
     ): RedirectResponse
     {
@@ -48,7 +55,7 @@ abstract class ParagraphControllerLib extends ControllerLib
         $repository->remove($paragraph);
         $this->addFlash('success', 'Paragraph supprimée.');
 
-        return $this->redirectToRoute($urledit, ['id' => $entity->getId(), '_fragment' => 'paragraph-list']);
+        return $this->redirectToRoute($urledit, ['id' => $public->getId(), '_fragment' => 'paragraph-list']);
     }
 
     protected function listTwig(
@@ -82,7 +89,8 @@ abstract class ParagraphControllerLib extends ControllerLib
         /** @var ParagraphRepository $repository */
         $repository = $this->repositoryService->get(Paragraph::class);
         $form->handleRequest($request);
-        $old    = clone $paragraph;
+        $old = clone $paragraph;
+        /** @var EntityInterface $entity */
         $entity = $this->paragraphService->getEntity($paragraph);
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->add($paragraph);

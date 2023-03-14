@@ -270,10 +270,14 @@ class SecurityController extends ControllerLib
     ): RedirectResponse
     {
         /** @var AbstractProvider $provider */
-        $provider    = $oauthService->setProvider($oauthCode);
-        $query       = $request->query->all();
-        $session     = $request->getSession();
-        $referer     = $session->get('referer');
+        $provider = $oauthService->setProvider($oauthCode);
+        $query    = $request->query->all();
+        $session  = $request->getSession();
+        $referer  = $session->get('referer');
+        if (!is_string($referer)) {
+            $referer = '';
+        }
+
         $oauth2state = $session->get('oauth2state');
         /** @var string $url */
         $url = $this->generateUrl('front');

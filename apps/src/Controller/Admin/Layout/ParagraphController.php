@@ -5,6 +5,7 @@ namespace Labstag\Controller\Admin\Layout;
 use Exception;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Lib\ParagraphControllerLib;
 use Labstag\RequestHandler\ParagraphRequestHandler;
 use Labstag\Service\ParagraphService;
@@ -36,9 +37,14 @@ class ParagraphController extends ParagraphControllerLib
     #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
+        $layout = $paragraph->getLayout();
+        if (!$layout instanceof PublicInterface) {
+            throw new Exception('layout is not public interface');
+        }
+
         return $this->deleteParagraph(
             $paragraph,
-            $paragraph->getLayout(),
+            $layout,
             'admin_layout_edit'
         );
     }

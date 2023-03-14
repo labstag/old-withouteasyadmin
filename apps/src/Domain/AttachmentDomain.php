@@ -3,7 +3,7 @@
 namespace Labstag\Domain;
 
 use Labstag\Entity\Attachment;
-
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
@@ -12,7 +12,7 @@ use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Search\AttachmentSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AttachmentDomain extends DomainLib
+class AttachmentDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
         protected AttachmentRequestHandler $attachmentRequestHandler,

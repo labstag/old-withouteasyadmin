@@ -5,7 +5,8 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Breadcrumb;
 use Labstag\Form\Admin\Block\BreadcrumbType;
 use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityBlockInterface;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\FrontService;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class BreadcrumbBlock extends BlockLib
+class BreadcrumbBlock extends BlockLib implements BlockInterface
 {
     public function __construct(
         TranslatorInterface $translator,
@@ -29,9 +30,9 @@ class BreadcrumbBlock extends BlockLib
         parent::__construct($translator, $twigEnvironment);
     }
 
-    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
+    public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
-        unset($entityBlockLib, $front);
+        unset($entityBlock, $entityFront);
 
         return 'breadcrumb';
     }
@@ -61,18 +62,22 @@ class BreadcrumbBlock extends BlockLib
         return false;
     }
 
-    public function show(Breadcrumb $breadcrumb, ?FrontInterface $front): ?Response
+    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
     {
-        $breadcrumbs = $this->frontService->setBreadcrumb($front);
+        if (!$entityBlock instanceof Breadcrumb) {
+            return null;
+        }
+
+        $breadcrumbs = $this->frontService->setBreadcrumb($entityFront);
         if ((is_countable($breadcrumbs) ? count($breadcrumbs) : 0) <= 1) {
             return null;
         }
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($breadcrumb, $front)),
+            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
             [
                 'breadcrumbs' => $breadcrumbs,
-                'block'       => $breadcrumb,
+                'block'       => $entityBlock,
             ]
         );
     }
