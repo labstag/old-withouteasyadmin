@@ -8,7 +8,6 @@ use Labstag\Form\Admin\ParagraphType;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\ParagraphRepository;
-use Labstag\RequestHandler\ParagraphRequestHandler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,8 +74,7 @@ abstract class ParagraphControllerLib extends ControllerLib
     }
 
     protected function showTwig(
-        Paragraph $paragraph,
-        ParagraphRequestHandler $paragraphRequestHandler
+        Paragraph $paragraph
     ): Response
     {
         $form = $this->createForm(
@@ -89,14 +87,12 @@ abstract class ParagraphControllerLib extends ControllerLib
         /** @var ParagraphRepository $repository */
         $repository = $this->repositoryService->get(Paragraph::class);
         $form->handleRequest($request);
-        $old = clone $paragraph;
         /** @var EntityInterface $entity */
         $entity = $this->paragraphService->getEntity($paragraph);
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->add($paragraph);
             $this->attachFormService->upload($entity);
             $this->addFlash('success', 'Paragraph sauvegardé.');
-            $paragraphRequestHandler->handle($old, $paragraph);
             $referer = (string) $request->headers->get('referer');
 
             return new RedirectResponse($referer);

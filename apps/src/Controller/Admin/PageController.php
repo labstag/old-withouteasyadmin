@@ -8,7 +8,6 @@ use Labstag\Entity\Page;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PageRepository;
-use Labstag\RequestHandler\PageRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,14 +40,12 @@ class PageController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(PageRepository $pageRepository, PageRequestHandler $pageRequestHandler): RedirectResponse
+    public function new(PageRepository $pageRepository): RedirectResponse
     {
         $page = new Page();
         $page->setName(Uuid::v1());
 
-        $old = clone $page;
         $pageRepository->add($page);
-        $pageRequestHandler->handle($old, $page);
 
         return $this->redirectToRoute('admin_page_edit', ['id' => $page->getId()]);
     }

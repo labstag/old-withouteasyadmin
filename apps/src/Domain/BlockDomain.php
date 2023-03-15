@@ -6,17 +6,14 @@ use Labstag\Entity\Block;
 use Labstag\Form\Admin\BlockType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\BlockRepository;
-use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\Search\BlockSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BlockDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected BlockRequestHandler $blockRequestHandler,
         protected BlockRepository $blockRepository,
         protected BlockSearch $blockSearch,
         TranslatorInterface $translator
@@ -33,11 +30,6 @@ class BlockDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->blockRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->blockRequestHandler;
     }
 
     public function getSearchData(): BlockSearch

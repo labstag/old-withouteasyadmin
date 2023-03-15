@@ -12,19 +12,23 @@ class LibelleFixtures extends DataFixtureLib implements DependentFixtureInterfac
 {
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
         $generator = $this->setFaker();
         for ($index = 0; $index < self::NUMBER_LIBELLE; ++$index) {
-            $this->addLibelle($generator, $index);
+            $this->addLibelle($generator, $index, $objectManager);
         }
+
+        $objectManager->flush();
     }
 
-    protected function addLibelle(Generator $generator, int $index): void
+    protected function addLibelle(
+        Generator $generator,
+        int $index,
+        ObjectManager $objectManager
+    ): void
     {
-        $libelle    = new Libelle();
-        $oldLibelle = clone $libelle;
+        $libelle = new Libelle();
         $libelle->setName($generator->unique()->colorName());
         $this->addReference('libelle_'.$index, $libelle);
-        $this->libelleRequestHandler->handle($oldLibelle, $libelle);
+        $objectManager->persist($libelle);
     }
 }

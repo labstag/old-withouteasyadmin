@@ -11,7 +11,6 @@ use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\BookmarkRequestHandler;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -29,7 +28,6 @@ class BookmarkService
         private readonly ErrorService $errorService,
         private readonly UploadAnnotationReader $uploadAnnotationReader,
         private readonly ContainerBagInterface $containerBag,
-        private readonly BookmarkRequestHandler $bookmarkRequestHandler,
         protected UserRepository $userRepository,
         protected BookmarkRepository $bookmarkRepository
     )
@@ -54,7 +52,6 @@ class BookmarkService
         }
 
         $bookmark = new bookmark();
-        $old      = clone $bookmark;
         $bookmark->setRefuser($user);
         $bookmark->setUrl($url);
         $bookmark->setIcon($icon);
@@ -76,7 +73,6 @@ class BookmarkService
             $image = (is_null($image) && isset($meta['og:image'])) ? $meta['og:image'] : $image;
             $this->upload($bookmark, $image);
             $this->bookmarkRepository->add($bookmark);
-            $this->bookmarkRequestHandler->handle($old, $bookmark);
         } catch (Exception $exception) {
             $this->errorService->set($exception);
         }

@@ -6,6 +6,7 @@ use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Service\ParagraphService;
+use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -112,7 +113,12 @@ abstract class BlockLib extends AbstractController
     {
         $data    = $this->getTemplateData($type);
         $globals = $this->twigEnvironment->getGlobals();
-        if ('dev' == $globals['app']->getDebug()) {
+        if (!isset($globals['app'])) {
+            return [];
+        }
+
+        $app = $globals['app'];
+        if ($app instanceof AppVariable && 'dev' == $app->getDebug()) {
             return $data;
         }
 

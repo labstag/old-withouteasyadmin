@@ -16,6 +16,7 @@ class BlockRequestHandler extends RequestHandlerLib
             return;
         }
 
+        dump('aa');
         $this->eventDispatcher->dispatch(
             new BlockEntityEvent($oldEntity, $entity)
         );

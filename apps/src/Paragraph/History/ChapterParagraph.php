@@ -64,7 +64,7 @@ class ChapterParagraph extends ParagraphLib implements ParagraphInterface
         }
 
         /** @var History $history */
-        $history  = $chapter->getRefhistory();
+        $history  = $chapter->getHistory();
         $prevnext = $this->getPrevNext($chapter, $history);
 
         return $this->render(
@@ -73,7 +73,7 @@ class ChapterParagraph extends ParagraphLib implements ParagraphInterface
                 'prev'      => $prevnext['prev'],
                 'next'      => $prevnext['next'],
                 'chapter'   => $chapter,
-                'history'   => $chapter->getRefhistory(),
+                'history'   => $chapter->getHistory(),
                 'paragraph' => $entityParagraph,
             ]
         );

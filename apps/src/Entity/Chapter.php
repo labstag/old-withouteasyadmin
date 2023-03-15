@@ -106,6 +106,11 @@ class Chapter implements PublicInterface, EntityTrashInterface
         return $this->created;
     }
 
+    public function getHistory(): ?History
+    {
+        return $this->history;
+    }
+
     public function getId(): ?string
     {
         return $this->id;
@@ -145,11 +150,6 @@ class Chapter implements PublicInterface, EntityTrashInterface
     public function getPublished(): ?DateTimeInterface
     {
         return $this->published;
-    }
-
-    public function getRefhistory(): ?History
-    {
-        return $this->history;
     }
 
     public function getSlug(): ?string
@@ -196,6 +196,13 @@ class Chapter implements PublicInterface, EntityTrashInterface
         return $this;
     }
 
+    public function setHistory(?History $history): self
+    {
+        $this->history = $history;
+
+        return $this;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -220,13 +227,6 @@ class Chapter implements PublicInterface, EntityTrashInterface
     public function setPublished(DateTimeInterface $dateTime): self
     {
         $this->published = $dateTime;
-
-        return $this;
-    }
-
-    public function setRefhistory(?History $history): self
-    {
-        $this->history = $history;
 
         return $this;
     }

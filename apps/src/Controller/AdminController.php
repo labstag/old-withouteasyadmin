@@ -260,7 +260,6 @@ class AdminController extends AdminControllerLib
             }
 
             $attachment = $images[$key];
-            $old        = clone $attachment;
             $filename   = $file->getClientOriginalName();
             $path       = $paths[$key];
             $filename   = ('favicon' == $key) ? 'favicon.ico' : $filename;
@@ -268,8 +267,7 @@ class AdminController extends AdminControllerLib
                 $file,
                 $path,
                 $filename,
-                $attachment,
-                $old
+                $attachment
             );
         }
     }

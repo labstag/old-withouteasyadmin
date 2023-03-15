@@ -8,17 +8,14 @@ use Labstag\Form\Admin\PageType;
 use Labstag\Form\Admin\Search\PageType as SearchPageType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\PageRepository;
-use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\Search\PageSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PageDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected PageRequestHandler $pageRequestHandler,
         protected PageRepository $pageRepository,
         protected PageSearch $pageSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class PageDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->pageRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->pageRequestHandler;
     }
 
     public function getSearchData(): PageSearch

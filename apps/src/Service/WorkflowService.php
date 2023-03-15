@@ -30,7 +30,8 @@ class WorkflowService
         protected WorkflowInterface $memoStateMachine,
         protected WorkflowInterface $phoneStateMachine,
         protected WorkflowInterface $postStateMachine,
-        protected WorkflowInterface $userStateMachine
+        protected WorkflowInterface $userStateMachine,
+        protected RepositoryService $repositoryService
     )
     {
         $this->data = [
@@ -45,6 +46,27 @@ class WorkflowService
             Post::class       => $this->postStateMachine,
             User::class       => $this->userStateMachine,
         ];
+    }
+
+    public function changeState(EntityInterface $entity, array $states): void
+    {
+        if (!$this->has($entity)) {
+            return;
+        }
+
+        /** @var WorkflowInterface $workflow */
+        $workflow = $this->get($entity);
+        foreach ($states as $state) {
+            if (!$workflow->can($entity, $state)) {
+                continue;
+            }
+
+            $workflow->apply($entity, $state);
+        }
+
+        /** @var ServiceEntityRepositoryLib $serviceEntityRepositoryLib */
+        $serviceEntityRepositoryLib = $this->repositoryService->get($entity::class);
+        $serviceEntityRepositoryLib->add($entity);
     }
 
     public function get(EntityInterface $entity): ?WorkflowInterface

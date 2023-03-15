@@ -8,17 +8,14 @@ use Labstag\Form\Admin\GeoCodeType;
 use Labstag\Form\Admin\Search\GeoCodeType as SearchGeoCodeType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\GeoCodeRepository;
-use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Labstag\Search\GeoCodeSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GeoCodeDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected GeoCodeRequestHandler $geoCodeRequestHandler,
         protected GeoCodeRepository $geoCodeRepository,
         protected GeoCodeSearch $geoCodeSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class GeoCodeDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->geoCodeRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->geoCodeRequestHandler;
     }
 
     public function getSearchData(): GeoCodeSearch

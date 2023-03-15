@@ -12,6 +12,7 @@ use Labstag\Service\FileService;
 use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\RepositoryService;
+use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\MailerInterface;
@@ -103,8 +104,12 @@ abstract class ParagraphLib extends AbstractController
     {
         $data    = $this->getTemplateData($type);
         $globals = $this->twigEnvironment->getGlobals();
-        $app     = $globals['app'];
-        if ('dev' == $app->getDebug()) {
+        if (!isset($globals['app'])) {
+            return [];
+        }
+
+        $app = $globals['app'];
+        if ($app instanceof AppVariable && 'dev' == $app->getDebug()) {
             return $data;
         }
 

@@ -20,21 +20,20 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
-        $this->loadForeach(self::NUMBER_POST, 'addPost');
+        $this->loadForeach(self::NUMBER_POST, 'addPost', $objectManager);
     }
 
     protected function addPost(
         Generator $generator,
         int $index,
-        array $states
+        array $states,
+        ObjectManager $objectManager
     ): void
     {
         $post = new Post();
         $meta = new Meta();
         $meta->setPost($post);
         $this->setMeta($meta);
-        $oldPost = clone $post;
         $post->setTitle($generator->unique()->colorName());
         /** @var string $content */
         $content = $generator->paragraphs(random_int(4, 10), true);
@@ -56,7 +55,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $post->setRemark((bool) random_int(0, 1));
         $this->upload($post, $generator);
         $this->addReference('post_'.$index, $post);
-        $this->postRequestHandler->handle($oldPost, $post);
-        $this->postRequestHandler->changeWorkflowState($post, $states);
+        $objectManager->persist($post);
+        $this->workflowService->changeState($post, $states);
     }
 }

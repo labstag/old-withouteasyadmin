@@ -8,17 +8,14 @@ use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\PostRepository;
-use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\Search\PostSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PostDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected PostRequestHandler $postRequestHandler,
         protected PostRepository $postRepository,
         protected PostSearch $postSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class PostDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->postRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->postRequestHandler;
     }
 
     public function getSearchData(): PostSearch

@@ -5,7 +5,6 @@ namespace Labstag\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\GeoCode;
 use Labstag\Repository\GeoCodeRepository;
-use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ZipArchive;
 
@@ -19,7 +18,6 @@ class GeocodeService
     public function __construct(
         protected HttpClientInterface $httpClient,
         protected EntityManagerInterface $entityManager,
-        protected GeoCodeRequestHandler $geoCodeRequestHandler,
         protected GeoCodeRepository $geoCodeRepository
     )
     {
@@ -41,7 +39,6 @@ class GeocodeService
             $entity->setPlaceName($row[2]);
         }
 
-        $old = clone $entity;
         $entity->setStateName($row[3]);
         $entity->setStateCode($row[4]);
         $entity->setProvinceName($row[5]);
@@ -52,7 +49,7 @@ class GeocodeService
         $entity->setLongitude($row[10]);
         $entity->setAccuracy((int) $row[11]);
 
-        $this->geoCodeRequestHandler->handle($old, $entity);
+        $this->geoCodeRepository->add($entity);
     }
 
     public function csv(string $country): array

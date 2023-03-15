@@ -219,14 +219,20 @@ class Post implements Stringable, PublicInterface, EntityTrashInterface
 
     public function removeMeta(Meta $meta): self
     {
-        $this->removeElementPost($this->metas, $meta);
+        $this->removeElementPost(
+            element: $this->metas,
+            meta: $meta
+        );
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        $this->removeElementPost($this->paragraphs, $paragraph);
+        $this->removeElementPost(
+            element: $this->paragraphs,
+            paragraph: $paragraph
+        );
 
         return $this;
     }
@@ -310,9 +316,15 @@ class Post implements Stringable, PublicInterface, EntityTrashInterface
 
     private function removeElementPost(
         Collection $element,
-        mixed $variable
+        ?Meta $meta = null,
+        ?Paragraph $paragraph = null
     ): void
     {
+        if (is_null($meta) && is_null($paragraph)) {
+            return;
+        }
+
+        $variable = is_null($meta) ? $paragraph : $meta;
         if ($element->removeElement($variable) && $variable->getPost() === $this) {
             $variable->setPost(null);
         }

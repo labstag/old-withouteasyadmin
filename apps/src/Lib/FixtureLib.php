@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
@@ -22,28 +23,6 @@ use Labstag\Interfaces\EntityInterface;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\AddressUserRequestHandler;
-use Labstag\RequestHandler\AttachmentRequestHandler;
-use Labstag\RequestHandler\BlockRequestHandler;
-use Labstag\RequestHandler\BookmarkRequestHandler;
-use Labstag\RequestHandler\CategoryRequestHandler;
-use Labstag\RequestHandler\ChapterRequestHandler;
-use Labstag\RequestHandler\EditoRequestHandler;
-use Labstag\RequestHandler\EmailUserRequestHandler;
-use Labstag\RequestHandler\GroupeRequestHandler;
-use Labstag\RequestHandler\HistoryRequestHandler;
-use Labstag\RequestHandler\LayoutRequestHandler;
-use Labstag\RequestHandler\LibelleRequestHandler;
-use Labstag\RequestHandler\LinkUserRequestHandler;
-use Labstag\RequestHandler\MemoRequestHandler;
-use Labstag\RequestHandler\MenuRequestHandler;
-use Labstag\RequestHandler\PageRequestHandler;
-use Labstag\RequestHandler\ParagraphRequestHandler;
-use Labstag\RequestHandler\PhoneUserRequestHandler;
-use Labstag\RequestHandler\PostRequestHandler;
-use Labstag\RequestHandler\RenderRequestHandler;
-use Labstag\RequestHandler\TemplateRequestHandler;
-use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\BlockService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
@@ -51,6 +30,7 @@ use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\UserService;
+use Labstag\Service\WorkflowService;
 use Mmo\Faker\LoremSpaceProvider;
 use Mmo\Faker\PicsumProvider;
 use Psr\Log\LoggerInterface;
@@ -129,6 +109,7 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
+        protected WorkflowService $workflowService,
         protected FileService $fileService,
         protected UserService $userService,
         protected ErrorService $errorService,
@@ -142,29 +123,7 @@ abstract class FixtureLib extends Fixture
         protected GuardService $guardService,
         protected Environment $twigEnvironment,
         protected BlockService $blockService,
-        protected EmailUserRequestHandler $emailUserRequestHandler,
-        protected LinkUserRequestHandler $linkUserRequestHandler,
-        protected MemoRequestHandler $memoRequestHandler,
-        protected GroupeRequestHandler $groupeRequestHandler,
-        protected EditoRequestHandler $editoRequestHandler,
-        protected UserRequestHandler $userRequestHandler,
-        protected PhoneUserRequestHandler $phoneUserRequestHandler,
-        protected AttachmentRequestHandler $attachmentRequestHandler,
-        protected AddressUserRequestHandler $addressUserRequestHandler,
-        protected TemplateRequestHandler $templateRequestHandler,
-        protected LibelleRequestHandler $libelleRequestHandler,
-        protected CacheInterface $cache,
-        protected BookmarkRequestHandler $bookmarkRequestHandler,
-        protected PostRequestHandler $postRequestHandler,
-        protected CategoryRequestHandler $categoryRequestHandler,
-        protected HistoryRequestHandler $historyRequestHandler,
-        protected ChapterRequestHandler $chapterRequestHandler,
-        protected ParagraphRequestHandler $paragraphRequestHandler,
-        protected BlockRequestHandler $blockRequestHandler,
-        protected LayoutRequestHandler $layoutRequestHandler,
-        protected MenuRequestHandler $menuRequestHandler,
-        protected PageRequestHandler $pageRequestHandler,
-        protected RenderRequestHandler $renderRequestHandler
+        protected CacheInterface $cache
     )
     {
     }
@@ -179,8 +138,13 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
-    protected function addParagraphs(EntityFrontInterface $entityFront, array $paragraphs): void
+    protected function addParagraphs(
+        EntityFrontInterface $entityFront,
+        array $paragraphs,
+        ObjectManager $objectManager
+    ): void
     {
+        unset($objectManager);
         foreach ($paragraphs as $paragraph) {
             $this->paragraphService->add($entityFront, $paragraph);
         }
@@ -223,7 +187,11 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
-    protected function loadForeach(int $number, string $method): void
+    protected function loadForeach(
+        int $number,
+        string $method,
+        ObjectManager $objectManager
+    ): void
     {
         $faker     = $this->setFaker();
         $statesTab = $this->getStatesData();
@@ -235,7 +203,7 @@ abstract class FixtureLib extends Fixture
                 $this,
                 $method,
             ];
-            call_user_func_array($callable, [$faker, $index, $states]);
+            call_user_func_array($callable, [$faker, $index, $states, $objectManager]);
         }
     }
 

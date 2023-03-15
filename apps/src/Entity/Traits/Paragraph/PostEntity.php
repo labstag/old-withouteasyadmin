@@ -276,63 +276,90 @@ trait PostEntity
 
     public function removePost(ParagraphPost $paragraphPost): self
     {
-        $this->removeElementPost($this->posts, $paragraphPost);
+        $this->removeElementPost(
+            element: $this->posts,
+            paragraphPost: $paragraphPost
+        );
 
         return $this;
     }
 
     public function removePostArchive(PostArchive $postArchive): self
     {
-        $this->removeElementPost($this->postArchives, $postArchive);
+        $this->removeElementPost(
+            element: $this->postArchives,
+            postArchive: $postArchive
+        );
 
         return $this;
     }
 
     public function removePostCategory(PostCategory $postCategory): self
     {
-        $this->removeElementPost($this->postCategories, $postCategory);
+        $this->removeElementPost(
+            element: $this->postCategories,
+            postCategory: $postCategory
+        );
 
         return $this;
     }
 
     public function removePostHeader(PostHeader $postHeader): self
     {
-        $this->removeElementPost($this->postHeaders, $postHeader);
+        $this->removeElementPost(
+            element: $this->postHeaders,
+            postHeader: $postHeader
+        );
 
         return $this;
     }
 
     public function removePostLibelle(PostLibelle $postLibelle): self
     {
-        $this->removeElementPost($this->postLibelles, $postLibelle);
+        $this->removeElementPost(
+            element: $this->postLibelles,
+            postLibelle: $postLibelle
+        );
 
         return $this;
     }
 
     public function removePostList(PostList $postList): self
     {
-        $this->removeElementPost($this->postLists, $postList);
+        $this->removeElementPost(
+            element: $this->postLists,
+            postList: $postList
+        );
 
         return $this;
     }
 
     public function removePostShow(PostShow $postShow): self
     {
-        $this->removeElementPost($this->postShows, $postShow);
+        $this->removeElementPost(
+            element: $this->postShows,
+            postShow: $postShow
+        );
 
         return $this;
     }
 
     public function removePostUser(PostUser $postUser): self
     {
-        $this->removeElementPost($this->postUsers, $postUser);
+        $this->removeElementPost(
+            element: $this->postUsers,
+            postUser: $postUser
+        );
 
         return $this;
     }
 
     public function removePostYear(PostYear $postYear): self
     {
-        $this->removeElementPost($this->postYears, $postYear);
+        $this->removeElementPost(
+            element: $this->postYears,
+            postYear: $postYear
+        );
 
         return $this;
     }
@@ -346,10 +373,28 @@ trait PostEntity
 
     private function removeElementPost(
         Collection $element,
-        mixed $variable
+        ?ParagraphPost $paragraphPost = null,
+        ?PostArchive $postArchive = null,
+        ?PostCategory $postCategory = null,
+        ?PostHeader $postHeader = null,
+        ?PostLibelle $postLibelle = null,
+        ?PostList $postList = null,
+        ?PostShow $postShow = null,
+        ?PostUser $postUser = null,
+        ?PostYear $postYear = null
     ): void
     {
-        if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
+        $variable = is_null($paragraphPost) ? null : $paragraphPost;
+        $variable = is_null($postArchive) ? $variable : $postArchive;
+        $variable = is_null($postCategory) ? $variable : $postCategory;
+        $variable = is_null($postHeader) ? $variable : $postHeader;
+        $variable = is_null($postLibelle) ? $variable : $postLibelle;
+        $variable = is_null($postList) ? $variable : $postList;
+        $variable = is_null($postShow) ? $variable : $postShow;
+        $variable = is_null($postUser) ? $variable : $postUser;
+        $variable = is_null($postYear) ? $variable : $postYear;
+
+        if (!is_null($variable) && $element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);
         }
     }

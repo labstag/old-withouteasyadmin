@@ -9,7 +9,6 @@ use Labstag\Entity\Post;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PostRepository;
-use Labstag\RequestHandler\PostRequestHandler;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +44,6 @@ class PostController extends AdminControllerLib
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         PostRepository $postRepository,
-        PostRequestHandler $postRequestHandler,
         Security $security
     ): RedirectResponse
     {
@@ -60,9 +58,7 @@ class PostController extends AdminControllerLib
         $post->setTitle(Uuid::v1());
         $post->setRefuser($user);
 
-        $old = clone $post;
         $postRepository->add($post);
-        $postRequestHandler->handle($old, $post);
 
         return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
     }

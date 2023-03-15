@@ -70,7 +70,7 @@ class HistoryController extends FrontControllerLib
         );
 
         /** @var History $chapterHistory */
-        $chapterHistory = $chapter->getRefhistory();
+        $chapterHistory = $chapter->getHistory();
         $test           = [
             !$history instanceof History,
             !$chapter instanceof Chapter,

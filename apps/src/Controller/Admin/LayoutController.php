@@ -11,7 +11,6 @@ use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\Block\CustomRepository;
 use Labstag\Repository\LayoutRepository;
-use Labstag\RequestHandler\LayoutRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,7 +83,6 @@ class LayoutController extends AdminControllerLib
     public function new(
         Request $request,
         LayoutRepository $layoutRepository,
-        LayoutRequestHandler $layoutRequestHandler,
         CustomRepository $customRepository
     ): RedirectResponse
     {
@@ -102,9 +100,7 @@ class LayoutController extends AdminControllerLib
         $layout->setCustom($custom);
         $layout->setName(Uuid::v1());
 
-        $old = clone $layout;
         $layoutRepository->add($layout);
-        $layoutRequestHandler->handle($old, $layout);
 
         return $this->redirectToRoute('admin_layout_edit', ['id' => $layout->getId()]);
     }

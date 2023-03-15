@@ -8,17 +8,14 @@ use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\GroupeRepository;
-use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\Search\GroupeSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GroupeDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected GroupeRequestHandler $groupeRequestHandler,
         protected GroupeRepository $groupeRepository,
         protected GroupeSearch $groupeSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class GroupeDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->groupeRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->groupeRequestHandler;
     }
 
     public function getSearchData(): GroupeSearch

@@ -8,7 +8,6 @@ use Labstag\Entity\Menu;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MenuRepository;
-use Labstag\RequestHandler\MenuRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,17 +52,19 @@ class MenuController extends AdminControllerLib
     }
 
     #[Route(path: '/divider/{id}', name: 'divider')]
-    public function divider(Menu $menu, MenuRequestHandler $menuRequestHandler): RedirectResponse
+    public function divider(
+        Menu $menu,
+        MenuRepository $menuRepository
+    ): RedirectResponse
     {
-        $entity    = new Menu();
-        $oldEntity = clone $entity;
-        $children  = $menu->getChildren();
-        $position  = is_countable($children) ? count($children) : 0;
+        $entity   = new Menu();
+        $children = $menu->getChildren();
+        $position = is_countable($children) ? count($children) : 0;
         $entity->setPosition($position + 1);
         $entity->setSeparateur(true);
         $entity->setParent($menu);
 
-        $menuRequestHandler->handle($oldEntity, $entity);
+        $menuRepository->add($entity);
 
         return new RedirectResponse(
             $this->generateUrl('admin_menu_index')
@@ -95,7 +96,7 @@ class MenuController extends AdminControllerLib
         $all     = $menuRepository->findAllCode();
         $globals = $twigEnvironment->getGlobals();
         $modal   = $globals['modal'] ?? [];
-        if (is_array($modal)) {
+        if (!is_array($modal)) {
             $modal = [];
         }
 

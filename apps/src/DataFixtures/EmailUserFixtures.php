@@ -21,27 +21,28 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
         $generator = $this->setFaker();
         $users     = $this->installService->getData('user');
         for ($index = 0; $index < self::NUMBER_EMAIL; ++$index) {
             $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
             /** @var User $user */
             $user = $this->getReference('user_'.$indexUser);
-            $this->addEmail($generator, $user);
+            $this->addEmail($generator, $user, $objectManager);
         }
+
+        $objectManager->flush();
     }
 
     protected function addEmail(
         Generator $generator,
-        User $user
+        User $user,
+        ObjectManager $objectManager
     ): void
     {
         $emailUser = new EmailUser();
-        $old       = clone $emailUser;
         $emailUser->setRefuser($user);
         $emailUser->setAddress($generator->safeEmail);
 
-        $this->emailUserRequestHandler->handle($old, $emailUser);
+        $objectManager->persist($emailUser);
     }
 }

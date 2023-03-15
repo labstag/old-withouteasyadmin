@@ -8,17 +8,14 @@ use Labstag\Form\Admin\Search\User\AddressUserType as SearchAddressUserType;
 use Labstag\Form\Admin\User\AddressUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\AddressUserRepository;
-use Labstag\RequestHandler\AddressUserRequestHandler;
 use Labstag\Search\User\AddressUserSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AddressUserDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected AddressUserRequestHandler $addressUserRequestHandler,
         protected AddressUserRepository $addressUserRepository,
         protected AddressUserSearch $addressUserSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class AddressUserDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->addressUserRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->addressUserRequestHandler;
     }
 
     public function getSearchData(): AddressUserSearch

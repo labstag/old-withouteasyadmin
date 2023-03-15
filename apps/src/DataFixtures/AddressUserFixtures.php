@@ -23,17 +23,16 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
-        $this->loadForeachUser(self::NUMBER_ADRESSE, 'addAddress');
+        $this->loadForeachUser(self::NUMBER_ADRESSE, 'addAddress', $objectManager);
     }
 
     protected function addAddress(
         Generator $generator,
-        User $user
+        User $user,
+        ObjectManager $objectManager
     ): void
     {
         $addressUser = new AddressUser();
-        $old         = clone $addressUser;
         $addressUser->setRefuser($user);
         $addressUser->setStreet($generator->streetAddress);
         $addressUser->setCity($generator->city);
@@ -47,6 +46,6 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
         $addressUser->setGps($gps);
         $addressUser->setPmr((bool) random_int(0, 1));
 
-        $this->addressUserRequestHandler->handle($old, $addressUser);
+        $objectManager->persist($addressUser);
     }
 }

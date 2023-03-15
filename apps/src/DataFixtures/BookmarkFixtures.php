@@ -19,18 +19,17 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
-        $this->loadForeach(self::NUMBER_BOOKMARK, 'addLink');
+        $this->loadForeach(self::NUMBER_BOOKMARK, 'addLink', $objectManager);
     }
 
     protected function addLink(
         Generator $generator,
         int $index,
-        array $states
+        array $states,
+        ObjectManager $objectManager
     ): void
     {
         $bookmark = new Bookmark();
-        $old      = clone $bookmark;
         $this->setLibelles(
             generator: $generator,
             bookmark: $bookmark
@@ -52,7 +51,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         $bookmark->setPublished($generator->unique()->dateTime('now'));
         $this->upload($bookmark, $generator);
         $this->addReference('bookmark_'.$index, $bookmark);
-        $this->bookmarkRequestHandler->handle($old, $bookmark);
-        $this->bookmarkRequestHandler->changeWorkflowState($bookmark, $states);
+        $objectManager->persist($bookmark);
+        $this->workflowService->changeState($bookmark, $states);
     }
 }

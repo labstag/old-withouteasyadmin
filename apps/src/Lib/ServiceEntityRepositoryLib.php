@@ -76,20 +76,6 @@ abstract class ServiceEntityRepositoryLib extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    /**
-     * Get random data.
-     */
-    public function findOneRandom(): object
-    {
-        $classMetadataName = $this->getClassMetadataName();
-        $dql               = 'SELECT p FROM '.$classMetadataName.' p ORDER BY RAND()';
-        $entityManager     = $this->getEntityManager();
-        $query             = $entityManager->createQuery($dql);
-        $query             = $query->setMaxResults(1);
-
-        return $query->getOneOrNullResult();
-    }
-
     public function findTrashForAdmin(array $get): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('a');

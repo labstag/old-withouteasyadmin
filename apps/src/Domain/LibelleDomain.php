@@ -8,17 +8,14 @@ use Labstag\Form\Admin\LibelleType;
 use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\LibelleRepository;
-use Labstag\RequestHandler\LibelleRequestHandler;
 use Labstag\Search\LibelleSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LibelleDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected LibelleRequestHandler $libelleRequestHandler,
         protected LibelleRepository $libelleRepository,
         protected LibelleSearch $libelleSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class LibelleDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->libelleRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->libelleRequestHandler;
     }
 
     public function getSearchData(): LibelleSearch

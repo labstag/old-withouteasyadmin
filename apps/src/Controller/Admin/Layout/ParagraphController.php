@@ -7,7 +7,6 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\PublicInterface;
 use Labstag\Lib\ParagraphControllerLib;
-use Labstag\RequestHandler\ParagraphRequestHandler;
 use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,10 +60,9 @@ class ParagraphController extends ParagraphControllerLib
 
     #[Route(path: '/show/{id}', name: 'show')]
     public function show(
-        Paragraph $paragraph,
-        ParagraphRequestHandler $paragraphRequestHandler
+        Paragraph $paragraph
     ): Response
     {
-        return parent::showTwig($paragraph, $paragraphRequestHandler);
+        return parent::showTwig($paragraph);
     }
 }

@@ -7,17 +7,14 @@ use Labstag\Entity\Menu;
 use Labstag\Form\Admin\MenuType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\MenuRepository;
-use Labstag\RequestHandler\MenuRequestHandler;
 use Labstag\Search\MenuSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected MenuRequestHandler $menuRequestHandler,
         protected MenuRepository $menuRepository,
         protected MenuSearch $menuSearch,
         TranslatorInterface $translator
@@ -34,11 +31,6 @@ class MenuDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->menuRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->menuRequestHandler;
     }
 
     public function getSearchData(): MenuSearch

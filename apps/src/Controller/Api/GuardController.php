@@ -13,8 +13,6 @@ use Labstag\Repository\RouteGroupeRepository;
 use Labstag\Repository\RouteRepository;
 use Labstag\Repository\RouteUserRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\RouteGroupeRequestHandler;
-use Labstag\RequestHandler\RouteUserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,7 +41,6 @@ class GuardController extends ApiControllerLib
         string $route,
         string $groupe,
         Request $request,
-        RouteGroupeRequestHandler $routeGroupeRequestHandler,
         GroupeRepository $groupeRepository,
         RouteRepository $routeRepository,
         RouteGroupeRepository $routeGroupeRepository
@@ -85,9 +82,8 @@ class GuardController extends ApiControllerLib
             $routeGroupe->setRefRoute($route);
         }
 
-        $old = clone $routeGroupe;
         $routeGroupe->setState((bool) $post['state']);
-        $routeGroupeRequestHandler->handle($old, $routeGroupe);
+        $routeGroupeRepository->add($routeGroupe);
         $data['ok'] = true;
 
         return new JsonResponse($data);
@@ -98,7 +94,6 @@ class GuardController extends ApiControllerLib
         string $route,
         string $user,
         Request $request,
-        RouteUserRequestHandler $routeUserRequestHandler,
         UserRepository $userRepository,
         RouteRepository $routeRepository,
         RouteUserRepository $routeUserRepository
@@ -140,9 +135,8 @@ class GuardController extends ApiControllerLib
             $routeUser->setRefRoute($route);
         }
 
-        $old = clone $routeUser;
         $routeUser->setState((bool) $post['state']);
-        $routeUserRequestHandler->handle($old, $routeUser);
+        $routeUserRepository->add($routeUser);
         $data['ok'] = true;
 
         return new JsonResponse($data);

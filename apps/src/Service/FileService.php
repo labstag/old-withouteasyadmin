@@ -3,7 +3,7 @@
 namespace Labstag\Service;
 
 use Labstag\Entity\Attachment;
-use Labstag\RequestHandler\AttachmentRequestHandler;
+use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -11,7 +11,7 @@ class FileService
 {
     public function __construct(
         protected ContainerBagInterface $containerBag,
-        private readonly AttachmentRequestHandler $attachmentRequestHandler
+        protected AttachmentRepository $attachmentRepository
     )
     {
     }
@@ -20,8 +20,7 @@ class FileService
         UploadedFile $uploadedFile,
         string $path,
         string $filename,
-        ?Attachment $attachment,
-        ?Attachment $old
+        ?Attachment $attachment
     ): void
     {
         $uploadedFile->move(
@@ -30,22 +29,19 @@ class FileService
         );
         $uploadedFile = $path.'/'.$filename;
 
-        $this->setAttachment($uploadedFile, $attachment, $old);
+        $this->setAttachment($uploadedFile, $attachment);
     }
 
     public function setAttachment(
         string $file,
-        ?Attachment $attachment = null,
-        ?Attachment $old = null
+        ?Attachment $attachment = null
     ): Attachment
     {
-        if (is_null($attachment) && is_null($old)) {
+        if (is_null($attachment)) {
             $attachment = new Attachment();
-            $old        = clone $attachment;
         }
 
         /** @var Attachment $attachment */
-        /** @var Attachment $old */
         $attachment->setMimeType((string) mime_content_type($file));
         $attachment->setSize((int) filesize($file));
         $attachment->setName(
@@ -55,7 +51,7 @@ class FileService
                 (string) $file
             )
         );
-        $this->attachmentRequestHandler->handle($old, $attachment);
+        $this->attachmentRepository->add($attachment);
 
         return $attachment;
     }

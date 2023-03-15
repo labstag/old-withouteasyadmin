@@ -11,23 +11,24 @@ class GroupFixtures extends DataFixtureLib implements DependentFixtureInterface
 {
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
         $groupes = $this->installService->getData('group');
         foreach ($groupes as $key => $row) {
-            $this->addGroupe($key, $row);
+            $this->addGroupe($key, $row, $objectManager);
         }
+
+        $objectManager->flush();
     }
 
     protected function addGroupe(
         int $key,
-        string $row
+        string $row,
+        ObjectManager $objectManager
     ): void
     {
         $groupe = new Groupe();
-        $old    = clone $groupe;
         $groupe->setCode($row);
         $groupe->setName($row);
         $this->addReference('groupe_'.$key, $groupe);
-        $this->groupeRequestHandler->handle($old, $groupe);
+        $objectManager->persist($groupe);
     }
 }

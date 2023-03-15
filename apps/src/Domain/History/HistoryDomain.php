@@ -8,17 +8,14 @@ use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\HistoryRepository;
-use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HistoryDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected HistoryRequestHandler $historyRequestHandler,
         protected HistoryRepository $historyRepository,
         protected HistorySearch $historySearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class HistoryDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->historyRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->historyRequestHandler;
     }
 
     public function getSearchData(): HistorySearch

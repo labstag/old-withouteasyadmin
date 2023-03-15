@@ -13,9 +13,6 @@ use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
 use Labstag\Lib\ControllerLib;
 use Labstag\Repository\OauthConnectUserRepository;
-use Labstag\RequestHandler\EmailRequestHandler;
-use Labstag\RequestHandler\PhoneRequestHandler;
-use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\OauthService;
@@ -35,7 +32,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends ControllerLib
 {
     #[Route(path: '/change-password/{id}', name: 'app_changepassword', priority: 1)]
-    public function changePassword(User $user, Request $request, UserRequestHandler $userRequestHandler): Response
+    public function changePassword(User $user, Request $request): Response
     {
         if ('lostpassword' != $user->getState()) {
             $this->sessionService->flashBagAdd(
@@ -49,7 +46,7 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRequestHandler->changeWorkflowState($user, ['valider']);
+            $this->workflowService->changeState($user, ['valider']);
 
             return $this->redirectToRoute('front');
         }
@@ -61,7 +58,7 @@ class SecurityController extends ControllerLib
     }
 
     #[Route(path: '/confirm/email/{id}', name: 'app_confirm_mail', priority: 1)]
-    public function confirmEmail(Email $email, EmailRequestHandler $emailRequestHandler): RedirectResponse
+    public function confirmEmail(Email $email): RedirectResponse
     {
         if ('averifier' != $email->getState()) {
             $this->sessionService->flashBagAdd(
@@ -72,7 +69,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        $emailRequestHandler->changeWorkflowState($email, ['valider']);
+        $this->workflowService->changeState($email, ['valider']);
         $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('security.email.activate.win')
@@ -82,7 +79,7 @@ class SecurityController extends ControllerLib
     }
 
     #[Route(path: '/confirm/phone/{id}', name: 'app_confirm_phone', priority: 1)]
-    public function confirmPhone(Phone $phone, PhoneRequestHandler $phoneRequestHandler): RedirectResponse
+    public function confirmPhone(Phone $phone): RedirectResponse
     {
         if ('averifier' != $phone->getState()) {
             $this->sessionService->flashBagAdd(
@@ -93,7 +90,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        $phoneRequestHandler->changeWorkflowState($phone, ['valider']);
+        $this->workflowService->changeState($phone, ['valider']);
         $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('security.phone.activate.win')
@@ -103,7 +100,7 @@ class SecurityController extends ControllerLib
     }
 
     #[Route(path: '/confirm/user/{id}', name: 'app_confirm_user', priority: 1)]
-    public function confirmUser(User $user, UserRequestHandler $userRequestHandler): RedirectResponse
+    public function confirmUser(User $user): RedirectResponse
     {
         if ('avalider' != $user->getState()) {
             $this->sessionService->flashBagAdd(
@@ -114,7 +111,7 @@ class SecurityController extends ControllerLib
             return $this->redirectToRoute('front');
         }
 
-        $userRequestHandler->changeWorkflowState($user, ['validation']);
+        $this->workflowService->changeState($user, ['validation']);
         $this->sessionService->flashBagAdd(
             'success',
             $this->translator->trans('security.user.activate.win')
@@ -278,11 +275,15 @@ class SecurityController extends ControllerLib
             $referer = '';
         }
 
-        $oauth2state = $session->get('oauth2state');
         /** @var string $url */
         $url = $this->generateUrl('front');
         if ('' == $referer) {
             $referer = $url;
+        }
+
+        $oauth2state = $session->get('oauth2state');
+        if (!is_string($oauth2state)) {
+            return $this->redirect($referer);
         }
 
         if ($userService->ifBug($provider, $query, $oauth2state)) {

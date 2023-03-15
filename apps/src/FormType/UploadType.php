@@ -2,7 +2,9 @@
 
 namespace Labstag\FormType;
 
+use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Reader\UploadAnnotationReader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -35,21 +37,24 @@ class UploadType extends AbstractType
         $entity = $parent->getData();
         $name   = $form->getName();
         $field  = null;
-        if (!is_array($entity)) {
+        if ($entity instanceof EntityInterface) {
             $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
-            if (isset($annotations[$name])) {
+            if (isset($annotations[$name]) && $annotations[$name] instanceof UploadableField) {
                 $propertyAccessor = PropertyAccess::createPropertyAccessor();
-                $filename         = $annotations[$name]->getFileName();
+                $filename         = $annotations[$name]->getFilename();
                 if (is_string($filename)) {
                     $field = $propertyAccessor->getValue($entity, $filename);
                 }
             }
-        } elseif (isset($entity[$name]) && $entity[$name] instanceof Attachment) {
+        } elseif (is_array($entity) && isset($entity[$name]) && $entity[$name] instanceof Attachment) {
             $field = $entity[$name];
         }
 
-        $formView->vars['field'] = $field;
-        $formView->vars['url']   = null;
+        if (!is_null($field)) {
+            $formView->vars['field'] = $field;
+        }
+
+        $formView->vars['url'] = null;
         if ($field instanceof Attachment) {
             $route = $this->router->generate(
                 'api_attachment_delete',

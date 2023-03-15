@@ -164,35 +164,50 @@ trait HistoryEntity
 
     public function removeHistory(ParagraphHistory $paragraphHistory): self
     {
-        $this->removeElementHistory($this->histories, $paragraphHistory);
+        $this->removeElementHistory(
+            element: $this->histories,
+            paragraphHistory: $paragraphHistory
+        );
 
         return $this;
     }
 
     public function removeHistoryChapter(HistoryChapter $historyChapter): self
     {
-        $this->removeElementHistory($this->historyChapters, $historyChapter);
+        $this->removeElementHistory(
+            element: $this->historyChapters,
+            historyChapter: $historyChapter
+        );
 
         return $this;
     }
 
     public function removeHistoryList(HistoryList $historyList): self
     {
-        $this->removeElementHistory($this->historyLists, $historyList);
+        $this->removeElementHistory(
+            element: $this->historyLists,
+            historyList: $historyList
+        );
 
         return $this;
     }
 
     public function removeHistoryShow(HistoryShow $historyShow): self
     {
-        $this->removeElementHistory($this->historyShows, $historyShow);
+        $this->removeElementHistory(
+            element: $this->historyShows,
+            historyShow: $historyShow
+        );
 
         return $this;
     }
 
     public function removeHistoryUser(HistoryUser $historyUser): self
     {
-        $this->removeElementHistory($this->historyUsers, $historyUser);
+        $this->removeElementHistory(
+            element: $this->historyUsers,
+            historyUser: $historyUser
+        );
 
         return $this;
     }
@@ -206,10 +221,19 @@ trait HistoryEntity
 
     private function removeElementHistory(
         Collection $element,
-        mixed $variable
+        ?ParagraphHistory $paragraphHistory = null,
+        ?HistoryChapter $historyChapter = null,
+        ?HistoryList $historyList = null,
+        ?HistoryShow $historyShow = null,
+        ?HistoryUser $historyUser = null
     ): void
     {
-        if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
+        $variable = is_null($paragraphHistory) ? null : $paragraphHistory;
+        $variable = is_null($historyChapter) ? $variable : $historyChapter;
+        $variable = is_null($historyList) ? $variable : $historyList;
+        $variable = is_null($historyShow) ? $variable : $historyShow;
+        $variable = is_null($historyUser) ? $variable : $historyUser;
+        if (!is_null($variable) && $element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);
         }
     }

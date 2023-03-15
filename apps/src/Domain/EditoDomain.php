@@ -8,17 +8,14 @@ use Labstag\Form\Admin\EditoType;
 use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\EditoRepository;
-use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\Search\EditoSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EditoDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected EditoRequestHandler $editoRequestHandler,
         protected EditoRepository $editoRepository,
         protected EditoSearch $editoSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class EditoDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->editoRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->editoRequestHandler;
     }
 
     public function getSearchData(): EditoSearch

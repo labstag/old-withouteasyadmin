@@ -9,7 +9,6 @@ use Labstag\Entity\History;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\ChapterRepository;
-use Labstag\RequestHandler\ChapterRequestHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,18 +43,15 @@ class ChapterController extends AdminControllerLib
     #[Route(path: '/new/{id}', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         History $history,
-        ChapterRepository $chapterRepository,
-        ChapterRequestHandler $chapterRequestHandler
+        ChapterRepository $chapterRepository
     ): RedirectResponse
     {
         $chapter = new Chapter();
-        $chapter->setRefhistory($history);
+        $chapter->setHistory($history);
         $chapter->setName(Uuid::v1());
         $chapter->setPosition((is_countable($history->getChapters()) ? count($history->getChapters()) : 0) + 1);
 
-        $old = clone $chapter;
         $chapterRepository->add($chapter);
-        $chapterRequestHandler->handle($old, $chapter);
 
         return $this->redirectToRoute('admin_chapter_edit', ['id' => $chapter->getId()]);
     }

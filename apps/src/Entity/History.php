@@ -83,7 +83,7 @@ class History implements PublicInterface, EntityTrashInterface
     {
         if (!$this->chapters->contains($chapter)) {
             $this->chapters[] = $chapter;
-            $chapter->setRefhistory($this);
+            $chapter->setHistory($this);
         }
 
         return $this;
@@ -193,21 +193,30 @@ class History implements PublicInterface, EntityTrashInterface
 
     public function removeChapter(Chapter $chapter): self
     {
-        $this->removeElementHistory($this->chapters, $chapter);
+        $this->removeElementHistory(
+            element: $this->chapters,
+            chapter: $chapter
+        );
 
         return $this;
     }
 
     public function removeMeta(Meta $meta): self
     {
-        $this->removeElementHistory($this->metas, $meta);
+        $this->removeElementHistory(
+            element: $this->metas,
+            meta: $meta
+        );
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        $this->removeElementHistory($this->paragraphs, $paragraph);
+        $this->removeElementHistory(
+            element: $this->paragraphs,
+            paragraph: $paragraph
+        );
 
         return $this;
     }
@@ -270,10 +279,16 @@ class History implements PublicInterface, EntityTrashInterface
 
     private function removeElementHistory(
         Collection $element,
-        mixed $variable
+        ?Chapter $chapter = null,
+        ?Meta $meta = null,
+        ?Paragraph $paragraph = null
     ): void
     {
-        if ($element->removeElement($variable) && $variable->getHistory() === $this) {
+        $variable = is_null($chapter) ? null : $chapter;
+        $variable = is_null($meta) ? $variable : $meta;
+        $variable = is_null($paragraph) ? $variable : $paragraph;
+
+        if (!is_null($variable) && $element->removeElement($variable) && $variable->getHistory() === $this) {
             $variable->setHistory(null);
         }
     }

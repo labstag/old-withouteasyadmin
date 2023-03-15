@@ -8,17 +8,14 @@ use Labstag\Form\Admin\LayoutType;
 use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\LayoutRepository;
-use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\Search\LayoutSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LayoutDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected LayoutRequestHandler $layoutRequestHandler,
         protected LayoutRepository $layoutRepository,
         protected LayoutSearch $layoutSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class LayoutDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->layoutRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->layoutRequestHandler;
     }
 
     public function getSearchData(): LayoutSearch

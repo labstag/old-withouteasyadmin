@@ -161,14 +161,20 @@ class Page implements Stringable, PublicInterface, EntityTrashInterface
 
     public function removeMeta(Meta $meta): self
     {
-        $this->removeElementPage($this->metas, $meta);
+        $this->removeElementPage(
+            element: $this->metas,
+            meta: $meta
+        );
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        $this->removeElementPage($this->paragraphs, $paragraph);
+        $this->removeElementPage(
+            element: $this->paragraphs,
+            paragraph: $paragraph
+        );
 
         return $this;
     }
@@ -203,9 +209,16 @@ class Page implements Stringable, PublicInterface, EntityTrashInterface
 
     private function removeElementPage(
         Collection $element,
-        mixed $variable
+        ?Meta $meta = null,
+        ?Paragraph $paragraph = null
     ): void
     {
+        if (is_null($meta) && is_null($paragraph)) {
+            return;
+        }
+
+        $variable = is_null($meta) ? $paragraph : $meta;
+
         if ($element->removeElement($variable) && $variable->getPage() === $this) {
             $variable->setPage(null);
         }

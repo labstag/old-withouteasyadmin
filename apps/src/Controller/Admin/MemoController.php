@@ -8,7 +8,6 @@ use Labstag\Entity\Memo;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MemoRepository;
-use Labstag\RequestHandler\MemoRequestHandler;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +43,6 @@ class MemoController extends AdminControllerLib
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         MemoRepository $memoRepository,
-        MemoRequestHandler $memoRequestHandler,
         Security $security
     ): RedirectResponse
     {
@@ -57,9 +55,7 @@ class MemoController extends AdminControllerLib
         $memo->setTitle(Uuid::v1());
         $memo->setRefuser($user);
 
-        $old = clone $memo;
         $memoRepository->add($memo);
-        $memoRequestHandler->handle($old, $memo);
 
         return $this->redirectToRoute('admin_memo_edit', ['id' => $memo->getId()]);
     }

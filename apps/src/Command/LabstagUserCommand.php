@@ -8,7 +8,6 @@ use Labstag\Entity\User;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -28,7 +27,6 @@ class LabstagUserCommand extends CommandLib
         RepositoryService $repositoryService,
         EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
-        protected UserRequestHandler $userRequestHandler,
         protected GroupeRepository $groupeRepository,
         protected UserRepository $userRepository
     )
@@ -209,7 +207,6 @@ class LabstagUserCommand extends CommandLib
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
         $user         = new User();
-        $old          = clone $user;
         $functions    = [
             'setUserUsername',
             'setUserPassword',
@@ -225,7 +222,7 @@ class LabstagUserCommand extends CommandLib
         }
 
         $this->setUserGroup($questionHelper, $input, $output, $user);
-        $this->userRequestHandler->handle($old, $user);
+        $this->userRepository->add($user);
         $symfonyStyle->success('Utilisateur ajouté');
     }
 
@@ -259,9 +256,7 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $old = clone $entity;
         $this->userRepository->remove($entity);
-        $this->userRequestHandler->handle($old, $entity);
         $symfonyStyle->success('Utilisateur supprimé');
     }
 
@@ -309,10 +304,9 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $old = clone $entity;
         $workflow->apply($entity, 'desactiver');
         $this->entityManager->flush();
-        $this->userRequestHandler->handle($old, $entity);
+        $this->userRepository->add($entity);
         $symfonyStyle->success('Utilisateur désactivé');
     }
 
@@ -360,10 +354,9 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $old = clone $entity;
         $workflow->apply($entity, 'activer');
         $this->entityManager->flush();
-        $this->userRequestHandler->handle($old, $entity);
+        $this->userRepository->add($entity);
         $symfonyStyle->success('Utilisateur activé');
     }
 
@@ -531,9 +524,8 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $old = clone $entity;
         $entity->setPlainPassword($password1);
-        $this->userRequestHandler->handle($old, $entity);
+        $this->userRepository->add($entity);
         $symfonyStyle->success('Mot de passe changé');
     }
 

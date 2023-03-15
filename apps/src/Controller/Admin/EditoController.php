@@ -9,7 +9,6 @@ use Labstag\Entity\Edito;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\EditoRepository;
-use Labstag\RequestHandler\EditoRequestHandler;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +44,6 @@ class EditoController extends AdminControllerLib
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         EditoRepository $editoRepository,
-        EditoRequestHandler $editoRequestHandler,
         Security $security
     ): RedirectResponse
     {
@@ -59,9 +57,7 @@ class EditoController extends AdminControllerLib
         $edito->setTitle(Uuid::v1());
         $edito->setRefuser($user);
 
-        $old = clone $edito;
         $editoRepository->add($edito);
-        $editoRequestHandler->handle($old, $edito);
 
         return $this->redirectToRoute('admin_edito_edit', ['id' => $edito->getId()]);
     }

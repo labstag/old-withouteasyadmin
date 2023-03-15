@@ -22,14 +22,14 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
-        $this->loadForeach(self::NUMBER_HISTORY, 'addHistory');
+        $this->loadForeach(self::NUMBER_HISTORY, 'addHistory', $objectManager);
     }
 
     protected function addHistory(
         Generator $generator,
         int $index,
-        array $states
+        array $states,
+        ObjectManager $objectManager
     ): void
     {
         $users   = $this->userRepository->findAll();
@@ -37,7 +37,6 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $meta    = new Meta();
         $meta->setHistory($history);
         $this->setMeta($meta);
-        $oldHistory = clone $history;
         $history->setName($generator->unique()->colorName());
         /** @var string $content */
         $content = $generator->paragraphs(random_int(2, 4), true);
@@ -49,7 +48,7 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $history->setRefuser($user);
         $history->setPublished($generator->unique()->dateTime('now'));
         $this->addReference('history_'.$index, $history);
-        $this->historyRequestHandler->handle($oldHistory, $history);
-        $this->historyRequestHandler->changeWorkflowState($history, $states);
+        $objectManager->persist($history);
+        $this->workflowService->changeState($history, $states);
     }
 }

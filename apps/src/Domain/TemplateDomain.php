@@ -8,17 +8,14 @@ use Labstag\Form\Admin\Search\TemplateType as SearchTemplateType;
 use Labstag\Form\Admin\TemplateType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\TemplateRepository;
-use Labstag\RequestHandler\TemplateRequestHandler;
 use Labstag\Search\TemplateSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TemplateDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected TemplateRequestHandler $templateRequestHandler,
         protected TemplateRepository $templateRepository,
         protected TemplateSearch $templateSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class TemplateDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->templateRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->templateRequestHandler;
     }
 
     public function getSearchData(): TemplateSearch

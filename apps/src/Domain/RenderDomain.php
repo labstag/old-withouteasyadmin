@@ -8,17 +8,14 @@ use Labstag\Form\Admin\RenderType;
 use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\RenderRepository;
-use Labstag\RequestHandler\RenderRequestHandler;
 use Labstag\Search\RenderSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RenderDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected RenderRequestHandler $renderRequestHandler,
         protected RenderRepository $renderRepository,
         protected RenderSearch $renderSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class RenderDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->renderRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->renderRequestHandler;
     }
 
     public function getSearchData(): RenderSearch

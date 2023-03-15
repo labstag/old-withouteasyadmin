@@ -10,7 +10,6 @@ use Labstag\Entity\History;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\HistoryRepository;
-use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Service\HistoryService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -48,7 +47,6 @@ class HistoryController extends AdminControllerLib
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         HistoryRepository $historyRepository,
-        HistoryRequestHandler $historyRequestHandler,
         Security $security
     ): RedirectResponse
     {
@@ -62,9 +60,7 @@ class HistoryController extends AdminControllerLib
         $history->setName(Uuid::v1());
         $history->setRefuser($user);
 
-        $old = clone $history;
         $historyRepository->add($history);
-        $historyRequestHandler->handle($old, $history);
 
         return $this->redirectToRoute('admin_history_edit', ['id' => $history->getId()]);
     }

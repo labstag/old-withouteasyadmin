@@ -19,7 +19,7 @@ class ChapterFront extends HistoryFront implements FrontInterface
         }
 
         /** @var History $history */
-        $history      = $entityFront->getRefhistory();
+        $history      = $entityFront->getHistory();
         $breadcrumb[] = [
             'route' => $this->router->generate(
                 'front_history_chapter',
@@ -44,7 +44,7 @@ class ChapterFront extends HistoryFront implements FrontInterface
         }
 
         /** @var History $history */
-        $history     = $entityFront->getRefhistory();
+        $history     = $entityFront->getHistory();
         $metahistory = $this->getMeta($history->getMetas(), $meta);
         $meta        = $this->getMeta($entityFront->getMetas(), $meta);
         if (isset($metahistory['title'])) {

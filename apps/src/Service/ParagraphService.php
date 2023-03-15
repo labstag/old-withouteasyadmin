@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Doctrine\ORM\PersistentCollection;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Entity\Layout;
@@ -12,7 +13,7 @@ use Labstag\Entity\Post;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
-use Labstag\RequestHandler\ParagraphRequestHandler;
+use Labstag\Repository\ParagraphRepository;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class ParagraphService
     public function __construct(
         protected RewindableGenerator $rewindableGenerator,
         protected Environment $twigEnvironment,
-        protected ParagraphRequestHandler $paragraphRequestHandler
+        protected ParagraphRepository $paragraphRepository
     )
     {
     }
@@ -42,7 +43,6 @@ class ParagraphService
         $position = (is_countable($entityFront->getParagraphs()) ? count($entityFront->getParagraphs()) : 0) + 1;
 
         $paragraph = new Paragraph();
-        $old       = clone $paragraph;
         $paragraph->setType($code);
         $paragraph->setPosition($position);
         /** @var callable $callable */
@@ -51,7 +51,7 @@ class ParagraphService
             $method,
         ];
         call_user_func($callable, $entityFront);
-        $this->paragraphRequestHandler->handle($old, $paragraph);
+        $this->paragraphRepository->add($paragraph);
     }
 
     public function getAll(EntityFrontInterface $entityFront): array
@@ -83,7 +83,11 @@ class ParagraphService
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() === $field) {
                 $entities = $propertyAccessor->getValue($paragraph, $field);
-                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+                if (!$entities instanceof PersistentCollection || !$entities->offsetExists(0)) {
+                    continue;
+                }
+
+                $entity = $entities->offsetGet(0);
 
                 break;
             }
@@ -103,6 +107,8 @@ class ParagraphService
         if (!is_string($childentity)) {
             return $field;
         }
+
+        $childentity = new $childentity();
 
         $reflectionClass = new ReflectionClass($childentity);
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {

@@ -21,14 +21,14 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
-        $this->loadForeach(self::NUMBER_PHONE, 'addPhone');
+        $this->loadForeach(self::NUMBER_PHONE, 'addPhone', $objectManager);
     }
 
     protected function addPhone(
         Generator $generator,
         int $index,
-        array $states
+        array $states,
+        ObjectManager $objectManager
     ): void
     {
         $users     = $this->installService->getData('user');
@@ -37,14 +37,13 @@ class PhoneUserFixtures extends FixtureLib implements DependentFixtureInterface
         $user      = $this->getReference('user_'.$indexUser);
         $number    = $generator->e164PhoneNumber;
         $phoneUser = new PhoneUser();
-        $old       = clone $phoneUser;
         $phoneUser->setRefuser($user);
         $phoneUser->setNumero($number);
         $phoneUser->setType($generator->word());
         $phoneUser->setCountry($generator->countryCode);
         $this->addReference('phone_'.$index, $phoneUser);
-        $this->phoneUserRequestHandler->handle($old, $phoneUser);
-        $this->phoneUserRequestHandler->changeWorkflowState($phoneUser, $states);
+        $objectManager->persist($phoneUser);
+        $this->workflowService->changeState($phoneUser, $states);
     }
 
     protected function getStatePhone(): array

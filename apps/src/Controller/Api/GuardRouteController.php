@@ -11,8 +11,6 @@ use Labstag\Lib\ApiControllerLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\RouteGroupeRepository;
 use Labstag\Repository\RouteUserRepository;
-use Labstag\RequestHandler\RouteGroupeRequestHandler;
-use Labstag\RequestHandler\RouteUserRequestHandler;
 use Labstag\Service\GuardService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +25,6 @@ class GuardRouteController extends ApiControllerLib
         RouteGroupeRepository $routeGroupeRepository,
         Groupe $groupe,
         GuardService $guardService,
-        RouteGroupeRequestHandler $routeGroupeRequestHandler,
         Request $request
     ): JsonResponse
     {
@@ -46,8 +43,7 @@ class GuardRouteController extends ApiControllerLib
                 $data,
                 $groupe,
                 $route,
-                (bool) $state,
-                $routeGroupeRequestHandler
+                (bool) $state
             );
         }
 
@@ -59,7 +55,6 @@ class GuardRouteController extends ApiControllerLib
         RouteGroupeRepository $routeGroupeRepository,
         GuardService $guardService,
         EntityRoute $entityRoute,
-        RouteGroupeRequestHandler $routeGroupeRequestHandler,
         Request $request,
         GroupeRepository $groupeRepository
     ): JsonResponse
@@ -79,8 +74,7 @@ class GuardRouteController extends ApiControllerLib
                 $data,
                 $groupe,
                 $entityRoute,
-                $state,
-                $routeGroupeRequestHandler
+                $state
             );
         }
 
@@ -121,8 +115,7 @@ class GuardRouteController extends ApiControllerLib
         GuardService $guardService,
         Groupe $groupe,
         EntityRoute $entityRoute,
-        Request $request,
-        RouteGroupeRequestHandler $routeGroupeRequestHandler
+        Request $request
     ): JsonResponse
     {
         $data = [
@@ -137,8 +130,7 @@ class GuardRouteController extends ApiControllerLib
             $data,
             $groupe,
             $entityRoute,
-            $state,
-            $routeGroupeRequestHandler
+            $state
         );
 
         return new JsonResponse($data);
@@ -150,8 +142,7 @@ class GuardRouteController extends ApiControllerLib
         GuardService $guardService,
         User $user,
         EntityRoute $entityRoute,
-        Request $request,
-        RouteUserRequestHandler $routeUserRequestHandler
+        Request $request
     ): JsonResponse
     {
         $data = [
@@ -166,8 +157,7 @@ class GuardRouteController extends ApiControllerLib
             $data,
             $user,
             $state,
-            $entityRoute,
-            $routeUserRequestHandler
+            $entityRoute
         );
 
         return new JsonResponse($data);
@@ -178,8 +168,7 @@ class GuardRouteController extends ApiControllerLib
         RouteUserRepository $routeUserRepository,
         GuardService $guardService,
         User $user,
-        Request $request,
-        RouteUserRequestHandler $routeUserRequestHandler
+        Request $request
     ): JsonResponse
     {
         $data = [
@@ -198,8 +187,7 @@ class GuardRouteController extends ApiControllerLib
                 $data,
                 $user,
                 $state,
-                $route,
-                $routeUserRequestHandler
+                $route
             );
         }
 
@@ -212,8 +200,7 @@ class GuardRouteController extends ApiControllerLib
         array $data,
         ?Groupe $groupe,
         ?EntityRoute $entityRoute,
-        bool $state,
-        RouteGroupeRequestHandler $routeGroupeRequestHandler
+        bool $state
     ): array
     {
         $routeGroupe = $routeGroupeRepository->findOneBy(
@@ -243,9 +230,8 @@ class GuardRouteController extends ApiControllerLib
             $data['add'] = 1;
             $routeGroupe->setRefgroupe($groupe);
             $routeGroupe->setRefroute($entityRoute);
-            $old = clone $routeGroupe;
             $routeGroupe->setState($state);
-            $routeGroupeRequestHandler->handle($old, $routeGroupe);
+            $routeGroupeRepository->add($routeGroupe);
         }
 
         return $data;
@@ -257,8 +243,7 @@ class GuardRouteController extends ApiControllerLib
         array $data,
         ?UserInterface $user,
         bool $state,
-        EntityRoute $entityRoute,
-        RouteUserRequestHandler $routeUserRequestHandler
+        EntityRoute $entityRoute
     ): array
     {
         $routeUser = $routeUserRepository->findOneBy(['refuser' => $user, 'refroute' => $entityRoute]);
@@ -284,9 +269,8 @@ class GuardRouteController extends ApiControllerLib
             $routeUser   = new RouteUser();
             $routeUser->setRefuser($user);
             $routeUser->setRefroute($entityRoute);
-            $old = clone $routeUser;
             $routeUser->setState($state);
-            $routeUserRequestHandler->handle($old, $routeUser);
+            $routeUserRepository->add($routeUser);
         }
 
         return $data;

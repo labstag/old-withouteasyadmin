@@ -9,7 +9,6 @@ use Labstag\Entity\User;
 use Labstag\Entity\Workflow;
 use Labstag\Entity\WorkflowGroupe;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Service\PhoneService;
 use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
@@ -28,7 +27,6 @@ abstract class ApiControllerLib extends AbstractController
         protected TokenStorageInterface $tokenStorage,
         protected PhoneService $phoneService,
         protected EntityManagerInterface $entityManager,
-        protected AttachmentRequestHandler $attachmentRequestHandler,
         protected WorkflowService $workflowService,
         protected UserRepository $userRepository
     )

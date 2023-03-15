@@ -8,17 +8,14 @@ use Labstag\Form\Admin\MemoType;
 use Labstag\Form\Admin\Search\MemoType as SearchMemoType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
 use Labstag\Lib\ServiceEntityRepositoryLib;
 use Labstag\Repository\MemoRepository;
-use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\Search\MemoSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MemoDomain extends DomainLib implements DomainInterface
 {
     public function __construct(
-        protected MemoRequestHandler $memoRequestHandler,
         protected MemoRepository $memoRepository,
         protected MemoSearch $memoSearch,
         TranslatorInterface $translator
@@ -35,11 +32,6 @@ class MemoDomain extends DomainLib implements DomainInterface
     public function getRepository(): ServiceEntityRepositoryLib
     {
         return $this->memoRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->memoRequestHandler;
     }
 
     public function getSearchData(): MemoSearch

@@ -12,8 +12,6 @@ use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\WorkflowGroupeRepository;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\Repository\WorkflowUserRepository;
-use Labstag\RequestHandler\WorkflowGroupeRequestHandler;
-use Labstag\RequestHandler\WorkflowUserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,16 +24,14 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowUserRepository $workflowUserRepository,
         WorkflowRepository $workflowRepository,
         Request $request,
-        Groupe $groupe,
-        WorkflowUserRequestHandler $workflowUserRequestHandler
+        Groupe $groupe
     ): JsonResponse
     {
         return $this->setWorkflow(
             $workflowUserRepository,
             $workflowRepository,
             $request,
-            $groupe,
-            $workflowUserRequestHandler
+            $groupe
         );
     }
 
@@ -43,7 +39,6 @@ class GuardWorkflowController extends ApiControllerLib
     public function groups(
         WorkflowGroupeRepository $workflowGroupeRepository,
         Workflow $workflow,
-        WorkflowGroupeRequestHandler $workflowGroupeRequestHandler,
         Request $request,
         GroupeRepository $groupeRepository
     ): JsonResponse
@@ -62,8 +57,7 @@ class GuardWorkflowController extends ApiControllerLib
                 $data,
                 $groupe,
                 $workflow,
-                (bool) $state,
-                $workflowGroupeRequestHandler
+                (bool) $state
             );
         }
 
@@ -104,8 +98,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowGroupeRepository $workflowGroupeRepository,
         Groupe $groupe,
         Workflow $workflow,
-        Request $request,
-        WorkflowGroupeRequestHandler $workflowGroupeRequestHandler
+        Request $request
     ): JsonResponse
     {
         $data = [
@@ -119,8 +112,7 @@ class GuardWorkflowController extends ApiControllerLib
             $data,
             $groupe,
             $workflow,
-            (bool) $state,
-            $workflowGroupeRequestHandler
+            (bool) $state
         );
 
         return new JsonResponse($data);
@@ -131,8 +123,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowUserRepository $workflowUserRepository,
         User $user,
         Workflow $workflow,
-        Request $request,
-        WorkflowUserRequestHandler $workflowUserRequestHandler
+        Request $request
     ): JsonResponse
     {
         $data = [
@@ -146,8 +137,7 @@ class GuardWorkflowController extends ApiControllerLib
             $data,
             $user,
             $workflow,
-            (bool) $state,
-            $workflowUserRequestHandler
+            (bool) $state
         );
 
         return new JsonResponse($data);
@@ -158,16 +148,14 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowUserRepository $workflowUserRepository,
         WorkflowRepository $workflowRepository,
         User $user,
-        Request $request,
-        WorkflowUserRequestHandler $workflowUserRequestHandler
+        Request $request
     ): JsonResponse
     {
         return $this->setWorkflow(
             $workflowUserRepository,
             $workflowRepository,
             $request,
-            $user,
-            $workflowUserRequestHandler
+            $user
         );
     }
 
@@ -175,8 +163,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowUserRepository $workflowUserRepository,
         WorkflowRepository $workflowRepository,
         Request $request,
-        mixed $entity,
-        WorkflowUserRequestHandler $workflowUserRequestHandler
+        mixed $entity
     ): JsonResponse
     {
         $data = [
@@ -193,8 +180,7 @@ class GuardWorkflowController extends ApiControllerLib
                 $data,
                 $entity,
                 $workflow,
-                (bool) $state,
-                $workflowUserRequestHandler
+                (bool) $state
             );
         }
 
@@ -206,8 +192,7 @@ class GuardWorkflowController extends ApiControllerLib
         array $data,
         Groupe $groupe,
         Workflow $workflow,
-        bool $state,
-        WorkflowGroupeRequestHandler $workflowGroupeRequestHandler
+        bool $state
     ): array
     {
         $workflowGroupe = $workflowGroupeRepository->findOneBy(
@@ -234,9 +219,8 @@ class GuardWorkflowController extends ApiControllerLib
             $data['add']    = 1;
             $workflowGroupe->setRefgroupe($groupe);
             $workflowGroupe->setRefworkflow($workflow);
-            $old = clone $workflowGroupe;
             $workflowGroupe->setState($state);
-            $workflowGroupeRequestHandler->handle($old, $workflowGroupe);
+            $workflowGroupeRepository->add($workflowGroupe);
         }
 
         return $data;
@@ -247,8 +231,7 @@ class GuardWorkflowController extends ApiControllerLib
         array $data,
         ?User $user,
         ?Workflow $workflow,
-        bool $state,
-        WorkflowUserRequestHandler $workflowUserRequestHandler
+        bool $state
     ): array
     {
         $workflowUser = $workflowUserRepository->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
@@ -273,9 +256,8 @@ class GuardWorkflowController extends ApiControllerLib
             $workflowUser = new WorkflowUser();
             $workflowUser->setRefuser($user);
             $workflowUser->setRefworkflow($workflow);
-            $old = clone $workflowUser;
             $workflowUser->setState($state);
-            $workflowUserRequestHandler->handle($old, $workflowUser);
+            $workflowUserRepository->add($workflowUser);
         }
 
         return $data;

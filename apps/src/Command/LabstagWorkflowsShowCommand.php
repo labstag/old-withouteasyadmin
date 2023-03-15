@@ -7,7 +7,6 @@ use Labstag\Entity\Workflow;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\CommandLib;
 use Labstag\Repository\WorkflowRepository;
-use Labstag\RequestHandler\WorkflowRequestHandler;
 use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -28,7 +27,6 @@ class LabstagWorkflowsShowCommand extends CommandLib
         EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
         protected EventDispatcherInterface $eventDispatcher,
-        protected WorkflowRequestHandler $workflowRequestHandler,
         protected WorkflowRepository $workflowRepository
     )
     {
@@ -77,8 +75,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
                 $workflow = new Workflow();
                 $workflow->setEntity($name);
                 $workflow->setTransition($transition);
-                $old = clone $workflow;
-                $this->workflowRequestHandler->handle($old, $workflow);
+                $this->workflowRepository->add($workflow);
             }
         }
 

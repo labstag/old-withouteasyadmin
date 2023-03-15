@@ -34,16 +34,14 @@ abstract class AdminControllerLib extends ControllerLib
     ): Response
     {
         $this->modalAttachmentDelete();
-        $requestHandlerLib = $domain->getRequestHandler();
-        $formType          = $domain->getType();
-        $url               = $domain->getUrlAdmin();
+        $formType = $domain->getType();
+        $url      = $domain->getUrlAdmin();
         $this->denyAccessUnlessGranted(
             empty($entity->getId()) ? 'new' : 'edit',
             $entity
         );
         $this->setBtnViewUpdate($url, $entity);
-        $oldEntity = clone $entity;
-        $form      = $this->createForm($formType, $entity);
+        $form = $this->createForm($formType, $entity);
         $this->adminBtnService->addBtnSave(
             $form->getName(),
             empty($entity->getId()) ? 'Ajouter' : 'Sauvegarder'
@@ -56,7 +54,8 @@ abstract class AdminControllerLib extends ControllerLib
         if ($form->isSubmitted() && $form->isValid()) {
             $this->setPositionParagraphs();
             $this->attachFormService->upload($entity);
-            $requestHandlerLib->handle($oldEntity, $entity);
+            $repository = $domain->getRepository();
+            $repository->add($entity);
             $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('data.save')

@@ -41,7 +41,6 @@ class AttachFormService
                 $entity,
                 $annotation
             );
-            $old = clone $attachment;
 
             $filename = $file->getClientOriginalName();
             $path     = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
@@ -49,7 +48,7 @@ class AttachFormService
                 mkdir($path, 0777, true);
             }
 
-            $this->fileService->moveFile($file, $path, $filename, $attachment, $old);
+            $this->fileService->moveFile($file, $path, $filename, $attachment);
             $filename = $annotation->getFilename();
             if (!is_string($filename)) {
                 continue;

@@ -38,10 +38,6 @@ services:
         resource: "../src/Front/"
         public: true
         tags: [frontclass]
-    Labstag\Form\Front\:
-      resource: "../src/Form/Front/"
-      public: true
-      tags: [formfront]
     Labstag\PostForm\:
       resource: "../src/PostForm/"
       public: true
@@ -57,10 +53,6 @@ services:
       resource: "../src/Repository/"
       public: true
       tags: [repositories]
-    Labstag\RequestHandler\:
-      resource: "../src/RequestHandler/"
-      public: true
-      tags: [requestHandler]
     Labstag\Controller\:
       resource: "../src/Controller/"
       tags: ["controller.service_arguments"]
@@ -78,7 +70,6 @@ services:
           - serverenv: "env"
     Labstag\Service\FormService:
         arguments:
-            - !tagged_iterator formfront
             - !tagged_iterator postform
     Labstag\Service\BlockService:
         arguments:

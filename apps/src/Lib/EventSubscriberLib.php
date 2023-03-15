@@ -14,7 +14,6 @@ use Labstag\Repository\UserRepository;
 use Labstag\Repository\WorkflowGroupeRepository;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\Repository\WorkflowUserRepository;
-use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
@@ -73,7 +72,6 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected RequestStack $requestStack,
         protected UserPasswordHasherInterface $userPasswordHasher,
         protected UserMailService $userMailService,
-        protected EmailUserRequestHandler $emailUserRequestHandler,
         protected TranslatorInterface $translator
     )
     {

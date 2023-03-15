@@ -119,21 +119,30 @@ trait BookmarkEntity
 
     public function removeBookmark(ParagraphBookmark $paragraphBookmark): self
     {
-        $this->removeElementBookmark($this->bookmarks, $paragraphBookmark);
+        $this->removeElementBookmark(
+            element: $this->bookmarks,
+            paragraphBookmark: $paragraphBookmark
+        );
 
         return $this;
     }
 
     public function removeBookmarkCategory(BookmarkCategory $bookmarkCategory): self
     {
-        $this->removeElementBookmark($this->bookmarkCategories, $bookmarkCategory);
+        $this->removeElementBookmark(
+            element: $this->bookmarkCategories,
+            bookmarkCategory: $bookmarkCategory
+        );
 
         return $this;
     }
 
     public function removeBookmarkLibelle(BookmarkLibelle $bookmarkLibelle): self
     {
-        $this->removeElementBookmark($this->bookmarkLibelles, $bookmarkLibelle);
+        $this->removeElementBookmark(
+            element: $this->bookmarkLibelles,
+            bookmarkLibelle: $bookmarkLibelle
+        );
 
         return $this;
     }
@@ -141,17 +150,27 @@ trait BookmarkEntity
     public function removeBookmarkList(BookmarkList $bookmarkList): self
     {
         // set the owning side to null (unless already changed)
-        $this->removeElementBookmark($this->bookmarkLists, $bookmarkList);
+        $this->removeElementBookmark(
+            element: $this->bookmarkLists,
+            bookmarkList: $bookmarkList
+        );
 
         return $this;
     }
 
     private function removeElementBookmark(
         Collection $element,
-        mixed $variable
+        ?ParagraphBookmark $paragraphBookmark = null,
+        ?BookmarkCategory $bookmarkCategory = null,
+        ?BookmarkLibelle $bookmarkLibelle = null,
+        ?BookmarkList $bookmarkList = null
     ): void
     {
-        if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
+        $variable = is_null($paragraphBookmark) ? null : $paragraphBookmark;
+        $variable = is_null($bookmarkCategory) ? $variable : $bookmarkCategory;
+        $variable = is_null($bookmarkLibelle) ? $variable : $bookmarkLibelle;
+        $variable = is_null($bookmarkList) ? $variable : $bookmarkList;
+        if (!is_null($variable) && $element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);
         }
     }

@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Doctrine\ORM\PersistentCollection;
 use Labstag\Entity\Block;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
@@ -64,7 +65,11 @@ class BlockService
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() === $field) {
                 $entities = $propertyAccessor->getValue($block, $field);
-                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+                if (!$entities instanceof PersistentCollection || !$entities->offsetExists(0)) {
+                    continue;
+                }
+
+                $entity = $entities->offsetGet(0);
 
                 break;
             }
@@ -81,9 +86,11 @@ class BlockService
     {
         $field       = null;
         $childentity = $this->getTypeEntity($block);
-        if (!is_string($childentity)) {
+        if (is_null($childentity)) {
             return $field;
         }
+
+        $childentity = new $childentity();
 
         $reflectionClass = new ReflectionClass($childentity);
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {

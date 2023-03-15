@@ -10,7 +10,6 @@ use Labstag\Form\Admin\NewBlockType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\BlockRepository;
-use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\Service\BlockService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -128,13 +127,11 @@ class BlockController extends AdminControllerLib
     public function new(
         Request $request,
         ?Block $block,
-        BlockRepository $blockRepository,
-        BlockRequestHandler $blockRequestHandler
+        BlockRepository $blockRepository
     ): RedirectResponse
     {
         $post  = $request->request->all('new_block');
         $block = new Block();
-        $old   = clone $block;
         if (!is_string($post['region']) || !is_string($post['type'])) {
             throw new Exception('Region or type not found');
         }
@@ -144,7 +141,6 @@ class BlockController extends AdminControllerLib
         $block->setType($post['type']);
 
         $blockRepository->add($block);
-        $blockRequestHandler->handle($old, $block);
 
         return $this->redirectToRoute('admin_block_edit', ['id' => $block->getId()]);
     }

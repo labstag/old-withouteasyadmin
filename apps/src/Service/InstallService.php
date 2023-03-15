@@ -9,9 +9,6 @@ use Labstag\Repository\ConfigurationRepository;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\TemplateRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\ConfigurationRequestHandler;
-use Labstag\RequestHandler\TemplateRequestHandler;
-use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
@@ -21,9 +18,6 @@ class InstallService
     public function __construct(
         protected OauthService $oauthService,
         protected UserService $userService,
-        protected ConfigurationRequestHandler $configurationRequestHandler,
-        protected UserRequestHandler $userRequestHandler,
-        protected TemplateRequestHandler $templateRequestHandler,
         protected EntityManagerInterface $entityManager,
         protected Environment $twigEnvironment,
         protected CacheInterface $cache,
@@ -101,11 +95,10 @@ class InstallService
             $configuration = new Configuration();
         }
 
-        $old = clone $configuration;
         $configuration->setName($key);
         $configuration->setValue($value);
 
-        $this->configurationRequestHandler->handle($old, $configuration);
+        $this->configurationRepository->add($configuration);
     }
 
     protected function addUser(
