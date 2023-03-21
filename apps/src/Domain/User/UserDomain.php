@@ -7,7 +7,7 @@ use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\UserRepository;
 use Labstag\Search\UserSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -28,7 +28,7 @@ class UserDomain extends DomainLib implements DomainInterface
         return User::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->userRepository;
     }

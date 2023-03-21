@@ -5,15 +5,6 @@ namespace Labstag\Lib;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Queue\EnqueueMethod;
-use Labstag\Repository\AttachmentRepository;
-use Labstag\Repository\ConfigurationRepository;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\MenuRepository;
-use Labstag\Repository\PageRepository;
-use Labstag\Repository\UserRepository;
-use Labstag\Repository\WorkflowGroupeRepository;
-use Labstag\Repository\WorkflowRepository;
-use Labstag\Repository\WorkflowUserRepository;
 use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
@@ -43,21 +34,12 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected RepositoryService $repositoryService,
         protected ParagraphService $paragraphService,
         protected BlockService $blockService,
-        protected ConfigurationRepository $configurationRepository,
-        protected PageRepository $pageRepository,
-        protected MenuRepository $menuRepository,
-        protected UserRepository $userRepository,
-        protected WorkflowRepository $workflowRepository,
-        protected GroupeRepository $groupeRepository,
-        protected WorkflowGroupeRepository $workflowGroupeRepository,
-        protected WorkflowUserRepository $workflowUserRepository,
         protected Reader $reader,
         protected Environment $twigEnvironment,
         protected FrontService $frontService,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected Security $security,
-        protected AttachmentRepository $attachmentRepository,
         protected ErrorService $errorService,
         protected RouterInterface $router,
         protected DataService $dataService,

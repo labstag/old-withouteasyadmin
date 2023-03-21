@@ -6,7 +6,7 @@ use Labstag\Entity\Block;
 use Labstag\Form\Admin\BlockType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\BlockRepository;
 use Labstag\Search\BlockSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,7 +27,7 @@ class BlockDomain extends DomainLib implements DomainInterface
         return Block::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->blockRepository;
     }

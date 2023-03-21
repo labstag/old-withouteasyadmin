@@ -8,7 +8,7 @@ use Labstag\Entity\Attachment;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Lib\ApiControllerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Service\TrashService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,7 +67,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
-        /** @var ServiceEntityRepositoryLib $repository */
+        /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
         /** @var EntityTrashInterface $entity */
         $entity = $repository->find($id);
@@ -108,7 +108,7 @@ class ActionsController extends ApiControllerLib
         $entities = explode(',', (string) $request->request->get('entities'));
         $error    = [];
         foreach ($entities as $entity) {
-            /** @var ServiceEntityRepositoryLib $repository */
+            /** @var RepositoryLib $repository */
             $repository = $this->repositoryService->get($entity);
 
             try {
@@ -134,7 +134,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
-        /** @var ServiceEntityRepositoryLib $repository */
+        /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
         $tokenValid = $this->tokenVerif('empty');
         if (!$tokenValid) {
@@ -225,7 +225,7 @@ class ActionsController extends ApiControllerLib
             'action' => false,
             'error'  => '',
         ];
-        /** @var ServiceEntityRepositoryLib $repository */
+        /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
         $entity     = $repository->find($id);
         $this->denyAccessUnlessGranted('workflow-'.$state, $entity);
@@ -259,7 +259,7 @@ class ActionsController extends ApiControllerLib
         $error = [];
         foreach ($all as $data) {
             $entity = $data['name'];
-            /** @var ServiceEntityRepositoryLib $repository */
+            /** @var RepositoryLib $repository */
             $repository = $this->repositoryService->get($entity);
 
             try {
@@ -278,12 +278,12 @@ class ActionsController extends ApiControllerLib
             return;
         }
 
-        /** @var ServiceEntityRepositoryLib $repository */
+        /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entityTrash::class);
         $repository->remove($entityTrash);
     }
 
-    private function deleteEntityByRepository(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): void
+    private function deleteEntityByRepository(RepositoryLib $serviceEntityRepositoryLib): void
     {
         $queryBuilder = $serviceEntityRepositoryLib->findTrashForAdmin([]);
         $result       = $queryBuilder->getQuery()->getResult();
@@ -331,7 +331,7 @@ class ActionsController extends ApiControllerLib
 
         $entities = explode(',', (string) $request->request->get('entities'));
         $error    = [];
-        /** @var ServiceEntityRepositoryLib $repository */
+        /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
         $method     = match ($token) {
             'deleties'  => 'deleteEntity',
@@ -370,7 +370,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $file = '';
-        /** @var ServiceEntityRepositoryLib $repository */
+        /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entityTrash::class);
         $repository->remove($entityTrash);
         if ($entityTrash instanceof Attachment) {
@@ -385,7 +385,7 @@ class ActionsController extends ApiControllerLib
 
     private function getDataRestoreDelete(string $entity, mixed $id): ?EntityTrashInterface
     {
-        /** @var ServiceEntityRepositoryLib $repository */
+        /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);
 
         $data = $repository->find($id);
@@ -403,7 +403,7 @@ class ActionsController extends ApiControllerLib
         }
 
         $entityTrash->setDeletedAt(null);
-        /** @var ServiceEntityRepositoryLib $repository */
+        /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entityTrash::class);
         $repository->add($entityTrash);
     }

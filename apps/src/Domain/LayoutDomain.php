@@ -8,7 +8,7 @@ use Labstag\Form\Admin\LayoutType;
 use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\LayoutRepository;
 use Labstag\Search\LayoutSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class LayoutDomain extends DomainLib implements DomainInterface
         return Layout::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->layoutRepository;
     }

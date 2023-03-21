@@ -1,9 +1,11 @@
 <?php
 
-namespace Labstag\EventSubscriber;
+namespace Labstag\Event\Subscriber;
 
+use Labstag\Entity\Attachment;
 use Labstag\Entity\User;
 use Labstag\Lib\EventSubscriberLib;
+use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
@@ -85,7 +87,12 @@ class TwigEventSubscriber extends EventSubscriberLib
 
     protected function setConfigFavicon(): void
     {
-        $attachment = $this->attachmentRepository->getFavicon();
+        $serviceEntityRepositoryLib = $this->repositoryService->get(Attachment::class);
+        if (!$serviceEntityRepositoryLib instanceof AttachmentRepository) {
+            return;
+        }
+
+        $attachment = $serviceEntityRepositoryLib->getFavicon();
         $this->twigEnvironment->AddGlobal('favicon', $attachment);
     }
 

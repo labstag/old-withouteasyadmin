@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Uploadable()]
+#[Uploadable]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource]
@@ -739,13 +739,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         ?WorkflowUser $workflowUser = null
     ): void
     {
-        $variable = is_null($bookmark) ? null : $bookmark;
-        $variable = is_null($history) ? $variable : $history;
-        $variable = is_null($memo) ? $variable : $memo;
-        $variable = is_null($oauthConnectUser) ? $variable : $oauthConnectUser;
-        $variable = is_null($post) ? $variable : $post;
-        $variable = is_null($routeUser) ? $variable : $routeUser;
-        $variable = is_null($workflowUser) ? $variable : $workflowUser;
+        $variable = $bookmark ?? $history ?? $memo ?? $oauthConnectUser ?? $post ?? $routeUser ?? $workflowUser;
         if (!is_null($variable) && $element->removeElement($variable) && $variable->getRefuser() === $this) {
             $variable->setRefuser(null);
         }

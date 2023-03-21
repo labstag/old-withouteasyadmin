@@ -8,7 +8,7 @@ use Labstag\Form\Admin\CategoryType;
 use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\CategoryRepository;
 use Labstag\Search\CategorySearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class CategoryDomain extends DomainLib implements DomainInterface
         return Category::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->categoryRepository;
     }

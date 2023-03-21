@@ -204,7 +204,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function addNewImport(
         EntityManagerInterface $entityManager,
-        ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
+        RepositoryLib $serviceEntityRepositoryLib,
         array $methods,
         string $routeType,
         array $url = [],
@@ -278,7 +278,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function listOrTrashRouteTrash(
         array $url,
-        ServiceEntityRepositoryLib $serviceEntityRepositoryLib
+        RepositoryLib $serviceEntityRepositoryLib
     ): void
     {
         $entity = strtolower(
@@ -436,7 +436,7 @@ abstract class AdminControllerLib extends ControllerLib
         string $routeType,
         string $route,
         array $routeParams,
-        ServiceEntityRepositoryLib $serviceEntityRepositoryLib
+        RepositoryLib $serviceEntityRepositoryLib
     ): void
     {
         if ('trash' == $routeType) {
@@ -599,7 +599,7 @@ abstract class AdminControllerLib extends ControllerLib
             foreach ($position as $row) {
                 $id       = $row['id'];
                 $position = (int) $row['position'];
-                /** @var ServiceEntityRepositoryLib $repository */
+                /** @var RepositoryLib $repository */
                 $repository = $this->repositoryService->get($entityclass);
                 /** @var Block|Chapter|Menu $entity */
                 $entity = $repository->find($id);
@@ -652,7 +652,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     protected function setTrashIcon(
         array $methods,
-        ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
+        RepositoryLib $serviceEntityRepositoryLib,
         array $url,
         EntityManagerInterface $entityManager
     ): void
@@ -891,7 +891,7 @@ abstract class AdminControllerLib extends ControllerLib
 
     private function listOrTrashRouteTrashsetTrashIcon(
         array $methods,
-        ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
+        RepositoryLib $serviceEntityRepositoryLib,
         array $url,
         string $routeType,
         EntityManagerInterface $entityManager

@@ -4,9 +4,9 @@ namespace Labstag\Repository\Paragraph;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Paragraph\Text;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class TextRepository extends ServiceEntityRepositoryLib
+class TextRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

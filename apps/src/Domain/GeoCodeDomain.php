@@ -8,7 +8,7 @@ use Labstag\Form\Admin\GeoCodeType;
 use Labstag\Form\Admin\Search\GeoCodeType as SearchGeoCodeType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\GeoCodeRepository;
 use Labstag\Search\GeoCodeSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class GeoCodeDomain extends DomainLib implements DomainInterface
         return GeoCode::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->geoCodeRepository;
     }

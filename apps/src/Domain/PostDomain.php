@@ -8,7 +8,7 @@ use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\PostRepository;
 use Labstag\Search\PostSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class PostDomain extends DomainLib implements DomainInterface
         return Post::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->postRepository;
     }

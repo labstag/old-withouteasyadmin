@@ -6,7 +6,7 @@ use Labstag\Entity\Profil;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\UserRepository;
 use Labstag\Search\ProfilSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,7 +27,7 @@ class ProfilDomain extends DomainLib implements DomainInterface
         return Profil::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->userRepository;
     }

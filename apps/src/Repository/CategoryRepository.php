@@ -6,10 +6,10 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Category;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
 #[Trashable(url: 'admin_category_trash')]
-class CategoryRepository extends ServiceEntityRepositoryLib
+class CategoryRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

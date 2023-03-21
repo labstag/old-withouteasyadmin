@@ -8,7 +8,7 @@ use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Search\HistorySearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class HistoryDomain extends DomainLib implements DomainInterface
         return History::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->historyRepository;
     }

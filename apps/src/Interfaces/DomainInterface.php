@@ -2,14 +2,14 @@
 
 namespace Labstag\Interfaces;
 
+use Labstag\Lib\RepositoryLib;
 use Labstag\Lib\SearchLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
 
 interface DomainInterface
 {
     public function getEntity(): string;
 
-    public function getRepository(): ServiceEntityRepositoryLib;
+    public function getRepository(): RepositoryLib;
 
     public function getSearchData(): SearchLib;
 

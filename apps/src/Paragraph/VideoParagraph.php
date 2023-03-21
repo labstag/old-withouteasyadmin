@@ -21,7 +21,7 @@ use Labstag\Form\Admin\Paragraph\VideoType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\Paragraph\VideoRepository;
 use Psr\Http\Message\UriInterface;
@@ -184,7 +184,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
         UploadableField $uploadableField,
         string $image,
         Video $video,
-        ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
+        RepositoryLib $serviceEntityRepositoryLib,
         string $slug
     ): void
     {

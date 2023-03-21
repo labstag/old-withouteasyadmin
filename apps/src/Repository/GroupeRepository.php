@@ -5,10 +5,10 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Groupe;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
 #[Trashable(url: 'admin_groupuser_trash')]
-class GroupeRepository extends ServiceEntityRepositoryLib
+class GroupeRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

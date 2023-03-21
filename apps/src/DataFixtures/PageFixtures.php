@@ -20,8 +20,7 @@ class PageFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $data = $this->installService->getData('data/page');
         foreach ($data as $page) {
-
-            $this->addPage($page, null, $objectManager);
+            $this->addPage($page, $objectManager, null);
         }
 
         $objectManager->flush();
@@ -29,8 +28,8 @@ class PageFixtures extends FixtureLib implements DependentFixtureInterface
 
     protected function addPage(
         array $pageData,
-        ?Page $parent = null,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        ?Page $parent = null
     ): void
     {
         $page = new Page();
@@ -51,7 +50,7 @@ class PageFixtures extends FixtureLib implements DependentFixtureInterface
         }
 
         foreach ($pageData['pages'] as $data) {
-            $this->addPage($data, $page, $objectManager);
+            $this->addPage($data, $objectManager, $page);
         }
     }
 }

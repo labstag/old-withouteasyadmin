@@ -3,6 +3,7 @@
 namespace Labstag\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
@@ -82,31 +83,20 @@ class DataService
 
     protected function getConfiguration(): array
     {
-        $data   = $this->configurationRepository->findAll();
-        $config = [];
-        /** @var Configuration $row */
-        foreach ($data as $row) {
-            $key          = $row->getName();
-            $value        = $row->getValue();
-            $config[$key] = $value;
+        try {
+            $data   = $this->configurationRepository->findAll();
+            $config = [];
+            /** @var Configuration $row */
+            foreach ($data as $row) {
+                $key          = $row->getName();
+                $value        = $row->getValue();
+                $config[$key] = $value;
+            }
+        } catch (Exception) {
+            $config = [];
         }
 
         return $config;
-    }
-
-    protected function setData(): void
-    {
-        $config = $this->cache->get(
-            'configuration',
-            $this->compute(...)
-        );
-        if (0 === (is_countable($config) ? count($config) : 0)) {
-            $config = $this->getConfiguration();
-        }
-
-        $this->config = $config;
-
-        $this->setOauth($config);
     }
 
     protected function setOauth(array $config): void
@@ -127,5 +117,20 @@ class DataService
         }
 
         $this->oauthActivated = $oauth;
+    }
+
+    private function setData(): void
+    {
+        $config = $this->cache->get(
+            'configuration',
+            $this->compute(...)
+        );
+        if (0 === (is_countable($config) ? count($config) : 0)) {
+            $config = $this->getConfiguration();
+        }
+
+        $this->config = $config;
+
+        $this->setOauth($config);
     }
 }

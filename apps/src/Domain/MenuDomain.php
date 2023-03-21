@@ -7,7 +7,7 @@ use Labstag\Entity\Menu;
 use Labstag\Form\Admin\MenuType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\MenuRepository;
 use Labstag\Search\MenuSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -28,7 +28,7 @@ class MenuDomain extends DomainLib implements DomainInterface
         return Menu::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->menuRepository;
     }

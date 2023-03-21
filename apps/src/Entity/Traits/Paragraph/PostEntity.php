@@ -384,15 +384,8 @@ trait PostEntity
         ?PostYear $postYear = null
     ): void
     {
-        $variable = is_null($paragraphPost) ? null : $paragraphPost;
-        $variable = is_null($postArchive) ? $variable : $postArchive;
-        $variable = is_null($postCategory) ? $variable : $postCategory;
-        $variable = is_null($postHeader) ? $variable : $postHeader;
-        $variable = is_null($postLibelle) ? $variable : $postLibelle;
-        $variable = is_null($postList) ? $variable : $postList;
-        $variable = is_null($postShow) ? $variable : $postShow;
-        $variable = is_null($postUser) ? $variable : $postUser;
-        $variable = is_null($postYear) ? $variable : $postYear;
+        $variable = $paragraphPost ?? $postArchive ?? $postCategory ?? $postHeader;
+        $variable ??= $postLibelle ?? $postList ?? $postShow ?? $postUser ?? $postYear;
 
         if (!is_null($variable) && $element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);

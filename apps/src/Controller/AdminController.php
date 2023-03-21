@@ -5,7 +5,6 @@ namespace Labstag\Controller;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
-use Labstag\Event\ConfigurationEntityEvent;
 use Labstag\Form\Admin\FormType;
 use Labstag\Form\Admin\ParamType;
 use Labstag\Lib\AdminControllerLib;
@@ -14,7 +13,6 @@ use Labstag\Repository\MemoRepository;
 use Labstag\Service\DataService;
 use Labstag\Service\OauthService;
 use Labstag\Service\TrashService;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,7 +85,6 @@ class AdminController extends AdminControllerLib
     #[Route(path: '/param', name: 'admin_param', methods: ['GET', 'POST'])]
     public function param(
         Request $request,
-        EventDispatcherInterface $eventDispatcher,
         DataService $dataService,
         CacheInterface $cache,
         AttachmentRepository $attachmentRepository
@@ -120,8 +117,6 @@ class AdminController extends AdminControllerLib
         if ($form->isSubmitted()) {
             $this->setUpload($request, $images);
             $cache->delete('configuration');
-            $post = $request->request->all($form->getName());
-            $eventDispatcher->dispatch(new ConfigurationEntityEvent($post));
         }
 
         $this->adminBtnService->add(

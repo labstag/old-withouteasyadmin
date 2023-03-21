@@ -4,7 +4,6 @@ namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Labstag\Interfaces\EntityInterface;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Service\AdminBtnService;
 use Labstag\Service\AttachFormService;
@@ -62,51 +61,5 @@ abstract class ControllerLib extends AbstractController
         protected AdminBtnService $adminBtnService
     )
     {
-    }
-
-    protected function changeWorkflowState(EntityInterface $entity, array $states): void
-    {
-        if (!$this->workflowService->has($entity)) {
-            return;
-        }
-
-        /** @var WorkflowInterface $workflow */
-        $workflow = $this->workflowService->get($entity);
-        foreach ($states as $state) {
-            if (!$workflow->can($entity, $state)) {
-                continue;
-            }
-
-            $workflow->apply($entity, $state);
-        }
-
-        /** @var ServiceEntityRepositoryLib $repository */
-        $repository = $this->repositoryService->get($entity::class);
-        $repository->add($entity);
-    }
-
-    protected function initWorkflow(EntityInterface $entity): void
-    {
-        if (!$this->workflowService->has($entity)) {
-            return;
-        }
-
-        /** @var WorkflowInterface $workflow */
-        $workflow    = $this->workflowService->get($entity);
-        $definition  = $workflow->getDefinition();
-        $transitions = $definition->getTransitions();
-        foreach ($transitions as $transition) {
-            $name = $transition->getName();
-            if (!$workflow->can($entity, $name)) {
-                continue;
-            }
-
-            $workflow->apply($entity, $name);
-            /** @var ServiceEntityRepositoryLib $repository */
-            $repository = $this->repositoryService->get($entity::class);
-            $repository->add($entity);
-
-            break;
-        }
     }
 }

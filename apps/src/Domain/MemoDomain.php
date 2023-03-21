@@ -8,7 +8,7 @@ use Labstag\Form\Admin\MemoType;
 use Labstag\Form\Admin\Search\MemoType as SearchMemoType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\MemoRepository;
 use Labstag\Search\MemoSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class MemoDomain extends DomainLib implements DomainInterface
         return Memo::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->memoRepository;
     }

@@ -34,31 +34,19 @@ class UploadType extends AbstractType
             return;
         }
 
-        $entity = $parent->getData();
-        $name   = $form->getName();
-        $field  = null;
-        if ($entity instanceof EntityInterface) {
-            $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
-            if (isset($annotations[$name]) && $annotations[$name] instanceof UploadableField) {
-                $propertyAccessor = PropertyAccess::createPropertyAccessor();
-                $filename         = $annotations[$name]->getFilename();
-                if (is_string($filename)) {
-                    $field = $propertyAccessor->getValue($entity, $filename);
-                }
-            }
-        } elseif (is_array($entity) && isset($entity[$name]) && $entity[$name] instanceof Attachment) {
-            $field = $entity[$name];
-        }
+        $entity     = $parent->getData();
+        $name       = $form->getName();
+        $attachment = $this->setField($entity, $name);
 
-        if (!is_null($field)) {
-            $formView->vars['field'] = $field;
+        if (!is_null($attachment)) {
+            $formView->vars['field'] = $attachment;
         }
 
         $formView->vars['url'] = null;
-        if ($field instanceof Attachment) {
+        if ($attachment instanceof Attachment) {
             $route = $this->router->generate(
                 'api_attachment_delete',
-                ['attachment' => $field->getId()]
+                ['attachment' => $attachment->getId()]
             );
             $formView->vars['url'] = $route;
         }
@@ -72,5 +60,27 @@ class UploadType extends AbstractType
     public function getParent(): string
     {
         return FileType::class;
+    }
+
+    private function setField(
+        $entity,
+        string $name
+    ): ?Attachment
+    {
+        $field = null;
+        if ($entity instanceof EntityInterface) {
+            $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
+            if (isset($annotations[$name]) && $annotations[$name] instanceof UploadableField) {
+                $propertyAccessor = PropertyAccess::createPropertyAccessor();
+                $filename         = $annotations[$name]->getFilename();
+                if (is_string($filename)) {
+                    $field = $propertyAccessor->getValue($entity, $filename);
+                }
+            }
+        } elseif (is_array($entity) && isset($entity[$name]) && $entity[$name] instanceof Attachment) {
+            $field = $entity[$name];
+        }
+
+        return $field;
     }
 }

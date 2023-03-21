@@ -7,7 +7,7 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,7 +52,7 @@ class SearchController extends ApiControllerLib
         }
 
         $serviceEntityRepositoryLib = $this->repositoryService->get($entity);
-        if (!$serviceEntityRepositoryLib instanceof ServiceEntityRepositoryLib) {
+        if (!$serviceEntityRepositoryLib instanceof RepositoryLib) {
             return $this->json($return);
         }
 

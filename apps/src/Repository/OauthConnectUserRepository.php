@@ -5,9 +5,9 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class OauthConnectUserRepository extends ServiceEntityRepositoryLib
+class OauthConnectUserRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

@@ -4,9 +4,9 @@ namespace Labstag\Repository\Paragraph\History;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Paragraph\History\Show;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class ShowRepository extends ServiceEntityRepositoryLib
+class ShowRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

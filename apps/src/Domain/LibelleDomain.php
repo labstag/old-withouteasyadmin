@@ -8,7 +8,7 @@ use Labstag\Form\Admin\LibelleType;
 use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\LibelleRepository;
 use Labstag\Search\LibelleSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class LibelleDomain extends DomainLib implements DomainInterface
         return Libelle::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->libelleRepository;
     }

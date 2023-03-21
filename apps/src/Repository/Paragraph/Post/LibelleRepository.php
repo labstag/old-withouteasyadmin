@@ -4,9 +4,9 @@ namespace Labstag\Repository\Paragraph\Post;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Paragraph\Post\Libelle;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class LibelleRepository extends ServiceEntityRepositoryLib
+class LibelleRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

@@ -2,8 +2,8 @@
 
 namespace Labstag\Repository;
 
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-abstract class AddressRepository extends ServiceEntityRepositoryLib
+abstract class AddressRepository extends RepositoryLib
 {
 }

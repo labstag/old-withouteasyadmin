@@ -4,9 +4,9 @@ namespace Labstag\Repository\Paragraph;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Paragraph\Image;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class ImageRepository extends ServiceEntityRepositoryLib
+class ImageRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

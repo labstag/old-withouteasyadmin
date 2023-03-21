@@ -15,7 +15,7 @@ use Labstag\Repository\Paragraph\TextImageRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-#[Uploadable()]
+#[Uploadable]
 #[ORM\Entity(repositoryClass: TextImageRepository::class)]
 #[ORM\Table(name: 'paragraph_textimage')]
 #[ApiResource(routePrefix: '/paragraph')]

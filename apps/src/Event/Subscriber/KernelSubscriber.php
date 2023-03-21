@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\EventSubscriber;
+namespace Labstag\Event\Subscriber;
 
 use Labstag\Lib\EventSubscriberLib;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;

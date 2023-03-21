@@ -207,7 +207,11 @@ abstract class FixtureLib extends Fixture
         }
     }
 
-    protected function loadForeachUser(int $number, string $method): void
+    protected function loadForeachUser(
+        int $number,
+        string $method,
+        ObjectManager $objectManager
+    ): void
     {
         $faker = $this->setFaker();
         $users = $this->installService->getData('user');
@@ -219,7 +223,7 @@ abstract class FixtureLib extends Fixture
                 $this,
                 $method,
             ];
-            call_user_func_array($callable, [$faker, $user]);
+            call_user_func_array($callable, [$faker, $user, $objectManager]);
         }
     }
 

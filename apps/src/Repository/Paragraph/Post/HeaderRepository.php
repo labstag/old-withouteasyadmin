@@ -4,9 +4,9 @@ namespace Labstag\Repository\Paragraph\Post;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Paragraph\Post\Header;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class HeaderRepository extends ServiceEntityRepositoryLib
+class HeaderRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

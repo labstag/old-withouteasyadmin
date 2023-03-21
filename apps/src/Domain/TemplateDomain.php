@@ -8,7 +8,7 @@ use Labstag\Form\Admin\Search\TemplateType as SearchTemplateType;
 use Labstag\Form\Admin\TemplateType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\TemplateRepository;
 use Labstag\Search\TemplateSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class TemplateDomain extends DomainLib implements DomainInterface
         return Template::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->templateRepository;
     }

@@ -5,9 +5,9 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class LayoutRepository extends ServiceEntityRepositoryLib
+class LayoutRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

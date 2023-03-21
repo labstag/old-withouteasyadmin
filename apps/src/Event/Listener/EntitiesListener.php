@@ -1,15 +1,29 @@
 <?php
 
-namespace Labstag\EventSubscriber;
+namespace Labstag\Event\Listener;
 
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Labstag\Entity\Chapter;
+use Labstag\Entity\Edito;
+use Labstag\Entity\History;
+use Labstag\Entity\Meta;
+use Labstag\Entity\Page;
+use Labstag\Entity\Post;
+use Labstag\Entity\Render;
+use Labstag\Interfaces\EntityInterface;
+use Labstag\Interfaces\PublicInterface;
+use Labstag\Service\WorkflowService;
 
-class EntitySubscriber implements EventSubscriberInterface
+class EntitiesListener implements EventSubscriberInterface
 {
-    // this method can only return the event names; you cannot define a
-    // custom method name to execute when each event triggers
+    public function __construct(
+        protected WorkflowService $workflowService
+    )
+    {
+    }
+
     public function getSubscribedEvents(): array
     {
         return [
@@ -19,9 +33,6 @@ class EntitySubscriber implements EventSubscriberInterface
         ];
     }
 
-    // callback methods must be called exactly like the events they listen to;
-    // they receive an argument of type LifecycleEventArgs, which gives you access
-    // to both the entity object of the event and the entity manager itself
     public function postPersist(LifecycleEventArgs $lifecycleEventArgs): void
     {
         $this->logActivity('persist', $lifecycleEventArgs);
@@ -40,8 +51,10 @@ class EntitySubscriber implements EventSubscriberInterface
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
         $object = $lifecycleEventArgs->getObject();
-        dump($lifecycleEventArgs, $action, $object);
+        if (!$object instanceof EntityInterface && $action != 'persist') {
+            return;
+        }
 
-        // ... get the entity information and log it somehow
+        // $this->workflowService->init($object);
     }
 }

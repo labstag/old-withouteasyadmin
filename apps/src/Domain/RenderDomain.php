@@ -8,7 +8,7 @@ use Labstag\Form\Admin\RenderType;
 use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\RenderRepository;
 use Labstag\Search\RenderSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class RenderDomain extends DomainLib implements DomainInterface
         return Render::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->renderRepository;
     }

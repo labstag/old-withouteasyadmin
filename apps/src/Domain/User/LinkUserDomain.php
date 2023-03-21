@@ -8,7 +8,7 @@ use Labstag\Form\Admin\Search\User\LinkUserType as SearchLinkUserType;
 use Labstag\Form\Admin\User\LinkUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\LinkUserRepository;
 use Labstag\Search\User\LinkUserSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class LinkUserDomain extends DomainLib implements DomainInterface
         return LinkUser::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->linkUserRepository;
     }

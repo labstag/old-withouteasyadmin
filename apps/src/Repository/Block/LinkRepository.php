@@ -4,9 +4,9 @@ namespace Labstag\Repository\Block;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Block\Link;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class LinkRepository extends ServiceEntityRepositoryLib
+class LinkRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

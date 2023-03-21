@@ -5,10 +5,10 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Attachment;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
 #[Trashable(url: 'admin_attachment_trash')]
-class AttachmentRepository extends ServiceEntityRepositoryLib
+class AttachmentRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

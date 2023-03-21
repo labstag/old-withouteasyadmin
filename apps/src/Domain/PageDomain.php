@@ -8,7 +8,7 @@ use Labstag\Form\Admin\PageType;
 use Labstag\Form\Admin\Search\PageType as SearchPageType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\PageRepository;
 use Labstag\Search\PageSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class PageDomain extends DomainLib implements DomainInterface
         return Page::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->pageRepository;
     }

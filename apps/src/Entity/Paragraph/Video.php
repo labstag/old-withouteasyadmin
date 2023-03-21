@@ -15,7 +15,7 @@ use Labstag\Repository\Paragraph\VideoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-#[Uploadable()]
+#[Uploadable]
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 #[ORM\Table(name: 'paragraph_video')]
 #[ApiResource(routePrefix: '/paragraph')]

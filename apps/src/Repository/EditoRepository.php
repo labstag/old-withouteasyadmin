@@ -5,10 +5,10 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Edito;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
 #[Trashable(url: 'admin_edito_trash')]
-class EditoRepository extends ServiceEntityRepositoryLib
+class EditoRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

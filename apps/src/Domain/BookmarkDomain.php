@@ -8,7 +8,7 @@ use Labstag\Form\Admin\Bookmark\PrincipalType;
 use Labstag\Form\Admin\Search\BookmarkType as SearchBookmarkType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\Search\BookmarkSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class BookmarkDomain extends DomainLib implements DomainInterface
         return Bookmark::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->bookmarkRepository;
     }

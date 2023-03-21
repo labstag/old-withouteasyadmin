@@ -8,7 +8,7 @@ use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Search\GroupeSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,7 +29,7 @@ class GroupeDomain extends DomainLib implements DomainInterface
         return Groupe::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->groupeRepository;
     }

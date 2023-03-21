@@ -5,7 +5,7 @@ namespace Labstag\Domain;
 use Labstag\Entity\Attachment;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Search\AttachmentSearch;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -26,7 +26,7 @@ class AttachmentDomain extends DomainLib implements DomainInterface
         return Attachment::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getRepository(): RepositoryLib
     {
         return $this->attachmentRepository;
     }

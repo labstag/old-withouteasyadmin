@@ -67,7 +67,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
         }
 
         if (array_key_exists('data', $child)) {
-            $menu->setData([$child['data']]);
+            $menu->setData($child['data']);
         }
 
         $objectManager->persist($menu);

@@ -5,10 +5,10 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\User;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
 #[Trashable(url: 'admin_user_trash')]
-class UserRepository extends ServiceEntityRepositoryLib
+class UserRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {
