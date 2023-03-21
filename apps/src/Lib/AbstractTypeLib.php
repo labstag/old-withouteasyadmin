@@ -6,6 +6,7 @@ use Labstag\Form\Admin\Collections\MetaType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\ParagraphType;
 use Labstag\FormType\WysiwygType;
+use Labstag\Service\GuardService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -18,7 +19,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 abstract class AbstractTypeLib extends AbstractType
 {
     public function __construct(
-        protected TranslatorInterface $translator
+        protected TranslatorInterface $translator,
+        protected GuardService $guardService
+        
     )
     {
     }

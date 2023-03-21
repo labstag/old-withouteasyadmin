@@ -13,10 +13,13 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Entity\Render;
 use Labstag\Interfaces\PublicInterface;
+use Psr\Log\LoggerInterface;
 
 class RenderListener implements EventSubscriberInterface
 {
-    public function __construct()
+    public function __construct(
+        protected LoggerInterface $logger
+    )
     {
     }
 
@@ -46,12 +49,12 @@ class RenderListener implements EventSubscriberInterface
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
-        unset($action);
         $object = $lifecycleEventArgs->getObject();
         if (!$object instanceof Render) {
             return;
         }
 
+        $this->logger->info($action.' '.get_class($object));
         $this->verifMetas($object);
     }
 

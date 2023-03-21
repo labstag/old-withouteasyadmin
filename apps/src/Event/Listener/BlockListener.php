@@ -10,12 +10,14 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\Block;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Service\BlockService;
+use Psr\Log\LoggerInterface;
 
 class BlockListener implements EventSubscriberInterface
 {
     public function __construct(
         protected BlockService $blockService,
-        protected EntityManagerInterface $entityManager
+        protected EntityManagerInterface $entityManager,
+        protected LoggerInterface $logger
     )
     {
     }
@@ -68,12 +70,13 @@ class BlockListener implements EventSubscriberInterface
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
-        unset($action);
         $object = $lifecycleEventArgs->getObject();
         if (!$object instanceof Block) {
             return;
         }
 
+        
+        $this->logger->info($action.' '.get_class($object));
         $this->execute($object);
     }
 }

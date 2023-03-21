@@ -6,10 +6,13 @@ use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\Menu;
+use Psr\Log\LoggerInterface;
 
 class MenuListener implements EventSubscriberInterface
 {
-    public function __construct()
+    public function __construct(
+        protected LoggerInterface $logger
+    )
     {
     }
 
@@ -40,7 +43,7 @@ class MenuListener implements EventSubscriberInterface
     private function execute(Menu $menu): void
     {
         $dataMenu = $menu->getData();
-        if (0 == count((array) $dataMenu)) {
+        if (!is_array($dataMenu)) {
             return;
         }
 
@@ -73,12 +76,12 @@ class MenuListener implements EventSubscriberInterface
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
-        unset($action);
         $object = $lifecycleEventArgs->getObject();
         if (!$object instanceof Menu) {
             return;
         }
 
+        $this->logger->info($action.' '.get_class($object));
         $this->execute($object);
     }
 }

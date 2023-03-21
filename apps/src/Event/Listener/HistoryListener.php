@@ -15,13 +15,15 @@ use Labstag\Entity\Render;
 use Labstag\Interfaces\PublicInterface;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Service\HistoryService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class HistoryListener implements EventSubscriberInterface
 {
     public function __construct(
         protected EnqueueMethod $enqueueMethod,
-        protected ParameterBagInterface $parameterBag
+        protected ParameterBagInterface $parameterBag,
+        protected LoggerInterface $logger
     )
     {
     }
@@ -52,12 +54,12 @@ class HistoryListener implements EventSubscriberInterface
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
-        unset($action);
         $object = $lifecycleEventArgs->getObject();
         if (!$object instanceof History) {
             return;
         }
 
+        $this->logger->info($action.' '.get_class($object));
         $this->verifMetas($object);
         $this->enqueueMethod->enqueue(
             HistoryService::class,

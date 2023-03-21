@@ -15,14 +15,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NewLayoutType extends AbstractTypeLib
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        protected GuardService $guardService
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         unset($options);

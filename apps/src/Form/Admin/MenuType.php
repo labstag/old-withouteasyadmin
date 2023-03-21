@@ -3,9 +3,12 @@
 namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Menu;
-use Labstag\Form\Admin\Collections\MenuType as DataType;
 use Labstag\Lib\AbstractTypeLib;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -66,15 +69,82 @@ class MenuType extends AbstractTypeLib
                 'required' => false,
             ]
         );
-        $formBuilder->add(
+
+        $formBuilder->add($this->setData($formBuilder));
+    }
+
+    private function setData(FormBuilderInterface $formBuilder): FormBuilderInterface 
+    {
+        $formBuilder = $formBuilder->create(
             'data',
-            CollectionType::class,
+            FormType::class,
             [
-                'allow_add'    => false,
-                'allow_delete' => false,
-                'entry_type'   => DataType::class,
+                'by_reference' => false,
             ]
         );
+        $all         = $this->guardService->allRoutes();
+        $choices     = [];
+        foreach (array_keys($all) as $key) {
+            $choices[$key] = $key;
+        }
+        $formBuilder->add(
+            'route',
+            ChoiceType::class,
+            [
+                'choices'  => $choices,
+                'label'    => $this->translator->trans('menu.data.route.name.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('menu.data.route.name.help', [], 'admin.form'),
+                'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('menu.data.route.name.placeholder', [], 'admin.form'),
+                ],
+            ]
+        );
+        $formBuilder->add(
+            'param',
+            TextType::class,
+            [
+                'label'    => $this->translator->trans('menu.data.route.param.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('menu.data.route.param.help', [], 'admin.form'),
+                'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('menu.data.route.param.placeholder', [], 'admin.form'),
+                ],
+            ]
+        );
+        $formBuilder->add(
+            'url',
+            TextType::class,
+            [
+                'label'    => $this->translator->trans('menu.data.route.url.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('menu.data.route.url.help', [], 'admin.form'),
+                'required' => false,
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('menu.data.route.url.placeholder', [], 'admin.form'),
+                ],
+            ]
+        );
+        $formBuilder->add(
+            'target',
+            ChoiceType::class,
+            [
+                'label'    => $this->translator->trans('menu.data.route.target.label', [], 'admin.form'),
+                'help'     => $this->translator->trans('menu.data.route.target.help', [], 'admin.form'),
+                'required' => false,
+                'choices'  => [
+                    ''        => '',
+                    '_self'   => '_self',
+                    '_blank'  => '_blank',
+                    '_parent' => '_parent',
+                    '_top'    => '_top',
+                ],
+                'attr'     => [
+                    'placeholder' => $this->translator->trans('menu.data.route.target.placeholder', [], 'admin.form'),
+                ],
+            ]
+        );
+
+        return $formBuilder;
     }
 
     private function setNew(FormBuilderInterface $formBuilder): void

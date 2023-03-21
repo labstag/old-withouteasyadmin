@@ -5,12 +5,13 @@ namespace Labstag\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Interfaces\EntityInterface;
+use Labstag\Interfaces\UserDataInterface;
 use Labstag\Repository\AddressUserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: AddressUserRepository::class)]
 #[ApiResource]
-class AddressUser extends Address implements EntityInterface
+class AddressUser extends Address implements UserDataInterface
 {
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addressUsers', cascade: ['persist'])]

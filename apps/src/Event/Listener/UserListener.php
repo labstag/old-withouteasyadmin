@@ -11,6 +11,7 @@ use Labstag\Repository\UserRepository;
 use Labstag\Service\SessionService;
 use Labstag\Service\UserMailService;
 use Labstag\Service\WorkflowService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -22,7 +23,8 @@ class UserListener implements EventSubscriberInterface
         protected UserMailService $userMailService,
         protected UserRepository $userRepository,
         protected SessionService $sessionService,
-        protected TranslatorInterface $translator
+        protected TranslatorInterface $translator,
+        protected LoggerInterface $logger
     )
     {
     }
@@ -130,14 +132,14 @@ class UserListener implements EventSubscriberInterface
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
-        unset($action);
         $object = $lifecycleEventArgs->getObject();
         if (!$object instanceof User) {
             return;
         }
 
+        $this->logger->info($action.' '.get_class($object));
         $this->setPassword($object);
-        $this->setChangePassword($object);
         $this->setPrincipalMail($object);
+        $this->setChangePassword($object);
     }
 }

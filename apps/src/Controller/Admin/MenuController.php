@@ -77,10 +77,6 @@ class MenuController extends AdminControllerLib
     ): Response
     {
         $this->modalAttachmentDelete();
-        $data             = [$menu->getData()];
-        $data[0]['param'] = isset($data[0]['params']) ? json_encode($data[0]['params'], JSON_THROW_ON_ERROR) : '';
-        $menu->setData($data);
-
         return $this->form(
             $this->getDomainEntity(),
             $menu

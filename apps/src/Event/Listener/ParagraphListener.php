@@ -10,12 +10,14 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Service\ParagraphService;
+use Psr\Log\LoggerInterface;
 
 class ParagraphListener implements EventSubscriberInterface
 {
     public function __construct(
         protected ParagraphService $paragraphService,
-        protected EntityManagerInterface $entityManager
+        protected EntityManagerInterface $entityManager,
+        protected LoggerInterface $logger
     )
     {
     }
@@ -73,12 +75,12 @@ class ParagraphListener implements EventSubscriberInterface
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
-        unset($action);
         $object = $lifecycleEventArgs->getObject();
         if (!$object instanceof Paragraph) {
             return;
         }
 
+        $this->logger->info($action.' '.get_class($object));
         $this->init($object);
         $this->eventData($object);
     }

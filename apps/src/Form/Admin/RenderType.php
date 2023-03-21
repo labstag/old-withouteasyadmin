@@ -13,14 +13,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RenderType extends AbstractTypeLib
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        protected GuardService $guardService
-    )
-    {
-        parent::__construct($translator);
-    }
-
     /**
      * @inheritDoc
      */

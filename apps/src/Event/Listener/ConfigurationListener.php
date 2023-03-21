@@ -61,12 +61,12 @@ class ConfigurationListener implements EventSubscriberInterface
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
-        unset($action);
         $object = $lifecycleEventArgs->getObject();
         if (!$object instanceof Configuration) {
             return;
         }
 
+        $this->logger->info($action.' '.get_class($object));
         $this->execute($object);
     }
 
@@ -78,7 +78,7 @@ class ConfigurationListener implements EventSubscriberInterface
 
         try {
             $value = $configuration->getValue();
-            $file  = 'robots.txt';
+            $file  = 'public/robots.txt';
             if (is_file($file)) {
                 unlink($file);
             }

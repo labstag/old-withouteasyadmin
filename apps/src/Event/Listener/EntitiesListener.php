@@ -15,11 +15,13 @@ use Labstag\Entity\Render;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\PublicInterface;
 use Labstag\Service\WorkflowService;
+use Psr\Log\LoggerInterface;
 
 class EntitiesListener implements EventSubscriberInterface
 {
     public function __construct(
-        protected WorkflowService $workflowService
+        protected WorkflowService $workflowService,
+        protected LoggerInterface $logger
     )
     {
     }
@@ -51,10 +53,11 @@ class EntitiesListener implements EventSubscriberInterface
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
         $object = $lifecycleEventArgs->getObject();
-        if (!$object instanceof EntityInterface && $action != 'persist') {
+        if (!$object instanceof EntityInterface || $action != 'persist') {
             return;
         }
 
-        // $this->workflowService->init($object);
+        $this->logger->info($action.' '.get_class($object));
+        $this->workflowService->init($object);
     }
 }
