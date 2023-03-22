@@ -667,7 +667,7 @@ abstract class AdminControllerLib extends ControllerLib
             $serviceEntityRepositoryLib,
             $methodTrash,
         ];
-        $trash  = call_user_func($callable, []);
+        $trash = call_user_func($callable, []);
         if (!$trash instanceof QueryBuilder) {
             throw new RuntimeException('trash must be a QueryBuilder');
         }

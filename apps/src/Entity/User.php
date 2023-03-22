@@ -194,9 +194,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         ];
     }
 
+    public function __toString(): string
+    {
+        return $this->getUsername();
+    }
+
     public function __unserialize(array $data): void
     {
-        if (count($data) === 4) {
+        if (4 === count($data)) {
             [
                 $this->id,
                 $this->username,
@@ -204,11 +209,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
                 $this->password,
             ] = $data;
         }
-    }
-
-    public function __toString(): string
-    {
-        return $this->getUsername();
     }
 
     public function addAddressUser(AddressUser $addressUser): self

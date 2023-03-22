@@ -34,11 +34,12 @@ class UploadType extends AbstractType
             return;
         }
 
-        $entity     = $parent->getData();
-        $name       = $form->getName();
+        $entity = $parent->getData();
+        $name   = $form->getName();
         if ($entity instanceof EntityInterface) {
             $attachment = $this->setFieldEntity($entity, $name);
         }
+
         if (is_array($entity)) {
             $attachment = $this->setFieldArray($entity, $name);
         }
@@ -67,6 +68,14 @@ class UploadType extends AbstractType
         return FileType::class;
     }
 
+    private function setFieldArray(
+        array $entity,
+        string $name
+    ): ?Attachment
+    {
+        return (isset($entity[$name]) && $entity[$name] instanceof Attachment) ? $entity[$name] : null;
+    }
+
     private function setFieldEntity(
         ?EntityInterface $entity,
         string $name
@@ -76,7 +85,7 @@ class UploadType extends AbstractType
         if (!$entity instanceof EntityInterface) {
             return null;
         }
-        
+
         $annotations = $this->uploadAnnotationReader->getUploadableFields($entity);
         if (isset($annotations[$name]) && $annotations[$name] instanceof UploadableField) {
             $propertyAccessor = PropertyAccess::createPropertyAccessor();
@@ -89,16 +98,6 @@ class UploadType extends AbstractType
         if (!$field instanceof Attachment) {
             return null;
         }
-
-        return $field;
-    }
-
-    private function setFieldArray(
-        array $entity,
-        string $name
-    ): ?Attachment
-    {
-        $field = (isset($entity[$name]) && $entity[$name] instanceof Attachment) ? $entity[$name] : null;
 
         return $field;
     }

@@ -28,7 +28,7 @@ class HistoryVoter extends Voter
     {
         unset($attribute);
 
-        return $subject::class == History::class;
+        return History::class == $subject::class;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
