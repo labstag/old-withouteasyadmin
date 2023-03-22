@@ -28,6 +28,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     use SoftDeleteableEntity;
     use StateableEntity;
 
+    /**
+     * @var int
+     */
+    protected const DATAUNSERIALIZE = 4;
+
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
     protected ?Groupe $groupe = null;
@@ -201,7 +206,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function __unserialize(array $data): void
     {
-        if (4 === count($data)) {
+        if (self::DATAUNSERIALIZE === count($data)) {
             [
                 $this->id,
                 $this->username,
