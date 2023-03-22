@@ -28,6 +28,11 @@ class EmailUserRepository extends EmailRepository
             ]
         );
 
-        return $queryBuilder->getQuery()->getResult();
+        $results = $queryBuilder->getQuery()->getResult();
+        if (!is_array($results)) {
+            return [];
+        }
+
+        return $results;
     }
 }

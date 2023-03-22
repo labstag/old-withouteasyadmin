@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Labstag\Entity\Block;
 use Labstag\Entity\Chapter;
@@ -14,6 +15,7 @@ use Labstag\Interfaces\DomainInterface;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\ParagraphRepository;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -666,6 +668,10 @@ abstract class AdminControllerLib extends ControllerLib
             $methodTrash,
         ];
         $trash  = call_user_func($callable, []);
+        if (!$trash instanceof QueryBuilder) {
+            throw new RuntimeException('trash must be a QueryBuilder');
+        }
+
         $query  = $trash->getQuery();
         $result = $query->getResult();
         $total  = is_countable($result) ? count($result) : 0;

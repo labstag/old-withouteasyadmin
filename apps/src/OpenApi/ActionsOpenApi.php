@@ -38,6 +38,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
                 $this,
                 $function,
             ];
+            /** @var OpenApi $openApi */
             $openApi = call_user_func($callable, $openApi);
         }
 

@@ -184,6 +184,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->histories         = new ArrayCollection();
     }
 
+    public function __serialize(): array
+    {
+        return [
+            $this->id,
+            $this->username,
+            $this->email,
+            $this->password,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        if (count($data) === 4) {
+            [
+                $this->id,
+                $this->username,
+                $this->email,
+                $this->password,
+            ] = $data;
+        }
+    }
+
     public function __toString(): string
     {
         return $this->getUsername();
@@ -647,17 +669,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function serialize(): string
-    {
-        return serialize(
-            [
-                $this->id,
-                $this->username,
-                $this->password,
-            ]
-        );
-    }
-
     public function setAvatar(?Attachment $attachment): self
     {
         $this->attachment = $attachment;
@@ -713,19 +724,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->username = $username;
 
         return $this;
-    }
-
-    public function unserialize(string $serialized): void
-    {
-        $password = (string) $this->getPassword();
-        $username = (string) $this->getUsername();
-        $id       = (string) $this->getId();
-
-        [
-            $id,
-            $username,
-            $password,
-        ] = unserialize($serialized);
     }
 
     private function removeElementUser(

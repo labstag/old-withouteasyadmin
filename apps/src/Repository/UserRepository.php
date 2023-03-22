@@ -50,7 +50,12 @@ class UserRepository extends RepositoryLib
             ]
         );
 
-        return $query->getQuery()->getOneOrNullResult();
+        $result = $query->getQuery()->getOneOrNullResult();
+        if (!$result instanceof User) {
+            return null;
+        }
+
+        return $result;
     }
 
     public function findUserName(string $field): mixed

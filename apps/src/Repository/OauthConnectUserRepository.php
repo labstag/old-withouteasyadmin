@@ -21,7 +21,12 @@ class OauthConnectUserRepository extends RepositoryLib
         $builder->distinct();
         $builder->orderBy('u.name', 'ASC');
 
-        return $builder->getQuery()->getResult();
+        $results = $builder->getQuery()->getResult();
+        if (!is_array($results)) {
+            return [];
+        }
+
+        return $results;
     }
 
     public function findOauthNotUser(?User $user, ?string $identity, ?string $client): ?OauthConnectUser
@@ -42,7 +47,12 @@ class OauthConnectUserRepository extends RepositoryLib
             ]
         );
 
-        return $dql->getQuery()->getOneOrNullResult();
+        $result = $dql->getQuery()->getOneOrNullResult();
+        if (!$result instanceof OauthConnectUser) {
+            return null;
+        }
+
+        return $result;
     }
 
     public function findOneOauthByUser(?string $oauthCode, ?User $user): ?OauthConnectUser
@@ -61,7 +71,12 @@ class OauthConnectUserRepository extends RepositoryLib
             ]
         );
 
-        return $dql->getQuery()->getOneOrNullResult();
+        $result = $dql->getQuery()->getOneOrNullResult();
+        if (!$result instanceof OauthConnectUser) {
+            return null;
+        }
+
+        return $result;
     }
 
     public function login(?string $identity, ?string $oauth): ?OauthConnectUser
@@ -81,6 +96,11 @@ class OauthConnectUserRepository extends RepositoryLib
             ]
         );
 
-        return $builder->getQuery()->getOneOrNullResult();
+        $result = $builder->getQuery()->getOneOrNullResult();
+        if (!$result instanceof OauthConnectUser) {
+            return null;
+        }
+
+        return $result;
     }
 }

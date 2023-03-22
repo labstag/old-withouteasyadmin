@@ -42,7 +42,7 @@ class SearchableType extends AbstractType
                 },
                 function ($ids) use ($options)
                 {
-                    if (empty($ids)) {
+                    if (empty($ids) || !is_string($options['class'])) {
                         return is_iterable($ids) ? new ArrayCollection([]) : null;
                     }
 
