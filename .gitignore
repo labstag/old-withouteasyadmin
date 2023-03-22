@@ -14,3 +14,5 @@ docker-compose-*.yml
 mariadb
 node_modules
 report
+
+megalinter-reports/
