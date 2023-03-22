@@ -5,9 +5,6 @@ namespace Labstag\Form\Admin;
 use Labstag\Entity\Menu;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -73,20 +70,19 @@ class MenuType extends AbstractTypeLib
         $formBuilder->add($this->setData($formBuilder));
     }
 
-    private function setData(FormBuilderInterface $formBuilder): FormBuilderInterface 
+    private function setData(FormBuilderInterface $formBuilder): FormBuilderInterface
     {
         $formBuilder = $formBuilder->create(
             'data',
             FormType::class,
-            [
-                'by_reference' => false,
-            ]
+            ['by_reference' => false]
         );
-        $all         = $this->guardService->allRoutes();
-        $choices     = [];
+        $all     = $this->guardService->allRoutes();
+        $choices = [];
         foreach (array_keys($all) as $key) {
             $choices[$key] = $key;
         }
+
         $formBuilder->add(
             'route',
             ChoiceType::class,

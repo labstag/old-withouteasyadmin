@@ -21,7 +21,6 @@ abstract class AbstractTypeLib extends AbstractType
     public function __construct(
         protected TranslatorInterface $translator,
         protected GuardService $guardService
-        
     )
     {
     }

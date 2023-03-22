@@ -66,13 +66,13 @@ class ConfigurationListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info($action.' '.get_class($object));
+        $this->logger->info($action.' '.$object::class);
         $this->execute($object);
     }
 
     private function setRobotsTxt(Configuration $configuration): void
     {
-        if ($configuration->getName() != 'robotstxt') {
+        if ('robotstxt' != $configuration->getName()) {
             return;
         }
 

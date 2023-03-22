@@ -3,7 +3,6 @@
 namespace Labstag\Event\Listener;
 
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -64,6 +63,7 @@ class BlockListener implements EventSubscriberInterface
         /** @var EntityBlockInterface $entity */
         $entity = new $classentity();
         $entity->setBlock($block);
+
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
@@ -75,8 +75,7 @@ class BlockListener implements EventSubscriberInterface
             return;
         }
 
-        
-        $this->logger->info($action.' '.get_class($object));
+        $this->logger->info($action.' '.$object::class);
         $this->execute($object);
     }
 }

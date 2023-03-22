@@ -59,7 +59,7 @@ class ChapterListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info($action.' '.get_class($object));
+        $this->logger->info($action.' '.$object::class);
         $this->verifMetas($object);
         /** @var History $history */
         $history = $object->getHistory();

@@ -4,12 +4,10 @@ namespace Labstag\Form\Admin;
 
 use Labstag\Entity\Render;
 use Labstag\Lib\AbstractTypeLib;
-use Labstag\Service\GuardService;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RenderType extends AbstractTypeLib
 {

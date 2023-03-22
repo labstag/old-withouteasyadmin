@@ -54,7 +54,7 @@ class EditoListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info($action.' '.get_class($object));
+        $this->logger->info($action.' '.$object::class);
         $this->verifMetas($object);
     }
 

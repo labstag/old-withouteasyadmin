@@ -77,6 +77,7 @@ class MenuController extends AdminControllerLib
     ): Response
     {
         $this->modalAttachmentDelete();
+
         return $this->form(
             $this->getDomainEntity(),
             $menu

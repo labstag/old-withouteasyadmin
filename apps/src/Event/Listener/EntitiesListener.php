@@ -5,15 +5,7 @@ namespace Labstag\Event\Listener;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Labstag\Entity\Chapter;
-use Labstag\Entity\Edito;
-use Labstag\Entity\History;
-use Labstag\Entity\Meta;
-use Labstag\Entity\Page;
-use Labstag\Entity\Post;
-use Labstag\Entity\Render;
 use Labstag\Interfaces\EntityInterface;
-use Labstag\Interfaces\PublicInterface;
 use Labstag\Service\WorkflowService;
 use Psr\Log\LoggerInterface;
 
@@ -53,11 +45,11 @@ class EntitiesListener implements EventSubscriberInterface
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
         $object = $lifecycleEventArgs->getObject();
-        if (!$object instanceof EntityInterface || $action != 'persist') {
+        if (!$object instanceof EntityInterface || 'persist' != $action) {
             return;
         }
 
-        $this->logger->info($action.' '.get_class($object));
+        $this->logger->info($action.' '.$object::class);
         $this->workflowService->init($object);
     }
 }

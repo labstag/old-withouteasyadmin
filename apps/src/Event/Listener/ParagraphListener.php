@@ -3,7 +3,6 @@
 namespace Labstag\Event\Listener;
 
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -69,6 +68,7 @@ class ParagraphListener implements EventSubscriberInterface
         /** @var EntityParagraphInterface $entity */
         $entity = new $classentity();
         $entity->setParagraph($paragraph);
+
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
@@ -80,7 +80,7 @@ class ParagraphListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info($action.' '.get_class($object));
+        $this->logger->info($action.' '.$object::class);
         $this->init($object);
         $this->eventData($object);
     }

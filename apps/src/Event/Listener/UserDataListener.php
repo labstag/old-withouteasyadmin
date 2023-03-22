@@ -9,7 +9,6 @@ use Labstag\Entity\AddressUser;
 use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
-use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\UserDataInterface;
 use Labstag\Service\UserMailService;
 use Psr\Log\LoggerInterface;
@@ -26,7 +25,7 @@ class UserDataListener implements EventSubscriberInterface
     public function getSubscribedEvents(): array
     {
         return [
-            Events::postPersist
+            Events::postPersist,
         ];
     }
 
@@ -42,54 +41,53 @@ class UserDataListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info($action.' '.get_class($object));
+        $this->logger->info($action.' '.$object::class);
 
-        
         $this->setOauthConnectUser($object);
         $this->setLinkUser($object);
         $this->setAddressUser($object);
     }
 
-    private function setAddressUser(UserDataInterface $entity): void
+    private function setAddressUser(UserDataInterface $userData): void
     {
-        if (!$entity instanceof AddressUser) {
+        if (!$userData instanceof AddressUser) {
             return;
         }
 
         /** @var User $user */
-        $user = $entity->getRefuser();
+        $user = $userData->getRefuser();
 
         $this->userMailService->checkNewAddress(
             $user,
-            $entity
+            $userData
         );
     }
 
-    private function setOauthConnectUser(UserDataInterface $entity): void
+    private function setLinkUser(UserDataInterface $userData): void
     {
-        if (!$entity instanceof OauthConnectUser) {
+        if (!$userData instanceof LinkUser) {
             return;
         }
 
         /** @var User $user */
-        $user = $entity->getRefuser();
-        $this->userMailService->checkNewOauthConnectUser(
-            $user,
-            $entity
-        );
-    }
-
-    private function setLinkUser(UserDataInterface $entity): void
-    {
-        if (!$entity instanceof LinkUser) {
-            return;
-        }
-        
-        /** @var User $user */
-        $user = $entity->getRefuser();
+        $user = $userData->getRefuser();
         $this->userMailService->checkNewLink(
             $user,
-            $entity
+            $userData
+        );
+    }
+
+    private function setOauthConnectUser(UserDataInterface $userData): void
+    {
+        if (!$userData instanceof OauthConnectUser) {
+            return;
+        }
+
+        /** @var User $user */
+        $user = $userData->getRefuser();
+        $this->userMailService->checkNewOauthConnectUser(
+            $user,
+            $userData
         );
     }
 }

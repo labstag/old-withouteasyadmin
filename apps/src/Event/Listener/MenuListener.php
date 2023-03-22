@@ -81,7 +81,7 @@ class MenuListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info($action.' '.get_class($object));
+        $this->logger->info($action.' '.$object::class);
         $this->execute($object);
     }
 }

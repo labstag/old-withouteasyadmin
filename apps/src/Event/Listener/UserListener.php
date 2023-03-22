@@ -137,7 +137,7 @@ class UserListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info($action.' '.get_class($object));
+        $this->logger->info($action.' '.$object::class);
         $this->setPassword($object);
         $this->setPrincipalMail($object);
         $this->setChangePassword($object);

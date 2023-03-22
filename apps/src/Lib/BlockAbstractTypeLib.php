@@ -3,6 +3,7 @@
 namespace Labstag\Lib;
 
 use Labstag\Service\BlockService;
+use Labstag\Service\GuardService;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -11,12 +12,13 @@ abstract class BlockAbstractTypeLib extends AbstractTypeLib
 {
     public function __construct(
         TranslatorInterface $translator,
+        GuardService $guardService,
         protected RouterInterface $router,
         protected BlockService $blockService,
         protected Environment $twigEnvironment
     )
     {
-        parent::__construct($translator);
+        parent::__construct($translator, $guardService);
     }
 
     public function getFieldEntity(): string

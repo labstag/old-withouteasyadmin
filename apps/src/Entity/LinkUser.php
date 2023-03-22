@@ -4,7 +4,6 @@ namespace Labstag\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\UserDataInterface;
 use Labstag\Repository\LinkUserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
