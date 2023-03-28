@@ -5,19 +5,9 @@ namespace Labstag\Twig;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Lib\ExtensionLib;
-use Labstag\Service\ParagraphService;
-use Twig\Environment;
 
 class ParagraphExtension extends ExtensionLib
 {
-    public function __construct(
-        protected Environment $twigEnvironment,
-        protected ParagraphService $paragraphService
-    )
-    {
-        parent::__construct($twigEnvironment);
-    }
-
     public function getFiltersFunctions(): array
     {
         return [

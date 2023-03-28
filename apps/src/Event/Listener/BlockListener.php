@@ -2,25 +2,14 @@
 
 namespace Labstag\Event\Listener;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\Block;
 use Labstag\Interfaces\EntityBlockInterface;
-use Labstag\Service\BlockService;
-use Psr\Log\LoggerInterface;
+use Labstag\Lib\EventListenerLib;
 
-class BlockListener implements EventSubscriberInterface
+class BlockListener extends EventListenerLib
 {
-    public function __construct(
-        protected BlockService $blockService,
-        protected EntityManagerInterface $entityManager,
-        protected LoggerInterface $logger
-    )
-    {
-    }
-
     public function getSubscribedEvents(): array
     {
         return [

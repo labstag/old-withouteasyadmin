@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\PostRepository;
 use Labstag\Search\PostSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PostDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected PostRepository $postRepository,
-        protected PostSearch $postSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Post::class;

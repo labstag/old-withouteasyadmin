@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\EditoRepository;
 use Labstag\Search\EditoSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EditoDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected EditoRepository $editoRepository,
-        protected EditoSearch $editoSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Edito::class;

@@ -9,21 +9,10 @@ use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\EmailUserRepository;
 use Labstag\Search\User\EmailUserSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EmailUserDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected EmailUserRepository $emailUserRepository,
-        protected EmailUserSearch $emailUserSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return EmailUser::class;

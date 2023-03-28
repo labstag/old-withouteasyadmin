@@ -9,21 +9,10 @@ use Labstag\Form\Admin\TemplateType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\TemplateRepository;
 use Labstag\Search\TemplateSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TemplateDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected TemplateRepository $templateRepository,
-        protected TemplateSearch $templateSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Template::class;

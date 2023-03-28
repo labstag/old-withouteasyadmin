@@ -2,7 +2,6 @@
 
 namespace Labstag\Event\Listener;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\AddressUser;
@@ -10,18 +9,10 @@ use Labstag\Entity\LinkUser;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
 use Labstag\Interfaces\UserDataInterface;
-use Labstag\Service\UserMailService;
-use Psr\Log\LoggerInterface;
+use Labstag\Lib\EventListenerLib;
 
-class UserDataListener implements EventSubscriberInterface
+class UserDataListener extends EventListenerLib
 {
-    public function __construct(
-        protected LoggerInterface $logger,
-        protected UserMailService $userMailService
-    )
-    {
-    }
-
     public function getSubscribedEvents(): array
     {
         return [

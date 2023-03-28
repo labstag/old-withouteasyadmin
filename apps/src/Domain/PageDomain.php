@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\PageType as SearchPageType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\PageRepository;
 use Labstag\Search\PageSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PageDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected PageRepository $pageRepository,
-        protected PageSearch $pageSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Page::class;

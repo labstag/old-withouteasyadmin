@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\GeoCodeType as SearchGeoCodeType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\GeoCodeRepository;
 use Labstag\Search\GeoCodeSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GeoCodeDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected GeoCodeRepository $geoCodeRepository,
-        protected GeoCodeSearch $geoCodeSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return GeoCode::class;

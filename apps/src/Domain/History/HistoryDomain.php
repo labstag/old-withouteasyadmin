@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\HistoryRepository;
 use Labstag\Search\HistorySearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HistoryDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected HistoryRepository $historyRepository,
-        protected HistorySearch $historySearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return History::class;

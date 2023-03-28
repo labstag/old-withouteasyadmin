@@ -9,21 +9,10 @@ use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\GroupeRepository;
 use Labstag\Search\GroupeSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GroupeDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected GroupeRepository $groupeRepository,
-        protected GroupeSearch $groupeSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Groupe::class;

@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\RenderRepository;
 use Labstag\Search\RenderSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RenderDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected RenderRepository $renderRepository,
-        protected RenderSearch $renderSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Render::class;

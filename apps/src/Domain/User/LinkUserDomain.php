@@ -9,21 +9,10 @@ use Labstag\Form\Admin\User\LinkUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\LinkUserRepository;
 use Labstag\Search\User\LinkUserSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LinkUserDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected LinkUserRepository $linkUserRepository,
-        protected LinkUserSearch $linkUserSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return LinkUser::class;

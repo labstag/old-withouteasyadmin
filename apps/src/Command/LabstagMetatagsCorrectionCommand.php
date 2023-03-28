@@ -2,7 +2,6 @@
 
 namespace Labstag\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
 use Labstag\Entity\History;
@@ -10,13 +9,6 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Entity\Render;
 use Labstag\Lib\CommandLib;
-use Labstag\Repository\ChapterRepository;
-use Labstag\Repository\EditoRepository;
-use Labstag\Repository\HistoryRepository;
-use Labstag\Repository\PageRepository;
-use Labstag\Repository\PostRepository;
-use Labstag\Repository\RenderRepository;
-use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,20 +20,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class LabstagMetatagsCorrectionCommand extends CommandLib
 {
-    public function __construct(
-        RepositoryService $repositoryService,
-        EntityManagerInterface $entityManager,
-        protected ChapterRepository $chapterRepository,
-        protected EditoRepository $editoRepository,
-        protected HistoryRepository $historyRepository,
-        protected PageRepository $pageRepository,
-        protected PostRepository $postRepository,
-        protected RenderRepository $renderRepository
-    )
-    {
-        parent::__construct($repositoryService, $entityManager);
-    }
-
     public function executeChapter(): void
     {
         $all = $this->chapterRepository->findAll();

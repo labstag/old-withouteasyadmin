@@ -9,21 +9,10 @@ use Labstag\Form\Admin\User\AddressUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\AddressUserRepository;
 use Labstag\Search\User\AddressUserSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AddressUserDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected AddressUserRepository $addressUserRepository,
-        protected AddressUserSearch $addressUserSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return AddressUser::class;

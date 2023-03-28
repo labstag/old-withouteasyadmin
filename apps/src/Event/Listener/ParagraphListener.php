@@ -2,25 +2,14 @@
 
 namespace Labstag\Event\Listener;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityParagraphInterface;
-use Labstag\Service\ParagraphService;
-use Psr\Log\LoggerInterface;
+use Labstag\Lib\EventListenerLib;
 
-class ParagraphListener implements EventSubscriberInterface
+class ParagraphListener extends EventListenerLib
 {
-    public function __construct(
-        protected ParagraphService $paragraphService,
-        protected EntityManagerInterface $entityManager,
-        protected LoggerInterface $logger
-    )
-    {
-    }
-
     public function getSubscribedEvents(): array
     {
         return [

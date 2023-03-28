@@ -2,33 +2,14 @@
 
 namespace Labstag\Event\Listener;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
-use Labstag\Repository\UserRepository;
-use Labstag\Service\SessionService;
-use Labstag\Service\UserMailService;
-use Labstag\Service\WorkflowService;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Labstag\Lib\EventListenerLib;
 
-class UserListener implements EventSubscriberInterface
+class UserListener extends EventListenerLib
 {
-    public function __construct(
-        protected WorkflowService $workflowService,
-        protected UserPasswordHasherInterface $userPasswordHasher,
-        protected UserMailService $userMailService,
-        protected UserRepository $userRepository,
-        protected SessionService $sessionService,
-        protected TranslatorInterface $translator,
-        protected LoggerInterface $logger
-    )
-    {
-    }
-
     public function getSubscribedEvents(): array
     {
         return [

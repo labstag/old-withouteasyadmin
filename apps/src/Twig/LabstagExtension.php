@@ -5,11 +5,7 @@ namespace Labstag\Twig;
 use Labstag\Entity\Attachment;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\ExtensionLib;
-use Labstag\Repository\AttachmentRepository;
-use Labstag\Service\PhoneService;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 class LabstagExtension extends ExtensionLib
 {
@@ -17,16 +13,6 @@ class LabstagExtension extends ExtensionLib
      * @var string
      */
     final public const FOLDER_ENTITY = 'Labstag\\Entity\\';
-
-    public function __construct(
-        protected Environment $twigEnvironment,
-        protected PhoneService $phoneService,
-        protected CacheManager $cacheManager,
-        protected AttachmentRepository $attachmentRepository
-    )
-    {
-        parent::__construct($twigEnvironment);
-    }
 
     public function classEntity(object $entity): string
     {

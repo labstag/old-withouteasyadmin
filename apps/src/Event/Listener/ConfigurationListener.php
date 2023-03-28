@@ -2,33 +2,14 @@
 
 namespace Labstag\Event\Listener;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Exception;
 use Labstag\Entity\Configuration;
-use Labstag\Repository\ConfigurationRepository;
-use Labstag\Service\ErrorService;
-use Labstag\Service\SessionService;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Labstag\Lib\EventListenerLib;
 
-class ConfigurationListener implements EventSubscriberInterface
+class ConfigurationListener extends EventListenerLib
 {
-    public function __construct(
-        protected CacheInterface $cache,
-        protected ConfigurationRepository $configurationRepository,
-        protected ParameterBagInterface $parameterBag,
-        protected SessionService $sessionService,
-        protected TranslatorInterface $translator,
-        protected ErrorService $errorService,
-        protected LoggerInterface $logger
-    )
-    {
-    }
-
     public function getSubscribedEvents(): array
     {
         return [

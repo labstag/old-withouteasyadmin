@@ -9,21 +9,10 @@ use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\PhoneUserRepository;
 use Labstag\Search\User\PhoneUserSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PhoneUserDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected PhoneUserRepository $phoneUserRepository,
-        protected PhoneUserSearch $phoneUserSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return PhoneUser::class;

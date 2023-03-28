@@ -2,6 +2,13 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Repository\AttachmentRepository;
+use Labstag\Service\GuardService;
+use Labstag\Service\ParagraphService;
+use Labstag\Service\PhoneService;
+use Labstag\Service\WorkflowService;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -13,7 +20,14 @@ abstract class ExtensionLib extends AbstractExtension
     protected array $templates = [];
 
     public function __construct(
-        protected Environment $twigEnvironment
+        protected WorkflowService $workflowService,
+        protected ParagraphService $paragraphService,
+        protected PhoneService $phoneService,
+        protected CacheManager $cacheManager,
+        protected AttachmentRepository $attachmentRepository,
+        protected Environment $twigEnvironment,
+        protected TokenStorageInterface $tokenStorage,
+        protected GuardService $guardService,
     )
     {
     }

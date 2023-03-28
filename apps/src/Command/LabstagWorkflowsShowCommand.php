@@ -2,37 +2,19 @@
 
 namespace Labstag\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Workflow;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\CommandLib;
-use Labstag\Repository\WorkflowRepository;
-use Labstag\Service\RepositoryService;
-use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 #[AsCommand(name: 'labstag:workflows-show')]
 class LabstagWorkflowsShowCommand extends CommandLib
 {
-    public function __construct(
-        protected RewindableGenerator $rewindableGenerator,
-        RepositoryService $repositoryService,
-        EntityManagerInterface $entityManager,
-        protected WorkflowService $workflowService,
-        protected EventDispatcherInterface $eventDispatcher,
-        protected WorkflowRepository $workflowRepository
-    )
-    {
-        parent::__construct($repositoryService, $entityManager);
-    }
-
     protected function configure(): void
     {
         $this->setDescription('Ajout des workflows en base de données');

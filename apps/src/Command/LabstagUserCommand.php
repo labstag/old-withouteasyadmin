@@ -2,14 +2,9 @@
 
 namespace Labstag\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Lib\CommandLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\UserRepository;
-use Labstag\Service\RepositoryService;
-use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -23,17 +18,6 @@ use Symfony\Component\Workflow\WorkflowInterface;
 #[AsCommand(name: 'labstag:user')]
 class LabstagUserCommand extends CommandLib
 {
-    public function __construct(
-        RepositoryService $repositoryService,
-        EntityManagerInterface $entityManager,
-        protected WorkflowService $workflowService,
-        protected GroupeRepository $groupeRepository,
-        protected UserRepository $userRepository
-    )
-    {
-        parent::__construct($repositoryService, $entityManager);
-    }
-
     public function setUserEmail(
         SymfonyStyle $symfonyStyle,
         QuestionHelper $questionHelper,

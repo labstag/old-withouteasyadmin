@@ -6,21 +6,10 @@ use Labstag\Entity\Attachment;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\AttachmentRepository;
 use Labstag\Search\AttachmentSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AttachmentDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected AttachmentRepository $attachmentRepository,
-        protected AttachmentSearch $attachmentSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Attachment::class;

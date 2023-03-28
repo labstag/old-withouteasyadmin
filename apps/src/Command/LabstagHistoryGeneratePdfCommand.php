@@ -2,35 +2,19 @@
 
 namespace Labstag\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\History;
 use Labstag\Lib\CommandLib;
-use Labstag\Repository\HistoryRepository;
-use Labstag\Service\HistoryService;
-use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 #[AsCommand(
     name: 'labstag:history:generate-pdf'
 )]
 class LabstagHistoryGeneratePdfCommand extends CommandLib
 {
-    public function __construct(
-        RepositoryService $repositoryService,
-        EntityManagerInterface $entityManager,
-        protected ParameterBagInterface $parameterBag,
-        protected HistoryService $historyService,
-        protected HistoryRepository $historyRepository
-    )
-    {
-        parent::__construct($repositoryService, $entityManager);
-    }
-
     protected function configure(): void
     {
         $this->setDescription('Add a short description for your command');

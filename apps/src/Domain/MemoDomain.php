@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\MemoType as SearchMemoType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\MemoRepository;
 use Labstag\Search\MemoSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MemoDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected MemoRepository $memoRepository,
-        protected MemoSearch $memoSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Memo::class;

@@ -8,21 +8,10 @@ use Labstag\Form\Admin\MenuType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\MenuRepository;
 use Labstag\Search\MenuSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected MenuRepository $menuRepository,
-        protected MenuSearch $menuSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Menu::class;

@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\LayoutRepository;
 use Labstag\Search\LayoutSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LayoutDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected LayoutRepository $layoutRepository,
-        protected LayoutSearch $layoutSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Layout::class;

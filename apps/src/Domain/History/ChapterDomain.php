@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\ChapterType as SearchChapterType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\ChapterRepository;
 use Labstag\Search\ChapterSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChapterDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected ChapterRepository $chapterRepository,
-        protected ChapterSearch $chapterSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Chapter::class;

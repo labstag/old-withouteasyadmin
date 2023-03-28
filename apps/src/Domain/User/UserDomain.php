@@ -8,21 +8,10 @@ use Labstag\Form\Admin\User\UserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\UserRepository;
 use Labstag\Search\UserSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected UserRepository $userRepository,
-        protected UserSearch $userSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return User::class;

@@ -7,21 +7,10 @@ use Labstag\Form\Admin\BlockType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\BlockRepository;
 use Labstag\Search\BlockSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BlockDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected BlockRepository $blockRepository,
-        protected BlockSearch $blockSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Block::class;

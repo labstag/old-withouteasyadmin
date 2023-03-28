@@ -2,22 +2,13 @@
 
 namespace Labstag\Event\Listener;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Interfaces\EntityInterface;
-use Labstag\Service\WorkflowService;
-use Psr\Log\LoggerInterface;
+use Labstag\Lib\EventListenerLib;
 
-class EntitiesListener implements EventSubscriberInterface
+class EntitiesListener extends EventListenerLib
 {
-    public function __construct(
-        protected WorkflowService $workflowService,
-        protected LoggerInterface $logger
-    )
-    {
-    }
-
     public function getSubscribedEvents(): array
     {
         return [

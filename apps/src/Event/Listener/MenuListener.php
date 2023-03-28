@@ -2,20 +2,13 @@
 
 namespace Labstag\Event\Listener;
 
-use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\Menu;
-use Psr\Log\LoggerInterface;
+use Labstag\Lib\EventListenerLib;
 
-class MenuListener implements EventSubscriberInterface
+class MenuListener extends EventListenerLib
 {
-    public function __construct(
-        protected LoggerInterface $logger
-    )
-    {
-    }
-
     public function getSubscribedEvents(): array
     {
         return [

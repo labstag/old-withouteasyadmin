@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\LibelleRepository;
 use Labstag\Search\LibelleSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LibelleDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected LibelleRepository $libelleRepository,
-        protected LibelleSearch $libelleSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Libelle::class;

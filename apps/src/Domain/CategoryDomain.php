@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\CategoryRepository;
 use Labstag\Search\CategorySearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CategoryDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected CategoryRepository $categoryRepository,
-        protected CategorySearch $categorySearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Category::class;

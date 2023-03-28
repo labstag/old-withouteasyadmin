@@ -9,21 +9,10 @@ use Labstag\Form\Admin\Search\BookmarkType as SearchBookmarkType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Repository\BookmarkRepository;
 use Labstag\Search\BookmarkSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BookmarkDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected BookmarkRepository $bookmarkRepository,
-        protected BookmarkSearch $bookmarkSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Bookmark::class;
