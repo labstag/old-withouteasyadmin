@@ -1,9 +1,10 @@
 {
-  "threshold": 0,
-  "reporters": ["html", "markdown"],
+  "threshold": 8,
+  "reporters": ["consoleFull", "html", "markdown"],
   "ignore": [
     "**/node_modules/**",
     "**/.git/**",
+    "apps/src/**/.gitignore",
     "**/.rbenv/**",
     "**/.venv/**",
     "**/*cache*/**",
