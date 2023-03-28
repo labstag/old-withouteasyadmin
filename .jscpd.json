@@ -1,6 +1,6 @@
 {
-  "threshold": 8,
-  "reporters": ["consoleFull", "html", "markdown"],
+  "threshold": 2,
+  "reporters": ["html", "markdown"],
   "ignore": [
     "**/node_modules/**",
     "**/.git/**",
