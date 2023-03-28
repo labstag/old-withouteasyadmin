@@ -2,7 +2,7 @@
 
 namespace Labstag\Lib;
 
-use Labstag\Repository\AttachmentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Service\GuardService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\PhoneService;
@@ -20,11 +20,11 @@ abstract class ExtensionLib extends AbstractExtension
     protected array $templates = [];
 
     public function __construct(
+        protected EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
         protected ParagraphService $paragraphService,
         protected PhoneService $phoneService,
         protected CacheManager $cacheManager,
-        protected AttachmentRepository $attachmentRepository,
         protected Environment $twigEnvironment,
         protected TokenStorageInterface $tokenStorage,
         protected GuardService $guardService,

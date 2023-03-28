@@ -5,15 +5,28 @@ namespace Labstag\Lib;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
+use Labstag\Repository\LayoutRepository;
+use Labstag\Repository\PageRepository;
+use Labstag\Service\FrontService;
+use Labstag\Service\MenuService;
 use Labstag\Service\ParagraphService;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 abstract class BlockLib extends AbstractController
 {
     public function __construct(
+        protected MenuService $menuService,
+        protected ParagraphService $paragraphService,
+        protected LayoutRepository $layoutRepository,
+        protected FrontService $frontService,
+        protected RequestStack $requestStack,
+        protected RouterInterface $router,
+        protected PageRepository $pageRepository,
         protected TranslatorInterface $translator,
         protected Environment $twigEnvironment,
         protected array $template = []

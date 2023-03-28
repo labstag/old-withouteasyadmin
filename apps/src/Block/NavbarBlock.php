@@ -10,22 +10,10 @@ use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
-use Labstag\Service\MenuService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class NavbarBlock extends BlockLib implements BlockInterface
 {
-    public function __construct(
-        protected MenuService $menuService,
-        TranslatorInterface $translator,
-        Environment $twigEnvironment
-    )
-    {
-        parent::__construct($translator, $twigEnvironment);
-    }
-
     public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
         unset($entityBlock, $entityFront);

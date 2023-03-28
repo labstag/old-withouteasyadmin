@@ -5,6 +5,7 @@ namespace Labstag\Twig;
 use Labstag\Entity\Attachment;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\ExtensionLib;
+use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class LabstagExtension extends ExtensionLib
@@ -44,8 +45,10 @@ class LabstagExtension extends ExtensionLib
             return null;
         }
 
-        $id         = $entity->getId();
-        $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
+        $id = $entity->getId();
+        /** @var AttachmentRepository $attachmentRepository */
+        $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
+        $attachment = $attachmentRepository->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
         }

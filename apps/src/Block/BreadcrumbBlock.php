@@ -8,28 +8,10 @@ use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
-use Labstag\Repository\PageRepository;
-use Labstag\Service\FrontService;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class BreadcrumbBlock extends BlockLib implements BlockInterface
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        Environment $twigEnvironment,
-        protected FrontService $frontService,
-        protected RequestStack $requestStack,
-        protected RouterInterface $router,
-        protected PageRepository $pageRepository
-    )
-    {
-        parent::__construct($translator, $twigEnvironment);
-    }
-
     public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
         unset($entityBlock, $entityFront);

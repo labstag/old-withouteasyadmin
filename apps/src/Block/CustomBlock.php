@@ -10,27 +10,11 @@ use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
-use Labstag\Repository\LayoutRepository;
-use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class CustomBlock extends BlockLib implements BlockInterface
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        Environment $twigEnvironment,
-        protected RequestStack $requestStack,
-        protected ParagraphService $paragraphService,
-        protected LayoutRepository $layoutRepository
-    )
-    {
-        parent::__construct($translator, $twigEnvironment);
-    }
-
     public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
         unset($entityBlock, $entityFront);

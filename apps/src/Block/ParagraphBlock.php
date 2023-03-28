@@ -8,22 +8,10 @@ use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
-use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class ParagraphBlock extends BlockLib implements BlockInterface
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        Environment $twigEnvironment,
-        protected ParagraphService $paragraphService
-    )
-    {
-        parent::__construct($translator, $twigEnvironment);
-    }
-
     public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
         unset($entityBlock, $entityFront);
