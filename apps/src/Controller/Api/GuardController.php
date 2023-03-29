@@ -83,7 +83,7 @@ class GuardController extends ApiControllerLib
         }
 
         $routeGroupe->setState((bool) $post['state']);
-        $routeGroupeRepository->add($routeGroupe);
+        $routeGroupeRepository->save($routeGroupe);
         $data['ok'] = true;
 
         return new JsonResponse($data);
@@ -136,7 +136,7 @@ class GuardController extends ApiControllerLib
         }
 
         $routeUser->setState((bool) $post['state']);
-        $routeUserRepository->add($routeUser);
+        $userRepository->save($routeUser);
         $data['ok'] = true;
 
         return new JsonResponse($data);

@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Interfaces\EntityInterface;
@@ -17,7 +16,7 @@ class AttachFormService
 {
     public function __construct(
         protected FileService $fileService,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected ContainerBagInterface $containerBag,
         protected AttachmentRepository $attachmentRepository,
         private readonly UploadAnnotationReader $uploadAnnotationReader

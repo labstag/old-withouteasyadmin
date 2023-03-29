@@ -51,7 +51,7 @@ class ChapterController extends AdminControllerLib
         $chapter->setName(Uuid::v1());
         $chapter->setPosition((is_countable($history->getChapters()) ? count($history->getChapters()) : 0) + 1);
 
-        $chapterRepository->add($chapter);
+        $chapterRepository->save($chapter);
 
         return $this->redirectToRoute('admin_chapter_edit', ['id' => $chapter->getId()]);
     }

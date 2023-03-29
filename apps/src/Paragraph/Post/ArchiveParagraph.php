@@ -49,9 +49,9 @@ class ArchiveParagraph extends ParagraphLib implements ParagraphInterface
 
     public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
-        /** @var PostRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
-        $archives                   = $serviceEntityRepositoryLib->findDateArchive();
+        /** @var PostRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Post::class);
+        $archives      = $repositoryLib->findDateArchive();
         /** @var Request $request */
         $request = $this->requestStack->getCurrentRequest();
         $page    = $request->query->getInt('page', 1);

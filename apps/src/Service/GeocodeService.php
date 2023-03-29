@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\GeoCode;
 use Labstag\Repository\GeoCodeRepository;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -17,7 +16,7 @@ class GeocodeService
 
     public function __construct(
         protected HttpClientInterface $httpClient,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected GeoCodeRepository $geoCodeRepository
     )
     {
@@ -49,7 +48,7 @@ class GeocodeService
         $entity->setLongitude($row[10]);
         $entity->setAccuracy((int) $row[11]);
 
-        $this->geoCodeRepository->add($entity);
+        $this->geoCodeRepository->save($entity);
     }
 
     public function csv(string $country): array

@@ -231,7 +231,7 @@ class GuardRouteController extends ApiControllerLib
             $routeGroupe->setRefgroupe($groupe);
             $routeGroupe->setRefroute($entityRoute);
             $routeGroupe->setState($state);
-            $routeGroupeRepository->add($routeGroupe);
+            $routeGroupeRepository->save($routeGroupe);
         }
 
         return $data;
@@ -270,7 +270,7 @@ class GuardRouteController extends ApiControllerLib
             $routeUser->setRefuser($user);
             $routeUser->setRefroute($entityRoute);
             $routeUser->setState($state);
-            $routeUserRepository->add($routeUser);
+            $routeUserRepository->save($routeUser);
         }
 
         return $data;

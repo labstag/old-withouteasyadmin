@@ -67,7 +67,7 @@ class WorkflowService
 
         /** @var RepositoryLib $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get($entity::class);
-        $serviceEntityRepositoryLib->add($entity);
+        $serviceEntityRepositoryLib->save($entity);
     }
 
     public function get(EntityInterface $entity): ?WorkflowInterface
@@ -103,7 +103,7 @@ class WorkflowService
             $workflow->apply($entity, $name);
             /** @var RepositoryLib $repository */
             $repository = $this->repositoryService->get($entity::class);
-            $repository->add($entity);
+            $repository->save($entity);
 
             break;
         }

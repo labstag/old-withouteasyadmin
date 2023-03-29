@@ -2,7 +2,6 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityParagraphInterface;
@@ -25,7 +24,6 @@ abstract class ParagraphLib extends AbstractController
     protected array $template = [];
 
     public function __construct(
-        protected RepositoryService $repositoryService,
         protected FileService $fileService,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected ErrorService $errorService,
@@ -36,7 +34,7 @@ abstract class ParagraphLib extends AbstractController
         protected ParagraphService $paragraphService,
         protected RequestStack $requestStack,
         protected FormService $formService,
-        protected EntityManagerInterface $entityManager
+        protected RepositoryService $repositoryService
     )
     {
     }

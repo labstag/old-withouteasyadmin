@@ -60,7 +60,7 @@ class HistoryController extends AdminControllerLib
         $history->setName(Uuid::v1());
         $history->setRefuser($user);
 
-        $historyRepository->add($history);
+        $historyRepository->save($history);
 
         return $this->redirectToRoute('admin_history_edit', ['id' => $history->getId()]);
     }

@@ -46,9 +46,9 @@ class LabstagExtension extends ExtensionLib
         }
 
         $id = $entity->getId();
-        /** @var AttachmentRepository $attachmentRepository */
-        $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
-        $attachment = $attachmentRepository->findOneBy(['id' => $id]);
+        /** @var AttachmentRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Attachment::class);
+        $attachment    = $repositoryLib->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
         }

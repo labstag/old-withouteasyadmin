@@ -21,14 +21,13 @@ use Labstag\Entity\Post;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\Service\BlockService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\UserService;
 use Labstag\Service\WorkflowService;
 use Mmo\Faker\LoremSpaceProvider;
@@ -109,6 +108,7 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
+        protected RepositoryService $repositoryService,
         protected WorkflowService $workflowService,
         protected FileService $fileService,
         protected UserService $userService,
@@ -118,8 +118,6 @@ abstract class FixtureLib extends Fixture
         protected ContainerBagInterface $containerBag,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected InstallService $installService,
-        protected UserRepository $userRepository,
-        protected GroupeRepository $groupeRepository,
         protected GuardService $guardService,
         protected Environment $twigEnvironment,
         protected BlockService $blockService,

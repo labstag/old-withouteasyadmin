@@ -2,12 +2,12 @@
 
 namespace Labstag\FormType;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-class MinMaxCollectionType extends AbstractType
+class MinMaxCollectionType extends FormTypeLib
 {
     public function buildView(
         FormView $formView,

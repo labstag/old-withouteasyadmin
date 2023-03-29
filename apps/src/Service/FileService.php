@@ -51,7 +51,7 @@ class FileService
                 (string) $file
             )
         );
-        $this->attachmentRepository->add($attachment);
+        $this->attachmentRepository->save($attachment);
 
         return $attachment;
     }

@@ -54,9 +54,9 @@ class ShowParagraph extends ParagraphLib implements ParagraphInterface
         $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug       = $routeParam['slug'] ?? null;
-        /** @var PostRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
-        $post                       = $serviceEntityRepositoryLib->findOneBy(
+        /** @var PostRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Post::class);
+        $post          = $repositoryLib->findOneBy(
             ['slug' => $slug]
         );
 

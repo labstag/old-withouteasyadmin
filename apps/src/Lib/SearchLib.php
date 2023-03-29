@@ -3,10 +3,13 @@
 namespace Labstag\Lib;
 
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Category;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
+use Labstag\Repository\CategoryRepository;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\UserRepository;
+use Labstag\Service\RepositoryService;
 
 abstract class SearchLib
 {
@@ -17,12 +20,15 @@ abstract class SearchLib
 
     public function search(
         array $get,
-        EntityManagerInterface $entityManager
+        RepositoryService $repositoryService
     ): void
     {
-        $entityRepository = $entityManager->getRepository(User::class);
-        $categoryRepo     = $entityManager->getRepository(Category::class);
-        $groupeRepo       = $entityManager->getRepository(Groupe::class);
+        /** @var UserRepository $userRepository */
+        $userRepository = $repositoryService->get(User::class);
+        /** @var CategoryRepository $categoryRepository */
+        $categoryRepository = $repositoryService->get(Category::class);
+        /** @var GroupeRepository $groupeRepository */
+        $groupeRepository = $repositoryService->get(Groupe::class);
         foreach ($get as $key => $value) {
             if (!isset($this->{$key})) {
                 continue;
@@ -48,9 +54,9 @@ abstract class SearchLib
             }
 
             $this->{$key} = match ($key) {
-                'user'     => $entityRepository->find($value),
-                'category' => $categoryRepo->find($value),
-                'groupe'   => $groupeRepo->find($value),
+                'user'     => $userRepository->find($value),
+                'category' => $categoryRepository->find($value),
+                'groupe'   => $groupeRepository->find($value),
                 default    => $value
             };
         }

@@ -55,7 +55,7 @@ class MemoController extends AdminControllerLib
         $memo->setTitle(Uuid::v1());
         $memo->setRefuser($user);
 
-        $memoRepository->add($memo);
+        $memoRepository->save($memo);
 
         return $this->redirectToRoute('admin_memo_edit', ['id' => $memo->getId()]);
     }

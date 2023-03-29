@@ -247,7 +247,7 @@ class ActionsController extends ApiControllerLib
             /** @var WorkflowInterface $workflow */
             $workflow = $this->workflowService->get($entity);
             $workflow->apply($entity, $state);
-            $this->entityManager->flush();
+            $repository->save($entity);
         }
 
         return new JsonResponse($data);
@@ -405,7 +405,7 @@ class ActionsController extends ApiControllerLib
         $entityTrash->setDeletedAt(null);
         /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entityTrash::class);
-        $repository->add($entityTrash);
+        $repository->save($entityTrash);
     }
 
     private function tokenVerif(string $action, ?EntityInterface $entity = null): bool

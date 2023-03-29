@@ -2,7 +2,6 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Labstag\Entity\Block;
@@ -57,7 +56,7 @@ abstract class AdminControllerLib extends ControllerLib
             $this->setPositionParagraphs();
             $this->attachFormService->upload($entity);
             $repository = $domain->getRepository();
-            $repository->add($entity);
+            $repository->save($entity);
             $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('data.save')
@@ -205,7 +204,6 @@ abstract class AdminControllerLib extends ControllerLib
     }
 
     protected function addNewImport(
-        EntityManagerInterface $entityManager,
         RepositoryLib $serviceEntityRepositoryLib,
         array $methods,
         string $routeType,
@@ -216,8 +214,7 @@ abstract class AdminControllerLib extends ControllerLib
             $methods,
             $serviceEntityRepositoryLib,
             $url,
-            $routeType,
-            $entityManager
+            $routeType
         );
 
         if (isset($url['new']) && 'trash' != $routeType) {
@@ -508,7 +505,7 @@ abstract class AdminControllerLib extends ControllerLib
         $route       = $all['_route'];
         $routeParams = $all['_route_params'];
         $methods     = $this->getMethodsList();
-        $this->addNewImport($this->entityManager, $serviceEntityRepositoryLib, $methods, $routeType, $url);
+        $this->addNewImport($serviceEntityRepositoryLib, $methods, $routeType, $url);
         $this->setBtnDeleties($routeType, $route, $routeParams, $serviceEntityRepositoryLib);
     }
 
@@ -607,7 +604,7 @@ abstract class AdminControllerLib extends ControllerLib
                 $entity = $repository->find($id);
                 if (!is_null($entity)) {
                     $entity->setPosition($position + 1);
-                    $repository->add($entity);
+                    $repository->save($entity);
                 }
             }
         }
@@ -631,7 +628,7 @@ abstract class AdminControllerLib extends ControllerLib
         $get              = $query->all();
         $searchLib        = $domain->getSearchData();
         $searchLib->limit = $limit;
-        $searchLib->search($get, $this->entityManager);
+        $searchLib->search($get, $this->repositoryService);
         $route = $request->get('_route');
         if (!is_string($route)) {
             return $parameters;
@@ -655,12 +652,11 @@ abstract class AdminControllerLib extends ControllerLib
     protected function setTrashIcon(
         array $methods,
         RepositoryLib $serviceEntityRepositoryLib,
-        array $url,
-        EntityManagerInterface $entityManager
+        array $url
     ): void
     {
         $methodTrash      = $methods['trash'];
-        $filterCollection = $entityManager->getFilters();
+        $filterCollection = $this->entityManager->getFilters();
         $filterCollection->disable('softdeleteable');
         /** @var callable $callable */
         $callable = [
@@ -899,8 +895,7 @@ abstract class AdminControllerLib extends ControllerLib
         array $methods,
         RepositoryLib $serviceEntityRepositoryLib,
         array $url,
-        string $routeType,
-        EntityManagerInterface $entityManager
+        string $routeType
     ): void
     {
         if ('trash' == $routeType) {
@@ -910,7 +905,7 @@ abstract class AdminControllerLib extends ControllerLib
         }
 
         if (isset($url['trash'])) {
-            $this->setTrashIcon($methods, $serviceEntityRepositoryLib, $url, $entityManager);
+            $this->setTrashIcon($methods, $serviceEntityRepositoryLib, $url);
         }
     }
 
@@ -945,7 +940,7 @@ abstract class AdminControllerLib extends ControllerLib
             }
 
             $paragraph->setPosition($position);
-            $repository->add($paragraph);
+            $repository->save($paragraph);
         }
     }
 

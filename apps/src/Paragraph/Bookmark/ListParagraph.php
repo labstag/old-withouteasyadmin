@@ -49,12 +49,12 @@ class ListParagraph extends ParagraphLib implements ParagraphInterface
 
     public function show(EntityParagraphInterface $entityParagraph): Response
     {
-        /** @var BookmarkRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Bookmark::class);
+        /** @var BookmarkRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Bookmark::class);
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
         $pagination = $this->paginator->paginate(
-            $serviceEntityRepositoryLib->findPublier(),
+            $repositoryLib->findPublier(),
             $request->query->getInt('page', 1),
             10
         );

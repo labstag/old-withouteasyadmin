@@ -25,17 +25,6 @@ use Labstag\Entity\User;
 
 abstract class RepositoryLib extends ServiceEntityRepository
 {
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function add(object $entity): void
-    {
-        $entityManager = $this->getEntityManager();
-        $entityManager->persist($entity);
-        $entityManager->flush();
-    }
-
     public function findAllForAdmin(array $get): QueryBuilder
     {
         $queryBuilder = $this->createQueryBuilder('a');
@@ -108,6 +97,17 @@ abstract class RepositoryLib extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         $entityManager->remove($entity);
+        $entityManager->flush();
+    }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(object $entity): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($entity);
         $entityManager->flush();
     }
 

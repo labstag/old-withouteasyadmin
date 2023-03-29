@@ -35,8 +35,8 @@ abstract class ControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
+        protected EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
-        protected RepositoryService $repositoryService,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected FrontService $frontService,
         protected DomainService $domainService,
@@ -45,7 +45,7 @@ abstract class ControllerLib extends AbstractController
         protected Environment $twigEnvironment,
         protected ErrorService $errorService,
         protected SessionService $sessionService,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected TokenStorageInterface $tokenStorage,
         protected RouterInterface $router,

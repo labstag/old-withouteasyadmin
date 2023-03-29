@@ -31,7 +31,7 @@ use Twig\Environment;
 abstract class EventSubscriberLib implements EventSubscriberInterface
 {
     public function __construct(
-        protected RepositoryService $repositoryService,
+        protected EntityManagerInterface $entityManager,
         protected ParagraphService $paragraphService,
         protected BlockService $blockService,
         protected Reader $reader,
@@ -47,7 +47,7 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected TokenStorageInterface $tokenStorage,
         protected LoggerInterface $logger,
         protected ParameterBagInterface $parameterBag,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected EnqueueMethod $enqueueMethod,
         protected CacheInterface $cache,
         protected SessionService $sessionService,

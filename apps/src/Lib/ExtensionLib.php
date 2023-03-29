@@ -2,10 +2,10 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Service\GuardService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\PhoneService;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -20,7 +20,7 @@ abstract class ExtensionLib extends AbstractExtension
     protected array $templates = [];
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected WorkflowService $workflowService,
         protected ParagraphService $paragraphService,
         protected PhoneService $phoneService,

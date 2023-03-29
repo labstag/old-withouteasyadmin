@@ -4,24 +4,16 @@ namespace Labstag\FormType;
 
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\User;
+use Labstag\Lib\FormTypeLib;
 use Labstag\Repository\EmailUserRepository;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EmailVerifChoiceType extends AbstractType
+class EmailVerifChoiceType extends FormTypeLib
 {
-    public function __construct(
-        protected EmailUserRepository $emailUserRepository,
-        protected TranslatorInterface $translator
-    )
-    {
-    }
-
     public function buildView(
         FormView $formView,
         FormInterface $form,
@@ -39,8 +31,10 @@ class EmailVerifChoiceType extends AbstractType
             return;
         }
 
+        /** @var EmailUserRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(EmailUser::class);
         /** @var User $entity */
-        $data    = $this->emailUserRepository->getEmailsUserVerif($entity, true);
+        $data    = $repositoryLib->getEmailsUserVerif($entity, true);
         $choices = [];
         foreach ($data as $email) {
             /** @var EmailUser $email */

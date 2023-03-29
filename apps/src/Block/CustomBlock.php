@@ -10,6 +10,7 @@ use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
+use Labstag\Repository\LayoutRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -67,11 +68,13 @@ class CustomBlock extends BlockLib implements BlockInterface
     private function setParagraphs(Custom $custom): array
     {
         /** @var Request $request */
-        $request     = $this->requestStack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $route       = $all['_route'];
-        $dataLayouts = $this->layoutRepository->findByCustom($custom);
-        $layouts     = [];
+        $request = $this->requestStack->getCurrentRequest();
+        $all     = $request->attributes->all();
+        $route   = $all['_route'];
+        /** @var LayoutRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Layout::class);
+        $dataLayouts   = $repositoryLib->findByCustom($custom);
+        $layouts       = [];
         if (!is_iterable($dataLayouts)) {
             throw new Exception('Layouts invalide');
         }

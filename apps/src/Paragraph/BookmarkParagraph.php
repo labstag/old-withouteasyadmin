@@ -48,10 +48,10 @@ class BookmarkParagraph extends ParagraphLib implements ParagraphInterface
 
     public function show(EntityParagraphInterface $entityParagraph): Response
     {
-        /** @var BookmarkRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityBookmark::class);
-        $bookmarks                  = $serviceEntityRepositoryLib->getLimitOffsetResult(
-            $serviceEntityRepositoryLib->findPublier(),
+        /** @var BookmarkRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(EntityBookmark::class);
+        $bookmarks     = $repositoryLib->getLimitOffsetResult(
+            $repositoryLib->findPublier(),
             5,
             0
         );

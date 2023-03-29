@@ -51,7 +51,7 @@ class ParagraphService
             $method,
         ];
         call_user_func($callable, $entityFront);
-        $this->paragraphRepository->add($paragraph);
+        $this->paragraphRepository->save($paragraph);
     }
 
     public function getAll(EntityFrontInterface $entityFront): array

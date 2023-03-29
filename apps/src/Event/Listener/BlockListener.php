@@ -7,6 +7,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\Block;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Lib\EventListenerLib;
+use Labstag\Repository\BlockRepository;
 
 class BlockListener extends EventListenerLib
 {
@@ -37,9 +38,10 @@ class BlockListener extends EventListenerLib
     private function execute(Block $block): void
     {
         $classentity = $this->blockService->getTypeEntity($block);
+        /** @var BlockRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get($block::class);
         if (is_null($classentity)) {
-            $this->entityManager->remove($block);
-            $this->entityManager->flush();
+            $repositoryLib->remove($block);
 
             return;
         }
@@ -53,8 +55,7 @@ class BlockListener extends EventListenerLib
         $entity = new $classentity();
         $entity->setBlock($block);
 
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        $repositoryLib->save($entity);
     }
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void

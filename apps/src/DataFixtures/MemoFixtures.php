@@ -8,6 +8,7 @@ use Faker\Generator;
 use Labstag\Entity\Memo;
 use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\UserRepository;
 
 class MemoFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -32,9 +33,11 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
     ): void
     {
         $dateTime = $generator->unique()->dateTimeInInterval('now', '+30 years');
-        $users    = $this->userRepository->findAll();
-        $memo     = new Memo();
-        $random   = $generator->numberBetween(5, 50);
+        /** @var UserRepository $userRepository */
+        $userRepository = $objectManager->getRepository(User::class);
+        $users          = $userRepository->findAll();
+        $memo           = new Memo();
+        $random         = $generator->numberBetween(5, 50);
         $memo->setTitle($generator->unique()->text($random));
         $dateStart = $generator->dateTime($dateTime);
         $memo->setDateStart($dateStart);

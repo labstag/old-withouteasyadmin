@@ -45,7 +45,7 @@ class PageController extends AdminControllerLib
         $page = new Page();
         $page->setName(Uuid::v1());
 
-        $pageRepository->add($page);
+        $pageRepository->save($page);
 
         return $this->redirectToRoute('admin_page_edit', ['id' => $page->getId()]);
     }

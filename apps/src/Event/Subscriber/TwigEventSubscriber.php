@@ -87,12 +87,12 @@ class TwigEventSubscriber extends EventSubscriberLib
 
     protected function setConfigFavicon(): void
     {
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Attachment::class);
-        if (!$serviceEntityRepositoryLib instanceof AttachmentRepository) {
+        $repositoryLib = $this->repositoryService->get(Attachment::class);
+        if (!$repositoryLib instanceof AttachmentRepository) {
             return;
         }
 
-        $attachment = $serviceEntityRepositoryLib->getFavicon();
+        $attachment = $repositoryLib->getFavicon();
         $this->twigEnvironment->AddGlobal('favicon', $attachment);
     }
 

@@ -48,9 +48,9 @@ class ShowParagraph extends ParagraphLib implements ParagraphInterface
 
     public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
-        /** @var EditoRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Edito::class);
-        $edito                      = $serviceEntityRepositoryLib->findOnePublier();
+        /** @var EditoRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Edito::class);
+        $edito         = $repositoryLib->findOnePublier();
 
         if (!$edito instanceof Edito) {
             return null;

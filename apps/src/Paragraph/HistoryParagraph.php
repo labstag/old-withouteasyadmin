@@ -48,10 +48,10 @@ class HistoryParagraph extends ParagraphLib implements ParagraphInterface
 
     public function show(EntityParagraphInterface $entityParagraph): Response
     {
-        /** @var HistoryRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityHistory::class);
-        $histories                  = $serviceEntityRepositoryLib->getLimitOffsetResult(
-            $serviceEntityRepositoryLib->findPublier(),
+        /** @var HistoryRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(EntityHistory::class);
+        $histories     = $repositoryLib->getLimitOffsetResult(
+            $repositoryLib->findPublier(),
             5,
             0
         );

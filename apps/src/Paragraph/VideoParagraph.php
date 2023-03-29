@@ -68,9 +68,9 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
     public function setData(Paragraph $paragraph): void
     {
         /** @var VideoRepository $videoRepository */
-        $videoRepository = $this->entityManager->getRepository(Video::class);
+        $videoRepository = $this->repositoryService->get(Video::class);
         /** @var AttachmentRepository $attachmentRepository */
-        $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
+        $attachmentRepository = $this->repositoryService->get(Attachment::class);
         $videos               = $paragraph->getVideos();
         /** @var Video $video */
         $video = $videos[0];
@@ -92,7 +92,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
             $video->setTitle($title);
             $slug = (string) $asciiSlugger->slug($title);
             $video->setSlug($slug);
-            $videoRepository->add($video);
+            $videoRepository->save($video);
         } catch (Exception) {
             $image = '';
         }
@@ -220,9 +220,9 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
             );
             $file       = $path.'/'.$clientOriginalName;
             $attachment = $this->fileService->setAttachment($file);
-            $serviceEntityRepositoryLib->add($attachment);
+            $serviceEntityRepositoryLib->save($attachment);
             $video->setImage($attachment);
-            $serviceEntityRepositoryLib->add($video);
+            $serviceEntityRepositoryLib->save($video);
         } catch (Exception $exception) {
             $this->errorService->set($exception);
             echo $exception->getMessage();

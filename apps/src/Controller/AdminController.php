@@ -102,7 +102,7 @@ class AdminController extends AdminControllerLib
 
             $images[$key] = new Attachment();
             $images[$key]->setCode($key);
-            $attachmentRepository->add($images[$key]);
+            $attachmentRepository->save($images[$key]);
         }
 
         $metatags = (array) $this->getParameter('metatags');

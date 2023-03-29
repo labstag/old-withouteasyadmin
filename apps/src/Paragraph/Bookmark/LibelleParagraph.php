@@ -54,10 +54,10 @@ class LibelleParagraph extends ParagraphLib implements ParagraphInterface
         $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug       = $routeParam['slug'] ?? null;
-        /** @var BookmarkRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Bookmark::class);
-        $pagination                 = $this->paginator->paginate(
-            $serviceEntityRepositoryLib->findPublierLibelle($slug),
+        /** @var BookmarkRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Bookmark::class);
+        $pagination    = $this->paginator->paginate(
+            $repositoryLib->findPublierLibelle($slug),
             $request->query->getInt('page', 1),
             10
         );

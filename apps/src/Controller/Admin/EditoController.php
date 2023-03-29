@@ -57,7 +57,7 @@ class EditoController extends AdminControllerLib
         $edito->setTitle(Uuid::v1());
         $edito->setRefuser($user);
 
-        $editoRepository->add($edito);
+        $editoRepository->save($edito);
 
         return $this->redirectToRoute('admin_edito_edit', ['id' => $edito->getId()]);
     }

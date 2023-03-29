@@ -3,7 +3,6 @@
 namespace Labstag\Lib;
 
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
 use Labstag\Entity\History;
@@ -13,11 +12,10 @@ use Labstag\Entity\Post;
 use Labstag\Entity\Render;
 use Labstag\Interfaces\PublicInterface;
 use Labstag\Queue\EnqueueMethod;
-use Labstag\Repository\ConfigurationRepository;
-use Labstag\Repository\UserRepository;
 use Labstag\Service\BlockService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\SessionService;
 use Labstag\Service\UserMailService;
 use Labstag\Service\WorkflowService;
@@ -32,12 +30,10 @@ abstract class EventListenerLib implements EventSubscriberInterface
     public function __construct(
         protected BlockService $blockService,
         protected UserPasswordHasherInterface $userPasswordHasher,
-        protected UserRepository $userRepository,
         protected ParagraphService $paragraphService,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected UserMailService $userMailService,
         protected CacheInterface $cache,
-        protected ConfigurationRepository $configurationRepository,
         protected SessionService $sessionService,
         protected TranslatorInterface $translator,
         protected ErrorService $errorService,

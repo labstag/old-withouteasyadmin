@@ -3,7 +3,6 @@
 namespace Labstag\Service;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\History;
 use Labstag\Repository\HistoryRepository;
 use Spipu\Html2Pdf\Html2Pdf;
@@ -15,7 +14,7 @@ class HistoryService
     private ?string $filename = null;
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         private readonly Environment $twigEnvironment,
         protected HistoryRepository $historyRepository
     )

@@ -5,23 +5,14 @@ namespace Labstag\FormType;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Interfaces\EntityInterface;
-use Labstag\Reader\UploadAnnotationReader;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Routing\RouterInterface;
 
-class UploadType extends AbstractType
+class UploadType extends FormTypeLib
 {
-    public function __construct(
-        private readonly UploadAnnotationReader $uploadAnnotationReader,
-        protected RouterInterface $router
-    )
-    {
-    }
-
     public function buildView(
         FormView $formView,
         FormInterface $form,

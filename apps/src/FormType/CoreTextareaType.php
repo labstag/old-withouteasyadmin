@@ -2,12 +2,12 @@
 
 namespace Labstag\FormType;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-class CoreTextareaType extends AbstractType
+class CoreTextareaType extends FormTypeLib
 {
     /**
      * @var int

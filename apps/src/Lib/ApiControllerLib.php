@@ -2,7 +2,6 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Route;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
@@ -21,12 +20,11 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 abstract class ApiControllerLib extends AbstractController
 {
     public function __construct(
-        protected RepositoryService $repositoryService,
         protected RequestStack $requeststack,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected TokenStorageInterface $tokenStorage,
         protected PhoneService $phoneService,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected WorkflowService $workflowService,
         protected UserRepository $userRepository
     )

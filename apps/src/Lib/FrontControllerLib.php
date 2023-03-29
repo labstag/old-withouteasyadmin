@@ -42,10 +42,10 @@ abstract class FrontControllerLib extends ControllerLib
 
     private function setParameters(array $parameters): array
     {
-        /** @var BlockRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Block::class);
-        $blocksArray                = $serviceEntityRepositoryLib->getDataByRegion();
-        $content                    = null;
+        /** @var BlockRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Block::class);
+        $blocksArray   = $repositoryLib->getDataByRegion();
+        $content       = null;
         if (isset($parameters['content'])) {
             $content = $parameters['content'];
             unset($parameters['content']);

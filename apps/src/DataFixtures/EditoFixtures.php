@@ -9,6 +9,7 @@ use Labstag\Entity\Edito;
 use Labstag\Entity\Meta;
 use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\UserRepository;
 
 class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -32,9 +33,11 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         ObjectManager $objectManager
     ): void
     {
-        $users = $this->userRepository->findAll();
-        $edito = new Edito();
-        $meta  = new Meta();
+        /** @var UserRepository $userRepository */
+        $userRepository = $objectManager->getRepository(User::class);
+        $users          = $userRepository->findAll();
+        $edito          = new Edito();
+        $meta           = new Meta();
         $meta->setEdito($edito);
         $this->setMeta($meta);
         $random = $generator->numberBetween(5, 50);

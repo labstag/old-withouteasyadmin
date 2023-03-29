@@ -100,7 +100,7 @@ class LayoutController extends AdminControllerLib
         $layout->setCustom($custom);
         $layout->setName(Uuid::v1());
 
-        $layoutRepository->add($layout);
+        $layoutRepository->save($layout);
 
         return $this->redirectToRoute('admin_layout_edit', ['id' => $layout->getId()]);
     }

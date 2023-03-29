@@ -64,7 +64,7 @@ class MenuController extends AdminControllerLib
         $entity->setSeparateur(true);
         $entity->setParent($menu);
 
-        $menuRepository->add($entity);
+        $menuRepository->save($entity);
 
         return new RedirectResponse(
             $this->generateUrl('admin_menu_index')

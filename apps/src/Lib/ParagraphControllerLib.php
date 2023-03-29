@@ -90,7 +90,7 @@ abstract class ParagraphControllerLib extends ControllerLib
         /** @var EntityInterface $entity */
         $entity = $this->paragraphService->getEntity($paragraph);
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->add($paragraph);
+            $repository->save($paragraph);
             $this->attachFormService->upload($entity);
             $this->addFlash('success', 'Paragraph sauvegardé.');
             $referer = (string) $request->headers->get('referer');

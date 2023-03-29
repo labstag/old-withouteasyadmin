@@ -72,7 +72,7 @@ class BookmarkService
             $image = $meta['twitter:image'] ?? null;
             $image = (is_null($image) && isset($meta['og:image'])) ? $meta['og:image'] : $image;
             $this->upload($bookmark, $image);
-            $this->bookmarkRepository->add($bookmark);
+            $this->bookmarkRepository->save($bookmark);
         } catch (Exception $exception) {
             $this->errorService->set($exception);
         }

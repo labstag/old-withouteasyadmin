@@ -58,7 +58,7 @@ class PostController extends AdminControllerLib
         $post->setTitle(Uuid::v1());
         $post->setRefuser($user);
 
-        $postRepository->add($post);
+        $postRepository->save($post);
 
         return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
     }

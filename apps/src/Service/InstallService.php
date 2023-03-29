@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
@@ -18,7 +17,7 @@ class InstallService
     public function __construct(
         protected OauthService $oauthService,
         protected UserService $userService,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected Environment $twigEnvironment,
         protected CacheInterface $cache,
         protected GroupeRepository $groupeRepository,
@@ -98,7 +97,7 @@ class InstallService
         $configuration->setName($key);
         $configuration->setValue($value);
 
-        $this->configurationRepository->add($configuration);
+        $this->configurationRepository->save($configuration);
     }
 
     protected function addUser(

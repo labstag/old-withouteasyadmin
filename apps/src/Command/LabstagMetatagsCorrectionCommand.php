@@ -9,6 +9,12 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Post;
 use Labstag\Entity\Render;
 use Labstag\Lib\CommandLib;
+use Labstag\Repository\ChapterRepository;
+use Labstag\Repository\EditoRepository;
+use Labstag\Repository\HistoryRepository;
+use Labstag\Repository\PageRepository;
+use Labstag\Repository\PostRepository;
+use Labstag\Repository\RenderRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,55 +28,67 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
 {
     public function executeChapter(): void
     {
-        $all = $this->chapterRepository->findAll();
+        /** @var ChapterRepository $repository */
+        $repository = $this->repositoryService->get(Chapter::class);
+        $all        = $repository->findAll();
         foreach ($all as $entity) {
             /** @var Chapter $entity */
-            $this->chapterRepository->add($entity);
+            $repository->save($entity);
         }
     }
 
     public function executeEdito(): void
     {
-        $all = $this->editoRepository->findAll();
+        /** @var EditoRepository $repository */
+        $repository = $this->repositoryService->get(Edito::class);
+        $all        = $repository->findAll();
         foreach ($all as $entity) {
             /** @var Edito $entity */
-            $this->editoRepository->add($entity);
+            $repository->save($entity);
         }
     }
 
     public function executeHistory(): void
     {
-        $all = $this->historyRepository->findAll();
+        /** @var HistoryRepository $repository */
+        $repository = $this->repositoryService->get(History::class);
+        $all        = $repository->findAll();
         foreach ($all as $entity) {
             /** @var History $entity */
-            $this->historyRepository->add($entity);
+            $repository->save($entity);
         }
     }
 
     public function executePage(): void
     {
-        $all = $this->pageRepository->findAll();
+        /** @var PageRepository $repository */
+        $repository = $this->repositoryService->get(Page::class);
+        $all        = $repository->findAll();
         foreach ($all as $entity) {
             /** @var Page $entity */
-            $this->pageRepository->add($entity);
+            $repository->save($entity);
         }
     }
 
     public function executePost(): void
     {
-        $all = $this->postRepository->findAll();
+        /** @var PostRepository $repository */
+        $repository = $this->repositoryService->get(Post::class);
+        $all        = $repository->findAll();
         foreach ($all as $entity) {
             /** @var Post $entity */
-            $this->postRepository->add($entity);
+            $repository->save($entity);
         }
     }
 
     public function executeRender(): void
     {
-        $all = $this->renderRepository->findAll();
+        /** @var RenderRepository $repository */
+        $repository = $this->repositoryService->get(Render::class);
+        $all        = $repository->findAll();
         foreach ($all as $entity) {
             /** @var Render $entity */
-            $this->renderRepository->add($entity);
+            $repository->save($entity);
         }
     }
 

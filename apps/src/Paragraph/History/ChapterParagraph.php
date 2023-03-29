@@ -56,9 +56,9 @@ class ChapterParagraph extends ParagraphLib implements ParagraphInterface
         $routeParam = $all['_route_params'];
         $history    = $routeParam['history'] ?? null;
         $chapter    = $routeParam['chapter'] ?? null;
-        /** @var ChapterRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Chapter::class);
-        $chapter                    = $serviceEntityRepositoryLib->findChapterByHistory($history, $chapter);
+        /** @var ChapterRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Chapter::class);
+        $chapter       = $repositoryLib->findChapterByHistory($history, $chapter);
         if (!$chapter instanceof Chapter) {
             return null;
         }

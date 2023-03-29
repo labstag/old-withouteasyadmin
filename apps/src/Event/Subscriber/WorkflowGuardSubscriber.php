@@ -141,7 +141,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
             $groupe = new Groupe();
             $groupe->setCode('visiteur');
             $groupe->setName('Visiteur');
-            $groupeRepository->add($groupe);
+            $groupeRepository->save($groupe);
         }
 
         if (!$user instanceof User) {

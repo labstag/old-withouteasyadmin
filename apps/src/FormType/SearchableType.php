@@ -4,30 +4,17 @@ namespace Labstag\FormType;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
+use Labstag\Lib\FormTypeLib;
 use Labstag\Lib\RepositoryLib;
-use Labstag\Service\RepositoryService;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SearchableType extends AbstractType
+class SearchableType extends FormTypeLib
 {
-    public function __construct(
-        protected RepositoryService $repositoryService,
-        protected RouterInterface $router,
-        protected TranslatorInterface $translator,
-        protected EntityManagerInterface $entityManager
-    )
-    {
-    }
-
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         $formBuilder->addModelTransformer(
@@ -46,15 +33,15 @@ class SearchableType extends AbstractType
                         return is_iterable($ids) ? new ArrayCollection([]) : null;
                     }
 
-                    /** @var RepositoryLib $serviceEntityRepositoryLib */
-                    $serviceEntityRepositoryLib = $this->repositoryService->get($options['class']);
+                    /** @var RepositoryLib $repositoryLib */
+                    $repositoryLib = $this->repositoryService->get($options['class']);
                     if ($options['add'] && is_array($ids)) {
                         $ids = $this->addToentity($ids, $options);
                     }
 
                     return is_iterable($ids) ? new ArrayCollection(
-                        $serviceEntityRepositoryLib->findBy(['id' => $ids])
-                    ) : $serviceEntityRepositoryLib->find($ids);
+                        $repositoryLib->findBy(['id' => $ids])
+                    ) : $repositoryLib->find($ids);
                 }
             )
         );
@@ -140,7 +127,7 @@ class SearchableType extends AbstractType
 
             $entity = clone $options['new'];
             $entity->setString($key);
-            $entityRepository->add($entity);
+            $entityRepository->save($entity);
             $ids[$id] = $entity->getId();
         }
 

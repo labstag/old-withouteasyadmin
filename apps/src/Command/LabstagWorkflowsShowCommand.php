@@ -5,6 +5,7 @@ namespace Labstag\Command;
 use Labstag\Entity\Workflow;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\CommandLib;
+use Labstag\Repository\WorkflowRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,10 +42,12 @@ class LabstagWorkflowsShowCommand extends CommandLib
             }
         }
 
+        /** @var WorkflowRepository $repository */
+        $repository = $this->repositoryService->get(Workflow::class);
         $this->delete($entities, $data);
         foreach ($data as $name => $transitions) {
             foreach ($transitions as $transition) {
-                $workflow = $this->workflowRepository->findOneBy(
+                $workflow = $repository->findOneBy(
                     [
                         'entity'     => $name,
                         'transition' => $transition,
@@ -57,7 +60,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
                 $workflow = new Workflow();
                 $workflow->setEntity($name);
                 $workflow->setTransition($transition);
-                $this->workflowRepository->add($workflow);
+                $repository->save($workflow);
             }
         }
 
@@ -68,23 +71,25 @@ class LabstagWorkflowsShowCommand extends CommandLib
 
     private function delete(array $entities, array $data): void
     {
-        $toDelete = $this->workflowRepository->toDeleteEntities($entities);
+        /** @var WorkflowRepository $repository */
+        $repository = $this->repositoryService->get(Workflow::class);
+        $toDelete   = $repository->toDeleteEntities($entities);
         if (!is_iterable($toDelete)) {
             return;
         }
 
         foreach ($toDelete as $entity) {
-            $this->workflowRepository->remove($entity);
+            $repository->remove($entity);
         }
 
         foreach ($data as $entity => $transitions) {
-            $toDelete = $this->workflowRepository->toDeleteTransition($entity, $transitions);
+            $toDelete = $repository->toDeleteTransition($entity, $transitions);
             if (!is_iterable($toDelete)) {
                 continue;
             }
 
             foreach ($toDelete as $entity) {
-                $this->workflowRepository->remove($entity);
+                $repository->remove($entity);
             }
         }
     }

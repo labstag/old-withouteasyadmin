@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
 use Labstag\Entity\RouteGroupe;
@@ -50,7 +49,7 @@ class GuardService
 
     public function __construct(
         protected RouterInterface $router,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected GroupeRepository $groupeRepository,
         protected RouteRepository $routeRepository,
         protected RouteGroupeRepository $routeGroupeRepository,
@@ -306,7 +305,7 @@ class GuardService
         $route = new Route();
         $route->setName($name);
 
-        $this->routeRepository->add($route);
+        $this->routeRepository->save($route);
     }
 
     public function tables(): array

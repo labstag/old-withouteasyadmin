@@ -3,24 +3,15 @@
 namespace Labstag\FormType;
 
 use Labstag\Interfaces\EntityFrontInterface;
-use Labstag\Service\ParagraphService;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
 
-class ParagraphType extends AbstractType
+class ParagraphType extends FormTypeLib
 {
-    public function __construct(
-        protected ParagraphService $paragraphService,
-        protected RouterInterface $router
-    )
-    {
-    }
-
     public function buildView(
         FormView $formView,
         FormInterface $form,

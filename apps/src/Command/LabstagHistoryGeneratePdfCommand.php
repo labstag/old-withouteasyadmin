@@ -4,6 +4,7 @@ namespace Labstag\Command;
 
 use Labstag\Entity\History;
 use Labstag\Lib\CommandLib;
+use Labstag\Repository\HistoryRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,9 @@ class LabstagHistoryGeneratePdfCommand extends CommandLib
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
-        $histories    = $this->historyRepository->findAll();
+        /** @var HistoryRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(History::class);
+        $histories     = $repositoryLib->findAll();
         $symfonyStyle->title('Génération des PDF');
         $symfonyStyle->progressStart(is_countable($histories) ? count($histories) : 0);
 

@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\OauthConnectUser;
@@ -19,7 +18,7 @@ class DataService
     protected array $oauthActivated = [];
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected CacheInterface $cache,
         protected ConfigurationRepository $configurationRepository
     )

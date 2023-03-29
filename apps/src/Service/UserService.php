@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
@@ -20,7 +19,7 @@ class UserService
         protected OauthService $oauthService,
         protected SessionService $sessionService,
         protected RequestStack $requestStack,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected TranslatorInterface $translator,
         protected OauthConnectUserRepository $oauthConnectUserRepository,
         protected UserRepository $userRepository
@@ -69,7 +68,7 @@ class UserService
 
         if ($oauthConnect instanceof OauthConnectUser) {
             $oauthConnect->setData($resourceOwner->toArray());
-            $repository->add($oauthConnect);
+            $repository->save($oauthConnect);
             $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('service.user.oauth.sucess')
@@ -95,7 +94,7 @@ class UserService
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
 
-        $this->userRepository->add($user);
+        $this->userRepository->save($user);
         $this->workflowService->changeState($user, $dataUser['state']);
 
         return $user;

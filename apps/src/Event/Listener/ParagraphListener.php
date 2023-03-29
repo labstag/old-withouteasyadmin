@@ -7,6 +7,8 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Lib\EventListenerLib;
+use Labstag\Lib\RepositoryLib;
+use Labstag\Repository\ParagraphRepository;
 
 class ParagraphListener extends EventListenerLib
 {
@@ -42,9 +44,10 @@ class ParagraphListener extends EventListenerLib
     private function init(Paragraph $paragraph): void
     {
         $classentity = $this->paragraphService->getTypeEntity($paragraph);
+        /** @var ParagraphRepository $paragraphRepository */
+        $paragraphRepository = $this->repositoryService->get($paragraph::class);
         if (is_null($classentity)) {
-            $this->entityManager->remove($paragraph);
-            $this->entityManager->flush();
+            $paragraphRepository->remove($paragraph);
 
             return;
         }
@@ -56,10 +59,11 @@ class ParagraphListener extends EventListenerLib
 
         /** @var EntityParagraphInterface $entity */
         $entity = new $classentity();
+        /** @var RepositoryLib $repository */
+        $repository = $this->repositoryService->get($entity::class);
         $entity->setParagraph($paragraph);
 
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        $repository->save($entity);
     }
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void

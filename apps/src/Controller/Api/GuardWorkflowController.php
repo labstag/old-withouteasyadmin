@@ -220,7 +220,7 @@ class GuardWorkflowController extends ApiControllerLib
             $workflowGroupe->setRefgroupe($groupe);
             $workflowGroupe->setRefworkflow($workflow);
             $workflowGroupe->setState($state);
-            $workflowGroupeRepository->add($workflowGroupe);
+            $workflowGroupeRepository->save($workflowGroupe);
         }
 
         return $data;
@@ -257,7 +257,7 @@ class GuardWorkflowController extends ApiControllerLib
             $workflowUser->setRefuser($user);
             $workflowUser->setRefworkflow($workflow);
             $workflowUser->setState($state);
-            $workflowUserRepository->add($workflowUser);
+            $workflowUserRepository->save($workflowUser);
         }
 
         return $data;

@@ -54,10 +54,10 @@ class UserParagraph extends ParagraphLib implements ParagraphInterface
         $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $username   = $routeParam['username'] ?? null;
-        /** @var PostRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
-        $pagination                 = $this->paginator->paginate(
-            $serviceEntityRepositoryLib->findPublierUsername($username),
+        /** @var PostRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Post::class);
+        $pagination    = $this->paginator->paginate(
+            $repositoryLib->findPublierUsername($username),
             $request->query->getInt('page', 1),
             10
         );

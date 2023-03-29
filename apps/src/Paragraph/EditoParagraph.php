@@ -48,13 +48,13 @@ class EditoParagraph extends ParagraphLib implements ParagraphInterface
 
     public function show(EntityParagraphInterface $entityParagraph): Response
     {
-        /** @var EditoRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityEdito::class);
+        /** @var EditoRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(EntityEdito::class);
 
         return $this->render(
             $this->getTemplateFile($this->getCode($entityParagraph)),
             [
-                'edito'     => $serviceEntityRepositoryLib->findOnePublier(),
+                'edito'     => $repositoryLib->findOnePublier(),
                 'paragraph' => $entityParagraph,
             ]
         );

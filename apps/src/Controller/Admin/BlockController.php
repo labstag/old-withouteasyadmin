@@ -140,7 +140,7 @@ class BlockController extends AdminControllerLib
         $block->setRegion($post['region']);
         $block->setType($post['type']);
 
-        $blockRepository->add($block);
+        $blockRepository->save($block);
 
         return $this->redirectToRoute('admin_block_edit', ['id' => $block->getId()]);
     }

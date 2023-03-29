@@ -2,12 +2,12 @@
 
 namespace Labstag\Security;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\User;
 use Labstag\Repository\UserRepository;
 use Labstag\Service\ErrorService;
 use Labstag\Service\OauthService;
+use Labstag\Service\RepositoryService;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Log\LoggerInterface;
@@ -43,7 +43,7 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     public function __construct(
         protected ErrorService $errorService,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected UserPasswordHasherInterface $userPasswordHasher,

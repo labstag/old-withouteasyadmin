@@ -51,8 +51,8 @@ class SearchController extends ApiControllerLib
             return $this->json($return);
         }
 
-        $serviceEntityRepositoryLib = $this->repositoryService->get($entity);
-        if (!$serviceEntityRepositoryLib instanceof RepositoryLib) {
+        $repositoryLib = $this->repositoryService->get($entity);
+        if (!$repositoryLib instanceof RepositoryLib) {
             return $this->json($return);
         }
 
@@ -61,7 +61,7 @@ class SearchController extends ApiControllerLib
         ];
         /** @var callable $callable */
         $callable = [
-            $serviceEntityRepositoryLib,
+            $repositoryLib,
             $method,
         ];
         $data = call_user_func($callable, $get['name']);

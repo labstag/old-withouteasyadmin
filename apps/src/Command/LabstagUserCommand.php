@@ -5,6 +5,8 @@ namespace Labstag\Command;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Lib\CommandLib;
+use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -94,6 +96,7 @@ class LabstagUserCommand extends CommandLib
     }
 
     protected function actionEnableDisableDelete(
+        UserRepository $userRepository,
         InputInterface $input,
         OutputInterface $output,
         SymfonyStyle $symfonyStyle,
@@ -104,7 +107,7 @@ class LabstagUserCommand extends CommandLib
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
-            $this->tableQuestionUser()
+            $this->tableQuestionUser($userRepository)
         );
         $choiceQuestion->setMultiselect(true);
 
@@ -122,40 +125,23 @@ class LabstagUserCommand extends CommandLib
 
             switch ($action) {
                 case 'enable':
-                    $this->enable($helper, $username, $symfonyStyle, $input, $output);
+                    $this->enable($userRepository, $helper, $username, $symfonyStyle, $input, $output);
 
                     break;
                 case 'disable':
-                    $this->disable($helper, $username, $symfonyStyle, $input, $output);
+                    $this->disable($userRepository, $helper, $username, $symfonyStyle, $input, $output);
 
                     break;
                 case 'delete':
-                    $this->delete($helper, $username, $symfonyStyle, $input, $output);
+                    $this->delete($userRepository, $helper, $username, $symfonyStyle, $input, $output);
 
                     break;
             }
         }
     }
 
-    protected function actionState(InputInterface $input, OutputInterface $output, SymfonyStyle $symfonyStyle): void
-    {
-        /** @var QuestionHelper $helper */
-        $helper         = $this->getHelper('question');
-        $choiceQuestion = new ChoiceQuestion(
-            "Entrer le username de l'utilisateur : ",
-            $this->tableQuestionUser()
-        );
-        $username = $helper->ask($input, $output, $choiceQuestion);
-        if (!is_string($username)) {
-            $symfonyStyle->error('Username incorrect');
-
-            return;
-        }
-
-        $this->state($helper, $username, $symfonyStyle, $input, $output);
-    }
-
-    protected function actionUpdatePassword(
+    protected function actionState(
+        UserRepository $userRepository,
         InputInterface $input,
         OutputInterface $output,
         SymfonyStyle $symfonyStyle
@@ -165,7 +151,7 @@ class LabstagUserCommand extends CommandLib
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
             "Entrer le username de l'utilisateur : ",
-            $this->tableQuestionUser()
+            $this->tableQuestionUser($userRepository)
         );
         $username = $helper->ask($input, $output, $choiceQuestion);
         if (!is_string($username)) {
@@ -174,7 +160,30 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $this->updatePassword($helper, $username, $symfonyStyle, $input, $output);
+        $this->state($userRepository, $helper, $username, $symfonyStyle, $input, $output);
+    }
+
+    protected function actionUpdatePassword(
+        UserRepository $userRepository,
+        InputInterface $input,
+        OutputInterface $output,
+        SymfonyStyle $symfonyStyle
+    ): void
+    {
+        /** @var QuestionHelper $helper */
+        $helper         = $this->getHelper('question');
+        $choiceQuestion = new ChoiceQuestion(
+            "Entrer le username de l'utilisateur : ",
+            $this->tableQuestionUser($userRepository)
+        );
+        $username = $helper->ask($input, $output, $choiceQuestion);
+        if (!is_string($username)) {
+            $symfonyStyle->error('Username incorrect');
+
+            return;
+        }
+
+        $this->updatePassword($userRepository, $helper, $username, $symfonyStyle, $input, $output);
     }
 
     protected function configure(): void
@@ -183,6 +192,7 @@ class LabstagUserCommand extends CommandLib
     }
 
     protected function create(
+        UserRepository $userRepository,
         QuestionHelper $questionHelper,
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
@@ -206,11 +216,12 @@ class LabstagUserCommand extends CommandLib
         }
 
         $this->setUserGroup($questionHelper, $input, $output, $user);
-        $this->userRepository->add($user);
+        $userRepository->save($user);
         $symfonyStyle->success('Utilisateur ajouté');
     }
 
     protected function delete(
+        UserRepository $userRepository,
         QuestionHelper $questionHelper,
         string $username,
         SymfonyStyle $symfonyStyle,
@@ -218,7 +229,7 @@ class LabstagUserCommand extends CommandLib
         OutputInterface $output
     ): void
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
                 ['Utilisateur introuvable']
@@ -240,11 +251,12 @@ class LabstagUserCommand extends CommandLib
             return;
         }
 
-        $this->userRepository->remove($entity);
+        $userRepository->remove($entity);
         $symfonyStyle->success('Utilisateur supprimé');
     }
 
     protected function disable(
+        UserRepository $userRepository,
         QuestionHelper $questionHelper,
         string $username,
         SymfonyStyle $symfonyStyle,
@@ -252,7 +264,7 @@ class LabstagUserCommand extends CommandLib
         OutputInterface $output
     ): void
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
                 ['Utilisateur introuvable']
@@ -289,12 +301,12 @@ class LabstagUserCommand extends CommandLib
         }
 
         $workflow->apply($entity, 'desactiver');
-        $this->entityManager->flush();
-        $this->userRepository->add($entity);
+        $userRepository->save($entity);
         $symfonyStyle->success('Utilisateur désactivé');
     }
 
     protected function enable(
+        UserRepository $userRepository,
         QuestionHelper $questionHelper,
         string $username,
         SymfonyStyle $symfonyStyle,
@@ -302,7 +314,7 @@ class LabstagUserCommand extends CommandLib
         OutputInterface $output
     ): void
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
                 ['Utilisateur introuvable']
@@ -339,8 +351,7 @@ class LabstagUserCommand extends CommandLib
         }
 
         $workflow->apply($entity, 'activer');
-        $this->entityManager->flush();
-        $this->userRepository->add($entity);
+        $userRepository->save($entity);
         $symfonyStyle->success('Utilisateur activé');
     }
 
@@ -370,12 +381,21 @@ class LabstagUserCommand extends CommandLib
             return Command::FAILURE;
         }
 
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->repositoryService->get(User::class);
+
         match ($action) {
-            'list'           => $this->list($symfonyStyle, $output),
-            'create'         => $this->create($helper, $symfonyStyle, $input, $output),
-            'updatepassword' => $this->actionUpdatePassword($input, $output, $symfonyStyle),
-            'state'          => $this->actionState($input, $output, $symfonyStyle),
-            'enable', 'disable', 'delete' => $this->actionEnableDisableDelete($input, $output, $symfonyStyle, $action),
+            'list'           => $this->list($userRepository, $symfonyStyle, $output),
+            'create'         => $this->create($userRepository, $helper, $symfonyStyle, $input, $output),
+            'updatepassword' => $this->actionUpdatePassword($userRepository, $input, $output, $symfonyStyle),
+            'state'          => $this->actionState($userRepository, $input, $output, $symfonyStyle),
+            'enable', 'disable', 'delete' => $this->actionEnableDisableDelete(
+                $userRepository,
+                $input,
+                $output,
+                $symfonyStyle,
+                $action
+            ),
             'cancel' => $output->writeln('cancel'),
             default  => $output->writeln('Action inconnue'),
         };
@@ -383,9 +403,13 @@ class LabstagUserCommand extends CommandLib
         return Command::SUCCESS;
     }
 
-    protected function list(SymfonyStyle $symfonyStyle, OutputInterface $output): void
+    protected function list(
+        UserRepository $userRepository,
+        SymfonyStyle $symfonyStyle,
+        OutputInterface $output
+    ): void
     {
-        $users = $this->userRepository->findBy([], ['username' => 'ASC']);
+        $users = $userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         /** @var User $user */
         foreach ($users as $user) {
@@ -412,6 +436,7 @@ class LabstagUserCommand extends CommandLib
     }
 
     protected function state(
+        UserRepository $userRepository,
         QuestionHelper $questionHelper,
         string $username,
         SymfonyStyle $symfonyStyle,
@@ -419,7 +444,7 @@ class LabstagUserCommand extends CommandLib
         OutputInterface $output
     ): void
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
                 ['Utilisateur introuvable']
@@ -451,13 +476,15 @@ class LabstagUserCommand extends CommandLib
         }
 
         $workflow->apply($entity, $state);
-        $this->entityManager->flush();
+        $userRepository->save($entity);
         $symfonyStyle->success('Utilisateur passé au stade "'.$state.'"');
     }
 
-    protected function tableQuestionUser(): array
+    protected function tableQuestionUser(
+        UserRepository $userRepository
+    ): array
     {
-        $users = $this->userRepository->findBy([], ['username' => 'ASC']);
+        $users = $userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         /** @var User $user */
         foreach ($users as $user) {
@@ -478,6 +505,7 @@ class LabstagUserCommand extends CommandLib
     }
 
     protected function updatePassword(
+        UserRepository $userRepository,
         QuestionHelper $questionHelper,
         string $username,
         SymfonyStyle $symfonyStyle,
@@ -485,7 +513,7 @@ class LabstagUserCommand extends CommandLib
         OutputInterface $output
     ): void
     {
-        $entity = $this->userRepository->findOneBy(['username' => $username]);
+        $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
                 ['Utilisateur introuvable']
@@ -509,7 +537,7 @@ class LabstagUserCommand extends CommandLib
         }
 
         $entity->setPlainPassword($password1);
-        $this->userRepository->add($entity);
+        $userRepository->save($entity);
         $symfonyStyle->success('Mot de passe changé');
     }
 
@@ -520,8 +548,10 @@ class LabstagUserCommand extends CommandLib
         User $user
     ): void
     {
-        $groupes = $this->groupeRepository->findBy([], ['name' => 'DESC']);
-        $data    = [];
+        /** @var GroupeRepository $repository */
+        $repository = $this->repositoryService->get(Groupe::class);
+        $groupes    = $repository->findBy([], ['name' => 'DESC']);
+        $data       = [];
         foreach ($groupes as $groupe) {
             /** @var Groupe $groupe */
             if ('visiteur' == $groupe->getCode()) {

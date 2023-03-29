@@ -48,10 +48,10 @@ class PostParagraph extends ParagraphLib implements ParagraphInterface
 
     public function show(EntityParagraphInterface $entityParagraph): Response
     {
-        /** @var PostRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityPost::class);
-        $posts                      = $serviceEntityRepositoryLib->getLimitOffsetResult(
-            $serviceEntityRepositoryLib->findPublier(),
+        /** @var PostRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(EntityPost::class);
+        $posts         = $repositoryLib->getLimitOffsetResult(
+            $repositoryLib->findPublier(),
             5,
             0
         );

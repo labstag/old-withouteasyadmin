@@ -5,8 +5,10 @@ namespace Labstag\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
+use Labstag\Entity\Groupe;
 use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\GroupeRepository;
 
 class UserFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -22,7 +24,9 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
     {
         $generator = $this->setFaker();
         $users     = $this->installService->getData('user');
-        $groupes   = $this->groupeRepository->findAll();
+        /** @var GroupeRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Groupe::class);
+        $groupes       = $repositoryLib->findAll();
         foreach ($users as $index => $user) {
             $this->addUser($groupes, $index, $user, $generator, $objectManager);
         }
