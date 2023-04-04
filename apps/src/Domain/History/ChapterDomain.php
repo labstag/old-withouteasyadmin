@@ -8,7 +8,6 @@ use Labstag\Form\Admin\ChapterType;
 use Labstag\Form\Admin\Search\ChapterType as SearchChapterType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\ChapterSearch;
 
 class ChapterDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,25 @@ class ChapterDomain extends DomainLib implements DomainInterface
         return Chapter::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->chapterRepository;
-    }
-
     public function getSearchData(): ChapterSearch
     {
-        return $this->chapterSearch;
+        return new ChapterSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchChapterType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'edit'    => 'admin/history/chapter/form.html.twig',
+            'index'   => 'admin/history/chapter/index.html.twig',
+            'trash'   => 'admin/history/chapter/index.html.twig',
+            'show'    => 'admin/history/chapter/show.html.twig',
+            'preview' => 'admin/history/chapter/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

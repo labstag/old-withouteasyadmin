@@ -6,7 +6,6 @@ use Labstag\Entity\Block;
 use Labstag\Form\Admin\BlockType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\BlockSearch;
 
 class BlockDomain extends DomainLib implements DomainInterface
@@ -16,14 +15,20 @@ class BlockDomain extends DomainLib implements DomainInterface
         return Block::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->blockRepository;
-    }
-
     public function getSearchData(): BlockSearch
     {
-        return $this->blockSearch;
+        return new BlockSearch();
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'  => 'admin/block/index.html.twig',
+            'trash'  => 'admin/block/index.html.twig',
+            'edit'   => 'admin/block/form.html.twig',
+            'move'   => 'admin/block/move.html.twig',
+            'import' => 'admin/block/import.html.twig',
+        ];
     }
 
     public function getTitles(): array
@@ -44,13 +49,15 @@ class BlockDomain extends DomainLib implements DomainInterface
     public function getUrlAdmin(): array
     {
         return [
-            'delete'  => 'api_action_delete',
-            'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_block_edit',
-            'empty'   => 'api_action_empty',
-            'list'    => 'admin_block_index',
-            'restore' => 'api_action_restore',
-            'trash'   => 'admin_block_trash',
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'move'     => 'admin_block_move',
+            'popupnew' => 'admin_block_new',
+            'edit'     => 'admin_block_edit',
+            'empty'    => 'api_action_empty',
+            'list'     => 'admin_block_index',
+            'restore'  => 'api_action_restore',
+            'trash'    => 'admin_block_trash',
         ];
     }
 }

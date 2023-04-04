@@ -8,7 +8,6 @@ use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\HistorySearch;
 
 class HistoryDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,26 @@ class HistoryDomain extends DomainLib implements DomainInterface
         return History::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->historyRepository;
-    }
-
     public function getSearchData(): HistorySearch
     {
-        return $this->historySearch;
+        return new HistorySearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchHistoryType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'edit'    => 'admin/history/form.html.twig',
+            'move'    => 'admin/history/move.html.twig',
+            'index'   => 'admin/history/index.html.twig',
+            'trash'   => 'admin/history/index.html.twig',
+            'show'    => 'admin/history/show.html.twig',
+            'preview' => 'admin/history/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

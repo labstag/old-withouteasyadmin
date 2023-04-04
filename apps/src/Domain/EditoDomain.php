@@ -8,7 +8,6 @@ use Labstag\Form\Admin\EditoType;
 use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\EditoSearch;
 
 class EditoDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,25 @@ class EditoDomain extends DomainLib implements DomainInterface
         return Edito::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->editoRepository;
-    }
-
     public function getSearchData(): EditoSearch
     {
-        return $this->editoSearch;
+        return new EditoSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchEditoType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/edito/index.html.twig',
+            'trash'   => 'admin/edito/index.html.twig',
+            'edit'    => 'admin/edito/form.html.twig',
+            'show'    => 'admin/edito/show.html.twig',
+            'preview' => 'admin/edito/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

@@ -10,19 +10,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class LabstagExtension extends ExtensionLib
 {
-    /**
-     * @var string
-     */
-    final public const FOLDER_ENTITY = 'Labstag\\Entity\\';
-
     public function classEntity(object $entity): string
     {
-        $class = substr(
-            (string) $entity::class,
-            strpos((string) $entity::class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY)
-        );
+        $path = explode('\\', $entity::class);
 
-        return trim(strtolower($class));
+        return strtolower(array_pop($path));
     }
 
     public function formClass(mixed $class): string

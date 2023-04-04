@@ -2,12 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
-use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
-use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\MemoRepository;
+use Labstag\Service\AdminService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,25 +18,16 @@ class MemoController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Memo $memo
+        Memo $memo
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($memo) ? new Memo() : $memo,
-            'admin/memo/form.html.twig'
-        );
+        return $this->setAdmin()->edit($memo);
     }
 
-    #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
     #[Route(path: '/', name: 'index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    public function index(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/memo/index.html.twig',
-        );
+        return $this->setAdmin()->index();
     }
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
@@ -61,24 +51,29 @@ class MemoController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
-    public function showOrPreview(Memo $memo): Response
+    public function preview(Memo $memo): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $memo,
-            'admin/memo/show.html.twig'
-        );
+        return $this->setAdmin()->preview($memo);
     }
 
-    protected function getDomainEntity(): DomainInterface
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Memo $memo): Response
     {
-        $domainLib = $this->domainService->getDomain(Memo::class);
-        if (!$domainLib instanceof DomainInterface) {
-            throw new Exception('Domain not found');
-        }
+        return $this->setAdmin()->show($memo);
+    }
 
-        return $domainLib;
+    #[IgnoreSoftDelete]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
+    {
+        return $this->setAdmin()->trash();
+    }
+
+    protected function setAdmin(): AdminService
+    {
+        $this->adminService->setDomain(Memo::class);
+
+        return $this->adminService;
     }
 }

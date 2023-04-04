@@ -8,7 +8,6 @@ use Labstag\Form\Admin\Search\User\AddressUserType as SearchAddressUserType;
 use Labstag\Form\Admin\User\AddressUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\User\AddressUserSearch;
 
 class AddressUserDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,24 @@ class AddressUserDomain extends DomainLib implements DomainInterface
         return AddressUser::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->addressUserRepository;
-    }
-
     public function getSearchData(): AddressUserSearch
     {
-        return $this->addressUserSearch;
+        return new AddressUserSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchAddressUserType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/user/address/index.html.twig',
+            'trash'   => 'admin/user/address/index.html.twig',
+            'show'    => 'admin/user/address/show.html.twig',
+            'preview' => 'admin/user/address/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

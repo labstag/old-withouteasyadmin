@@ -12,11 +12,6 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 class TwigEventSubscriber extends EventSubscriberLib
 {
     /**
-     * @var string
-     */
-    final public const ADMIN_CONTROLLER = '/(Controller\\\Admin)/';
-
-    /**
      * @var string[]
      */
     final public const ERROR_CONTROLLER = [

@@ -7,7 +7,6 @@ use Labstag\Entity\Menu;
 use Labstag\Form\Admin\MenuType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\MenuSearch;
 
 class MenuDomain extends DomainLib implements DomainInterface
@@ -17,14 +16,18 @@ class MenuDomain extends DomainLib implements DomainInterface
         return Menu::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->menuRepository;
-    }
-
     public function getSearchData(): MenuSearch
     {
-        return $this->menuSearch;
+        return new MenuSearch();
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index' => 'admin/menu/index.html.twig',
+            'trash' => 'admin/menu/trash.html.twig',
+            'move'  => 'admin/menu/move.html.twig',
+        ];
     }
 
     public function getTitles(): array
@@ -48,14 +51,15 @@ class MenuDomain extends DomainLib implements DomainInterface
     public function getUrlAdmin(): array
     {
         return [
-            'delete'  => 'api_action_delete',
-            'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_menu_edit',
-            'empty'   => 'api_action_empty',
-            'list'    => 'admin_menu_index',
-            'new'     => 'admin_menu_new',
-            'restore' => 'api_action_restore',
-            'trash'   => 'admin_menu_trash',
+            'delete'    => 'api_action_delete',
+            'destroy'   => 'api_action_destroy',
+            'edit'      => 'admin_menu_edit',
+            'empty'     => 'api_action_empty',
+            'popupmove' => 'admin_menu_move',
+            'list'      => 'admin_menu_index',
+            'new'       => 'admin_menu_new',
+            'restore'   => 'api_action_restore',
+            'trash'     => 'admin_menu_trash',
         ];
     }
 }

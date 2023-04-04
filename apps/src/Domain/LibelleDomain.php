@@ -8,7 +8,6 @@ use Labstag\Form\Admin\LibelleType;
 use Labstag\Form\Admin\Search\LibelleType as SearchLibelleType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\LibelleSearch;
 
 class LibelleDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,24 @@ class LibelleDomain extends DomainLib implements DomainInterface
         return Libelle::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->libelleRepository;
-    }
-
     public function getSearchData(): LibelleSearch
     {
-        return $this->libelleSearch;
+        return new LibelleSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchLibelleType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/libelle/index.html.twig',
+            'trash'   => 'admin/libelle/index.html.twig',
+            'show'    => 'admin/libelle/show.html.twig',
+            'preview' => 'admin/libelle/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

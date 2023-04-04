@@ -19,9 +19,6 @@ class TrashService
     {
     }
 
-    /**
-     * @return array<int, array{name: string, properties: mixed, entity: string, total: int, token: string}>
-     */
     public function all(): array
     {
         $data = [];

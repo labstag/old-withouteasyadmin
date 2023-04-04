@@ -7,7 +7,6 @@ use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\UserSearch;
 
 class UserDomain extends DomainLib implements DomainInterface
@@ -17,19 +16,27 @@ class UserDomain extends DomainLib implements DomainInterface
         return User::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->userRepository;
-    }
-
     public function getSearchData(): UserSearch
     {
-        return $this->userSearch;
+        return new UserSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchUserType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/user/index.html.twig',
+            'trash'   => 'admin/user/index.html.twig',
+            'edit'    => 'admin/user/form.html.twig',
+            'new'     => 'admin/user/form.html.twig',
+            'guard'   => 'admin/guard/user.html.twig',
+            'show'    => 'admin/user/show.html.twig',
+            'preview' => 'admin/user/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

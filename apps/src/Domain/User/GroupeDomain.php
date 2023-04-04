@@ -8,7 +8,6 @@ use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\GroupeSearch;
 
 class GroupeDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,25 @@ class GroupeDomain extends DomainLib implements DomainInterface
         return Groupe::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->groupeRepository;
-    }
-
     public function getSearchData(): GroupeSearch
     {
-        return $this->groupeSearch;
+        return new GroupeSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchGroupeType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/user/groupe/index.html.twig',
+            'trash'   => 'admin/user/groupe/index.html.twig',
+            'guard'   => 'admin/guard/group.html.twig',
+            'show'    => 'admin/user/groupe/show.html.twig',
+            'preview' => 'admin/user/groupe/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

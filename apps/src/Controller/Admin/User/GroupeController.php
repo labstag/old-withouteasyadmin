@@ -2,12 +2,11 @@
 
 namespace Labstag\Controller\Admin\User;
 
-use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
-use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
+use Labstag\Service\AdminService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,15 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class GroupeController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function edit(
-        ?Groupe $groupe
+        Groupe $groupe
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($groupe) ? new Groupe() : $groupe
-        );
+        return $this->setAdmin()->edit($groupe);
     }
 
     #[Route(path: '/{id}/guard', name: 'guard')]
@@ -78,36 +73,42 @@ class GroupeController extends AdminControllerLib
         );
     }
 
-    #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
     #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/user/groupe/index.html.twig'
-        );
+        return $this->setAdmin()->index();
+    }
+
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(): Response
+    {
+        return $this->setAdmin()->new();
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
-    public function showOrPreview(Groupe $groupe): Response
+    public function preview(Groupe $groupe): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $groupe,
-            'admin/user/groupe/show.html.twig'
-        );
+        return $this->setAdmin()->preview($groupe);
     }
 
-    protected function getDomainEntity(): DomainInterface
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Groupe $groupe): Response
     {
-        $domainLib = $this->domainService->getDomain(Groupe::class);
-        if (!$domainLib instanceof DomainInterface) {
-            throw new Exception('Domain not found');
-        }
+        return $this->setAdmin()->show($groupe);
+    }
 
-        return $domainLib;
+    #[IgnoreSoftDelete]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
+    {
+        return $this->setAdmin()->trash();
+    }
+
+    protected function setAdmin(): AdminService
+    {
+        $this->adminService->setDomain(Groupe::class);
+
+        return $this->adminService;
     }
 }

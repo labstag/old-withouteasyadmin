@@ -8,7 +8,6 @@ use Labstag\Form\Admin\RenderType;
 use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\RenderSearch;
 
 class RenderDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,26 @@ class RenderDomain extends DomainLib implements DomainInterface
         return Render::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->renderRepository;
-    }
-
     public function getSearchData(): RenderSearch
     {
-        return $this->renderSearch;
+        return new RenderSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchRenderType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/render/index.html.twig',
+            'trash'   => 'admin/render/index.html.twig',
+            'show'    => 'admin/render/show.html.twig',
+            'preview' => 'admin/render/show.html.twig',
+            'edit'    => 'admin/render/form.html.twig',
+            'new'     => 'admin/render/form.html.twig',
+        ];
     }
 
     public function getTitles(): array

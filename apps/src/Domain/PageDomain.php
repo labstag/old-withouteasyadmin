@@ -8,7 +8,6 @@ use Labstag\Form\Admin\PageType;
 use Labstag\Form\Admin\Search\PageType as SearchPageType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\PageSearch;
 
 class PageDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,25 @@ class PageDomain extends DomainLib implements DomainInterface
         return Page::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->pageRepository;
-    }
-
     public function getSearchData(): PageSearch
     {
-        return $this->pageSearch;
+        return new PageSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchPageType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/page/index.html.twig',
+            'trash'   => 'admin/page/index.html.twig',
+            'show'    => 'admin/page/show.html.twig',
+            'preview' => 'admin/page/show.html.twig',
+            'edit'    => 'admin/page/form.html.twig',
+        ];
     }
 
     public function getTitles(): array

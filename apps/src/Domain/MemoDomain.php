@@ -8,7 +8,6 @@ use Labstag\Form\Admin\MemoType;
 use Labstag\Form\Admin\Search\MemoType as SearchMemoType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\MemoSearch;
 
 class MemoDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,25 @@ class MemoDomain extends DomainLib implements DomainInterface
         return Memo::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->memoRepository;
-    }
-
     public function getSearchData(): MemoSearch
     {
-        return $this->memoSearch;
+        return new MemoSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchMemoType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/memo/index.html.twig',
+            'trash'   => 'admin/memo/index.html.twig',
+            'show'    => 'admin/memo/show.html.twig',
+            'preview' => 'admin/memo/show.html.twig',
+            'edit'    => 'admin/memo/form.html.twig',
+        ];
     }
 
     public function getTitles(): array

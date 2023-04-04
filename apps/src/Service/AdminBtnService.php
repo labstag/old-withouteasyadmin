@@ -381,9 +381,9 @@ class AdminBtnService
 
     protected function classEntity(EntityInterface $entity): string
     {
-        $class = str_replace('Labstag\\Entity\\', '', (string) $entity::class);
+        $path = explode('\\', $entity::class);
 
-        return strtolower($class);
+        return strtolower(array_pop($path));
     }
 
     protected function isRouteEnable(string $route): bool

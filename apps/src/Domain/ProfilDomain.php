@@ -6,7 +6,6 @@ use Labstag\Entity\Profil;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\ProfilSearch;
 
 class ProfilDomain extends DomainLib implements DomainInterface
@@ -16,14 +15,14 @@ class ProfilDomain extends DomainLib implements DomainInterface
         return Profil::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->userRepository;
-    }
-
     public function getSearchData(): ProfilSearch
     {
-        return $this->profilSearch;
+        return new ProfilSearch();
+    }
+
+    public function getTemplates(): array
+    {
+        return ['profil' => 'admin/profil.html.twig'];
     }
 
     public function getTitles(): array

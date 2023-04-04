@@ -8,7 +8,6 @@ use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\PostSearch;
 
 class PostDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,25 @@ class PostDomain extends DomainLib implements DomainInterface
         return Post::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->postRepository;
-    }
-
     public function getSearchData(): PostSearch
     {
-        return $this->postSearch;
+        return new PostSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchPostType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/post/index.html.twig',
+            'trash'   => 'admin/post/index.html.twig',
+            'show'    => 'admin/post/show.html.twig',
+            'preview' => 'admin/post/show.html.twig',
+            'edit'    => 'admin/post/form.html.twig',
+        ];
     }
 
     public function getTitles(): array

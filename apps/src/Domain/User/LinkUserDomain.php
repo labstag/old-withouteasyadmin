@@ -8,7 +8,6 @@ use Labstag\Form\Admin\Search\User\LinkUserType as SearchLinkUserType;
 use Labstag\Form\Admin\User\LinkUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\User\LinkUserSearch;
 
 class LinkUserDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,24 @@ class LinkUserDomain extends DomainLib implements DomainInterface
         return LinkUser::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->linkUserRepository;
-    }
-
     public function getSearchData(): LinkUserSearch
     {
-        return $this->linkUserSearch;
+        return new LinkUserSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchLinkUserType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/user/link/index.html.twig',
+            'trash'   => 'admin/user/link/index.html.twig',
+            'show'    => 'admin/user/link/show.html.twig',
+            'preview' => 'admin/user/link/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

@@ -2,12 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
-use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
-use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\PageRepository;
+use Labstag\Service\AdminService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,25 +17,16 @@ class PageController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Page $page
+        Page $page
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($page) ? new Page() : $page,
-            'admin/page/form.html.twig'
-        );
+        return $this->setAdmin()->edit($page);
     }
 
-    #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
     #[Route(path: '/', name: 'index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    public function index(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/page/index.html.twig'
-        );
+        return $this->setAdmin()->index();
     }
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
@@ -51,24 +41,29 @@ class PageController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
-    public function showOrPreview(Page $page): Response
+    public function preview(Page $page): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $page,
-            'admin/page/show.html.twig'
-        );
+        return $this->setAdmin()->preview($page);
     }
 
-    protected function getDomainEntity(): DomainInterface
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Page $page): Response
     {
-        $domainLib = $this->domainService->getDomain(Page::class);
-        if (!$domainLib instanceof DomainInterface) {
-            throw new Exception('Domain not found');
-        }
+        return $this->setAdmin()->show($page);
+    }
 
-        return $domainLib;
+    #[IgnoreSoftDelete]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
+    {
+        return $this->setAdmin()->trash();
+    }
+
+    protected function setAdmin(): AdminService
+    {
+        $this->adminService->setDomain(Page::class);
+
+        return $this->adminService;
     }
 }

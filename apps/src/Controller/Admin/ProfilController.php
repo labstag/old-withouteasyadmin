@@ -2,11 +2,10 @@
 
 namespace Labstag\Controller\Admin;
 
-use Exception;
 use Labstag\Entity\Profil;
 use Labstag\Entity\User;
-use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
+use Labstag\Service\AdminService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,20 +21,13 @@ class ProfilController extends AdminControllerLib
         /** @var User $user */
         $user = $security->getUser();
 
-        return $this->form(
-            $this->getDomainEntity(),
-            $user,
-            'admin/profil.html.twig'
-        );
+        return $this->setAdmin()->edit($user);
     }
 
-    protected function getDomainEntity(): DomainInterface
+    protected function setAdmin(): AdminService
     {
-        $domainLib = $this->domainService->getDomain(Profil::class);
-        if (!$domainLib instanceof DomainInterface) {
-            throw new Exception('Domain not found');
-        }
+        $this->adminService->setDomain(Profil::class);
 
-        return $domainLib;
+        return $this->adminService;
     }
 }

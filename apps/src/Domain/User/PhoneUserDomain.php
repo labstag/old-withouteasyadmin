@@ -8,7 +8,6 @@ use Labstag\Form\Admin\Search\User\PhoneUserType as SearchPhoneUserType;
 use Labstag\Form\Admin\User\PhoneUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\User\PhoneUserSearch;
 
 class PhoneUserDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,24 @@ class PhoneUserDomain extends DomainLib implements DomainInterface
         return PhoneUser::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->phoneUserRepository;
-    }
-
     public function getSearchData(): PhoneUserSearch
     {
-        return $this->phoneUserSearch;
+        return new PhoneUserSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchPhoneUserType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/user/phone/index.html.twig',
+            'trash'   => 'admin/user/phone/index.html.twig',
+            'show'    => 'admin/user/phone/show.html.twig',
+            'preview' => 'admin/user/phone/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

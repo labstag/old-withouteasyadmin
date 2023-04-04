@@ -5,7 +5,6 @@ namespace Labstag\Domain;
 use Labstag\Entity\Attachment;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\AttachmentSearch;
 
 class AttachmentDomain extends DomainLib implements DomainInterface
@@ -15,14 +14,17 @@ class AttachmentDomain extends DomainLib implements DomainInterface
         return Attachment::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->attachmentRepository;
-    }
-
     public function getSearchData(): AttachmentSearch
     {
-        return $this->attachmentSearch;
+        return new AttachmentSearch();
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index' => 'admin/attachment/index.html.twig',
+            'trash' => 'admin/attachment/index.html.twig',
+        ];
     }
 
     public function getTitles(): array

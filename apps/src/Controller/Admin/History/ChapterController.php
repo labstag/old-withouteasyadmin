@@ -2,13 +2,12 @@
 
 namespace Labstag\Controller\Admin\History;
 
-use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
-use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\ChapterRepository;
+use Labstag\Service\AdminService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,25 +18,16 @@ class ChapterController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Chapter $chapter
+        Chapter $chapter
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($chapter) ? new Chapter() : $chapter,
-            'admin/chapter/form.html.twig'
-        );
+        return $this->setAdmin()->edit($chapter);
     }
 
-    #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
     #[Route(path: '/', name: 'index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    public function index(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/chapter/index.html.twig',
-        );
+        return $this->setAdmin()->index();
     }
 
     #[Route(path: '/new/{id}', name: 'new', methods: ['GET', 'POST'])]
@@ -57,24 +47,29 @@ class ChapterController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
-    public function showOrPreview(Chapter $chapter): Response
+    public function preview(Chapter $chapter): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $chapter,
-            'admin/chapter/show.html.twig'
-        );
+        return $this->setAdmin()->preview($chapter);
     }
 
-    protected function getDomainEntity(): DomainInterface
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Chapter $chapter): Response
     {
-        $domainLib = $this->domainService->getDomain(Chapter::class);
-        if (!$domainLib instanceof DomainInterface) {
-            throw new Exception('Domain not found');
-        }
+        return $this->setAdmin()->show($chapter);
+    }
 
-        return $domainLib;
+    #[IgnoreSoftDelete]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
+    {
+        return $this->setAdmin()->trash();
+    }
+
+    protected function setAdmin(): AdminService
+    {
+        $this->adminService->setDomain(Chapter::class);
+
+        return $this->adminService;
     }
 }

@@ -7,68 +7,26 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\MenuRepository;
+use Labstag\Service\Admin\MenuService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
 
 #[Route(path: '/admin/menu', name: 'admin_menu_')]
 class MenuController extends AdminControllerLib
 {
     #[Route(path: '/add', name: 'add', methods: ['GET', 'POST'])]
-    public function add(
-        Request $request,
-        MenuRepository $menuRepository
-    ): Response
+    public function add(): Response
     {
-        $get = $request->query->all();
-        $url = $this->generateUrl('admin_menu_index');
-        if (!isset($get['id'])) {
-            return new RedirectResponse($url);
-        }
-
-        $parent = $menuRepository->find($get['id']);
-        if (!$parent instanceof Menu) {
-            return new RedirectResponse($url);
-        }
-
-        $menu = new Menu();
-        $data = [$menu->getData()];
-        $menu->setClef(null);
-        $menu->setData($data);
-        $menu->setSeparateur(false);
-
-        $children = $parent->getChildren();
-        $position = is_countable($children) ? count($children) : 0;
-        $menu->setPosition($position + 1);
-        $menu->setParent($parent);
-
-        return $this->form(
-            $this->getDomainEntity(),
-            $menu
-        );
+        return $this->setAdmin()->add();
     }
 
     #[Route(path: '/divider/{id}', name: 'divider')]
     public function divider(
-        Menu $menu,
-        MenuRepository $menuRepository
+        Menu $menu
     ): RedirectResponse
     {
-        $entity   = new Menu();
-        $children = $menu->getChildren();
-        $position = is_countable($children) ? count($children) : 0;
-        $entity->setPosition($position + 1);
-        $entity->setSeparateur(true);
-        $entity->setParent($menu);
-
-        $menuRepository->save($entity);
-
-        return new RedirectResponse(
-            $this->generateUrl('admin_menu_index')
-        );
+        return $this->setAdmin()->divider($menu);
     }
 
     #[Route(path: '/update/{id}', name: 'update', methods: ['GET', 'POST'])]
@@ -76,86 +34,32 @@ class MenuController extends AdminControllerLib
         Menu $menu
     ): Response
     {
-        $this->modalAttachmentDelete();
-
-        return $this->form(
-            $this->getDomainEntity(),
-            $menu
-        );
+        return $this->setAdmin()->edit($menu);
     }
 
     #[Route(path: '/', name: 'index', methods: ['GET'])]
-    public function index(
-        Environment $twigEnvironment,
-        MenuRepository $menuRepository
-    ): Response
+    public function index(): Response
     {
-        $all     = $menuRepository->findAllCode();
-        $globals = $twigEnvironment->getGlobals();
-        $modal   = $globals['modal'] ?? [];
-        if (!is_array($modal)) {
-            $modal = [];
-        }
-
-        $modal['delete'] = true;
-        $twigEnvironment->addGlobal('modal', $modal);
-        $this->adminBtnService->addBtnNew('admin_menu_new');
-
-        return $this->render(
-            'admin/menu/index.html.twig',
-            ['all' => $all]
-        );
+        return $this->setAdmin()->index();
     }
 
     #[Route(path: '/move/{id}', name: 'move', methods: ['GET', 'POST'])]
-    public function move(Menu $menu, Request $request): Response
+    public function move(Menu $menu): Response
     {
-        $currentUrl = $this->generateUrl(
-            'admin_menu_move',
-            [
-                'id' => $menu->getId(),
-            ]
-        );
-        if ('POST' == $request->getMethod()) {
-            $this->setPositionEntity($request, Menu::class);
-        }
-
-        $this->adminBtnService->addBtnList(
-            'admin_menu_index',
-            'Liste',
-        );
-        $this->adminBtnService->add(
-            'btn-admin-save-move',
-            'Enregistrer',
-            [
-                'is'   => 'link-btnadminmove',
-                'href' => $currentUrl,
-            ]
-        );
-
-        return $this->render(
-            'admin/menu/move.html.twig',
-            ['menu' => $menu]
-        );
+        return $this->setAdmin()->move($menu);
     }
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            new Menu()
-        );
+        return $this->setAdmin()->new();
     }
 
     #[IgnoreSoftDelete]
     #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
     public function trash(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/menu/trash.html.twig',
-        );
+        return $this->setAdmin()->trash();
     }
 
     protected function getDomainEntity(): DomainInterface
@@ -166,5 +70,12 @@ class MenuController extends AdminControllerLib
         }
 
         return $domainLib;
+    }
+
+    protected function setAdmin(): MenuService
+    {
+        $this->adminMenuService->setDomain(Menu::class);
+
+        return $this->adminMenuService;
     }
 }

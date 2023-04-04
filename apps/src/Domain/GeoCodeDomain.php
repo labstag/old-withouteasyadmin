@@ -8,7 +8,6 @@ use Labstag\Form\Admin\GeoCodeType;
 use Labstag\Form\Admin\Search\GeoCodeType as SearchGeoCodeType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\GeoCodeSearch;
 
 class GeoCodeDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,24 @@ class GeoCodeDomain extends DomainLib implements DomainInterface
         return GeoCode::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->geoCodeRepository;
-    }
-
     public function getSearchData(): GeoCodeSearch
     {
-        return $this->geoCodeSearch;
+        return new GeoCodeSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchGeoCodeType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/geocode/index.html.twig',
+            'trash'   => 'admin/geocode/index.html.twig',
+            'show'    => 'admin/geocode/show.html.twig',
+            'preview' => 'admin/geocode/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

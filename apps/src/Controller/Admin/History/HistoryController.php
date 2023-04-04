@@ -3,13 +3,12 @@
 namespace Labstag\Controller\Admin\History;
 
 use DateTime;
-use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
-use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\HistoryRepository;
+use Labstag\Service\AdminService;
 use Labstag\Service\HistoryService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,25 +22,16 @@ class HistoryController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?History $history
+        History $history
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($history) ? new History() : $history,
-            'admin/history/form.html.twig'
-        );
+        return $this->setAdmin()->edit($history);
     }
 
-    #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
     #[Route(path: '/', name: 'index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    public function index(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/history/index.html.twig',
-        );
+        return $this->setAdmin()->index();
     }
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
@@ -126,24 +116,29 @@ class HistoryController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
     #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
-    public function showOrPreview(History $history): Response
+    public function preview(History $history): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $history,
-            'admin/history/show.html.twig'
-        );
+        return $this->setAdmin()->preview($history);
     }
 
-    protected function getDomainEntity(): DomainInterface
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(History $history): Response
     {
-        $domainLib = $this->domainService->getDomain(History::class);
-        if (!$domainLib instanceof DomainInterface) {
-            throw new Exception('Domain not found');
-        }
+        return $this->setAdmin()->show($history);
+    }
 
-        return $domainLib;
+    #[IgnoreSoftDelete]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
+    {
+        return $this->setAdmin()->trash();
+    }
+
+    protected function setAdmin(): AdminService
+    {
+        $this->adminService->setDomain(History::class);
+
+        return $this->adminService;
     }
 }

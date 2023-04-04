@@ -8,7 +8,6 @@ use Labstag\Form\Admin\Bookmark\PrincipalType;
 use Labstag\Form\Admin\Search\BookmarkType as SearchBookmarkType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\BookmarkSearch;
 
 class BookmarkDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,27 @@ class BookmarkDomain extends DomainLib implements DomainInterface
         return Bookmark::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->bookmarkRepository;
-    }
-
     public function getSearchData(): BookmarkSearch
     {
-        return $this->bookmarkSearch;
+        return new BookmarkSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchBookmarkType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/bookmark/index.html.twig',
+            'trash'   => 'admin/bookmark/index.html.twig',
+            'edit'    => 'admin/bookmark/form.html.twig',
+            'new'     => 'admin/bookmark/form.html.twig',
+            'import'  => 'admin/bookmark/import.html.twig',
+            'show'    => 'admin/bookmark/show.html.twig',
+            'preview' => 'admin/bookmark/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

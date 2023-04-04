@@ -8,7 +8,6 @@ use Labstag\Form\Admin\LayoutType;
 use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\LayoutSearch;
 
 class LayoutDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,25 @@ class LayoutDomain extends DomainLib implements DomainInterface
         return Layout::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->layoutRepository;
-    }
-
     public function getSearchData(): LayoutSearch
     {
-        return $this->layoutSearch;
+        return new LayoutSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchLayoutType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/layout/index.html.twig',
+            'trash'   => 'admin/layout/index.html.twig',
+            'edit'    => 'admin/layout/form.html.twig',
+            'show'    => 'admin/layout/show.html.twig',
+            'preview' => 'admin/layout/show.html.twig',
+        ];
     }
 
     public function getTitles(): array
@@ -58,6 +63,7 @@ class LayoutDomain extends DomainLib implements DomainInterface
             'edit'     => 'admin_layout_edit',
             'empty'    => 'api_action_empty',
             'list'     => 'admin_layout_index',
+            'newpopup' => 'admin_layout_new',
             'preview'  => 'admin_layout_preview',
             'restore'  => 'api_action_restore',
             'show'     => 'admin_layout_show',

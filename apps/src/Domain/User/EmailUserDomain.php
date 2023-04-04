@@ -8,7 +8,6 @@ use Labstag\Form\Admin\Search\User\EmailUserType as SearchEmailUserType;
 use Labstag\Form\Admin\User\EmailUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\User\EmailUserSearch;
 
 class EmailUserDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,24 @@ class EmailUserDomain extends DomainLib implements DomainInterface
         return EmailUser::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->emailUserRepository;
-    }
-
     public function getSearchData(): EmailUserSearch
     {
-        return $this->emailUserSearch;
+        return new EmailUserSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchEmailUserType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/user/email/index.html.twig',
+            'trash'   => 'admin/user/email/index.html.twig',
+            'show'    => 'admin/user/email/show.html.twig',
+            'preview' => 'admin/user/email/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

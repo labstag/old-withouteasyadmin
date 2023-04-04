@@ -383,7 +383,7 @@ class ActionsController extends ApiControllerLib
         }
     }
 
-    private function getDataRestoreDelete(string $entity, mixed $id): ?EntityTrashInterface
+    private function getDataRestoreDelete(string $entity, string $id): ?EntityTrashInterface
     {
         /** @var RepositoryLib $repository */
         $repository = $this->repositoryService->get($entity);

@@ -8,7 +8,6 @@ use Labstag\Form\Admin\CategoryType;
 use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\CategorySearch;
 
 class CategoryDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,32 @@ class CategoryDomain extends DomainLib implements DomainInterface
         return Category::class;
     }
 
-    public function getRepository(): RepositoryLib
+    public function getMethodsList(): array
     {
-        return $this->categoryRepository;
+        return [
+            'trash' => 'findTrashParentForAdmin',
+            'all'   => 'findAllParentForAdmin',
+        ];
     }
 
     public function getSearchData(): CategorySearch
     {
-        return $this->categorySearch;
+        return new CategorySearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchCategoryType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/category/index.html.twig',
+            'trash'   => 'admin/category/index.html.twig',
+            'show'    => 'admin/category/show.html.twig',
+            'preview' => 'admin/category/show.html.twig',
+        ];
     }
 
     public function getTitles(): array

@@ -8,7 +8,6 @@ use Labstag\Form\Admin\Search\TemplateType as SearchTemplateType;
 use Labstag\Form\Admin\TemplateType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RepositoryLib;
 use Labstag\Search\TemplateSearch;
 
 class TemplateDomain extends DomainLib implements DomainInterface
@@ -18,19 +17,24 @@ class TemplateDomain extends DomainLib implements DomainInterface
         return Template::class;
     }
 
-    public function getRepository(): RepositoryLib
-    {
-        return $this->templateRepository;
-    }
-
     public function getSearchData(): TemplateSearch
     {
-        return $this->templateSearch;
+        return new TemplateSearch();
     }
 
     public function getSearchForm(): string
     {
         return SearchTemplateType::class;
+    }
+
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/template/index.html.twig',
+            'trash'   => 'admin/template/index.html.twig',
+            'show'    => 'admin/template/show.html.twig',
+            'preview' => 'admin/template/show.html.twig',
+        ];
     }
 
     public function getTitles(): array
