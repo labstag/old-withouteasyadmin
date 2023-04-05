@@ -1,8 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/dvp/perso/projects/labstag'
- 
-grep -E '(^[a-zA-Z_-]+:.*? ## .*$)|(^ ##)' Makefile make/general/Makefile make/docker/Makefile | sed -e "s/^.*Makefile://" | awk 'BEGIN {FS = ":.*? ## "}; {printf "\033[32m%-30s\033[0m %s\n", $1, $2}' | sed -e 's/\[32m##/[33m/'
-printf "\033[0;33mcommands with arguments\033[0m\n"
-grep -E '(^[a-zA-Z_-]+:.*? ### .*$)|(^ ###)' Makefile make/general/Makefile make/docker/Makefile | sed -e "s/^.*Makefile://" | awk 'BEGIN {FS = ":.*? ### "}; {printf "\033[32m%-30s\033[0m %s\n", $1, $2}' | sed -e 's/\[32m##/[33m/'
-make: Leaving directory '/home/dvp/perso/projects/labstag'
- 

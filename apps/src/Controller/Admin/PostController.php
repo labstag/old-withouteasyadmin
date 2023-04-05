@@ -2,17 +2,15 @@
 
 namespace Labstag\Controller\Admin;
 
-use DateTime;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\PostRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\Entity\PostService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/post', name: 'admin_post_')]
 class PostController extends AdminControllerLib
@@ -32,25 +30,9 @@ class PostController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(
-        PostRepository $postRepository,
-        Security $security
-    ): RedirectResponse
+    public function new(Security $security): RedirectResponse
     {
-        $user = $security->getUser();
-        if (is_null($user)) {
-            return $this->redirectToRoute('admin_post_index');
-        }
-
-        $post = new Post();
-        $post->setPublished(new DateTime());
-        $post->setRemark(false);
-        $post->setTitle(Uuid::v1());
-        $post->setRefuser($user);
-
-        $postRepository->save($post);
-
-        return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
+        return $this->setAdmin()->add($security);
     }
 
     #[IgnoreSoftDelete]
@@ -73,10 +55,13 @@ class PostController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): PostService
     {
-        $this->adminService->setDomain(Post::class);
+        $viewService = $this->adminService->setDomain(Post::class);
+        if (!$viewService instanceof PostService) {
+            throw new Exception('Service not found');
+        }
 
-        return $this->adminService;
+        return $viewService;
     }
 }

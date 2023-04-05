@@ -5,7 +5,7 @@ namespace Labstag\Controller\Admin\User;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\AddressUser;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -52,10 +52,8 @@ class AddressUserController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): ViewService
     {
-        $this->adminService->setDomain(AddressUser::class);
-
-        return $this->adminService;
+        return $this->adminService->setDomain(AddressUser::class);
     }
 }

@@ -1,25 +1,30 @@
 <?php
 
-namespace Labstag\Service\Admin;
+namespace Labstag\Service\Admin\Entity;
 
 use Exception;
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\NewBlockType;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\BlockRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Uuid;
 
-class BlockService extends AdminService
+class BlockService extends ViewService
 {
     public function edit(
         EntityInterface $entity,
         array $parameters = []
     ): Response
     {
+        if (!$entity instanceof Block) {
+            throw new Exception('Entity not found');
+        }
+
         $field      = $this->blockService->getEntityField($entity);
         $parameters = array_merge(
             $parameters,
@@ -29,6 +34,11 @@ class BlockService extends AdminService
         return parent::edit($entity, $parameters);
     }
 
+    public function getType(): string
+    {
+        return Block::class;
+    }
+
     public function index(
         array $parameters = []
     ): Response
@@ -36,7 +46,7 @@ class BlockService extends AdminService
         return $this->listOrTrash('index', $parameters);
     }
 
-    public function move()
+    public function move(): Response
     {
         $routes = $this->getDomain()->getUrlAdmin();
         if (!isset($routes['move']) || !isset($routes['list'])) {
@@ -50,11 +60,11 @@ class BlockService extends AdminService
             $this->setPositionEntity($request, Block::class);
         }
 
-        $this->adminBtnService->addBtnList(
+        $this->btnService->addBtnList(
             $routes['list'],
             'Liste',
         );
-        $this->adminBtnService->add(
+        $this->btnService->add(
             'btn-admin-save-move',
             'Enregistrer',
             [
@@ -80,7 +90,7 @@ class BlockService extends AdminService
 
     public function new(
         array $parameters = []
-    ): Response
+    ): RedirectResponse
     {
         unset($parameters);
         /** @var Request $request */
@@ -120,21 +130,28 @@ class BlockService extends AdminService
         array $parameters = []
     ): Response
     {
+        $domain = $this->getDomain();
         $region = null;
-        $routes = $this->getDomain()->getUrlAdmin();
-        if (!isset($routes['popupnew']) || !isset($routes['move'])) {
-            throw new Exception('Route popupnew or move not found');
+        $routes = $domain->getUrlAdmin();
+        /** @var Request $request */
+        $request   = $this->requeststack->getCurrentRequest();
+        $all       = $request->attributes->all();
+        $route     = $all['_route'];
+        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
+        $templates = $domain->getTemplates();
+        if (!array_key_exists($type, $templates) || !isset($routes['add']) || !isset($routes['move'])) {
+            throw new Exception('Route add or move not found');
         }
 
-        $this->adminBtnService->add(
+        $this->btnService->add(
             'btn-admin-header-new',
             'Nouveau',
             [
                 'is'       => 'link-btnadminnewblock',
-                'data-url' => $this->router->generate($routes['popupnew']),
+                'data-url' => $this->router->generate($routes['add']),
             ]
         );
-        $this->adminBtnService->addBtnList(
+        $this->btnService->addBtnList(
             $routes['move'],
             'Move',
         );
@@ -142,33 +159,22 @@ class BlockService extends AdminService
             NewBlockType::class,
             new Block(),
             [
-                'action' => $this->router->generate($routes['popupnew']),
+                'action' => $this->router->generate($routes['add']),
             ]
         );
 
-        $url = $this->domain->getUrlAdmin();
+        $url = $domain->getUrlAdmin();
         /** @var BlockRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->domain->getRepository();
-        /** @var Request $request */
-        $request   = $this->requeststack->getCurrentRequest();
-        $all       = $request->attributes->all();
-        $route     = $all['_route'];
-        $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $this->setBtnListOrTrash($routeType);
+        $serviceEntityRepositoryLib = $domain->getRepository();
+        $this->btnService->setBtnListOrTrash($domain, $routeType);
         $data  = $serviceEntityRepositoryLib->getDataByRegion();
         $total = 0;
         foreach ($data as $region) {
             $total += is_countable($region) ? count($region) : 0;
         }
 
-        if ('trash' == $routeType && 0 == $total) {
+        if (('trash' == $routeType && 0 == $total)) {
             throw new AccessDeniedException();
-        }
-
-        $templates = $this->getDomain()->getTemplates();
-
-        if (!array_key_exists($type, $templates)) {
-            throw new Exception('Template not found');
         }
 
         $parameters = array_merge(

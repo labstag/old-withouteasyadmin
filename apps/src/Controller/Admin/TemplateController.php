@@ -5,7 +5,7 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Template;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -14,7 +14,7 @@ class TemplateController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Template $template
+        Template $template
     ): Response
     {
         return $this->setAdmin()->edit($template);
@@ -52,10 +52,8 @@ class TemplateController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): ViewService
     {
-        $this->adminService->setDomain(Template::class);
-
-        return $this->adminService;
+        return $this->adminService->setDomain(Template::class);
     }
 }

@@ -5,7 +5,7 @@ namespace Labstag\Controller\Admin;
 use Labstag\Entity\Profil;
 use Labstag\Entity\User;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,10 +24,8 @@ class ProfilController extends AdminControllerLib
         return $this->setAdmin()->edit($user);
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): ViewService
     {
-        $this->adminService->setDomain(Profil::class);
-
-        return $this->adminService;
+        return $this->adminService->setDomain(Profil::class);
     }
 }

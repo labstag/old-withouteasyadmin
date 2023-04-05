@@ -1,6 +1,6 @@
 <?php
 
-namespace Labstag\Service\Admin;
+namespace Labstag\Service\Admin\Entity;
 
 use Exception;
 use Labstag\Entity\Block\Custom;
@@ -8,13 +8,21 @@ use Labstag\Entity\Layout;
 use Labstag\Form\Admin\NewLayoutType;
 use Labstag\Repository\Block\CustomRepository;
 use Labstag\Repository\LayoutRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
+use Labstag\Service\DomainService;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Uuid;
 
-class LayoutService extends AdminService
+class LayoutService extends ViewService
 {
+    public function getType(): string
+    {
+        return Layout::class;
+    }
+
     public function index(
         array $parameters = []
     ): Response
@@ -24,14 +32,19 @@ class LayoutService extends AdminService
 
     public function new(
         array $parameters = []
-    ): Response
+    ): RedirectResponse
     {
+        $domain = $this->getDomain();
+        if (!$domain instanceof DomainService) {
+            throw new Exception('Domain not found');
+        }
+
         unset($parameters);
         /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $post    = $request->request->all('new_layout');
 
-        $routes = $this->getDomain()->getUrlAdmin();
+        $routes = $domain->getUrlAdmin();
         if (!isset($routes['list']) || !isset($routes['edit'])) {
             throw new Exception('Route list not found');
         }
@@ -71,34 +84,39 @@ class LayoutService extends AdminService
         array $parameters = []
     ): Response
     {
-        $routes = $this->getDomain()->getUrlAdmin();
-        if (!isset($routes['popupnew'])) {
-            throw new Exception('Route popupnew not found');
+        $domain = $this->getDomain();
+        if (!$domain instanceof DomainService) {
+            throw new Exception('Domain not found');
         }
 
-        $this->adminBtnService->add(
+        $routes = $domain->getUrlAdmin();
+        if (!isset($routes['add'])) {
+            throw new Exception('Route add not found');
+        }
+
+        $this->btnService->add(
             'btn-admin-header-new',
             'Nouveau',
             [
                 'is'       => 'link-btnadminnewblock',
-                'data-url' => $this->router->generate($routes['popupnew']),
+                'data-url' => $this->router->generate($routes['add']),
             ]
         );
         $form = $this->createForm(
             NewLayoutType::class,
             new Layout(),
             [
-                'action' => $this->router->generate($routes['popupnew']),
+                'action' => $this->router->generate($routes['add']),
             ]
         );
 
-        $url = $this->domain->getUrlAdmin();
+        $url = $domain->getUrlAdmin();
         /** @var Request $request */
         $request   = $this->requeststack->getCurrentRequest();
         $all       = $request->attributes->all();
         $route     = $all['_route'];
         $routeType = (0 != substr_count((string) $route, 'trash')) ? 'trash' : 'all';
-        $this->setBtnListOrTrash($routeType);
+        $this->btnService->setBtnListOrTrash($domain, $routeType);
         $pagination = $this->setPagination($routeType);
 
         if ('trash' == $routeType && 0 == $pagination->count()) {
@@ -112,7 +130,7 @@ class LayoutService extends AdminService
         ];
         $parameters = $this->setSearchForms($parameters);
 
-        $templates = $this->getDomain()->getTemplates();
+        $templates = $domain->getTemplates();
 
         if (!array_key_exists($type, $templates)) {
             throw new Exception('Template not found');

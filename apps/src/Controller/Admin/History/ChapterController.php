@@ -2,16 +2,15 @@
 
 namespace Labstag\Controller\Admin\History;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\ChapterRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\Entity\ChapterService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/history/chapter', name: 'admin_chapter_')]
 class ChapterController extends AdminControllerLib
@@ -31,19 +30,9 @@ class ChapterController extends AdminControllerLib
     }
 
     #[Route(path: '/new/{id}', name: 'new', methods: ['GET', 'POST'])]
-    public function new(
-        History $history,
-        ChapterRepository $chapterRepository
-    ): RedirectResponse
+    public function new(History $history): RedirectResponse
     {
-        $chapter = new Chapter();
-        $chapter->setHistory($history);
-        $chapter->setName(Uuid::v1());
-        $chapter->setPosition((is_countable($history->getChapters()) ? count($history->getChapters()) : 0) + 1);
-
-        $chapterRepository->save($chapter);
-
-        return $this->redirectToRoute('admin_chapter_edit', ['id' => $chapter->getId()]);
+        return $this->setAdmin()->add($history);
     }
 
     #[IgnoreSoftDelete]
@@ -66,10 +55,13 @@ class ChapterController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): ChapterService
     {
-        $this->adminService->setDomain(Chapter::class);
+        $viewService = $this->adminService->setDomain(Chapter::class);
+        if (!$viewService instanceof ChapterService) {
+            throw new Exception('Service not found');
+        }
 
-        return $this->adminService;
+        return $viewService;
     }
 }

@@ -35,7 +35,12 @@ abstract class DomainLib
             throw new Exception('Entity is empty');
         }
 
-        return $this->repositoryService->get($entity);
+        $repositoryLib = $this->repositoryService->get($entity);
+        if (!$repositoryLib instanceof RepositoryLib) {
+            throw new Exception('Repository not found');
+        }
+
+        return $repositoryLib;
     }
 
     public function getSearchForm(): string

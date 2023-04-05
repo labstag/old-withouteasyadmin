@@ -2,16 +2,15 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\MemoRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\Entity\MemoService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/memo', name: 'admin_memo_')]
 class MemoController extends AdminControllerLib
@@ -32,22 +31,10 @@ class MemoController extends AdminControllerLib
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
-        MemoRepository $memoRepository,
         Security $security
     ): RedirectResponse
     {
-        $user = $security->getUser();
-        if (is_null($user)) {
-            return $this->redirectToRoute('admin_memo_index');
-        }
-
-        $memo = new Memo();
-        $memo->setTitle(Uuid::v1());
-        $memo->setRefuser($user);
-
-        $memoRepository->save($memo);
-
-        return $this->redirectToRoute('admin_memo_edit', ['id' => $memo->getId()]);
+        return $this->setAdmin()->add($security);
     }
 
     #[IgnoreSoftDelete]
@@ -70,10 +57,13 @@ class MemoController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): MemoService
     {
-        $this->adminService->setDomain(Memo::class);
+        $viewService = $this->adminService->setDomain(Memo::class);
+        if (!$viewService instanceof MemoService) {
+            throw new Exception('Service not found');
+        }
 
-        return $this->adminService;
+        return $viewService;
     }
 }

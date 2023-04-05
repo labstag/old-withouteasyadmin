@@ -6,7 +6,7 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,18 +27,18 @@ class GroupeController extends AdminControllerLib
         WorkflowRepository $workflowRepository
     ): Response
     {
-        $this->adminBtnService->addBtnList(
+        $this->btnService->addBtnList(
             'admin_groupuser_index',
             'Liste',
         );
-        $this->adminBtnService->addBtnShow(
+        $this->btnService->addBtnShow(
             'admin_groupuser_show',
             'Show',
             [
                 'id' => $groupe->getId(),
             ]
         );
-        $this->adminBtnService->addBtnEdit(
+        $this->btnService->addBtnEdit(
             'admin_groupuser_edit',
             'Editer',
             [
@@ -105,10 +105,8 @@ class GroupeController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): ViewService
     {
-        $this->adminService->setDomain(Groupe::class);
-
-        return $this->adminService;
+        return $this->adminService->setDomain(Groupe::class);
     }
 }

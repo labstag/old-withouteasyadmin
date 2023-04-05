@@ -7,7 +7,7 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Service\Admin\MenuService;
+use Labstag\Service\Admin\Entity\MenuService as EntityMenuService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -72,10 +72,13 @@ class MenuController extends AdminControllerLib
         return $domainLib;
     }
 
-    protected function setAdmin(): MenuService
+    protected function setAdmin(): EntityMenuService
     {
-        $this->adminMenuService->setDomain(Menu::class);
+        $viewService = $this->adminService->setDomain(Menu::class);
+        if (!$viewService instanceof EntityMenuService) {
+            throw new Exception('Service not found');
+        }
 
-        return $this->adminMenuService;
+        return $viewService;
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Layout;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Service\Admin\LayoutService;
+use Labstag\Service\Admin\Entity\LayoutService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,8 +56,11 @@ class LayoutController extends AdminControllerLib
 
     protected function setAdmin(): LayoutService
     {
-        $this->adminLayoutService->setDomain(Layout::class);
+        $viewService = $this->adminService->setDomain(Layout::class);
+        if (!$viewService instanceof LayoutService) {
+            throw new Exception('Service not found');
+        }
 
-        return $this->adminLayoutService;
+        return $viewService;
     }
 }

@@ -51,15 +51,15 @@ class MenuDomain extends DomainLib implements DomainInterface
     public function getUrlAdmin(): array
     {
         return [
-            'delete'    => 'api_action_delete',
-            'destroy'   => 'api_action_destroy',
-            'edit'      => 'admin_menu_edit',
-            'empty'     => 'api_action_empty',
-            'popupmove' => 'admin_menu_move',
-            'list'      => 'admin_menu_index',
-            'new'       => 'admin_menu_new',
-            'restore'   => 'api_action_restore',
-            'trash'     => 'admin_menu_trash',
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_menu_edit',
+            'empty'    => 'api_action_empty',
+            'position' => 'admin_menu_move',
+            'list'     => 'admin_menu_index',
+            'new'      => 'admin_menu_new',
+            'restore'  => 'api_action_restore',
+            'trash'    => 'admin_menu_trash',
         ];
     }
 }

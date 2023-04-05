@@ -30,6 +30,10 @@ services:
       resource: "../src/Entity/"
       public: true
       tags: [entitiesclass]
+  Labstag\Service\Admin\Entity\:
+      resource: "../src/Service/Admin/Entity/"
+      public: true
+      tags: [entitiesadminservice]
   Labstag\Block\:
       resource: "../src/Block/"
       public: true
@@ -79,6 +83,9 @@ services:
   Labstag\Service\ParagraphService:
     arguments:
       - !tagged_iterator paragraphsclass
+  Labstag\Service\AdminService:
+    arguments:
+      - !tagged_iterator entitiesadminservice
   Labstag\Service\FrontService:
     arguments:
       - !tagged_iterator frontclass

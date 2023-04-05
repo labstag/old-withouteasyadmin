@@ -2,17 +2,15 @@
 
 namespace Labstag\Controller\Admin;
 
-use DateTime;
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Edito;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\EditoRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\Entity\EditoService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/edito', name: 'admin_edito_')]
 class EditoController extends AdminControllerLib
@@ -33,23 +31,10 @@ class EditoController extends AdminControllerLib
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
-        EditoRepository $editoRepository,
         Security $security
     ): RedirectResponse
     {
-        $user = $security->getUser();
-        if (is_null($user)) {
-            return $this->redirectToRoute('admin_edito_index');
-        }
-
-        $edito = new Edito();
-        $edito->setPublished(new DateTime());
-        $edito->setTitle(Uuid::v1());
-        $edito->setRefuser($user);
-
-        $editoRepository->save($edito);
-
-        return $this->redirectToRoute('admin_edito_edit', ['id' => $edito->getId()]);
+        return $this->setAdmin()->add($security);
     }
 
     #[IgnoreSoftDelete]
@@ -72,10 +57,13 @@ class EditoController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): EditoService
     {
-        $this->adminService->setDomain(Edito::class);
+        $viewService = $this->adminService->setDomain(Edito::class);
+        if (!$viewService instanceof EditoService) {
+            throw new Exception('Service must be instance of EditoService');
+        }
 
-        return $this->adminService;
+        return $viewService;
     }
 }

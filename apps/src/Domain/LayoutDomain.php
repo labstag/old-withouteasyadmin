@@ -63,7 +63,7 @@ class LayoutDomain extends DomainLib implements DomainInterface
             'edit'     => 'admin_layout_edit',
             'empty'    => 'api_action_empty',
             'list'     => 'admin_layout_index',
-            'newpopup' => 'admin_layout_new',
+            'add'      => 'admin_layout_new',
             'preview'  => 'admin_layout_preview',
             'restore'  => 'api_action_restore',
             'show'     => 'admin_layout_show',

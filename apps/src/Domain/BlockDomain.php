@@ -49,15 +49,15 @@ class BlockDomain extends DomainLib implements DomainInterface
     public function getUrlAdmin(): array
     {
         return [
-            'delete'   => 'api_action_delete',
-            'destroy'  => 'api_action_destroy',
-            'move'     => 'admin_block_move',
-            'popupnew' => 'admin_block_new',
-            'edit'     => 'admin_block_edit',
-            'empty'    => 'api_action_empty',
-            'list'     => 'admin_block_index',
-            'restore'  => 'api_action_restore',
-            'trash'    => 'admin_block_trash',
+            'delete'  => 'api_action_delete',
+            'destroy' => 'api_action_destroy',
+            'move'    => 'admin_block_move',
+            'add'     => 'admin_block_new',
+            'edit'    => 'admin_block_edit',
+            'empty'   => 'api_action_empty',
+            'list'    => 'admin_block_index',
+            'restore' => 'api_action_restore',
+            'trash'   => 'admin_block_trash',
         ];
     }
 }

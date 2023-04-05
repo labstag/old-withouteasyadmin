@@ -2,11 +2,12 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Bookmark;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Queue\EnqueueMethod;
-use Labstag\Service\Admin\BookmarkService as AdminBookmarkService;
+use Labstag\Service\Admin\Entity\BookmarkService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,10 +61,13 @@ class BookmarkController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminBookmarkService
+    protected function setAdmin(): BookmarkService
     {
-        $this->adminBookmarkService->setDomain(Bookmark::class);
+        $viewService = $this->adminService->setDomain(Bookmark::class);
+        if (!$viewService instanceof BookmarkService) {
+            throw new Exception('Service must be an instance of BookmarkService');
+        }
 
-        return $this->adminBookmarkService;
+        return $viewService;
     }
 }

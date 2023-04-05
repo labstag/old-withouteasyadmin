@@ -2,15 +2,14 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\PageRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\Entity\PageService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
 #[Route(path: '/admin/page', name: 'admin_page_')]
 class PageController extends AdminControllerLib
@@ -30,14 +29,9 @@ class PageController extends AdminControllerLib
     }
 
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(PageRepository $pageRepository): RedirectResponse
+    public function new(): RedirectResponse
     {
-        $page = new Page();
-        $page->setName(Uuid::v1());
-
-        $pageRepository->save($page);
-
-        return $this->redirectToRoute('admin_page_edit', ['id' => $page->getId()]);
+        return $this->setAdmin()->add();
     }
 
     #[IgnoreSoftDelete]
@@ -60,10 +54,13 @@ class PageController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): PageService
     {
-        $this->adminService->setDomain(Page::class);
+        $viewService = $this->adminService->setDomain(Page::class);
+        if (!$viewService instanceof PageService) {
+            throw new Exception('Service not found');
+        }
 
-        return $this->adminService;
+        return $viewService;
     }
 }

@@ -112,14 +112,14 @@ class AdminController extends AdminControllerLib
         }
 
         $form = $this->createForm(ParamType::class, $config);
-        $this->adminBtnService->addBtnSave($form->getName(), 'Sauvegarder');
+        $this->btnService->addBtnSave($form->getName(), 'Sauvegarder');
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $this->setUpload($request, $images);
             $cache->delete('configuration');
         }
 
-        $this->adminBtnService->add(
+        $this->btnService->add(
             'btn-admin-header-export',
             'Exporter',
             [
@@ -193,7 +193,7 @@ class AdminController extends AdminControllerLib
             }
 
             $modal['emptyall'] = true;
-            $this->adminBtnService->add(
+            $this->btnService->add(
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
@@ -206,7 +206,7 @@ class AdminController extends AdminControllerLib
         }
 
         $twigEnvironment->addGlobal('modal', $modal);
-        $this->adminBtnService->addViderSelection(
+        $this->btnService->addViderSelection(
             [
                 'redirect' => [
                     'href'   => 'admin_trash',

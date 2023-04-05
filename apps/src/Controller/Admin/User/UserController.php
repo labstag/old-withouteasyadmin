@@ -6,7 +6,7 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Repository\WorkflowRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,18 +27,18 @@ class UserController extends AdminControllerLib
         WorkflowRepository $workflowRepository
     ): Response
     {
-        $this->adminBtnService->addBtnList(
+        $this->btnService->addBtnList(
             'admin_user_index',
             'Liste',
         );
-        $this->adminBtnService->addBtnShow(
+        $this->btnService->addBtnShow(
             'admin_user_show',
             'Show',
             [
                 'id' => $user->getId(),
             ]
         );
-        $this->adminBtnService->addBtnEdit(
+        $this->btnService->addBtnEdit(
             'admin_user_edit',
             'Editer',
             [
@@ -105,10 +105,8 @@ class UserController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): ViewService
     {
-        $this->adminService->setDomain(User::class);
-
-        return $this->adminService;
+        return $this->adminService->setDomain(User::class);
     }
 }

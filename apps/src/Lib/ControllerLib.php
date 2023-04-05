@@ -5,11 +5,7 @@ namespace Labstag\Lib;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Service\Admin\BlockService as AdminBlockService;
-use Labstag\Service\Admin\BookmarkService as AdminBookmarkService;
-use Labstag\Service\Admin\LayoutService as AdminLayoutService;
-use Labstag\Service\Admin\MenuService as AdminMenuService;
-use Labstag\Service\AdminBtnService;
+use Labstag\Service\Admin\BtnService;
 use Labstag\Service\AdminService;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
@@ -40,10 +36,6 @@ abstract class ControllerLib extends AbstractController
     protected Request $request;
 
     public function __construct(
-        protected AdminBlockService $adminBlockService,
-        protected AdminBookmarkService $adminBookmarkService,
-        protected AdminLayoutService $adminLayoutService,
-        protected AdminMenuService $adminMenuService,
         protected AdminService $adminService,
         protected EntityManagerInterface $entityManager,
         protected WorkflowService $workflowService,
@@ -68,7 +60,7 @@ abstract class ControllerLib extends AbstractController
         protected BlockService $blockService,
         protected MenuService $menuService,
         protected BreadcrumbService $breadcrumbService,
-        protected AdminBtnService $adminBtnService
+        protected BtnService $btnService
     )
     {
     }

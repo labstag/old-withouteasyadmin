@@ -2,10 +2,11 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Block;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Service\Admin\BlockService as ServiceAdminBlockService;
+use Labstag\Service\Admin\Entity\BlockService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,10 +47,13 @@ class BlockController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): ServiceAdminBlockService
+    protected function setAdmin(): BlockService
     {
-        $this->adminBlockService->setDomain(Block::class);
+        $viewService = $this->adminService->setDomain(Block::class);
+        if (!$viewService instanceof BlockService) {
+            throw new Exception('Service not found');
+        }
 
-        return $this->adminBlockService;
+        return $viewService;
     }
 }

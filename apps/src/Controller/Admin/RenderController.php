@@ -5,7 +5,7 @@ namespace Labstag\Controller\Admin;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Render;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -14,7 +14,7 @@ class RenderController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Render $render
+        Render $render
     ): Response
     {
         return $this->setAdmin()->edit($render);
@@ -52,10 +52,8 @@ class RenderController extends AdminControllerLib
         return $this->setAdmin()->trash();
     }
 
-    protected function setAdmin(): AdminService
+    protected function setAdmin(): ViewService
     {
-        $this->adminService->setDomain(Render::class);
-
-        return $this->adminService;
+        return $this->adminService->setDomain(Render::class);
     }
 }

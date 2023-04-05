@@ -1,16 +1,16 @@
 <?php
 
-namespace Labstag\Service\Admin;
+namespace Labstag\Service\Admin\Entity;
 
 use Exception;
 use Labstag\Entity\Menu;
 use Labstag\Repository\MenuRepository;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class MenuService extends AdminService
+class MenuService extends ViewService
 {
     public function add(array $parameters = []): Response
     {
@@ -48,7 +48,7 @@ class MenuService extends AdminService
         return $this->editOrNew('edit', $menu, $parameters);
     }
 
-    public function divider(Menu $menu)
+    public function divider(Menu $menu): RedirectResponse
     {
         $routes = $this->getDomain()->getUrlAdmin();
         if (!isset($routes['list'])) {
@@ -71,6 +71,11 @@ class MenuService extends AdminService
         );
     }
 
+    public function getType(): string
+    {
+        return Menu::class;
+    }
+
     public function index(
         array $parameters = []
     ): Response
@@ -86,7 +91,7 @@ class MenuService extends AdminService
 
         $modal['delete'] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
-        $this->adminBtnService->addBtnNew('admin_menu_new');
+        $this->btnService->addBtnNew('admin_menu_new');
 
         $templates = $this->getDomain()->getTemplates();
         if (!array_key_exists('index', $templates)) {
@@ -110,14 +115,14 @@ class MenuService extends AdminService
     ): Response
     {
         $routes = $this->getDomain()->getUrlAdmin();
-        if (!isset($routes['list']) || !isset($routes['popupmove'])) {
+        if (!isset($routes['list']) || !isset($routes['position'])) {
             throw new Exception('Route list not found');
         }
 
         /** @var Request $request */
         $request    = $this->requeststack->getCurrentRequest();
         $currentUrl = $this->generateUrl(
-            $routes['popupmove'],
+            $routes['position'],
             [
                 'id' => $menu->getId(),
             ]
@@ -126,11 +131,11 @@ class MenuService extends AdminService
             $this->setPositionEntity($request, Menu::class);
         }
 
-        $this->adminBtnService->addBtnList(
+        $this->btnService->addBtnList(
             $routes['list'],
             'Liste',
         );
-        $this->adminBtnService->add(
+        $this->btnService->add(
             'btn-admin-save-move',
             'Enregistrer',
             [

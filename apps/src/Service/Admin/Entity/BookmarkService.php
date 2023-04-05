@@ -1,25 +1,40 @@
 <?php
 
-namespace Labstag\Service\Admin;
+namespace Labstag\Service\Admin\Entity;
 
 use DateTime;
 use DOMDocument;
 use Exception;
+use Labstag\Entity\Bookmark;
+use Labstag\Entity\User;
 use Labstag\Form\Admin\Bookmark\ImportType;
 use Labstag\Queue\EnqueueMethod;
-use Labstag\Service\AdminService;
+use Labstag\Service\Admin\ViewService;
+use Labstag\Service\DomainService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class BookmarkService extends AdminService
+class BookmarkService extends ViewService
 {
-    public function import(Security $security, EnqueueMethod $enqueueMethod)
+    public function getType(): string
     {
-        $url = $this->domain->getUrlAdmin();
-        $this->setBtnList($url);
+        return Bookmark::class;
+    }
+
+    public function import(Security $security, EnqueueMethod $enqueueMethod): Response
+    {
+        $domain = $this->getDomain();
+        if (!$domain instanceof DomainService) {
+            throw new Exception('Domain not found');
+        }
+
+        $url = $domain->getUrlAdmin();
+        $this->btnService->setBtnList($url);
         $form = $this->createForm(ImportType::class, []);
-        $this->adminBtnService->addBtnSave($form->getName(), 'Import');
+        $this->btnService->addBtnSave($form->getName(), 'Import');
         /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $form->handleRequest($request);
