@@ -256,14 +256,14 @@ class ViewService
 
     protected function denyAccessUnlessGranted(
         string $attribute,
-        EntityInterface $subject,
+        EntityInterface $entity,
         string $message = 'Access Denied.'
     ): void
     {
-        if (!$this->isGranted($attribute, $subject)) {
+        if (!$this->isGranted($attribute, $entity)) {
             $accessDeniedException = new AccessDeniedException($message, null);
             $accessDeniedException->setAttributes([$attribute]);
-            $accessDeniedException->setSubject($subject);
+            $accessDeniedException->setSubject($entity);
 
             throw $accessDeniedException;
         }

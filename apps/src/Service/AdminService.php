@@ -33,7 +33,7 @@ class AdminService
                 break;
             }
         }
-        
+
         if (!$service instanceof ViewService) {
             throw new Exception('Service not found');
         }
