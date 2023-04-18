@@ -7,7 +7,7 @@
 					{% set img = attachment(memo.fond) %}
 					{% if img is not null and img.name is not null %}
 						<picture class="memo_img">
-							<img alt="{{ memo.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
+							<img loading="lazy" alt="{{ memo.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
 						</picture>
 					{% endif %}
 					<div class="card-body">

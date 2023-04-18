@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route(path: '/api/guard', name: 'api_guard_')]
 class GuardController extends ApiControllerLib
@@ -41,6 +42,7 @@ class GuardController extends ApiControllerLib
         string $route,
         string $groupe,
         Request $request,
+        CsrfTokenManagerInterface $csrfTokenManager,
         GroupeRepository $groupeRepository,
         RouteRepository $routeRepository,
         RouteGroupeRepository $routeGroupeRepository
@@ -64,7 +66,7 @@ class GuardController extends ApiControllerLib
             'guard-'.$groupeId.'-route-'.$routeId,
             (string) $post['_token']
         );
-        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
+        if ($csrfTokenManager->isTokenValid($csrfToken)) {
             $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
@@ -94,6 +96,7 @@ class GuardController extends ApiControllerLib
         string $route,
         string $user,
         Request $request,
+        CsrfTokenManagerInterface $csrfTokenManager,
         UserRepository $userRepository,
         RouteRepository $routeRepository,
         RouteUserRepository $routeUserRepository
@@ -117,7 +120,7 @@ class GuardController extends ApiControllerLib
             'guard-'.$userId.'-route-'.$routeId,
             (string) $post['_token']
         );
-        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
+        if ($csrfTokenManager->isTokenValid($csrfToken)) {
             $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);

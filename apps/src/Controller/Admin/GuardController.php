@@ -2,10 +2,9 @@
 
 namespace Labstag\Controller\Admin;
 
+use Exception;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\RouteRepository;
-use Labstag\Repository\WorkflowRepository;
+use Labstag\Service\Admin\Entity\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,27 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class GuardController extends AdminControllerLib
 {
     #[Route(path: '/', name: 'admin_guard_index', methods: ['GET', 'POST'])]
-    public function index(
-        WorkflowRepository $workflowRepository,
-        GroupeRepository $groupeRepository,
-        RouteRepository $routeRepository
-    ): Response
+    public function index(): Response
     {
-        $workflows = $workflowRepository->findBy(
-            [],
-            [
-                'entity'     => 'ASC',
-                'transition' => 'ASC',
-            ]
-        );
+        $viewService = $this->adminService->setDomain('guard');
+        if (!$viewService instanceof GuardService) {
+            throw new Exception('TrashService not found');
+        }
 
-        return $this->render(
-            'admin/guard/index.html.twig',
-            [
-                'groups'    => $groupeRepository->findBy([], ['name' => 'ASC']),
-                'routes'    => $routeRepository->findBy([], ['name' => 'ASC']),
-                'workflows' => $workflows,
-            ]
-        );
+        return $viewService->global();
     }
 }

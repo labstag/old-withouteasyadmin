@@ -12,6 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
 use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
 #[ApiResource]
-class History implements PublicInterface, EntityTrashInterface
+class History implements PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;

@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
 use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\ChapterRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: ChapterRepository::class)]
 #[ApiResource]
-class Chapter implements PublicInterface, EntityTrashInterface
+class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;

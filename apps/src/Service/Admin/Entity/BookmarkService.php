@@ -8,16 +8,17 @@ use Exception;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Bookmark\ImportType;
+use Labstag\Interfaces\AdminEntityServiceInterface;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Service\Admin\ViewService;
-use Labstag\Service\DomainService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class BookmarkService extends ViewService
+class BookmarkService extends ViewService implements AdminEntityServiceInterface
 {
     public function getType(): string
     {
@@ -27,7 +28,7 @@ class BookmarkService extends ViewService
     public function import(Security $security, EnqueueMethod $enqueueMethod): Response
     {
         $domain = $this->getDomain();
-        if (!$domain instanceof DomainService) {
+        if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

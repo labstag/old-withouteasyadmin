@@ -5,13 +5,14 @@ namespace Labstag\Service\Admin\Entity;
 use DateTime;
 use Exception;
 use Labstag\Entity\Post;
+use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Repository\PostRepository;
 use Labstag\Service\Admin\ViewService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Uid\Uuid;
 
-class PostService extends ViewService
+class PostService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(
         Security $security

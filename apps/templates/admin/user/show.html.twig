@@ -20,7 +20,7 @@
                 <th>{{ 'user.avatar'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <picture>
-                        <img alt="{{ 'user.avatar'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(avatar.name) | imagefilter('my_thumb') }}" />
+                        <img loading="lazy" alt="{{ 'user.avatar'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(avatar.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>

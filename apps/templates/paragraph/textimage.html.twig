@@ -3,6 +3,6 @@
         {{ paragraph.content|raw }}
     </div>
     <div>
-        <img src="{{ attachment | imagefilter('paragraph_image') }}" alt="{{ paragraph.title|e('html_attr') }}" />
+        <img loading="lazy" src="{{ attachment | imagefilter('paragraph_image') }}" alt="{{ paragraph.title|e('html_attr') }}" />
     </div>
 </section>

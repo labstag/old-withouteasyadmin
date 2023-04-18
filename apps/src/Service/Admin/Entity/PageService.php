@@ -4,12 +4,13 @@ namespace Labstag\Service\Admin\Entity;
 
 use Exception;
 use Labstag\Entity\Page;
+use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Uid\Uuid;
 
-class PageService extends ViewService
+class PageService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(): RedirectResponse
     {

@@ -11,15 +11,17 @@ use Labstag\Form\Security\ChangePasswordType;
 use Labstag\Form\Security\DisclaimerType;
 use Labstag\Form\Security\LoginType;
 use Labstag\Form\Security\LostPasswordType;
-use Labstag\Lib\ControllerLib;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\OauthService;
+use Labstag\Service\SessionService;
 use Labstag\Service\UserService;
+use Labstag\Service\WorkflowService;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use LogicException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,16 +30,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SecurityController extends ControllerLib
+class SecurityController extends AbstractController
 {
     #[Route(path: '/change-password/{id}', name: 'app_changepassword', priority: 1)]
-    public function changePassword(User $user, Request $request): Response
+    public function changePassword(
+        TranslatorInterface $translator,
+        WorkflowService $workflowService,
+        SessionService $sessionService,
+        User $user,
+        Request $request
+    ): Response
     {
         if ('lostpassword' != $user->getState()) {
-            $this->sessionService->flashBagAdd(
+            $sessionService->flashBagAdd(
                 'danger',
-                $this->translator->trans('security.user.sendlostpassword.fail')
+                $translator->trans('security.user.sendlostpassword.fail')
             );
 
             return $this->redirectToRoute('front');
@@ -46,7 +55,7 @@ class SecurityController extends ControllerLib
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->workflowService->changeState($user, ['valider']);
+            $workflowService->changeState($user, ['valider']);
 
             return $this->redirectToRoute('front');
         }
@@ -58,70 +67,90 @@ class SecurityController extends ControllerLib
     }
 
     #[Route(path: '/confirm/email/{id}', name: 'app_confirm_mail', priority: 1)]
-    public function confirmEmail(Email $email): RedirectResponse
+    public function confirmEmail(
+        TranslatorInterface $translator,
+        WorkflowService $workflowService,
+        SessionService $sessionService,
+        Email $email
+    ): RedirectResponse
     {
         if ('averifier' != $email->getState()) {
-            $this->sessionService->flashBagAdd(
+            $sessionService->flashBagAdd(
                 'danger',
-                $this->translator->trans('security.email.activate.fail')
+                $translator->trans('security.email.activate.fail')
             );
 
             return $this->redirectToRoute('front');
         }
 
-        $this->workflowService->changeState($email, ['valider']);
-        $this->sessionService->flashBagAdd(
+        $workflowService->changeState($email, ['valider']);
+        $sessionService->flashBagAdd(
             'success',
-            $this->translator->trans('security.email.activate.win')
+            $translator->trans('security.email.activate.win')
         );
 
         return $this->redirectToRoute('front');
     }
 
     #[Route(path: '/confirm/phone/{id}', name: 'app_confirm_phone', priority: 1)]
-    public function confirmPhone(Phone $phone): RedirectResponse
+    public function confirmPhone(
+        TranslatorInterface $translator,
+        WorkflowService $workflowService,
+        SessionService $sessionService,
+        Phone $phone
+    ): RedirectResponse
     {
         if ('averifier' != $phone->getState()) {
-            $this->sessionService->flashBagAdd(
+            $sessionService->flashBagAdd(
                 'danger',
-                $this->translator->trans('security.phone.activate.fail')
+                $translator->trans('security.phone.activate.fail')
             );
 
             return $this->redirectToRoute('front');
         }
 
-        $this->workflowService->changeState($phone, ['valider']);
-        $this->sessionService->flashBagAdd(
+        $workflowService->changeState($phone, ['valider']);
+        $sessionService->flashBagAdd(
             'success',
-            $this->translator->trans('security.phone.activate.win')
+            $translator->trans('security.phone.activate.win')
         );
 
         return $this->redirectToRoute('front');
     }
 
     #[Route(path: '/confirm/user/{id}', name: 'app_confirm_user', priority: 1)]
-    public function confirmUser(User $user): RedirectResponse
+    public function confirmUser(
+        TranslatorInterface $translator,
+        WorkflowService $workflowService,
+        SessionService $sessionService,
+        User $user
+    ): RedirectResponse
     {
         if ('avalider' != $user->getState()) {
-            $this->sessionService->flashBagAdd(
+            $sessionService->flashBagAdd(
                 'danger',
-                $this->translator->trans('security.user.activate.fail')
+                $translator->trans('security.user.activate.fail')
             );
 
             return $this->redirectToRoute('front');
         }
 
-        $this->workflowService->changeState($user, ['validation']);
-        $this->sessionService->flashBagAdd(
+        $workflowService->changeState($user, ['validation']);
+        $sessionService->flashBagAdd(
             'success',
-            $this->translator->trans('security.user.activate.win')
+            $translator->trans('security.user.activate.win')
         );
 
         return $this->redirectToRoute('front');
     }
 
     #[Route(path: '/disclaimer', name: 'disclaimer', priority: 1)]
-    public function disclaimer(Request $request, DataService $dataService): RedirectResponse|Response
+    public function disclaimer(
+        TranslatorInterface $translator,
+        SessionService $sessionService,
+        Request $request,
+        DataService $dataService
+    ): RedirectResponse|Response
     {
         $form = $this->createForm(DisclaimerType::class, []);
         $form->handleRequest($request);
@@ -135,9 +164,9 @@ class SecurityController extends ControllerLib
                 return $this->redirectToRoute('front');
             }
 
-            $this->sessionService->flashBagAdd(
+            $sessionService->flashBagAdd(
                 'danger',
-                $this->translator->trans('security.disclaimer.doaccept')
+                $translator->trans('security.disclaimer.doaccept')
             );
         }
 
@@ -215,7 +244,13 @@ class SecurityController extends ControllerLib
      * Link to this controller to start the "connect" process.
      */
     #[Route(path: '/oauth/connect/{oauthCode}', name: 'connect_start', priority: 1)]
-    public function oauthConnect(Request $request, string $oauthCode, OauthService $oauthService): RedirectResponse
+    public function oauthConnect(
+        TranslatorInterface $translator,
+        SessionService $sessionService,
+        Request $request,
+        string $oauthCode,
+        OauthService $oauthService
+    ): RedirectResponse
     {
         /** @var AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
@@ -234,9 +269,9 @@ class SecurityController extends ControllerLib
         }
 
         if (!$provider instanceof AbstractProvider) {
-            $this->sessionService->flashBagAdd(
+            $sessionService->flashBagAdd(
                 'warning',
-                $this->translator->trans('security.user.oauth.fail')
+                $translator->trans('security.user.oauth.fail')
             );
 
             return $this->redirect((string) $referer);
@@ -258,6 +293,8 @@ class SecurityController extends ControllerLib
      */
     #[Route(path: '/oauth/check/{oauthCode}', name: 'connect_check', priority: 1)]
     public function oauthConnectCheck(
+        TranslatorInterface $translator,
+        SessionService $sessionService,
         Request $request,
         string $oauthCode,
         UsageTrackingTokenStorage $usageTrackingTokenStorage,
@@ -290,9 +327,9 @@ class SecurityController extends ControllerLib
             $session->remove('oauth2state');
             $session->remove('referer');
             $session->remove('link');
-            $this->sessionService->flashBagAdd(
+            $sessionService->flashBagAdd(
                 'warning',
-                $this->translator->trans('security.user.connect.fail')
+                $translator->trans('security.user.connect.fail')
             );
 
             return $this->redirect($referer);
@@ -314,9 +351,9 @@ class SecurityController extends ControllerLib
             /** @var User $user */
             $user = $token->getUser();
             if (!$user instanceof User) {
-                $this->sessionService->flashBagAdd(
+                $sessionService->flashBagAdd(
                     'warning',
-                    $this->translator->trans('security.user.connect.fail')
+                    $translator->trans('security.user.connect.fail')
                 );
 
                 return $this->redirect($referer);
@@ -346,6 +383,8 @@ class SecurityController extends ControllerLib
      */
     #[Route(path: '/oauth/lost/{oauthCode}', name: 'connect_lost', priority: 1)]
     public function oauthLost(
+        TranslatorInterface $translator,
+        SessionService $sessionService,
         Request $request,
         string $oauthCode,
         Security $security,
@@ -370,8 +409,8 @@ class SecurityController extends ControllerLib
             $oauthConnectUserRepository->remove($oauthConnectUser);
             $paramtrans = ['%string%' => $oauthCode];
 
-            $msg = $this->translator->trans('security.user.oauth.dissociated', $paramtrans);
-            $this->sessionService->flashBagAdd('success', $msg);
+            $msg = $translator->trans('security.user.oauth.dissociated', $paramtrans);
+            $sessionService->flashBagAdd('success', $msg);
         }
 
         return $this->redirect($referer);

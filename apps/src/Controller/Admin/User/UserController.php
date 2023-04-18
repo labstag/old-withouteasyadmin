@@ -2,10 +2,11 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\User;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\WorkflowRepository;
+use Labstag\Service\Admin\Entity\GuardService;
 use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,55 +23,14 @@ class UserController extends AdminControllerLib
     }
 
     #[Route(path: '/{id}/guard', name: 'guard')]
-    public function guard(
-        User $user,
-        WorkflowRepository $workflowRepository
-    ): Response
+    public function guard(User $user): Response
     {
-        $this->btnService->addBtnList(
-            'admin_user_index',
-            'Liste',
-        );
-        $this->btnService->addBtnShow(
-            'admin_user_show',
-            'Show',
-            [
-                'id' => $user->getId(),
-            ]
-        );
-        $this->btnService->addBtnEdit(
-            'admin_user_edit',
-            'Editer',
-            [
-                'id' => $user->getId(),
-            ]
-        );
-        $routes = $this->guardService->getGuardRoutesForUser($user);
-        if (0 == count($routes)) {
-            $this->sessionService->flashBagAdd(
-                'danger',
-                $this->translator->trans('admin.user.guard.superadmin.nope')
-            );
-
-            return $this->redirectToRoute('admin_user_index');
+        $guardService = $this->adminService->setDomain('guard');
+        if (!$guardService instanceof GuardService) {
+            throw new Exception('TrashService not found');
         }
 
-        $workflows = $workflowRepository->findBy(
-            [],
-            [
-                'entity'     => 'ASC',
-                'transition' => 'ASC',
-            ]
-        );
-
-        return $this->render(
-            'admin/guard/user.html.twig',
-            [
-                'user'      => $user,
-                'routes'    => $routes,
-                'workflows' => $workflows,
-            ]
-        );
+        return $guardService->user($user);
     }
 
     #[Route(path: '/', name: 'index', methods: ['GET'])]

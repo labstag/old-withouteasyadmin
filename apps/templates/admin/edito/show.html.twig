@@ -20,7 +20,7 @@
                 <th>{{ 'edito.fond'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <picture>
-                        <img alt="{{ 'edito.fond'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
+                        <img loading="lazy" alt="{{ 'edito.fond'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>

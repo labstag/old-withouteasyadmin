@@ -4,8 +4,8 @@ namespace Labstag\Search;
 
 use DateTime;
 use Labstag\Entity\Category;
+use Labstag\Entity\User;
 use Labstag\Lib\SearchLib;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class PostSearch extends SearchLib
 {
@@ -18,5 +18,5 @@ class PostSearch extends SearchLib
 
     public ?string $title = null;
 
-    public ?UserInterface $user = null;
+    public ?User $user = null;
 }

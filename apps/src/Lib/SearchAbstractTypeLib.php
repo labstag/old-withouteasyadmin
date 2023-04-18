@@ -148,7 +148,11 @@ abstract class SearchAbstractTypeLib extends AbstractType
     ): void
     {
         /** @var WorkflowInterface $workflow */
-        $workflow   = $this->workflowService->get($entity);
+        $workflow = $this->workflowService->get($entity);
+        if (!$workflow instanceof WorkflowInterface) {
+            return;
+        }
+
         $definition = $workflow->getDefinition();
         $places     = $definition->getPlaces();
         $formBuilder->add(

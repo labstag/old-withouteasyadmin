@@ -5,12 +5,13 @@ namespace Labstag\Service\Admin\Entity;
 use Exception;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
+use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Repository\ChapterRepository;
 use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Uid\Uuid;
 
-class ChapterService extends ViewService
+class ChapterService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(
         History $history

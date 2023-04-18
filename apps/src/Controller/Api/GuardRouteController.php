@@ -11,7 +11,9 @@ use Labstag\Lib\ApiControllerLib;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\RouteGroupeRepository;
 use Labstag\Repository\RouteUserRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\Service\GuardService;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -82,14 +84,24 @@ class GuardRouteController extends ApiControllerLib
     }
 
     #[Route(path: '/', name: 'route')]
-    public function index(Request $request): JsonResponse
+    public function index(
+        RepositoryService $repositoryService,
+        UserRepository $userRepository,
+        Request $request
+    ): JsonResponse
     {
         $data = [
             'group' => [],
         ];
-        $get     = $request->query->all();
-        $data    = $this->getGuardRouteOrWorkflow($data, $get, RouteUser::class);
-        $results = $this->getResultWorkflow($request, RouteGroupe::class);
+        $get  = $request->query->all();
+        $data = $this->getGuardRouteOrWorkflow(
+            $repositoryService,
+            $userRepository,
+            $data,
+            $get,
+            RouteUser::class
+        );
+        $results = $this->getResultWorkflow($repositoryService, $request, RouteGroupe::class);
         if (!is_iterable($results)) {
             return new JsonResponse($data);
         }

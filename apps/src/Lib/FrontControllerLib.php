@@ -6,10 +6,26 @@ use Labstag\Entity\Block;
 use Labstag\Entity\Page;
 use Labstag\Repository\BlockRepository;
 use Labstag\Repository\PageRepository;
+use Labstag\Service\BlockService;
+use Labstag\Service\DataService;
+use Labstag\Service\FrontService;
+use Labstag\Service\RepositoryService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
-abstract class FrontControllerLib extends ControllerLib
+abstract class FrontControllerLib extends AbstractController
 {
+    public function __construct(
+        protected FrontService $frontService,
+        protected Environment $twigEnvironment,
+        protected RepositoryService $repositoryService,
+        protected DataService $dataService,
+        protected BlockService $blockService
+    )
+    {
+    }
+
     public function page(
         ?string $slug,
         PageRepository $pageRepository

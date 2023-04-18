@@ -9,9 +9,11 @@ use Labstag\Entity\WorkflowGroupe;
 use Labstag\Entity\WorkflowUser;
 use Labstag\Lib\ApiControllerLib;
 use Labstag\Repository\GroupeRepository;
+use Labstag\Repository\UserRepository;
 use Labstag\Repository\WorkflowGroupeRepository;
 use Labstag\Repository\WorkflowRepository;
 use Labstag\Repository\WorkflowUserRepository;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -65,14 +67,24 @@ class GuardWorkflowController extends ApiControllerLib
     }
 
     #[Route(path: '/', name: 'workflow')]
-    public function index(Request $request): JsonResponse
+    public function index(
+        UserRepository $userRepository,
+        RepositoryService $repositoryService,
+        Request $request
+    ): JsonResponse
     {
         $data = [
             'group' => [],
         ];
-        $get     = $request->query->all();
-        $data    = $this->getGuardRouteOrWorkflow($data, $get, WorkflowUser::class);
-        $results = $this->getResultWorkflow($request, WorkflowGroupe::class);
+        $get  = $request->query->all();
+        $data = $this->getGuardRouteOrWorkflow(
+            $repositoryService,
+            $userRepository,
+            $data,
+            $get,
+            WorkflowUser::class
+        );
+        $results = $this->getResultWorkflow($repositoryService, $request, WorkflowGroupe::class);
         if (!is_iterable($results)) {
             return new JsonResponse($data);
         }

@@ -6,17 +6,18 @@ use Exception;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
 use Labstag\Form\Admin\NewLayoutType;
+use Labstag\Interfaces\AdminEntityServiceInterface;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Repository\Block\CustomRepository;
 use Labstag\Repository\LayoutRepository;
 use Labstag\Service\Admin\ViewService;
-use Labstag\Service\DomainService;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Uuid;
 
-class LayoutService extends ViewService
+class LayoutService extends ViewService implements AdminEntityServiceInterface
 {
     public function getType(): string
     {
@@ -35,7 +36,7 @@ class LayoutService extends ViewService
     ): RedirectResponse
     {
         $domain = $this->getDomain();
-        if (!$domain instanceof DomainService) {
+        if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 
@@ -85,7 +86,7 @@ class LayoutService extends ViewService
     ): Response
     {
         $domain = $this->getDomain();
-        if (!$domain instanceof DomainService) {
+        if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 

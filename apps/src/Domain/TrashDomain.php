@@ -2,17 +2,16 @@
 
 namespace Labstag\Domain;
 
-use Labstag\Entity\Profil;
 use Labstag\Form\Admin\ProfilType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\ProfilSearch;
 
-class ProfilDomain extends DomainLib implements DomainInterface
+class TrashDomain extends DomainLib implements DomainInterface
 {
     public function getEntity(): string
     {
-        return Profil::class;
+        return 'trash';
     }
 
     public function getSearchData(): ProfilSearch
@@ -22,13 +21,13 @@ class ProfilDomain extends DomainLib implements DomainInterface
 
     public function getTemplates(): array
     {
-        return ['edit' => 'admin/profil.html.twig'];
+        return ['edit' => 'admin/param.html.twig'];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_profil' => $this->translator->trans('profil.title', [], 'admin.breadcrumb'),
+            'admin_trash' => $this->translator->trans('trash.title', [], 'admin.header'),
         ];
     }
 

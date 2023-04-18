@@ -4,13 +4,14 @@ namespace Labstag\Service\Admin\Entity;
 
 use Exception;
 use Labstag\Entity\Menu;
+use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Repository\MenuRepository;
 use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class MenuService extends ViewService
+class MenuService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(array $parameters = []): Response
     {

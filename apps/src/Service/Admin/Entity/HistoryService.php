@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
+use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Repository\HistoryRepository;
 use Labstag\Service\Admin\ViewService;
 use Labstag\Service\HistoryService as ServiceHistoryService;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Uuid;
 
-class HistoryService extends ViewService
+class HistoryService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(
         Security $security

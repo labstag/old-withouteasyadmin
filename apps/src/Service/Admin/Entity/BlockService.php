@@ -5,6 +5,7 @@ namespace Labstag\Service\Admin\Entity;
 use Exception;
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\NewBlockType;
+use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\BlockRepository;
 use Labstag\Service\Admin\ViewService;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Uid\Uuid;
 
-class BlockService extends ViewService
+class BlockService extends ViewService implements AdminEntityServiceInterface
 {
     public function edit(
         EntityInterface $entity,

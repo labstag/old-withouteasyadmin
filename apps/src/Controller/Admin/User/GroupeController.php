@@ -2,10 +2,11 @@
 
 namespace Labstag\Controller\Admin\User;
 
+use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Repository\WorkflowRepository;
+use Labstag\Service\Admin\Entity\GuardService;
 use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,55 +23,14 @@ class GroupeController extends AdminControllerLib
     }
 
     #[Route(path: '/{id}/guard', name: 'guard')]
-    public function guard(
-        Groupe $groupe,
-        WorkflowRepository $workflowRepository
-    ): Response
+    public function guard(Groupe $groupe): Response
     {
-        $this->btnService->addBtnList(
-            'admin_groupuser_index',
-            'Liste',
-        );
-        $this->btnService->addBtnShow(
-            'admin_groupuser_show',
-            'Show',
-            [
-                'id' => $groupe->getId(),
-            ]
-        );
-        $this->btnService->addBtnEdit(
-            'admin_groupuser_edit',
-            'Editer',
-            [
-                'id' => $groupe->getId(),
-            ]
-        );
-        $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
-        if (0 == count($routes)) {
-            $this->sessionService->flashBagAdd(
-                'danger',
-                $this->translator->trans('admin.group.guard.superadmin.nope')
-            );
-
-            return $this->redirectToRoute('admin_groupuser_index');
+        $guardService = $this->adminService->setDomain('guard');
+        if (!$guardService instanceof GuardService) {
+            throw new Exception('TrashService not found');
         }
 
-        $workflows = $workflowRepository->findBy(
-            [],
-            [
-                'entity'     => 'ASC',
-                'transition' => 'ASC',
-            ]
-        );
-
-        return $this->render(
-            'admin/guard/group.html.twig',
-            [
-                'group'     => $groupe,
-                'routes'    => $routes,
-                'workflows' => $workflows,
-            ]
-        );
+        return $guardService->groupe($groupe);
     }
 
     #[Route(path: '/', name: 'index', methods: ['GET'])]

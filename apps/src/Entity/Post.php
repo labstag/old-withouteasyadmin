@@ -13,6 +13,7 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
 use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\PostRepository;
 use Stringable;
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ApiResource]
-class Post implements Stringable, PublicInterface, EntityTrashInterface
+class Post implements Stringable, PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;

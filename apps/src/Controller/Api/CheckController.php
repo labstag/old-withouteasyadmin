@@ -3,6 +3,7 @@
 namespace Labstag\Controller\Api;
 
 use Labstag\Lib\ApiControllerLib;
+use Labstag\Service\PhoneService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,7 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class CheckController extends ApiControllerLib
 {
     #[Route(path: '/phone', name: 'api_check_phone')]
-    public function phone(Request $request): Response
+    public function phone(
+        PhoneService $phoneService,
+        Request $request
+    ): Response
     {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
@@ -22,7 +26,7 @@ class CheckController extends ApiControllerLib
         $phone   = $request->query->get('phone');
         $country = $request->query->get('country');
 
-        $verif = $this->phoneService->verif(
+        $verif = $phoneService->verif(
             (string) $phone,
             (string) $country
         );

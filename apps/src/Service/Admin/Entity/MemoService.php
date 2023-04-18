@@ -4,13 +4,14 @@ namespace Labstag\Service\Admin\Entity;
 
 use Exception;
 use Labstag\Entity\Memo;
+use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Repository\MemoRepository;
 use Labstag\Service\Admin\ViewService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Uid\Uuid;
 
-class MemoService extends ViewService
+class MemoService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(
         Security $security

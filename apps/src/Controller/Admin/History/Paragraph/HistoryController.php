@@ -2,60 +2,42 @@
 
 namespace Labstag\Controller\Admin\History\Paragraph;
 
-use Exception;
 use Labstag\Entity\History;
 use Labstag\Entity\Paragraph;
-use Labstag\Interfaces\PublicInterface;
-use Labstag\Lib\ParagraphControllerLib;
-use Labstag\Service\ParagraphService;
+use Labstag\Service\Admin\ParagraphService;
+use Labstag\Service\AdminService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/admin/history/paragraph', name: 'admin_history_paragraph_')]
-class HistoryController extends ParagraphControllerLib
+class HistoryController extends AbstractController
 {
+    public function __construct(
+        protected AdminService $adminService
+    )
+    {
+    }
+
     #[Route(path: '/add/{id}', name: 'add')]
     public function add(
-        ParagraphService $paragraphService,
-        History $history,
-        Request $request
+        History $history
     ): RedirectResponse
     {
-        $data = $request->get('data');
-        if (!is_string($data)) {
-            throw new Exception('data is not string');
-        }
-
-        $paragraphService->add($history, $data);
-
-        return $this->redirectToRoute('admin_history_paragraph_list', ['id' => $history->getId()]);
+        return $this->paragraph()->add($history);
     }
 
     #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
-        $history = $paragraph->getHistory();
-        if (!$history instanceof PublicInterface) {
-            throw new Exception('history is not public interface');
-        }
-
-        return $this->deleteParagraph(
-            $paragraph,
-            $history,
-            'admin_history_edit'
-        );
+        return $this->paragraph()->delete($paragraph);
     }
 
     #[Route(path: '/list/{id}', name: 'list')]
     public function list(History $history): Response
     {
-        return $this->listTwig(
-            'admin_history_paragraph_show',
-            $history->getParagraphs(),
-            'admin_history_paragraph_delete'
-        );
+        return $this->paragraph()->list($history->getParagraphs());
     }
 
     #[Route(path: '/show/{id}', name: 'show')]
@@ -63,6 +45,19 @@ class HistoryController extends ParagraphControllerLib
         Paragraph $paragraph
     ): Response
     {
-        return parent::showTwig($paragraph);
+        return $this->paragraph()->show($paragraph);
+    }
+
+    private function paragraph(): ParagraphService
+    {
+        $paragraph = $this->adminService->paragraph();
+        $paragraph->setUrls(
+            'admin_history_paragraph_list',
+            'admin_history_edit',
+            'admin_history_paragraph_show',
+            'admin_history_paragraph_delete'
+        );
+
+        return $paragraph;
     }
 }

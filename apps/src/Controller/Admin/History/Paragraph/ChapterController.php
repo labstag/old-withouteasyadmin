@@ -2,60 +2,42 @@
 
 namespace Labstag\Controller\Admin\History\Paragraph;
 
-use Exception;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Paragraph;
-use Labstag\Interfaces\PublicInterface;
-use Labstag\Lib\ParagraphControllerLib;
-use Labstag\Service\ParagraphService;
+use Labstag\Service\Admin\ParagraphService;
+use Labstag\Service\AdminService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/admin/history/chapter/paragraph', name: 'admin_chapter_paragraph_')]
-class ChapterController extends ParagraphControllerLib
+class ChapterController extends AbstractController
 {
+    public function __construct(
+        protected AdminService $adminService
+    )
+    {
+    }
+
     #[Route(path: '/add/{id}', name: 'add')]
     public function add(
-        ParagraphService $paragraphService,
-        Chapter $chapter,
-        Request $request
+        Chapter $chapter
     ): RedirectResponse
     {
-        $data = $request->get('data');
-        if (!is_string($data)) {
-            throw new Exception('data is not string');
-        }
-
-        $paragraphService->add($chapter, $data);
-
-        return $this->redirectToRoute('admin_chapter_paragraph_list', ['id' => $chapter->getId()]);
+        return $this->paragraph()->add($chapter);
     }
 
     #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
-        $chapter = $paragraph->getChapter();
-        if (!$chapter instanceof PublicInterface) {
-            throw new Exception('chapter is not public interface');
-        }
-
-        return $this->deleteParagraph(
-            $paragraph,
-            $chapter,
-            'admin_chapter_edit'
-        );
+        return $this->paragraph()->delete($paragraph);
     }
 
     #[Route(path: '/list/{id}', name: 'list')]
     public function list(Chapter $chapter): Response
     {
-        return $this->listTwig(
-            'admin_chapter_paragraph_show',
-            $chapter->getParagraphs(),
-            'admin_chapter_paragraph_delete'
-        );
+        return $this->paragraph()->list($chapter->getParagraphs());
     }
 
     #[Route(path: '/show/{id}', name: 'show')]
@@ -63,6 +45,19 @@ class ChapterController extends ParagraphControllerLib
         Paragraph $paragraph
     ): Response
     {
-        return parent::showTwig($paragraph);
+        return $this->paragraph()->show($paragraph);
+    }
+
+    private function paragraph(): ParagraphService
+    {
+        $paragraph = $this->adminService->paragraph();
+        $paragraph->setUrls(
+            'admin_chapter_paragraph_list',
+            'admin_chapter_edit',
+            'admin_chapter_paragraph_show',
+            'admin_chapter_paragraph_delete'
+        );
+
+        return $paragraph;
     }
 }

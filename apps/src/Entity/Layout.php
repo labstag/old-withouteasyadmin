@@ -10,12 +10,13 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Block\Custom;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
 use Labstag\Repository\LayoutRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: LayoutRepository::class)]
 #[ApiResource]
-class Layout implements EntityFrontInterface, EntityTrashInterface
+class Layout implements EntityFrontInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
 

@@ -8,6 +8,7 @@ use Labstag\Entity\Libelle;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
 use Labstag\Lib\RepositoryLib;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +20,10 @@ class SearchController extends ApiControllerLib
     #[Route(path: '/group', name: 'group')]
     #[Route(path: '/libelle', name: 'postlibelle')]
     #[Route(path: '/user', name: 'user')]
-    public function libelle(Request $request): JsonResponse
+    public function libelle(
+        RepositoryService $repositoryService,
+        Request $request
+    ): JsonResponse
     {
         $attributes = $request->attributes->all();
         $route      = $attributes['_route'];
@@ -36,10 +40,11 @@ class SearchController extends ApiControllerLib
             default           => 'findName'
         };
 
-        return $this->showData($request, $entityName, $function);
+        return $this->showData($repositoryService, $request, $entityName, $function);
     }
 
     private function showData(
+        RepositoryService $repositoryService,
         Request $request,
         ?string $entity,
         string $method
@@ -51,7 +56,7 @@ class SearchController extends ApiControllerLib
             return $this->json($return);
         }
 
-        $repositoryLib = $this->repositoryService->get($entity);
+        $repositoryLib = $repositoryService->get($entity);
         if (!$repositoryLib instanceof RepositoryLib) {
             return $this->json($return);
         }

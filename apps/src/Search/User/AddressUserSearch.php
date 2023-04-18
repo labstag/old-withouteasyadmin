@@ -2,8 +2,8 @@
 
 namespace Labstag\Search\User;
 
+use Labstag\Entity\User;
 use Labstag\Lib\SearchLib;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class AddressUserSearch extends SearchLib
 {
@@ -12,5 +12,5 @@ class AddressUserSearch extends SearchLib
 
     public ?string $country = null;
 
-    public ?UserInterface $user = null;
+    public ?User $user = null;
 }

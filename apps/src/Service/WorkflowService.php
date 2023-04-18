@@ -72,16 +72,21 @@ class WorkflowService
 
     public function get(EntityInterface $entity): ?WorkflowInterface
     {
-        if (isset($this->data[$entity::class])) {
-            return $this->data[$entity::class];
+        $workflow = null;
+        foreach ($this->data as $key => $state) {
+            if (is_subclass_of($entity, $key)) {
+                $workflow = $state;
+
+                break;
+            }
         }
 
-        return null;
+        return $workflow;
     }
 
     public function has(EntityInterface $entity): bool
     {
-        return isset($this->data[$entity::class]);
+        return !is_null($this->get($entity));
     }
 
     public function init(EntityInterface $entity): void

@@ -14,6 +14,7 @@ use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\EntityTrashInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
 use Labstag\Repository\MemoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: MemoRepository::class)]
 #[ApiResource]
-class Memo implements Stringable, EntityFrontInterface, EntityTrashInterface
+class Memo implements Stringable, EntityFrontInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;

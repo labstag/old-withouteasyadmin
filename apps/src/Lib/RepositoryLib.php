@@ -245,8 +245,7 @@ abstract class RepositoryLib extends ServiceEntityRepository
             Post::class,
             User::class,
         ];
-        $launch = in_array($this->getEntityName(), $entities);
-        if ($launch || !isset($get['etape']) || empty($get['etape'])) {
+        if (!in_array($this->getEntityName(), $entities) || !isset($get['etape']) || empty($get['etape'])) {
             return;
         }
 
@@ -263,8 +262,7 @@ abstract class RepositoryLib extends ServiceEntityRepository
             Libelle::class,
             Template::class,
         ];
-        $launch = in_array($this->getEntityName(), $entities);
-        if (!$launch || !isset($get['name']) || empty($get['name'])) {
+        if (!in_array($this->getEntityName(), $entities) || !isset($get['name']) || empty($get['name'])) {
             return;
         }
 
@@ -318,8 +316,11 @@ abstract class RepositoryLib extends ServiceEntityRepository
 
     protected function setQueryRefCategory(QueryBuilder $queryBuilder, array $get): void
     {
-        $launch = in_array($this->getEntityName(), [Bookmark::class, Post::class]);
-        if (!$launch || !isset($get['refcategory']) || empty($get['refcategory'])) {
+        $entities = [
+            Bookmark::class,
+            Post::class,
+        ];
+        if (!in_array($this->getentityName(), $entities) || !isset($get['refcategory']) || empty($get['refcategory'])) {
             return;
         }
 
@@ -353,14 +354,13 @@ abstract class RepositoryLib extends ServiceEntityRepository
             PhoneUser::class,
             Post::class,
         ];
-        $launch = in_array($this->getEntityName(), $entities);
-        if (!$launch || !isset($get['refuser']) || empty($get['refuser'])) {
+        if (!in_array($this->getEntityName(), $entities) || !isset($get['user']) || empty($get['user'])) {
             return;
         }
 
         $queryBuilder->leftJoin('a.user', 'u');
-        $queryBuilder->andWhere('u.id = :refuser');
-        $queryBuilder->setParameter('refuser', $get['refuser']);
+        $queryBuilder->andWhere('u.id = :user');
+        $queryBuilder->setParameter('user', $get['user']);
     }
 
     protected function setQueryStateName(QueryBuilder $queryBuilder, array $get): void
@@ -376,8 +376,13 @@ abstract class RepositoryLib extends ServiceEntityRepository
 
     protected function setQueryTitle(QueryBuilder $queryBuilder, array $get): void
     {
-        $launch = in_array($this->getEntityName(), [Block::class, Edito::class, Memo::class, Post::class]);
-        if (!$launch || !isset($get['title']) || empty($get['title'])) {
+        $entities = [
+            Block::class,
+            Edito::class,
+            Memo::class,
+            Post::class,
+        ];
+        if (!in_array($this->getEntityName(), $entities) || !isset($get['title']) || empty($get['title'])) {
             return;
         }
 

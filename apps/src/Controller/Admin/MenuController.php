@@ -5,7 +5,6 @@ namespace Labstag\Controller\Admin;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
-use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\AdminControllerLib;
 use Labstag\Service\Admin\Entity\MenuService as EntityMenuService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -60,16 +59,6 @@ class MenuController extends AdminControllerLib
     public function trash(): Response
     {
         return $this->setAdmin()->trash();
-    }
-
-    protected function getDomainEntity(): DomainInterface
-    {
-        $domainLib = $this->domainService->getDomain(Menu::class);
-        if (!$domainLib instanceof DomainInterface) {
-            throw new Exception('Domain not found');
-        }
-
-        return $domainLib;
     }
 
     protected function setAdmin(): EntityMenuService

@@ -18,11 +18,16 @@ use Labstag\Repository\ParagraphRepository;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\BlockService;
 use Labstag\Service\BreadcrumbService;
+use Labstag\Service\DataService;
 use Labstag\Service\DomainService;
+use Labstag\Service\ErrorService;
+use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
 use Labstag\Service\MenuService;
+use Labstag\Service\OauthService;
 use Labstag\Service\RepositoryService;
 use Labstag\Service\SessionService;
+use Labstag\Service\TrashService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -36,8 +41,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 use Twig\Environment;
@@ -53,6 +61,14 @@ class ViewService
     protected ?DomainInterface $domain = null;
 
     public function __construct(
+        protected OauthService $oauthService,
+        protected TokenStorageInterface $tokenStorage,
+        protected CsrfTokenManagerInterface $csrfTokenManager,
+        protected TrashService $trashService,
+        protected ErrorService $errorService,
+        protected CacheInterface $cache,
+        protected DataService $dataService,
+        protected FileService $fileService,
         protected ParameterBagInterface $parameterBag,
         protected BlockService $blockService,
         protected BreadcrumbService $breadcrumbService,
@@ -117,7 +133,7 @@ class ViewService
     ): Response
     {
         $domain = $this->getDomain();
-        if (!$domain instanceof DomainService) {
+        if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 
@@ -276,7 +292,7 @@ class ViewService
     ): Response
     {
         $domain = $this->getDomain();
-        if (!$domain instanceof DomainService) {
+        if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 
@@ -354,6 +370,16 @@ class ViewService
         return $this->authorizationChecker->isGranted($method, $entity);
     }
 
+    protected function isRouteEnable(
+        string $route
+    ): bool
+    {
+        return $this->guardService->guardRoute(
+            $route,
+            $this->tokenStorage->getToken()
+        );
+    }
+
     protected function redirect(string $url, int $status = 302): RedirectResponse
     {
         return new RedirectResponse($url, $status);
@@ -415,7 +441,7 @@ class ViewService
     ): PaginationInterface
     {
         $domain = $this->getDomain();
-        if (!$domain instanceof DomainService) {
+        if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 
@@ -468,7 +494,7 @@ class ViewService
     ): array
     {
         $domain = $this->getDomain();
-        if (!$domain instanceof DomainService) {
+        if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 
@@ -476,16 +502,14 @@ class ViewService
         $request = $this->requeststack->getCurrentRequest();
         $query   = $request->query;
         $get     = $query->all();
-        $limit   = $query->getInt('limit', 10);
         $form    = $domain->getSearchForm();
         if ('' == $form) {
             return $parameters;
         }
 
-        $get              = $query->all();
-        $searchLib        = $domain->getSearchData();
-        $searchLib->limit = $limit;
+        $searchLib = $domain->getSearchData();
         $searchLib->search($get, $this->repositoryService);
+        dump($searchLib);
         $route = $request->get('_route');
         if (!is_string($route)) {
             return $parameters;
@@ -570,7 +594,7 @@ class ViewService
     ): Response
     {
         $domain = $this->getDomain();
-        if (!$domain instanceof DomainService) {
+        if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 
@@ -677,7 +701,7 @@ class ViewService
     ): Response
     {
         $domain = $this->getDomain();
-        if (!$domain instanceof DomainService) {
+        if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
         }
 
