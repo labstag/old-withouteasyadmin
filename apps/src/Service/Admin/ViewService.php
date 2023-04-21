@@ -254,7 +254,7 @@ class ViewService
     }
 
     protected function createForm(
-        string $type = FormType::class,
+        string $type,
         mixed $data = null,
         array $options = []
     ): FormInterface
@@ -509,7 +509,6 @@ class ViewService
 
         $searchLib = $domain->getSearchData();
         $searchLib->search($get, $this->repositoryService);
-        dump($searchLib);
         $route = $request->get('_route');
         if (!is_string($route)) {
             return $parameters;

@@ -81,7 +81,9 @@
         "test:behat": "docker exec -i $($npm_package_config_phpfpm) php -d memory_limit=-1 behat.phar --config behat.yaml",
         "test:phpunit": "docker exec -i $($npm_package_config_phpfpm) symfony composer run simple-phpunit",
         "test:phpunit:unit-integration": "docker exec -i $($npm_package_config_phpfpm) symfony composer run simple-phpunit-unit-integration",
-        "translation:update": "docker exec -i $($npm_package_config_phpfpm) symfony console translation:update --force --format=yaml --clean fr",
+        "translation": "npm-run-all -c  translation:fr translation:en",
+        "translation:fr": "docker exec -i $($npm_package_config_phpfpm) symfony console translation:extract --force --format=yaml fr",
+        "translation:en": "docker exec -i $($npm_package_config_phpfpm) symfony console translation:extract --force --format=yaml en",
         "workflow:dump:all": "npm-run-all -c workflow:dump:attachment workflow:dump:bookmark workflow:dump:chapter workflow:dump:edito workflow:dump:email workflow:dump:history workflow:dump:memo workflow:dump:phone workflow:dump:post workflow:dump:user",
         "workflow:dump:attachment": "docker exec -i $($npm_package_config_phpfpm) $npm_package_config_wdump attachment | dot -Tpng -o workflows.png",
         "workflow:dump:bookmark": "docker exec -i $($npm_package_config_phpfpm) $npm_package_config_wdump bookmark | dot -Tpng -o bookmark.png",
@@ -134,15 +136,15 @@
       "node": ">=18"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "6.2.*",
+        "@fortawesome/fontawesome-free": "6.4.*",
         "@popperjs/core": "2.11.*",
         "bootstrap": "5.2.*",
-        "ckeditor4": "^4.18.*",
-        "flag-icon-css": "^4.0.*",
+        "ckeditor4": "4.21.*",
+        "flag-icon-css": "4.1.*",
         "jquery": "3.6.*",
         "korojscommands": "1.2.*",
-        "sortablejs": "1.14.*",
-        "tarteaucitronjs": "1.10.*",
-        "tom-select": "1.7.*"
+        "sortablejs": "1.15.*",
+        "tarteaucitronjs": "1.11.*",
+        "tom-select": "2.2.*"
     }
 }

@@ -124,3 +124,13 @@ page.new: __page.new
 page.trash: __page.trash
 page.preview: __page.preview
 page.show: __page.show
+block.title: __block.title
+block.edit: __block.edit
+block.move: __block.move
+block.trash: __block.trash
+render.title: __render.title
+render.edit: __render.edit
+render.new: __render.new
+render.trash: __render.trash
+render.preview: __render.preview
+render.show: __render.show

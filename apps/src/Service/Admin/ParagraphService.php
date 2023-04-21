@@ -159,7 +159,7 @@ class ParagraphService
     }
 
     protected function createForm(
-        string $type = FormType::class,
+        string $type,
         mixed $data = null,
         array $options = []
     ): FormInterface

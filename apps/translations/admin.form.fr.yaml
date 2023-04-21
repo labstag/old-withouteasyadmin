@@ -276,7 +276,7 @@ param.site_copyright.help: ''
 param.site_copyright.label: Copyright
 param.site_copyright.placeholder: ''
 param.site_no-reply.help: ''
-param.site_no-reply.label: 'Courriel d''envoie'
+param.site_no-reply.label: "Courriel d'envoie"
 param.site_no-reply.placeholder: ''
 param.site_url.help: ''
 param.site_url.label: 'Url du site'
@@ -432,3 +432,27 @@ page.front.label: __page.front.label
 page.front.help: __page.front.help
 page.reflayout.label: __page.reflayout.label
 page.reflayout.help: __page.reflayout.help
+forms.country.label: __forms.country.label
+forms.country.help: __forms.country.help
+forms.country.placeholder: __forms.country.placeholder
+forms.numero.label: __forms.numero.label
+forms.numero.help: __forms.numero.help
+forms.numero.placeholder: __forms.numero.placeholder
+forms.email.label: __forms.email.label
+forms.email.help: __forms.email.help
+forms.email.placeholder: __forms.email.placeholder
+published.label: __published.label
+published.help: __published.help
+content.label: __content.label
+content.help: __content.help
+block.navbar.menu.label: __block.navbar.menu.label
+block.navbar.menu.help: __block.navbar.menu.help
+block.navbar.menu.placeholder: __block.navbar.menu.placeholder
+render.name.label: __render.name.label
+render.name.help: __render.name.help
+block.title.label: __block.title.label
+block.title.help: __block.title.help
+block.title.placeholder: __block.title.placeholder
+block.region.label: __block.region.label
+block.region.help: __block.region.help
+block.region.placeholder: __block.region.placeholder

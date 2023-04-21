@@ -97,7 +97,7 @@ menu.position: Position
 menu.separateur: 'Séparateur ?'
 norecord: 'Aucun enregistrement trouvé'
 oauth.go: 'Y accéder'
-oauth.message: 'Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.</p> <p>Pour chaque service proposé ci-dessous, merci de récupérer l''<b>identifiant</b> ainsi que la <b>clef secrète</b>.'
+oauth.message: "Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.</p> <p>Pour chaque service proposé ci-dessous, merci de récupérer l'<b>identifiant</b> ainsi que la <b>clef secrète</b>."
 oauth.service: Service
 oauth.url: 'Adresse URL'
 oauth.urltoshare: 'Url à indiquer'
@@ -171,3 +171,19 @@ layout.name: __layout.name
 layout.content: __layout.content
 post.url: __post.url
 page.reflayout: __page.reflayout
+render.name: __render.name
+post.paragraphs: __post.paragraphs
+page.url: __page.url
+edito.paragraphs: __edito.paragraphs
+block.title: __block.title
+block.type: __block.type
+page.paragraphs: __page.paragraphs
+history.url: __history.url
+history.paragraphs: __history.paragraphs
+history.newchapter: __history.newchapter
+chapter.refhistory: __chapter.refhistory
+chapter.paragraphs: __chapter.paragraphs
+layout.custom: __layout.custom
+layout.url: __layout.url
+layout.paragraphs: __layout.paragraphs
+memo.pararaphs: __memo.pararaphs
