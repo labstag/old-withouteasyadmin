@@ -1,3 +1,4 @@
+const path = require('path');
 var Encore = require('@symfony/webpack-encore');
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -29,8 +30,8 @@ Encore
    * Each entry will result in one JavaScript file (e.g. app.js)
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
-  .addEntry("front", ["./assets/js/front.js", "./assets/scss/front.scss"])
-  .addEntry("back", ["./assets/js/back.js", "./assets/scss/back.scss"])
+  .addEntry('front', './assets/js/front.js')
+  .addEntry('back', './assets/js/back.js')
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   // .enableStimulusBridge('./assets/controllers.json')
@@ -40,8 +41,8 @@ Encore
 
   // will require an extra script tag for runtime.js
   // but, you probably want this, unless you're building a single-page app
-  // .enableSingleRuntimeChunk()
-  .disableSingleRuntimeChunk()
+  .enableSingleRuntimeChunk()
+  // .disableSingleRuntimeChunk()
 
   /*
    * FEATURE CONFIG
@@ -82,5 +83,11 @@ Encore
   })
 ;
 
-var config = Encore.getWebpackConfig();
+const config = Encore.getWebpackConfig();
+config.resolve.alias = {
+  ...config.resolve.alias,
+  '@': path.resolve(__dirname, 'assets'),
+  '@scss': path.resolve(__dirname, 'assets/scss')
+}
+
 module.exports = config;

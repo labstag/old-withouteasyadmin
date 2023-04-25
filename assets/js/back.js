@@ -1,4 +1,5 @@
 import './global'
+import '../scss/back.scss'
 import './back/elements/index'
 function clickFormSave (event) {
   event.preventDefault()

@@ -1,4 +1,5 @@
 import './global'
+import '../scss/front.scss'
 const gotop = document.getElementById('footer-gotop')
 function gotopClick () {
   window.scrollTo(
