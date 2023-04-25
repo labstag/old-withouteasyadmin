@@ -1,20 +1,20 @@
-changepassword.password.help: ''
-changepassword.password.label: 'Mot de passe'
-changepassword.repeatpassword.help: ''
-changepassword.repeatpassword.label: 'Répéter le mot de passe'
-disclaimer.confirm.help: ''
+changepassword.password.help: ""
+changepassword.password.label: "Mot de passe"
+changepassword.repeatpassword.help: ""
+changepassword.repeatpassword.label: "Répéter le mot de passe"
+disclaimer.confirm.help: ""
 disclaimer.confirm.label: "J'ai lu l'avis et en comprends l'énoncé"
-disclaimer.reset.label: 'Je désire quitter dès maintenant'
-disclaimer.submit.label: 'Je désire accéder au site'
-login.password.help: ''
-login.password.label: 'Mot de passe'
-login.remember_me.help: ''
-login.remember_me.label: 'Rester connecté'
+disclaimer.reset.label: "Je désire quitter dès maintenant"
+disclaimer.submit.label: "Je désire accéder au site"
+login.password.help: ""
+login.password.label: "Mot de passe"
+login.remember_me.help: ""
+login.remember_me.label: "Rester connecté"
 login.submit.label: "S'identifier"
-login.username.help: ''
-login.username.label: 'Pseudo / Courriel'
-login.username.placeholder: ''
-lostpassword.submit.label: 'Obtenir le mot de passe'
-lostpassword.value.help: ''
-lostpassword.value.label: 'Pseudo / Courriel'
-lostpassword.value.placeholder: ''
+login.username.help: ""
+login.username.label: "Pseudo / Courriel"
+login.username.placeholder: ""
+lostpassword.submit.label: "Obtenir le mot de passe"
+lostpassword.value.help: ""
+lostpassword.value.label: "Pseudo / Courriel"
+lostpassword.value.placeholder: ""

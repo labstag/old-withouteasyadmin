@@ -4,44 +4,44 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-  file_directory: '%kernel.project_dir%/public/uploads'
-  metatags: ['disclaimer', 'meta', 'tarteaucitron', 'format_datetime']
+  file_directory: "%kernel.project_dir%/public/uploads"
+  metatags: ["disclaimer", "meta", "tarteaucitron", "format_datetime"]
 
 services:
   # default configuration for services in *this* file
   _defaults:
-    autowire: true      # Automatically injects dependencies in your services.
+    autowire: true # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
   Labstag\:
-    resource: '../src/'
+    resource: "../src/"
     exclude:
-      - '../src/DependencyInjection/'
-      - '../src/Entity/'
-      - '../src/Kernel.php'
+      - "../src/DependencyInjection/"
+      - "../src/Entity/"
+      - "../src/Kernel.php"
       - "../src/Reader/"
   Labstag\Paragraph\:
-      resource: "../src/Paragraph/"
-      public: true
-      tags: [paragraphsclass]
+    resource: "../src/Paragraph/"
+    public: true
+    tags: [paragraphsclass]
   Labstag\Entity\:
-      resource: "../src/Entity/"
-      public: true
-      tags: [entitiesclass]
+    resource: "../src/Entity/"
+    public: true
+    tags: [entitiesclass]
   Labstag\Service\Admin\Entity\:
-      resource: "../src/Service/Admin/Entity/"
-      public: true
-      tags: [entitiesadminservice]
+    resource: "../src/Service/Admin/Entity/"
+    public: true
+    tags: [entitiesadminservice]
   Labstag\Block\:
-      resource: "../src/Block/"
-      public: true
-      tags: [blocksclass]
+    resource: "../src/Block/"
+    public: true
+    tags: [blocksclass]
   Labstag\Front\:
-      resource: "../src/Front/"
-      public: true
-      tags: [frontclass]
+    resource: "../src/Front/"
+    public: true
+    tags: [frontclass]
   Labstag\PostForm\:
     resource: "../src/PostForm/"
     public: true
@@ -51,8 +51,8 @@ services:
     public: true
     tags: [domainsclass]
 
-# controllers are imported separately to make sure services can be injected
-# as action arguments even if you don't extend any base controller class
+  # controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class
   Labstag\Repository\:
     resource: "../src/Repository/"
     public: true
@@ -62,14 +62,14 @@ services:
     tags: ["controller.service_arguments"]
   Labstag\Command\:
     resource: "../src/Command/"
-    arguments:  
+    arguments:
       - serverenv: "env"
       - !tagged_iterator entitiesclass
   Labstag\Service\RepositoryService:
-    arguments:  
+    arguments:
       - !tagged_iterator repositories
   Labstag\Service\TrashService:
-    arguments:  
+    arguments:
       - !tagged_iterator repositories
   Labstag\Service\FormService:
     arguments:

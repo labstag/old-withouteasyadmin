@@ -1,10 +1,10 @@
 admin.menu.add: Ajouter
-admin.menu.adddivider: 'Ajouter un séparateur'
+admin.menu.adddivider: "Ajouter un séparateur"
 admin.menu.move: Déplacer
 attachment.download: Télécharger
-attachment.mimetype: 'Mime type'
+attachment.mimetype: "Mime type"
 attachment.name: Nom
-attachment.seefile: 'Voir le fichier'
+attachment.seefile: "Voir le fichier"
 attachment.size: Taille
 attachment.state: Étape
 attachment.workflow: Workflow
@@ -12,7 +12,7 @@ bookmark.category: Categorie
 bookmark.content: Contenu
 bookmark.image: Image
 bookmark.name: Nom
-bookmark.published: 'Date de publication'
+bookmark.published: "Date de publication"
 bookmark.url: Url
 bookmark.user: Utilisateur
 bookmark.workflow: Workflow
@@ -22,13 +22,13 @@ chapter.published: published
 chapter.workflow: workflow
 edito.content: Contenu
 edito.fond: Fond
-edito.published: 'Date de publication'
+edito.published: "Date de publication"
 edito.state: Étape
 edito.title: Titre
 edito.user: Utilisateur
 edito.workflow: Workflow
-form.param.datetime: 'Format de la date'
-form.param.disclaimer: 'Clause de non-responsabilité'
+form.param.datetime: "Format de la date"
+form.param.disclaimer: "Clause de non-responsabilité"
 form.param.favicon: Favicon
 form.param.image: Image
 form.param.meta: SEO
@@ -61,7 +61,7 @@ geocode.statename: Statename
 guard.actions: Actions
 guard.entite: Table
 guard.groupe: Groupe
-guard.lost: 'Droit manquant'
+guard.lost: "Droit manquant"
 guard.route: Route
 guard.transition: Transition
 guard.workflow: Workflow
@@ -81,10 +81,10 @@ link.preview: Aperçu
 link.restore: Restaurer
 link.show: Voir
 memo.content: Contenu
-memo.date_end: 'Date de fin'
-memo.date_start: 'Date de début'
+memo.date_end: "Date de fin"
+memo.date_start: "Date de début"
 memo.fond: Fond
-memo.infodateuser: '%date% par %user%'
+memo.infodateuser: "%date% par %user%"
 memo.title: Titre
 memo.user: Utilisateur
 memo.workflow: Workflow
@@ -94,13 +94,13 @@ menu.divider: Séparateur
 menu.icon: Icone
 menu.name: __menu.name
 menu.position: Position
-menu.separateur: 'Séparateur ?'
-norecord: 'Aucun enregistrement trouvé'
-oauth.go: 'Y accéder'
+menu.separateur: "Séparateur ?"
+norecord: "Aucun enregistrement trouvé"
+oauth.go: "Y accéder"
 oauth.message: "Vous êtes sur la page qui vous permet de retrouver les différentes routes permettant de parametrer les connexions Oauth.</p> <p>Pour chaque service proposé ci-dessous, merci de récupérer l'<b>identifiant</b> ainsi que la <b>clef secrète</b>."
 oauth.service: Service
-oauth.url: 'Adresse URL'
-oauth.urltoshare: 'Url à indiquer'
+oauth.url: "Adresse URL"
+oauth.urltoshare: "Url à indiquer"
 post.category: Catégorie
 post.category.name: Nom
 post.category.slug: Slug
@@ -108,15 +108,15 @@ post.content: Contenu
 post.image: Image
 post.libelle.name: Nom
 post.libelle.slug: Slug
-post.published: 'Date de publication'
+post.published: "Date de publication"
 post.title: Titre
 post.user: Utilisateur
 post.workflow: Workflow
 state.no: Non
 state.yes: Oui
 table.admin.action: Actions
-table.admin.empty: 'Aucune données'
-table.admin.multipleall: 'Tout sélectionner'
+table.admin.empty: "Aucune données"
+table.admin.multipleall: "Tout sélectionner"
 table.admin.mutipleelement: Selection
 template.code: Code
 template.html: Html
@@ -125,21 +125,21 @@ template.text: Texte
 trash.count: Total
 trash.empty: Vider
 trash.entite: Table
-trash.go: 'Aller sur cette corbeille'
+trash.go: "Aller sur cette corbeille"
 user.address.address: Adresse
 user.address.city: Ville
 user.address.country: Pays
 user.address.gps: Gps
-user.address.pmr: 'Accès PMR'
+user.address.pmr: "Accès PMR"
 user.address.street: Rue
 user.address.type: Type
 user.address.user: Utilisateur
-user.address.zipcode: 'Code postal'
+user.address.zipcode: "Code postal"
 user.addresss: Adresses
 user.avatar: Avatar
 user.email: Email
 user.email.address: Courriel
-user.email.principal: 'Principal ?'
+user.email.principal: "Principal ?"
 user.email.user: Utilisateur
 user.email.workflow: Workflow
 user.emails: Emails
@@ -147,7 +147,7 @@ user.groupe: Groupe
 user.groupe.code: Code
 user.groupe.name: Nom
 user.groupe.users: Utilisateurs
-user.link.address: 'Adresse URL'
+user.link.address: "Adresse URL"
 user.link.name: Nom
 user.link.user: Utilisateur
 user.links: Liens
@@ -155,10 +155,10 @@ user.oauth.associer: Associer
 user.oauth.lost: Dissocier
 user.phone.country: Pays
 user.phone.numero: Numéro
-user.phone.principal: 'Principal ?'
+user.phone.principal: "Principal ?"
 user.phone.type: Type
 user.phone.user: Utilisateur
-user.phone.verif: 'Correct ?'
+user.phone.verif: "Correct ?"
 user.phone.workflow: Workflow
 user.phones: Téléphones
 user.username: Pseudo
