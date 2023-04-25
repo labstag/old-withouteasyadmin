@@ -61,6 +61,8 @@ jobs:
         run: npm run doctrine:schema:update
       - name: 'Run the fixtures'
         run: npm run doctrine:fixtures
+      - name: 'Install Labstag'
+        run: npm run cmd:labstag:all
       - name: Run Acceptance Tests
         run: npm run test:behat
       - name: Cypress run

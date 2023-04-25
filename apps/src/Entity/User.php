@@ -40,6 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     #[ORM\Column(type: 'string', nullable: true)]
     protected string $password;
 
+    #[Assert\NotCompromisedPassword()]
     protected ?string $plainPassword = null;
 
     #[ORM\Column(type: 'json')]
