@@ -64,7 +64,6 @@ class WorkflowService
 
             $workflow->apply($entity, $state);
         }
-
         /** @var RepositoryLib $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get($entity::class);
         $serviceEntityRepositoryLib->save($entity);
@@ -74,7 +73,7 @@ class WorkflowService
     {
         $workflow = null;
         foreach ($this->data as $key => $state) {
-            if (is_subclass_of($entity, $key)) {
+            if ($entity::class == $key) {
                 $workflow = $state;
 
                 break;
