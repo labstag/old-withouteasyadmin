@@ -8,12 +8,10 @@ use Faker\Generator;
 use Labstag\Entity\Memo;
 use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\UserRepository;
 
 class MemoFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [
@@ -24,21 +22,22 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
-        $this->loadForeach(self::NUMBER_NOTEINTERNE, 'addMemo');
+        $this->loadForeach(self::NUMBER_NOTEINTERNE, 'addMemo', $objectManager);
     }
 
     protected function addMemo(
         Generator $generator,
         int $index,
-        array $states
+        array $states,
+        ObjectManager $objectManager
     ): void
     {
         $dateTime = $generator->unique()->dateTimeInInterval('now', '+30 years');
-        $users    = $this->userRepository->findAll();
-        $memo     = new Memo();
-        $old      = clone $memo;
-        $random   = $generator->numberBetween(5, 50);
+        /** @var UserRepository $userRepository */
+        $userRepository = $objectManager->getRepository(User::class);
+        $users          = $userRepository->findAll();
+        $memo           = new Memo();
+        $random         = $generator->numberBetween(5, 50);
         $memo->setTitle($generator->unique()->text($random));
         $dateStart = $generator->dateTime($dateTime);
         $memo->setDateStart($dateStart);
@@ -56,7 +55,7 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         $user = $users[$tabIndex];
         $memo->setRefuser($user);
         $this->upload($memo, $generator);
-        $this->memoRequestHandler->handle($old, $memo);
-        $this->memoRequestHandler->changeWorkflowState($memo, $states);
+        $objectManager->persist($memo);
+        $this->workflowService->changeState($memo, $states);
     }
 }

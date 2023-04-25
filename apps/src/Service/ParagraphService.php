@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Doctrine\ORM\PersistentCollection;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Entity\Layout;
@@ -9,8 +10,10 @@ use Labstag\Entity\Memo;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\Post;
-use Labstag\Interfaces\FrontInterface;
-use Labstag\RequestHandler\ParagraphRequestHandler;
+use Labstag\Interfaces\EntityFrontInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
+use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Repository\ParagraphRepository;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,25 +25,24 @@ class ParagraphService
     public function __construct(
         protected RewindableGenerator $rewindableGenerator,
         protected Environment $twigEnvironment,
-        protected ParagraphRequestHandler $paragraphRequestHandler
+        protected ParagraphRepository $paragraphRepository
     )
     {
     }
 
     public function add(
-        mixed $entity,
+        EntityFrontInterface $entityFront,
         string $code
     ): void
     {
-        $method = $this->getMethod($entity);
+        $method = $this->getMethod($entityFront);
         if (is_null($method)) {
             return;
         }
 
-        $position = (is_countable($entity->getParagraphs()) ? count($entity->getParagraphs()) : 0) + 1;
+        $position = (is_countable($entityFront->getParagraphs()) ? count($entityFront->getParagraphs()) : 0) + 1;
 
         $paragraph = new Paragraph();
-        $old       = clone $paragraph;
         $paragraph->setType($code);
         $paragraph->setPosition($position);
         /** @var callable $callable */
@@ -48,21 +50,19 @@ class ParagraphService
             $paragraph,
             $method,
         ];
-        call_user_func($callable, $entity);
-        $this->paragraphRequestHandler->handle($old, $paragraph);
+        call_user_func($callable, $entityFront);
+        $this->paragraphRepository->save($paragraph);
     }
 
-    /**
-     * @return array<int|string, mixed>
-     */
-    public function getAll(mixed $entity): array
+    public function getAll(EntityFrontInterface $entityFront): array
     {
         $data = [];
         foreach ($this->rewindableGenerator as $row) {
+            /** @var ParagraphInterface $row */
             $inUse = $row->useIn();
             $type  = $row->getType();
             $name  = $row->getName();
-            if (in_array($entity::class, $inUse)) {
+            if (in_array($entityFront::class, $inUse)) {
                 $data[$name] = $type;
             }
         }
@@ -70,7 +70,7 @@ class ParagraphService
         return $data;
     }
 
-    public function getEntity(Paragraph $paragraph): mixed
+    public function getEntity(Paragraph $paragraph): ?EntityParagraphInterface
     {
         $entity = null;
         $field  = $this->getEntityField($paragraph);
@@ -83,10 +83,18 @@ class ParagraphService
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() === $field) {
                 $entities = $propertyAccessor->getValue($paragraph, $field);
-                $entity   = (0 != (is_countable($entities) ? count($entities) : 0)) ? $entities[0] : null;
+                if (!$entities instanceof PersistentCollection || !$entities->offsetExists(0)) {
+                    continue;
+                }
+
+                $entity = $entities->offsetGet(0);
 
                 break;
             }
+        }
+
+        if (!$entity instanceof EntityParagraphInterface) {
+            $entity = null;
         }
 
         return $entity;
@@ -96,9 +104,11 @@ class ParagraphService
     {
         $field       = null;
         $childentity = $this->getTypeEntity($paragraph);
-        if (is_null($childentity)) {
+        if (!is_string($childentity)) {
             return $field;
         }
+
+        $childentity = new $childentity();
 
         $reflectionClass = new ReflectionClass($childentity);
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
@@ -118,9 +128,14 @@ class ParagraphService
     public function getName(Paragraph $paragraph): string
     {
         $type = $paragraph->getType();
+        if (is_null($type)) {
+            return '';
+        }
+
         $name = '';
         foreach ($this->rewindableGenerator as $row) {
-            if ($row->getType() == $type) {
+            /** @var ParagraphInterface $row */
+            if ($row->getType() === $type) {
                 $name = $row->getName();
 
                 break;
@@ -134,7 +149,8 @@ class ParagraphService
     {
         $name = '';
         foreach ($this->rewindableGenerator as $row) {
-            if ($row->getType() == $code) {
+            /** @var ParagraphInterface $row */
+            if ($row->getType() === $code) {
                 $name = $row->getName();
 
                 break;
@@ -144,12 +160,17 @@ class ParagraphService
         return $name;
     }
 
-    public function getTypeEntity(Paragraph $paragraph): mixed
+    public function getTypeEntity(Paragraph $paragraph): ?string
     {
-        $type      = $paragraph->getType();
+        $type = $paragraph->getType();
+        if (is_null($type)) {
+            return null;
+        }
+
         $paragraph = null;
         foreach ($this->rewindableGenerator as $row) {
-            if ($row->getType() == $type) {
+            /** @var ParagraphInterface $row */
+            if ($row->getType() === $type) {
                 $paragraph = $row->getEntity();
 
                 break;
@@ -162,9 +183,14 @@ class ParagraphService
     public function getTypeForm(Paragraph $paragraph): ?string
     {
         $type = $paragraph->getType();
+        if (is_null($type)) {
+            return null;
+        }
+
         $form = null;
         foreach ($this->rewindableGenerator as $row) {
-            if ($row->getType() == $type) {
+            /** @var ParagraphInterface $row */
+            if ($row->getType() === $type) {
                 $form = $row->getForm();
 
                 break;
@@ -177,9 +203,14 @@ class ParagraphService
     public function isShow(Paragraph $paragraph): bool
     {
         $type = $paragraph->getType();
+        if (is_null($type)) {
+            return false;
+        }
+
         $show = false;
         foreach ($this->rewindableGenerator as $row) {
-            if ($row->getType() == $type) {
+            /** @var ParagraphInterface $row */
+            if ($row->getType() === $type) {
                 $show = $row->isShowForm();
 
                 break;
@@ -192,13 +223,14 @@ class ParagraphService
     public function setData(Paragraph $paragraph): void
     {
         $entity = $this->getEntity($paragraph);
-        if (is_null($entity)) {
+        $type   = $paragraph->getType();
+        if ($entity instanceof EntityParagraphInterface || is_null($type)) {
             return;
         }
 
-        $type = $paragraph->getType();
         foreach ($this->rewindableGenerator as $row) {
-            if ($row->getType() == $type) {
+            /** @var ParagraphInterface $row */
+            if ($row->getType() === $type) {
                 $row->setData($paragraph);
 
                 break;
@@ -210,13 +242,14 @@ class ParagraphService
     {
         $type   = $paragraph->getType();
         $entity = $this->getEntity($paragraph);
-        $html   = null;
-        if (is_null($entity)) {
-            return $html;
+        if (!$entity instanceof EntityParagraphInterface || is_null($type)) {
+            return null;
         }
 
+        $html = null;
         foreach ($this->rewindableGenerator as $row) {
-            if ($type == $row->getType()) {
+            /** @var ParagraphInterface $row */
+            if ($type === $row->getType()) {
                 $html = $row->show($entity);
 
                 break;
@@ -236,6 +269,7 @@ class ParagraphService
         }
 
         foreach ($this->rewindableGenerator as $row) {
+            /** @var ParagraphInterface $row */
             if ($type == $row->getType()) {
                 $template = $row->template($entity);
 
@@ -246,16 +280,16 @@ class ParagraphService
         return $template;
     }
 
-    private function getMethod(FrontInterface $front): ?string
+    private function getMethod(EntityFrontInterface $entityFront): ?string
     {
         return match (true) {
-            $front instanceof Chapter => 'setChapter',
-            $front instanceof History => 'setHistory',
-            $front instanceof Layout  => 'setLayout',
-            $front instanceof Memo    => 'setMemo',
-            $front instanceof Page    => 'setPage',
-            $front instanceof Post    => 'setPost',
-            default                   => null,
+            $entityFront instanceof Chapter => 'setChapter',
+            $entityFront instanceof History => 'setHistory',
+            $entityFront instanceof Layout  => 'setLayout',
+            $entityFront instanceof Memo    => 'setMemo',
+            $entityFront instanceof Page    => 'setPage',
+            $entityFront instanceof Post    => 'setPost',
+            default                         => null,
         };
     }
 }

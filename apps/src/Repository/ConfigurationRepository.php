@@ -4,9 +4,9 @@ namespace Labstag\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Configuration;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class ConfigurationRepository extends ServiceEntityRepositoryLib
+class ConfigurationRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

@@ -3,7 +3,7 @@
 namespace Labstag\Service;
 
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Labstag\Entity\AddressUser;
 use Labstag\Entity\EmailUser;
 use Labstag\Entity\LinkUser;
@@ -23,7 +23,7 @@ class UserMailService
     protected array $config;
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected RouterInterface $router,
         protected MailerService $mailerService,
         protected DataService $dataService,
@@ -35,6 +35,10 @@ class UserMailService
 
         $code            = 'languagedefault';
         $languagedefault = $config[$code] ?? 'fr';
+        if (!is_string($languagedefault)) {
+            throw new Exception('Config '.$languagedefault.' is not string');
+        }
+
         Locale::setDefault($languagedefault);
     }
 

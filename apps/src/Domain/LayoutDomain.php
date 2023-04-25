@@ -6,44 +6,20 @@ use Labstag\Entity\Layout;
 use Labstag\Form\Admin\LayoutType;
 
 use Labstag\Form\Admin\Search\LayoutType as SearchLayoutType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\LayoutRepository;
-use Labstag\RequestHandler\LayoutRequestHandler;
 use Labstag\Search\LayoutSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class LayoutDomain extends DomainLib
+class LayoutDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected LayoutRequestHandler $layoutRequestHandler,
-        protected LayoutRepository $layoutRepository,
-        protected LayoutSearch $layoutSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Layout::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->layoutRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->layoutRequestHandler;
-    }
-
     public function getSearchData(): LayoutSearch
     {
-        return $this->layoutSearch;
+        return new LayoutSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,17 @@ class LayoutDomain extends DomainLib
         return SearchLayoutType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/layout/index.html.twig',
+            'trash'   => 'admin/layout/index.html.twig',
+            'edit'    => 'admin/layout/form.html.twig',
+            'show'    => 'admin/layout/show.html.twig',
+            'preview' => 'admin/layout/show.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [
@@ -79,6 +63,7 @@ class LayoutDomain extends DomainLib
             'edit'     => 'admin_layout_edit',
             'empty'    => 'api_action_empty',
             'list'     => 'admin_layout_index',
+            'add'      => 'admin_layout_new',
             'preview'  => 'admin_layout_preview',
             'restore'  => 'api_action_restore',
             'show'     => 'admin_layout_show',

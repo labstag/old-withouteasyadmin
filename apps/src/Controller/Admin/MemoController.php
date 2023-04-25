@@ -6,83 +6,64 @@ use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Memo;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
-use Labstag\Repository\MemoRepository;
-use Labstag\RequestHandler\MemoRequestHandler;
+use Labstag\Service\Admin\Entity\MemoService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/memo')]
+#[Route(path: '/admin/memo', name: 'admin_memo_')]
 class MemoController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_memo_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Memo $memo
+        Memo $memo
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($memo) ? new Memo() : $memo,
-            'admin/memo/form.html.twig'
-        );
+        return $this->setAdmin()->edit($memo);
     }
 
-    #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_memo_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_memo_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/memo/index.html.twig',
-        );
+        return $this->setAdmin()->index();
     }
 
-    #[Route(path: '/new', name: 'admin_memo_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
-        MemoRepository $memoRepository,
-        MemoRequestHandler $memoRequestHandler,
         Security $security
     ): RedirectResponse
     {
-        $user = $security->getUser();
-        if (is_null($user)) {
-            return $this->redirectToRoute('admin_memo_index');
-        }
-
-        $memo = new Memo();
-        $memo->setTitle(Uuid::v1());
-        $memo->setRefuser($user);
-
-        $old = clone $memo;
-        $memoRepository->add($memo);
-        $memoRequestHandler->handle($old, $memo);
-
-        return $this->redirectToRoute('admin_memo_edit', ['id' => $memo->getId()]);
+        return $this->setAdmin()->add($security);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_memo_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_memo_preview', methods: ['GET'])]
-    public function showOrPreview(Memo $memo): Response
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(Memo $memo): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $memo,
-            'admin/memo/show.html.twig'
-        );
+        return $this->setAdmin()->preview($memo);
     }
 
-    protected function getDomainEntity(): DomainLib
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Memo $memo): Response
     {
-        $domainLib = $this->domainService->getDomain(Memo::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
+        return $this->setAdmin()->show($memo);
+    }
+
+    #[IgnoreSoftDelete]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
+    {
+        return $this->setAdmin()->trash();
+    }
+
+    protected function setAdmin(): MemoService
+    {
+        $viewService = $this->adminService->setDomain(Memo::class);
+        if (!$viewService instanceof MemoService) {
+            throw new Exception('Service not found');
         }
 
-        return $domainLib;
+        return $viewService;
     }
 }

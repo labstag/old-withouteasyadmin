@@ -1,3 +1,42 @@
 {
-    "makefile.extensionOutputFolder": "./.vscode"
+
+    "files.exclude": {
+        "**/apps/var/cache": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true
+    },
+    "search.exclude": {
+        "**/apps/var/cache": true,
+        "**/apps/vendor": true,
+        "**/node_modules": true
+    },
+    "files.watcherExclude": {
+        "**/apps/var/cache": true,
+        "**/apps/vendor": true,
+        "**/node_modules": true
+    },
+    "intelephense.files.exclude": [
+        "**/.git/**",
+        "**/.svn/**",
+        "**/.hg/**",
+        "**/CVS/**",
+        "**/.DS_Store/**",
+        "**/node_modules/**",
+        "**/bower_components/**",
+        "**/vendor/**/{Tests,tests}/**",
+        "**/.history/**",
+        "**/vendor/**/vendor/**",
+        "**/apps/var/cache/**",
+    ],
+    "php.files.exclude": [
+        "**/node_modules/**"
+        "**/apps/var/cache/**"
+    ],
+    "php.executablePath": "/bin/php",
+    "phpstan.binPath": "apps/phpstan.phar",
+    "phpstan.configFile": "apps/phpstan.neon"
 }

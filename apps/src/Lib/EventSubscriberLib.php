@@ -5,16 +5,6 @@ namespace Labstag\Lib;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Queue\EnqueueMethod;
-use Labstag\Repository\AttachmentRepository;
-use Labstag\Repository\ConfigurationRepository;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\MenuRepository;
-use Labstag\Repository\PageRepository;
-use Labstag\Repository\UserRepository;
-use Labstag\Repository\WorkflowGroupeRepository;
-use Labstag\Repository\WorkflowRepository;
-use Labstag\Repository\WorkflowUserRepository;
-use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Service\BlockService;
 use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
@@ -41,24 +31,15 @@ use Twig\Environment;
 abstract class EventSubscriberLib implements EventSubscriberInterface
 {
     public function __construct(
-        protected RepositoryService $repositoryService,
+        protected EntityManagerInterface $entityManager,
         protected ParagraphService $paragraphService,
         protected BlockService $blockService,
-        protected ConfigurationRepository $configurationRepository,
-        protected PageRepository $pageRepository,
-        protected MenuRepository $menuRepository,
-        protected UserRepository $userRepository,
-        protected WorkflowRepository $workflowRepository,
-        protected GroupeRepository $groupeRepository,
-        protected WorkflowGroupeRepository $workflowGroupeRepository,
-        protected WorkflowUserRepository $workflowUserRepository,
         protected Reader $reader,
         protected Environment $twigEnvironment,
         protected FrontService $frontService,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected Security $security,
-        protected AttachmentRepository $attachmentRepository,
         protected ErrorService $errorService,
         protected RouterInterface $router,
         protected DataService $dataService,
@@ -66,14 +47,13 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected TokenStorageInterface $tokenStorage,
         protected LoggerInterface $logger,
         protected ParameterBagInterface $parameterBag,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected EnqueueMethod $enqueueMethod,
         protected CacheInterface $cache,
         protected SessionService $sessionService,
         protected RequestStack $requestStack,
         protected UserPasswordHasherInterface $userPasswordHasher,
         protected UserMailService $userMailService,
-        protected EmailUserRequestHandler $emailUserRequestHandler,
         protected TranslatorInterface $translator
     )
     {

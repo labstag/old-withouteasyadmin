@@ -9,12 +9,10 @@ use Labstag\Entity\Edito;
 use Labstag\Entity\Meta;
 use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\UserRepository;
 
 class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [
@@ -25,22 +23,23 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
-        $this->loadForeach(self::NUMBER_EDITO, 'addEdito');
+        $this->loadForeach(self::NUMBER_EDITO, 'addEdito', $objectManager);
     }
 
     protected function addEdito(
         Generator $generator,
         int $index,
-        array $states
+        array $states,
+        ObjectManager $objectManager
     ): void
     {
-        $users = $this->userRepository->findAll();
-        $edito = new Edito();
-        $meta  = new Meta();
+        /** @var UserRepository $userRepository */
+        $userRepository = $objectManager->getRepository(User::class);
+        $users          = $userRepository->findAll();
+        $edito          = new Edito();
+        $meta           = new Meta();
         $meta->setEdito($edito);
         $this->setMeta($meta);
-        $old    = clone $edito;
         $random = $generator->numberBetween(5, 50);
         $edito->setTitle($generator->unique()->text($random));
         /** @var string $content */
@@ -53,7 +52,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         $user = $users[$tabIndex];
         $edito->setRefuser($user);
         $this->upload($edito, $generator);
-        $this->editoRequestHandler->handle($old, $edito);
-        $this->editoRequestHandler->changeWorkflowState($edito, $states);
+        $objectManager->persist($edito);
+        $this->workflowService->changeState($edito, $states);
     }
 }

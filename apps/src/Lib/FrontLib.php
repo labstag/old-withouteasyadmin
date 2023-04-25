@@ -3,7 +3,6 @@
 namespace Labstag\Lib;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Repository\PageRepository;
 use Labstag\Service\RepositoryService;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -13,7 +12,6 @@ abstract class FrontLib
 {
     public function __construct(
         protected RepositoryService $repositoryService,
-        protected EntityManagerInterface $entityManager,
         protected PageRepository $pageRepository,
         protected RequestStack $requestStack,
         protected RouterInterface $router

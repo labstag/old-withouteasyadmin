@@ -2,90 +2,66 @@
 
 namespace Labstag\Controller\Admin;
 
-use DateTime;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Post;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
-use Labstag\Repository\PostRepository;
-use Labstag\RequestHandler\PostRequestHandler;
+use Labstag\Service\Admin\Entity\PostService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/post')]
+#[Route(path: '/admin/post', name: 'admin_post_')]
 class PostController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_post_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Post $post
+        Post $post
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($post) ? new Post() : $post,
-            'admin/post/form.html.twig'
-        );
+        return $this->setAdmin()->edit($post);
+    }
+
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->setAdmin()->index();
+    }
+
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(Security $security): RedirectResponse
+    {
+        return $this->setAdmin()->add($security);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_post_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_post_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(Post $post): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/post/index.html.twig',
-        );
+        return $this->setAdmin()->preview($post);
     }
 
-    #[Route(path: '/new', name: 'admin_post_new', methods: ['GET', 'POST'])]
-    public function new(
-        PostRepository $postRepository,
-        PostRequestHandler $postRequestHandler,
-        Security $security
-    ): RedirectResponse
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Post $post): Response
     {
-        $user = $security->getUser();
-        if (is_null($user)) {
-            return $this->redirectToRoute('admin_post_index');
-        }
-
-        $post = new Post();
-        $post->setPublished(new DateTime());
-        $post->setRemark(false);
-        $post->setTitle(Uuid::v1());
-        $post->setRefuser($user);
-
-        $old = clone $post;
-        $postRepository->add($post);
-        $postRequestHandler->handle($old, $post);
-
-        return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()]);
+        return $this->setAdmin()->show($post);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_post_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_post_preview', methods: ['GET'])]
-    public function showOrPreview(Post $post): Response
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $post,
-            'admin/post/show.html.twig'
-        );
+        return $this->setAdmin()->trash();
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function setAdmin(): PostService
     {
-        $domainLib = $this->domainService->getDomain(Post::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
+        $viewService = $this->adminService->setDomain(Post::class);
+        if (!$viewService instanceof PostService) {
+            throw new Exception('Service not found');
         }
 
-        return $domainLib;
+        return $viewService;
     }
 }

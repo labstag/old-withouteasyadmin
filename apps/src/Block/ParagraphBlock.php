@@ -5,27 +5,16 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Paragraph;
 use Labstag\Form\Admin\Block\ParagraphType;
 use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityBlockInterface;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
-use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
-class ParagraphBlock extends BlockLib
+class ParagraphBlock extends BlockLib implements BlockInterface
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        Environment $twigEnvironment,
-        protected ParagraphService $paragraphService
-    )
+    public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
-        parent::__construct($translator, $twigEnvironment);
-    }
-
-    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
-    {
-        unset($entityBlockLib, $front);
+        unset($entityBlock, $entityFront);
 
         return 'paragraph';
     }
@@ -55,31 +44,35 @@ class ParagraphBlock extends BlockLib
         return false;
     }
 
-    public function show(Paragraph $paragraph, ?FrontInterface $front): Response
+    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
     {
-        $data = $this->setParagraphs($front);
+        if (!$entityBlock instanceof Paragraph) {
+            return null;
+        }
+
+        $data = $this->setParagraphs($entityFront);
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($paragraph, $front)),
+            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
             [
                 'paragraphs' => $data,
-                'block'      => $paragraph,
+                'block'      => $entityBlock,
             ]
         );
     }
 
-    private function setParagraphs(?FrontInterface $front): array
+    private function setParagraphs(?EntityFrontInterface $entityFront): array
     {
         $paragraphs = [];
-        if (is_null($front)) {
+        if (is_null($entityFront)) {
             return $paragraphs;
         }
 
-        $methods = get_class_methods($front);
+        $methods = get_class_methods($entityFront);
         if (!in_array('getParagraphs', $methods)) {
             return $paragraphs;
         }
 
-        return $this->getParagraphsArray($this->paragraphService, $front, $paragraphs);
+        return $this->getParagraphsArray($this->paragraphService, $entityFront, $paragraphs);
     }
 }

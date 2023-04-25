@@ -10,16 +10,16 @@ use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityInterface;
-use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Repository\Paragraph\TextImageRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-#[Uploadable()]
+#[Uploadable]
 #[ORM\Entity(repositoryClass: TextImageRepository::class)]
 #[ORM\Table(name: 'paragraph_textimage')]
 #[ApiResource(routePrefix: '/paragraph')]
-class TextImage implements ParagraphInterface, EntityInterface, Stringable
+class TextImage implements EntityParagraphInterface, EntityInterface, Stringable
 {
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphTextImages', cascade: ['persist'])]

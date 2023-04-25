@@ -5,9 +5,9 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class RouteUserRepository extends ServiceEntityRepositoryLib
+class RouteUserRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

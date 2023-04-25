@@ -2,13 +2,13 @@
 
 namespace Labstag\Search\User;
 
+use Labstag\Entity\User;
 use Labstag\Lib\SearchLib;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class EmailUserSearch extends SearchLib
 {
 
     public ?string $etape = null;
 
-    public ?UserInterface $user = null;
+    public ?User $user = null;
 }

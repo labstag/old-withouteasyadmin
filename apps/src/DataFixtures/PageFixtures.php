@@ -9,9 +9,6 @@ use Labstag\Lib\FixtureLib;
 
 class PageFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [
@@ -21,38 +18,39 @@ class PageFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
         $data = $this->installService->getData('data/page');
         foreach ($data as $page) {
-            $this->addPage($page);
+            $this->addPage($page, $objectManager, null);
         }
+
+        $objectManager->flush();
     }
 
     protected function addPage(
         array $pageData,
+        ObjectManager $objectManager,
         ?Page $parent = null
     ): void
     {
         $page = new Page();
-        $old  = clone $page;
         $page->setName($pageData['name']);
         if (!is_null($parent)) {
             $page->setParent($parent);
         }
 
         if (isset($pageData['paragraphs'])) {
-            $this->addParagraphs($page, $pageData['paragraphs']);
+            $this->addParagraphs($page, $pageData['paragraphs'], $objectManager);
         }
 
         $reference = 'page_'.$pageData['slug'];
         $this->addReference($reference, $page);
-        $this->pageRequestHandler->handle($old, $page);
+        $objectManager->persist($page);
         if (!array_key_exists('pages', $pageData)) {
             return;
         }
 
         foreach ($pageData['pages'] as $data) {
-            $this->addPage($data, $page);
+            $this->addPage($data, $objectManager, $page);
         }
     }
 }

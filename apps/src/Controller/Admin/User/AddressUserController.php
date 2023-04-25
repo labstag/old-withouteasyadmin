@@ -2,59 +2,58 @@
 
 namespace Labstag\Controller\Admin\User;
 
-use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\AddressUser;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/user/adresse')]
+#[Route(path: '/admin/user/adresse', name: 'admin_addressuser_')]
 class AddressUserController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_addressuser_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_addressuser_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?AddressUser $addressUser
+        AddressUser $addressUser
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($addressUser) ? new AddressUser() : $addressUser
-        );
+        return $this->setAdmin()->edit($addressUser);
+    }
+
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->setAdmin()->index();
+    }
+
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(): Response
+    {
+        return $this->setAdmin()->new();
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_addressuser_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_addressuser_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(AddressUser $addressUser): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/user/address_user/index.html.twig'
-        );
+        return $this->setAdmin()->preview($addressUser);
+    }
+
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(AddressUser $addressUser): Response
+    {
+        return $this->setAdmin()->show($addressUser);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_addressuser_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_addressuser_preview', methods: ['GET'])]
-    public function showOrPreview(AddressUser $addressUser): Response
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $addressUser,
-            'admin/user/address_user/show.html.twig'
-        );
+        return $this->setAdmin()->trash();
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function setAdmin(): ViewService
     {
-        $domainLib = $this->domainService->getDomain(AddressUser::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
-        }
-
-        return $domainLib;
+        return $this->adminService->setDomain(AddressUser::class);
     }
 }

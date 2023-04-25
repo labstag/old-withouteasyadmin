@@ -12,17 +12,18 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\TextImage;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\TextImageType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\Response;
 
-class TextImageParagraph extends ParagraphLib
+class TextImageParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'textimage';
     }
@@ -52,24 +53,25 @@ class TextImageParagraph extends ParagraphLib
         return true;
     }
 
-    public function show(TextImage $textimage): Response
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
+        if (!$entityParagraph instanceof TextImage) {
+            return null;
+        }
+
         $package    = new Package(new EmptyVersionStrategy());
-        $image      = $textimage->getImage();
+        $image      = $entityParagraph->getImage();
         $attachment = ($image instanceof Attachment) ? $package->getUrl('/'.$image->getName()) : null;
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($textimage)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
-                'paragraph'  => $textimage,
+                'paragraph'  => $entityParagraph,
                 'attachment' => $attachment,
             ]
         );
     }
 
-    /**
-     * @return class-string[]
-     */
     public function useIn(): array
     {
         return [

@@ -2,7 +2,7 @@
 
 namespace Labstag\Service;
 
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 
 class RepositoryService
@@ -13,12 +13,13 @@ class RepositoryService
     {
     }
 
-    public function get(string $repository): ?ServiceEntityRepositoryLib
+    public function get(string $entity): ?RepositoryLib
     {
         $return = null;
-        foreach ($this->rewindableGenerator as $repo) {
-            if ($repo->getClassName() == $repository) {
-                $return = $repo;
+        foreach ($this->rewindableGenerator as $repository) {
+            /** @var RepositoryLib $repository */
+            if ($repository->getClassName() == $entity) {
+                $return = $repository;
 
                 break;
             }

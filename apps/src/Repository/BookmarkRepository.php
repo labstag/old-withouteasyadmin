@@ -6,10 +6,10 @@ use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Bookmark;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
 #[Trashable(url: 'admin_bookmark_trash')]
-class BookmarkRepository extends ServiceEntityRepositoryLib
+class BookmarkRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

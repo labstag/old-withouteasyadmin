@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace Labstag\OpenApi;
 
-use ApiPlatform\OpenApi\Factory\OpenApiFactoryInterface;
 use ApiPlatform\OpenApi\Model\Operation;
 use ApiPlatform\OpenApi\Model\PathItem;
 use ApiPlatform\OpenApi\OpenApi;
+use Labstag\Lib\OpenApiLib;
 use Symfony\Component\HttpFoundation\Response;
 
-class ActionsOpenApi implements OpenApiFactoryInterface
+class ActionsOpenApi extends OpenApiLib
 {
-    public function __construct(private readonly OpenApiFactoryInterface $openApiFactory)
-    {
-    }
-
     public function __invoke(array $context = []): OpenApi
     {
         $openApi = $this->openApiFactory->__invoke($context);
@@ -38,6 +34,7 @@ class ActionsOpenApi implements OpenApiFactoryInterface
                 $this,
                 $function,
             ];
+            /** @var OpenApi $openApi */
             $openApi = call_user_func($callable, $openApi);
         }
 
@@ -200,9 +197,6 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         return $openApi;
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     protected function setParametersDeleteDestroyRestore(): array
     {
         return [
@@ -230,9 +224,6 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         ];
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     protected function setParametersDeletiesEmpties(): array
     {
         return [
@@ -253,9 +244,6 @@ class ActionsOpenApi implements OpenApiFactoryInterface
         ];
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     protected function setParametersRestoreDestroy(): array
     {
         return [

@@ -3,23 +3,14 @@
 namespace Labstag\FormType;
 
 use Labstag\Entity\Phone;
-use Labstag\Service\PhoneService;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PhoneVerifType extends AbstractType
+class PhoneVerifType extends FormTypeLib
 {
-    public function __construct(
-        protected TranslatorInterface $translator,
-        protected PhoneService $phoneService
-    )
-    {
-    }
-
     public function buildView(
         FormView $formView,
         FormInterface $form,

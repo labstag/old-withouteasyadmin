@@ -4,9 +4,9 @@ namespace Labstag\Repository\Block;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Block\Html;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class HtmlRepository extends ServiceEntityRepositoryLib
+class HtmlRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

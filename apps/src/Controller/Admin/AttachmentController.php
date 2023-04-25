@@ -2,35 +2,31 @@
 
 namespace Labstag\Controller\Admin;
 
-use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Attachment;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/attachment')]
+#[Route(path: '/admin/attachment', name: 'admin_attachment_')]
 class AttachmentController extends AdminControllerLib
 {
-    #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_attachment_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_attachment_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/attachment/index.html.twig'
-        );
+        return $this->setAdmin()->index();
     }
 
-    protected function getDomainEntity(): DomainLib
+    #[IgnoreSoftDelete]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
     {
-        $domainLib = $this->domainService->getDomain(Attachment::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
-        }
+        return $this->setAdmin()->trash();
+    }
 
-        return $domainLib;
+    protected function setAdmin(): ViewService
+    {
+        return $this->adminService->setDomain(Attachment::class);
     }
 }

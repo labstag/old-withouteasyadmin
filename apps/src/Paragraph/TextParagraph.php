@@ -11,15 +11,16 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Text;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\TextType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Symfony\Component\HttpFoundation\Response;
 
-class TextParagraph extends ParagraphLib
+class TextParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'text';
     }
@@ -49,17 +50,14 @@ class TextParagraph extends ParagraphLib
         return true;
     }
 
-    public function show(Text $text): Response
+    public function show(EntityParagraphInterface $entityParagraph): Response
     {
         return $this->render(
-            $this->getTemplateFile($this->getCode($text)),
-            ['paragraph' => $text]
+            $this->getTemplateFile($this->getCode($entityParagraph)),
+            ['paragraph' => $entityParagraph]
         );
     }
 
-    /**
-     * @return class-string[]
-     */
     public function useIn(): array
     {
         return [

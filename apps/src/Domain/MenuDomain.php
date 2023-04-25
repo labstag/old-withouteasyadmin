@@ -5,49 +5,31 @@ namespace Labstag\Domain;
 use Labstag\Entity\Menu;
 
 use Labstag\Form\Admin\MenuType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\MenuRepository;
-use Labstag\RequestHandler\MenuRequestHandler;
 use Labstag\Search\MenuSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class MenuDomain extends DomainLib
+class MenuDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected MenuRequestHandler $menuRequestHandler,
-        protected MenuRepository $menuRepository,
-        protected MenuSearch $menuSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Menu::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->menuRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->menuRequestHandler;
-    }
-
     public function getSearchData(): MenuSearch
     {
-        return $this->menuSearch;
+        return new MenuSearch();
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index' => 'admin/menu/index.html.twig',
+            'trash' => 'admin/menu/trash.html.twig',
+            'move'  => 'admin/menu/move.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [
@@ -69,14 +51,15 @@ class MenuDomain extends DomainLib
     public function getUrlAdmin(): array
     {
         return [
-            'delete'  => 'api_action_delete',
-            'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_menu_edit',
-            'empty'   => 'api_action_empty',
-            'list'    => 'admin_menu_index',
-            'new'     => 'admin_menu_new',
-            'restore' => 'api_action_restore',
-            'trash'   => 'admin_menu_trash',
+            'delete'   => 'api_action_delete',
+            'destroy'  => 'api_action_destroy',
+            'edit'     => 'admin_menu_edit',
+            'empty'    => 'api_action_empty',
+            'position' => 'admin_menu_move',
+            'list'     => 'admin_menu_index',
+            'new'      => 'admin_menu_new',
+            'restore'  => 'api_action_restore',
+            'trash'    => 'admin_menu_trash',
         ];
     }
 }

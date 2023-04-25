@@ -2,14 +2,11 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
 use Labstag\Repository\OauthConnectUserRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\OauthConnectUserRequestHandler;
-use Labstag\RequestHandler\UserRequestHandler;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -18,12 +15,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class UserService
 {
     public function __construct(
+        protected WorkflowService $workflowService,
         protected OauthService $oauthService,
         protected SessionService $sessionService,
         protected RequestStack $requestStack,
-        protected EntityManagerInterface $entityManager,
-        protected UserRequestHandler $userRequestHandler,
-        protected OauthConnectUserRequestHandler $oauthConnectUserRequestHandler,
+        protected RepositoryService $repositoryService,
         protected TranslatorInterface $translator,
         protected OauthConnectUserRepository $oauthConnectUserRepository,
         protected UserRepository $userRepository
@@ -37,8 +33,13 @@ class UserService
         ResourceOwnerInterface $resourceOwner
     ): void
     {
-        $identity = $this->oauthService->getIdentity($resourceOwner->toArray(), $client);
-        $find     = $this->findOAuthIdentity(
+        $repository = $this->oauthConnectUserRepository;
+        $identity   = $this->oauthService->getIdentity($resourceOwner->toArray(), $client);
+        if (!is_string($identity)) {
+            return;
+        }
+
+        $find = $this->findOAuthIdentity(
             $user,
             $identity,
             $client,
@@ -46,7 +47,7 @@ class UserService
         );
         if (false === $find) {
             /** @var null|OauthConnectUser $oauthConnect */
-            $oauthConnect = $this->oauthConnectUserRepository->findOauthNotUser(
+            $oauthConnect = $repository->findOauthNotUser(
                 $user,
                 $identity,
                 $client
@@ -66,9 +67,8 @@ class UserService
         }
 
         if ($oauthConnect instanceof OauthConnectUser) {
-            $old = clone $oauthConnect;
             $oauthConnect->setData($resourceOwner->toArray());
-            $this->oauthConnectUserRequestHandler->handle($old, $oauthConnect);
+            $repository->save($oauthConnect);
             $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('service.user.oauth.sucess')
@@ -89,15 +89,13 @@ class UserService
     ): User
     {
         $user = new User();
-        $old  = clone $user;
-
         $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));
         $user->setUsername($dataUser['username']);
         $user->setPlainPassword($dataUser['password']);
         $user->setEmail($dataUser['email']);
 
-        $this->userRequestHandler->handle($old, $user);
-        $this->userRequestHandler->changeWorkflowState($user, $dataUser['state']);
+        $this->userRepository->save($user);
+        $this->workflowService->changeState($user, $dataUser['state']);
 
         return $user;
     }
@@ -131,7 +129,7 @@ class UserService
             return;
         }
 
-        $this->userRequestHandler->changeWorkflowState($user, ['lostpassword']);
+        $this->workflowService->changeState($user, ['lostpassword']);
     }
 
     protected function findOAuthIdentity(
@@ -144,6 +142,7 @@ class UserService
         $return            = false;
         $oauthConnectUsers = $user->getOauthConnectUsers();
         foreach ($oauthConnectUsers as $oauthConnect) {
+            /** @var OauthConnectUser $oauthConnect */
             $test1 = ($oauthConnect->getName() == $client);
             $test2 = ($oauthConnect->getIdentity() == $identity);
             if ($test1 && $test2) {

@@ -2,9 +2,9 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
+use Labstag\Entity\RouteGroupe;
 use Labstag\Entity\RouteUser;
 use Labstag\Entity\User;
 use Labstag\Repository\GroupeRepository;
@@ -49,7 +49,7 @@ class GuardService
 
     public function __construct(
         protected RouterInterface $router,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected GroupeRepository $groupeRepository,
         protected RouteRepository $routeRepository,
         protected RouteGroupeRepository $routeGroupeRepository,
@@ -102,14 +102,15 @@ class GuardService
     public function delete(): void
     {
         $results = $this->getLostRoute();
+        if (!is_iterable($results)) {
+            return;
+        }
+
         foreach ($results as $result) {
             $this->routeRepository->remove($result);
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getGuardRoutesForGroupe(Groupe $groupe): array
     {
         $routes = $this->routesEnableGroupe($groupe);
@@ -120,9 +121,6 @@ class GuardService
         return $routes;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getGuardRoutesForUser(User $user): array
     {
         $routes = $this->routesEnableUser($user);
@@ -231,13 +229,14 @@ class GuardService
         );
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     public function old(): array
     {
         $results = $this->getLostRoute();
         $data    = [];
+        if (!is_iterable($results)) {
+            return $data;
+        }
+
         foreach ($results as $result) {
             $data[] = [$result];
         }
@@ -245,9 +244,6 @@ class GuardService
         return $data;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function regex(string $string): array
     {
         $data = [];
@@ -261,9 +257,6 @@ class GuardService
         return $data;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function routesEnableGroupe(Groupe $groupe): array
     {
         $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
@@ -281,9 +274,6 @@ class GuardService
         return $routes;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function routesEnableUser(User $user): array
     {
         $data   = $this->routeRepository->findBy([], ['name' => 'ASC']);
@@ -315,12 +305,9 @@ class GuardService
         $route = new Route();
         $route->setName($name);
 
-        $this->routeRepository->add($route);
+        $this->routeRepository->save($route);
     }
 
-    /**
-     * @return array<int, mixed[]>
-     */
     public function tables(): array
     {
         $data = [];
@@ -344,7 +331,13 @@ class GuardService
             return false;
         }
 
-        return $entity->isState();
+        if (!$entity instanceof RouteGroupe) {
+            return false;
+        }
+
+        $state = $entity->isState();
+
+        return is_bool($state) ? $state : false;
     }
 
     protected function searchRouteUser(User $user, ?string $route): bool

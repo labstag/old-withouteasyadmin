@@ -110,7 +110,7 @@ class Menu implements Stringable, EntityTrashInterface
 
     public function getData(): ?array
     {
-        return is_array($this->data) ? $this->data : [];
+        return is_iterable($this->data) ? $this->data : [];
     }
 
     public function getIcon(): ?string
@@ -185,7 +185,7 @@ class Menu implements Stringable, EntityTrashInterface
 
     public function setData(?array $data): self
     {
-        if (is_array($data)) {
+        if (is_iterable($data)) {
             $this->data = $data;
         }
 

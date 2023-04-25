@@ -4,9 +4,9 @@ namespace Labstag\Repository\Paragraph;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Paragraph\Bookmark;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class BookmarkRepository extends ServiceEntityRepositoryLib
+class BookmarkRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

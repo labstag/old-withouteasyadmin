@@ -7,78 +7,61 @@ use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
-use Labstag\Repository\ChapterRepository;
-use Labstag\RequestHandler\ChapterRequestHandler;
+use Labstag\Service\Admin\Entity\ChapterService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/history/chapter')]
+#[Route(path: '/admin/history/chapter', name: 'admin_chapter_')]
 class ChapterController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_chapter_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Chapter $chapter
+        Chapter $chapter
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($chapter) ? new Chapter() : $chapter,
-            'admin/chapter/form.html.twig'
-        );
+        return $this->setAdmin()->edit($chapter);
+    }
+
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->setAdmin()->index();
+    }
+
+    #[Route(path: '/new/{id}', name: 'new', methods: ['GET', 'POST'])]
+    public function new(History $history): RedirectResponse
+    {
+        return $this->setAdmin()->add($history);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_chapter_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_chapter_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(Chapter $chapter): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/chapter/index.html.twig',
-        );
+        return $this->setAdmin()->preview($chapter);
     }
 
-    #[Route(path: '/new/{id}', name: 'admin_chapter_new', methods: ['GET', 'POST'])]
-    public function new(
-        History $history,
-        ChapterRepository $chapterRepository,
-        ChapterRequestHandler $chapterRequestHandler
-    ): RedirectResponse
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Chapter $chapter): Response
     {
-        $chapter = new Chapter();
-        $chapter->setRefhistory($history);
-        $chapter->setName(Uuid::v1());
-        $chapter->setPosition((is_countable($history->getChapters()) ? count($history->getChapters()) : 0) + 1);
-
-        $old = clone $chapter;
-        $chapterRepository->add($chapter);
-        $chapterRequestHandler->handle($old, $chapter);
-
-        return $this->redirectToRoute('admin_chapter_edit', ['id' => $chapter->getId()]);
+        return $this->setAdmin()->show($chapter);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_chapter_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_chapter_preview', methods: ['GET'])]
-    public function showOrPreview(Chapter $chapter): Response
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $chapter,
-            'admin/chapter/show.html.twig'
-        );
+        return $this->setAdmin()->trash();
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function setAdmin(): ChapterService
     {
-        $domainLib = $this->domainService->getDomain(Chapter::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
+        $viewService = $this->adminService->setDomain(Chapter::class);
+        if (!$viewService instanceof ChapterService) {
+            throw new Exception('Service not found');
         }
 
-        return $domainLib;
+        return $viewService;
     }
 }

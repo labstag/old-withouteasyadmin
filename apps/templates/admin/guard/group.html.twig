@@ -12,10 +12,10 @@
     </nav>
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="nav-route" role="tabpanel" aria-labelledby="nav-route-tab">
-            {{ include('admin/guard/group/route.html.twig') }}
+            {% include 'admin/guard/group/route.html.twig' %}
         </div>
         <div class="tab-pane fade" id="nav-workflow" role="tabpanel" aria-labelledby="nav-workflow-tab">
-            {{ include('admin/guard/group/workflow.html.twig') }}
+            {% include 'admin/guard/group/workflow.html.twig' %}
         </div>
     </div>
 {% endblock %}

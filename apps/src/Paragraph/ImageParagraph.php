@@ -12,17 +12,18 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Image;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\ImageType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\Response;
 
-class ImageParagraph extends ParagraphLib
+class ImageParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'image';
     }
@@ -52,24 +53,25 @@ class ImageParagraph extends ParagraphLib
         return true;
     }
 
-    public function show(Image $image): Response
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
+        if (!$entityParagraph instanceof Image) {
+            return null;
+        }
+
         $package    = new Package(new EmptyVersionStrategy());
-        $attachment = $image->getImage();
+        $attachment = $entityParagraph->getImage();
         $file       = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($image)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
-                'paragraph'  => $image,
+                'paragraph'  => $entityParagraph,
                 'attachment' => $file,
             ]
         );
     }
 
-    /**
-     * @return class-string[]
-     */
     public function useIn(): array
     {
         return [

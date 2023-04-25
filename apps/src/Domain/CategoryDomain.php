@@ -6,44 +6,28 @@ use Labstag\Entity\Category;
 use Labstag\Form\Admin\CategoryType;
 
 use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\CategoryRepository;
-use Labstag\RequestHandler\CategoryRequestHandler;
 use Labstag\Search\CategorySearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class CategoryDomain extends DomainLib
+class CategoryDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected CategoryRequestHandler $categoryRequestHandler,
-        protected CategoryRepository $categoryRepository,
-        protected CategorySearch $categorySearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Category::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
+    public function getMethodsList(): array
     {
-        return $this->categoryRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->categoryRequestHandler;
+        return [
+            'trash' => 'findTrashParentForAdmin',
+            'all'   => 'findAllParentForAdmin',
+        ];
     }
 
     public function getSearchData(): CategorySearch
     {
-        return $this->categorySearch;
+        return new CategorySearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +35,16 @@ class CategoryDomain extends DomainLib
         return SearchCategoryType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/category/index.html.twig',
+            'trash'   => 'admin/category/index.html.twig',
+            'show'    => 'admin/category/show.html.twig',
+            'preview' => 'admin/category/show.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

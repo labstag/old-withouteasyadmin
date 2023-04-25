@@ -9,9 +9,6 @@ use Labstag\Lib\FixtureLib;
 
 class RenderFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [
@@ -21,17 +18,17 @@ class RenderFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
         $routes = $this->guardService->getPublicRouteWithParams();
         foreach (array_keys($routes) as $route) {
             $words  = explode('_', $route);
             $words  = array_map(static fn ($value) => ucfirst(strtolower((string) $value)), $words);
             $words  = implode(' ', $words);
             $render = new Render();
-            $old    = clone $render;
             $render->setUrl($route);
             $render->setName($words);
-            $this->renderRequestHandler->handle($old, $render);
+            $objectManager->persist($render);
         }
+
+        $objectManager->flush();
     }
 }

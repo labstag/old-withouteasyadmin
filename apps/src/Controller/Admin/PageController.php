@@ -6,72 +6,61 @@ use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Page;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
-use Labstag\Repository\PageRepository;
-use Labstag\RequestHandler\PageRequestHandler;
+use Labstag\Service\Admin\Entity\PageService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/page')]
+#[Route(path: '/admin/page', name: 'admin_page_')]
 class PageController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_page_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Page $page
+        Page $page
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($page) ? new Page() : $page,
-            'admin/page/form.html.twig'
-        );
+        return $this->setAdmin()->edit($page);
+    }
+
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->setAdmin()->index();
+    }
+
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(): RedirectResponse
+    {
+        return $this->setAdmin()->add();
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_page_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_page_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(Page $page): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/page/index.html.twig'
-        );
+        return $this->setAdmin()->preview($page);
     }
 
-    #[Route(path: '/new', name: 'admin_page_new', methods: ['GET', 'POST'])]
-    public function new(PageRepository $pageRepository, PageRequestHandler $pageRequestHandler): RedirectResponse
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Page $page): Response
     {
-        $page = new Page();
-        $page->setName(Uuid::v1());
-
-        $old = clone $page;
-        $pageRepository->add($page);
-        $pageRequestHandler->handle($old, $page);
-
-        return $this->redirectToRoute('admin_page_edit', ['id' => $page->getId()]);
+        return $this->setAdmin()->show($page);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_page_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_page_preview', methods: ['GET'])]
-    public function showOrPreview(Page $page): Response
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $page,
-            'admin/page/show.html.twig'
-        );
+        return $this->setAdmin()->trash();
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function setAdmin(): PageService
     {
-        $domainLib = $this->domainService->getDomain(Page::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
+        $viewService = $this->adminService->setDomain(Page::class);
+        if (!$viewService instanceof PageService) {
+            throw new Exception('Service not found');
         }
 
-        return $domainLib;
+        return $viewService;
     }
 }

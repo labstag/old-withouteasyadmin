@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/mes-liens')]
+#[Route(path: '/mes-liens', name: 'front_bookmark')]
 class BookmarkController extends FrontControllerLib
 {
     #[Route(
         path: '/{slug}',
-        name: 'front_bookmark',
+        name: '',
         priority: 2,
         defaults: ['slug' => '']
     )]
@@ -43,7 +43,7 @@ class BookmarkController extends FrontControllerLib
 
     #[Route(
         path: '/categorie/{slug}',
-        name: 'front_bookmark_category',
+        name: '_category',
         priority: 2
     )]
     public function category(
@@ -64,7 +64,7 @@ class BookmarkController extends FrontControllerLib
 
     #[Route(
         path: '/libelle/{slug}',
-        name: 'front_bookmark_libelle',
+        name: '_libelle',
         priority: 2
     )]
     public function libelle(

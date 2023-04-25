@@ -6,10 +6,10 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Menu;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
 #[Trashable(url: 'admin_menu_trash')]
-class MenuRepository extends ServiceEntityRepositoryLib
+class MenuRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

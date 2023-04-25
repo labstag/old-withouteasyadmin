@@ -6,17 +6,18 @@ use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\Show;
 use Labstag\Form\Admin\Paragraph\History\ShowType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ShowParagraph extends ParagraphLib
+class ShowParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'history/show';
     }
@@ -46,16 +47,16 @@ class ShowParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Show $show): ?Response
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
         $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug       = $routeParam['slug'] ?? null;
-        /** @var HistoryRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(History::class);
-        $history                    = $serviceEntityRepositoryLib->findOneBy(
+        /** @var HistoryRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(History::class);
+        $history       = $repositoryLib->findOneBy(
             ['slug' => $slug]
         );
 
@@ -64,10 +65,10 @@ class ShowParagraph extends ParagraphLib
         }
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($show)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
                 'history'   => $history,
-                'paragraph' => $show,
+                'paragraph' => $entityParagraph,
             ]
         );
     }

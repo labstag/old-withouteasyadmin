@@ -51,7 +51,7 @@
         {% block modal %}
             {% if modal is defined %}
                 {% for key, value in modal %}
-                    {% if value== true %}
+                    {% if value == true %}
                         {% include "modal/"~ key ~".html.twig" %}
                     {% endif %}
                 {% endfor %}

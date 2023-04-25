@@ -6,16 +6,17 @@ use Labstag\Entity\Edito;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Edito\Header;
 use Labstag\Form\Admin\Paragraph\Edito\HeaderType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\EditoRepository;
 use Symfony\Component\HttpFoundation\Response;
 
-class HeaderParagraph extends ParagraphLib
+class HeaderParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'edito/header';
     }
@@ -45,21 +46,26 @@ class HeaderParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Header $header): ?Response
+    public function isShowForm(): bool
     {
-        /** @var EditoRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Edito::class);
-        $edito                      = $serviceEntityRepositoryLib->findOnePublier();
+        return false;
+    }
+
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
+    {
+        /** @var EditoRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Edito::class);
+        $edito         = $repositoryLib->findOnePublier();
 
         if (!$edito instanceof Edito) {
             return null;
         }
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($header)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
                 'edito'     => $edito,
-                'paragraph' => $header,
+                'paragraph' => $entityParagraph,
             ]
         );
     }

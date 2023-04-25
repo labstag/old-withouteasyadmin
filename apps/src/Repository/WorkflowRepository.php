@@ -4,9 +4,9 @@ namespace Labstag\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Workflow;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class WorkflowRepository extends ServiceEntityRepositoryLib
+class WorkflowRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

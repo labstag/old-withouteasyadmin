@@ -2,59 +2,58 @@
 
 namespace Labstag\Controller\Admin\User;
 
-use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\EmailUser;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/user/email')]
+#[Route(path: '/admin/user/email', name: 'admin_emailuser_')]
 class EmailUserController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_emailuser_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_emailuser_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?EmailUser $emailUser
+        EmailUser $emailUser
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($emailUser) ? new EmailUser() : $emailUser
-        );
+        return $this->setAdmin()->edit($emailUser);
+    }
+
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->setAdmin()->index();
+    }
+
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(): Response
+    {
+        return $this->setAdmin()->new();
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_emailuser_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_emailuser_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(EmailUser $emailUser): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/user/email_user/index.html.twig'
-        );
+        return $this->setAdmin()->preview($emailUser);
+    }
+
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(EmailUser $emailUser): Response
+    {
+        return $this->setAdmin()->show($emailUser);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_emailuser_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_emailuser_preview', methods: ['GET'])]
-    public function showOrPreview(EmailUser $emailUser): Response
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $emailUser,
-            'admin/user/email_user/show.html.twig'
-        );
+        return $this->setAdmin()->trash();
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function setAdmin(): ViewService
     {
-        $domainLib = $this->domainService->getDomain(EmailUser::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
-        }
-
-        return $domainLib;
+        return $this->adminService->setDomain(EmailUser::class);
     }
 }

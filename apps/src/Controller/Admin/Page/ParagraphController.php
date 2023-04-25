@@ -4,55 +4,60 @@ namespace Labstag\Controller\Admin\Page;
 
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
-use Labstag\Lib\ParagraphControllerLib;
-use Labstag\RequestHandler\ParagraphRequestHandler;
-use Labstag\Service\ParagraphService;
+use Labstag\Service\Admin\ParagraphService;
+use Labstag\Service\AdminService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/page/paragraph')]
-class ParagraphController extends ParagraphControllerLib
+#[Route(path: '/admin/page/paragraph', name: 'admin_page_paragraph_')]
+class ParagraphController extends AbstractController
 {
-    #[Route(path: '/add/{id}', name: 'admin_page_paragraph_add')]
+    public function __construct(
+        protected AdminService $adminService
+    )
+    {
+    }
+
+    #[Route(path: '/add/{id}', name: 'add')]
     public function add(
-        ParagraphService $paragraphService,
-        Page $page,
-        Request $request
+        Page $page
     ): RedirectResponse
     {
-        $paragraphService->add($page, $request->get('data'));
-
-        return $this->redirectToRoute('admin_page_paragraph_list', ['id' => $page->getId()]);
+        return $this->paragraph()->add($page);
     }
 
-    #[Route(path: '/delete/{id}', name: 'admin_page_paragraph_delete')]
+    #[Route(path: '/delete/{id}', name: 'delete')]
     public function delete(Paragraph $paragraph): Response
     {
-        return $this->deleteParagraph(
-            $paragraph,
-            $paragraph->getPage(),
-            'admin_page_edit'
-        );
+        return $this->paragraph()->delete($paragraph);
     }
 
-    #[Route(path: '/list/{id}', name: 'admin_page_paragraph_list')]
+    #[Route(path: '/list/{id}', name: 'list')]
     public function list(Page $page): Response
     {
-        return $this->listTwig(
-            'admin_page_paragraph_show',
-            $page->getParagraphs(),
-            'admin_page_paragraph_delete'
-        );
+        return $this->paragraph()->list($page->getParagraphs());
     }
 
-    #[Route(path: '/show/{id}', name: 'admin_page_paragraph_show')]
+    #[Route(path: '/show/{id}', name: 'show')]
     public function show(
-        Paragraph $paragraph,
-        ParagraphRequestHandler $paragraphRequestHandler
+        Paragraph $paragraph
     ): Response
     {
-        return parent::showTwig($paragraph, $paragraphRequestHandler);
+        return $this->paragraph()->show($paragraph);
+    }
+
+    private function paragraph(): ParagraphService
+    {
+        $paragraph = $this->adminService->paragraph();
+        $paragraph->setUrls(
+            'admin_page_paragraph_list',
+            'admin_page_edit',
+            'admin_page_paragraph_show',
+            'admin_page_paragraph_delete'
+        );
+
+        return $paragraph;
     }
 }

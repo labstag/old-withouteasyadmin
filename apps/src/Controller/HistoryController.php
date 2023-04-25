@@ -14,12 +14,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/mes-histoires')]
+#[Route(path: '/mes-histoires', name: 'front_history')]
 class HistoryController extends FrontControllerLib
 {
     #[Route(
         path: '/{slug}',
-        name: 'front_history',
+        name: '',
         priority: 2,
         defaults: ['slug' => '']
     )]
@@ -49,7 +49,7 @@ class HistoryController extends FrontControllerLib
 
     #[Route(
         path: '/{history}/{chapter}',
-        name: 'front_history_chapter',
+        name: '_chapter',
         priority: 2
     )]
     public function chapter(
@@ -70,7 +70,7 @@ class HistoryController extends FrontControllerLib
         );
 
         /** @var History $chapterHistory */
-        $chapterHistory = $chapter->getRefhistory();
+        $chapterHistory = $chapter->getHistory();
         $test           = [
             !$history instanceof History,
             !$chapter instanceof Chapter,
@@ -91,7 +91,7 @@ class HistoryController extends FrontControllerLib
 
     #[Route(
         path: '/{slug}/pdf',
-        name: 'front_history_pdf',
+        name: '_pdf',
         priority: 3
     )]
     public function pdf(
@@ -130,7 +130,7 @@ class HistoryController extends FrontControllerLib
 
     #[Route(
         path: '/user/{username}',
-        name: 'front_history_user',
+        name: '_user',
         priority: 3
     )]
     public function user(

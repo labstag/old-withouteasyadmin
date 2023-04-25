@@ -2,16 +2,12 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Entity\Configuration;
 use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
 use Labstag\Repository\GroupeRepository;
 use Labstag\Repository\TemplateRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\ConfigurationRequestHandler;
-use Labstag\RequestHandler\TemplateRequestHandler;
-use Labstag\RequestHandler\UserRequestHandler;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
@@ -21,10 +17,7 @@ class InstallService
     public function __construct(
         protected OauthService $oauthService,
         protected UserService $userService,
-        protected ConfigurationRequestHandler $configurationRequestHandler,
-        protected UserRequestHandler $userRequestHandler,
-        protected TemplateRequestHandler $templateRequestHandler,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected Environment $twigEnvironment,
         protected CacheInterface $cache,
         protected GroupeRepository $groupeRepository,
@@ -59,12 +52,13 @@ class InstallService
             );
         }
 
+        if (!is_array($data)) {
+            $data = [];
+        }
+
         return $data;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getEnv(array $serverEnv): array
     {
         $file   = dirname(__DIR__, 2).'/.env';
@@ -100,11 +94,10 @@ class InstallService
             $configuration = new Configuration();
         }
 
-        $old = clone $configuration;
         $configuration->setName($key);
         $configuration->setValue($value);
 
-        $this->configurationRequestHandler->handle($old, $configuration);
+        $this->configurationRepository->save($configuration);
     }
 
     protected function addUser(

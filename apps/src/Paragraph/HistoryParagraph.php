@@ -6,16 +6,17 @@ use Labstag\Entity\History as EntityHistory;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\History;
 use Labstag\Form\Admin\Paragraph\HistoryType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 
-class HistoryParagraph extends ParagraphLib
+class HistoryParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'history';
     }
@@ -45,28 +46,25 @@ class HistoryParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(History $history): Response
+    public function show(EntityParagraphInterface $entityParagraph): Response
     {
-        /** @var HistoryRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(EntityHistory::class);
-        $histories                  = $serviceEntityRepositoryLib->getLimitOffsetResult(
-            $serviceEntityRepositoryLib->findPublier(),
+        /** @var HistoryRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(EntityHistory::class);
+        $histories     = $repositoryLib->getLimitOffsetResult(
+            $repositoryLib->findPublier(),
             5,
             0
         );
 
         return $this->render(
-            $this->getTemplateFile($this->getcode($history)),
+            $this->getTemplateFile($this->getcode($entityParagraph)),
             [
                 'histories' => $histories,
-                'paragraph' => $history,
+                'paragraph' => $entityParagraph,
             ]
         );
     }
 
-    /**
-     * @return array<class-string<Page>>
-     */
     public function useIn(): array
     {
         return [

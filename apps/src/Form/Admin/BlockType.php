@@ -14,10 +14,15 @@ class BlockType extends BlockAbstractTypeLib
 {
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $formType = $this->blockService->getTypeForm($formBuilder->getData());
-        $label    = $this->blockService->getName($formBuilder->getData());
-        $field    = $this->blockService->getEntityField($formBuilder->getData());
-        $show     = $this->blockService->isShow($formBuilder->getData());
+        $block = $formBuilder->getData();
+        if (!$block instanceof Block) {
+            return;
+        }
+
+        $formType = $this->blockService->getTypeForm($block);
+        $label    = $this->blockService->getName($block);
+        $field    = $this->blockService->getEntityField($block);
+        $show     = $this->blockService->isShow($block);
         $formBuilder->add(
             'title',
             TextType::class,

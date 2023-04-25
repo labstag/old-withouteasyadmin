@@ -4,9 +4,9 @@ namespace Labstag\Repository\Paragraph\Post;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Paragraph\Post\Category;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class CategoryRepository extends ServiceEntityRepositoryLib
+class CategoryRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

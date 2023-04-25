@@ -13,17 +13,16 @@ use Labstag\Repository\RouteGroupeRepository;
 use Labstag\Repository\RouteRepository;
 use Labstag\Repository\RouteUserRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\RouteGroupeRequestHandler;
-use Labstag\RequestHandler\RouteUserRequestHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route(path: '/api/guard')]
+#[Route(path: '/api/guard', name: 'api_guard_')]
 class GuardController extends ApiControllerLib
 {
-    #[Route(path: '/groups/{groupe}', name: 'api_guard_group')]
+    #[Route(path: '/groups/{groupe}', name: 'group')]
     public function groupe(
         RouteGroupeRepository $routeGroupeRepository,
         Groupe $groupe
@@ -32,18 +31,18 @@ class GuardController extends ApiControllerLib
         return $this->getRefgroupe($routeGroupeRepository, $groupe);
     }
 
-    #[Route(path: '/groups', name: 'api_guard_groups')]
+    #[Route(path: '/groups', name: 'groups')]
     public function groupes(RouteGroupeRepository $routeGroupeRepository): JsonResponse
     {
         return $this->getRefgroupe($routeGroupeRepository);
     }
 
-    #[Route(path: '/setgroup/{route}/{groupe}', name: 'api_guard_setgroup')]
+    #[Route(path: '/setgroup/{route}/{groupe}', name: 'setgroup')]
     public function setgroup(
         string $route,
         string $groupe,
         Request $request,
-        RouteGroupeRequestHandler $routeGroupeRequestHandler,
+        CsrfTokenManagerInterface $csrfTokenManager,
         GroupeRepository $groupeRepository,
         RouteRepository $routeRepository,
         RouteGroupeRepository $routeGroupeRepository
@@ -67,7 +66,7 @@ class GuardController extends ApiControllerLib
             'guard-'.$groupeId.'-route-'.$routeId,
             (string) $post['_token']
         );
-        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
+        if ($csrfTokenManager->isTokenValid($csrfToken)) {
             $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
@@ -85,20 +84,19 @@ class GuardController extends ApiControllerLib
             $routeGroupe->setRefRoute($route);
         }
 
-        $old = clone $routeGroupe;
         $routeGroupe->setState((bool) $post['state']);
-        $routeGroupeRequestHandler->handle($old, $routeGroupe);
+        $routeGroupeRepository->save($routeGroupe);
         $data['ok'] = true;
 
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/setuser/{route}/{user}', name: 'api_guard_setuser', methods: ['POST'])]
+    #[Route(path: '/setuser/{route}/{user}', name: 'setuser', methods: ['POST'])]
     public function setuser(
         string $route,
         string $user,
         Request $request,
-        RouteUserRequestHandler $routeUserRequestHandler,
+        CsrfTokenManagerInterface $csrfTokenManager,
         UserRepository $userRepository,
         RouteRepository $routeRepository,
         RouteUserRepository $routeUserRepository
@@ -122,7 +120,7 @@ class GuardController extends ApiControllerLib
             'guard-'.$userId.'-route-'.$routeId,
             (string) $post['_token']
         );
-        if ($this->csrfTokenManager->isTokenValid($csrfToken)) {
+        if ($csrfTokenManager->isTokenValid($csrfToken)) {
             $data['error'] = 'token incorrect';
 
             return new JsonResponse($data);
@@ -140,15 +138,14 @@ class GuardController extends ApiControllerLib
             $routeUser->setRefRoute($route);
         }
 
-        $old = clone $routeUser;
         $routeUser->setState((bool) $post['state']);
-        $routeUserRequestHandler->handle($old, $routeUser);
+        $userRepository->save($routeUser);
         $data['ok'] = true;
 
         return new JsonResponse($data);
     }
 
-    #[Route(path: '/users/{user}', name: 'api_guard_user')]
+    #[Route(path: '/users/{user}', name: 'user')]
     public function user(
         User $user,
         RouteGroupeRepository $routeGroupeRepository,
@@ -160,6 +157,10 @@ class GuardController extends ApiControllerLib
             'user'   => [],
         ];
         $results = $routeGroupeRepository->findEnableByGroupe($user->getRefgroupe());
+        if (!is_iterable($results)) {
+            return new JsonResponse($data);
+        }
+
         foreach ($results as $row) {
             /** @var RouteGroupe $row */
             /** @var EntityRoute $route */
@@ -170,6 +171,10 @@ class GuardController extends ApiControllerLib
         }
 
         $results = $routeUserRepository->findEnableByUser($user);
+        if (!is_iterable($results)) {
+            return new JsonResponse($data);
+        }
+
         foreach ($results as $result) {
             /** @var RouteUser $row */
             $data['user'][] = [
@@ -187,6 +192,10 @@ class GuardController extends ApiControllerLib
     {
         $results = $routeGroupeRepository->findEnableByGroupe($groupe);
         $data    = [];
+        if (!is_iterable($results)) {
+            return new JsonResponse($data);
+        }
+
         foreach ($results as $result) {
             /** @var RouteGroupe $result */
             /** @var Groupe $groupe */

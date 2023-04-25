@@ -6,6 +6,7 @@ use Embed\Embed;
 use Embed\Extractor;
 use Exception;
 use finfo;
+use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Chapter;
 use Labstag\Entity\Edito;
@@ -17,9 +18,10 @@ use Labstag\Entity\Paragraph;
 use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\VideoType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Repository\Paragraph\VideoRepository;
 use Psr\Http\Message\UriInterface;
@@ -29,11 +31,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
-class VideoParagraph extends ParagraphLib
+class VideoParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'video';
     }
@@ -66,9 +68,9 @@ class VideoParagraph extends ParagraphLib
     public function setData(Paragraph $paragraph): void
     {
         /** @var VideoRepository $videoRepository */
-        $videoRepository = $this->entityManager->getRepository(Video::class);
+        $videoRepository = $this->repositoryService->get(Video::class);
         /** @var AttachmentRepository $attachmentRepository */
-        $attachmentRepository = $this->entityManager->getRepository(Attachment::class);
+        $attachmentRepository = $this->repositoryService->get(Attachment::class);
         $videos               = $paragraph->getVideos();
         /** @var Video $video */
         $video = $videos[0];
@@ -90,7 +92,7 @@ class VideoParagraph extends ParagraphLib
             $video->setTitle($title);
             $slug = (string) $asciiSlugger->slug($title);
             $video->setSlug($slug);
-            $videoRepository->add($video);
+            $videoRepository->save($video);
         } catch (Exception) {
             $image = '';
         }
@@ -111,19 +113,24 @@ class VideoParagraph extends ParagraphLib
 
         $annotations = $this->uploadAnnotationReader->getUploadableFields($video);
         foreach ($annotations as $annotation) {
+            /** @var UploadableField $annotation */
             $this->setDataAnnotation($annotation, $image, $video, $videoRepository, $slug);
         }
     }
 
-    public function show(Video $video): ?Response
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
-        $extractor = $this->getData($video);
+        if (!$entityParagraph instanceof Video) {
+            return null;
+        }
+
+        $extractor = $this->getData($entityParagraph);
         if (is_null($extractor)) {
             return null;
         }
 
         $package    = new Package(new EmptyVersionStrategy());
-        $attachment = $video->getImage();
+        $attachment = $entityParagraph->getImage();
         $image      = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
 
         if (is_null($image)) {
@@ -138,9 +145,9 @@ class VideoParagraph extends ParagraphLib
         $embed = (0 != count($datas)) ? $datas[0] : null;
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($video)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
-                'paragraph' => $video,
+                'paragraph' => $entityParagraph,
                 'image'     => $image,
                 'data'      => $extractor,
                 'embed'     => $embed,
@@ -148,9 +155,6 @@ class VideoParagraph extends ParagraphLib
         );
     }
 
-    /**
-     * @return class-string[]
-     */
     public function useIn(): array
     {
         return [
@@ -177,10 +181,10 @@ class VideoParagraph extends ParagraphLib
     }
 
     private function setDataAnnotation(
-        mixed $annotation,
+        UploadableField $uploadableField,
         string $image,
         Video $video,
-        ServiceEntityRepositoryLib $serviceEntityRepositoryLib,
+        RepositoryLib $serviceEntityRepositoryLib,
         string $slug
     ): void
     {
@@ -192,7 +196,7 @@ class VideoParagraph extends ParagraphLib
         }
 
         try {
-            $path    = $fileDirectory.'/'.$annotation->getPath();
+            $path    = $fileDirectory.'/'.$uploadableField->getPath();
             $content = file_get_contents($image);
             /** @var resource $tmpfile */
             $tmpfile = tmpfile();
@@ -216,9 +220,9 @@ class VideoParagraph extends ParagraphLib
             );
             $file       = $path.'/'.$clientOriginalName;
             $attachment = $this->fileService->setAttachment($file);
-            $serviceEntityRepositoryLib->add($attachment);
+            $serviceEntityRepositoryLib->save($attachment);
             $video->setImage($attachment);
-            $serviceEntityRepositoryLib->add($video);
+            $serviceEntityRepositoryLib->save($video);
         } catch (Exception $exception) {
             $this->errorService->set($exception);
             echo $exception->getMessage();

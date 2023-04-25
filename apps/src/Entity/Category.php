@@ -128,7 +128,10 @@ class Category implements Stringable, EntityTrashInterface
 
     public function removeBookmark(Bookmark $bookmark): self
     {
-        $this->removeElementCategory($this->bookmarks, $bookmark);
+        $this->removeElementCategory(
+            element: $this->bookmarks,
+            bookmark: $bookmark
+        );
 
         return $this;
     }
@@ -145,7 +148,10 @@ class Category implements Stringable, EntityTrashInterface
 
     public function removePost(Post $post): self
     {
-        $this->removeElementCategory($this->posts, $post);
+        $this->removeElementCategory(
+            element: $this->posts,
+            post: $post
+        );
 
         return $this;
     }
@@ -173,9 +179,16 @@ class Category implements Stringable, EntityTrashInterface
 
     private function removeElementCategory(
         Collection $element,
-        mixed $variable
+        ?Bookmark $bookmark = null,
+        ?Post $post = null
     ): void
     {
+        if (is_null($bookmark) && is_null($post)) {
+            return;
+        }
+
+        $variable = is_null($bookmark) ? $post : $bookmark;
+
         if ($element->removeElement($variable) && $variable->getRefcategory() === $this) {
             $variable->setRefcategory(null);
         }

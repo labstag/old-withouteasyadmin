@@ -9,7 +9,7 @@
 			{% set img = attachment(bookmark.img) %}
 			{% if img is not null and img.name is not null %}
 				<picture class="bookmark_img">
-					<img alt="{{ bookmark.name|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
+					<img loading="lazy" alt="{{ bookmark.name|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
 				</picture>
 			{% endif %}
 			<div class="bookmark_date">

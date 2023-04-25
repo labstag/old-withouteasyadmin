@@ -3,24 +3,17 @@
 namespace Labstag\FormType;
 
 use Labstag\Entity\EmailUser;
+use Labstag\Entity\User;
+use Labstag\Lib\FormTypeLib;
 use Labstag\Repository\EmailUserRepository;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EmailVerifChoiceType extends AbstractType
+class EmailVerifChoiceType extends FormTypeLib
 {
-    public function __construct(
-        protected EmailUserRepository $emailUserRepository,
-        protected TranslatorInterface $translator
-    )
-    {
-    }
-
     public function buildView(
         FormView $formView,
         FormInterface $form,
@@ -28,9 +21,20 @@ class EmailVerifChoiceType extends AbstractType
     ): void
     {
         /** @var FormInterface $parent */
-        $parent  = $form->getParent();
-        $entity  = $parent->getData();
-        $data    = $this->emailUserRepository->getEmailsUserVerif($entity, true);
+        $parent = $form->getParent();
+        if (is_null($parent)) {
+            return;
+        }
+
+        $entity = $parent->getData();
+        if ($entity instanceof User) {
+            return;
+        }
+
+        /** @var EmailUserRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(EmailUser::class);
+        /** @var User $entity */
+        $data    = $repositoryLib->getEmailsUserVerif($entity, true);
         $choices = [];
         foreach ($data as $email) {
             /** @var EmailUser $email */

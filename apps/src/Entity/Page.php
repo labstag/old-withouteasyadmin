@@ -10,7 +10,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Handler\TreeSlugHandler;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\PageRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: PageRepository::class)]
 #[ApiResource]
-class Page implements Stringable, FrontInterface, EntityTrashInterface
+class Page implements Stringable, PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
 
@@ -161,14 +162,20 @@ class Page implements Stringable, FrontInterface, EntityTrashInterface
 
     public function removeMeta(Meta $meta): self
     {
-        $this->removeElementPage($this->metas, $meta);
+        $this->removeElementPage(
+            element: $this->metas,
+            meta: $meta
+        );
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        $this->removeElementPage($this->paragraphs, $paragraph);
+        $this->removeElementPage(
+            element: $this->paragraphs,
+            paragraph: $paragraph
+        );
 
         return $this;
     }
@@ -203,9 +210,16 @@ class Page implements Stringable, FrontInterface, EntityTrashInterface
 
     private function removeElementPage(
         Collection $element,
-        mixed $variable
+        ?Meta $meta = null,
+        ?Paragraph $paragraph = null
     ): void
     {
+        if (is_null($meta) && is_null($paragraph)) {
+            return;
+        }
+
+        $variable = is_null($meta) ? $paragraph : $meta;
+
         if ($element->removeElement($variable) && $variable->getPage() === $this) {
             $variable->setPage(null);
         }

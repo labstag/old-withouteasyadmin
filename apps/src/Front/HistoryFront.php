@@ -4,24 +4,25 @@ namespace Labstag\Front;
 
 use Labstag\Entity\History;
 use Labstag\Entity\Page;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\FrontInterface;
 
-class HistoryFront extends PageFront
+class HistoryFront extends PageFront implements FrontInterface
 {
     public function setBreadcrumb(
-        ?FrontInterface $front,
+        ?EntityFrontInterface $entityFront,
         array $breadcrumb
     ): array
     {
-        return $this->setBreadcrumbHistory($front, $breadcrumb);
+        return $this->setBreadcrumbHistory($entityFront, $breadcrumb);
     }
 
     public function setBreadcrumbHistory(
-        ?FrontInterface $front,
+        ?EntityFrontInterface $entityFront,
         array $breadcrumb
     ): array
     {
-        if (!$front instanceof History) {
+        if (!$entityFront instanceof History) {
             return $breadcrumb;
         }
 
@@ -29,10 +30,10 @@ class HistoryFront extends PageFront
             'route' => $this->router->generate(
                 'front_history',
                 [
-                    'slug' => $front->getSlug(),
+                    'slug' => $entityFront->getSlug(),
                 ]
             ),
-            'title' => $front->getName(),
+            'title' => $entityFront->getName(),
         ];
 
         /** @var Page $page */
@@ -44,14 +45,14 @@ class HistoryFront extends PageFront
     }
 
     public function setMeta(
-        ?FrontInterface $front,
+        ?EntityFrontInterface $entityFront,
         array $meta
     ): array
     {
-        if (!$front instanceof History) {
+        if (!$entityFront instanceof History) {
             return $meta;
         }
 
-        return $this->getMeta($front->getMetas(), $meta);
+        return $this->getMeta($entityFront->getMetas(), $meta);
     }
 }

@@ -7,27 +7,16 @@ use Labstag\Entity\Block\Navbar;
 use Labstag\Entity\Menu;
 use Labstag\Form\Admin\Block\NavbarType;
 use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityBlockInterface;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
-use Labstag\Service\MenuService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
-class NavbarBlock extends BlockLib
+class NavbarBlock extends BlockLib implements BlockInterface
 {
-    public function __construct(
-        protected MenuService $menuService,
-        TranslatorInterface $translator,
-        Environment $twigEnvironment
-    )
+    public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
-        parent::__construct($translator, $twigEnvironment);
-    }
-
-    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
-    {
-        unset($entityBlockLib, $front);
+        unset($entityBlock, $entityFront);
 
         return 'navbar';
     }
@@ -57,18 +46,22 @@ class NavbarBlock extends BlockLib
         return true;
     }
 
-    public function show(Navbar $navbar, ?FrontInterface $front): Response
+    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
     {
-        $menu = $navbar->getMenu();
+        if (!$entityBlock instanceof Navbar) {
+            return null;
+        }
+
+        $menu = $entityBlock->getMenu();
         $item = ($menu instanceof Menu) ? $this->menuService->createMenu($menu) : '';
         $show = ($item instanceof ItemInterface) ? (0 != count($item->getChildren())) : false;
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($navbar, $front)),
+            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
             [
                 'show'  => $show,
                 'item'  => $item,
-                'block' => $navbar,
+                'block' => $entityBlock,
             ]
         );
     }

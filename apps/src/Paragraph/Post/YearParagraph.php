@@ -6,17 +6,18 @@ use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Year;
 use Labstag\Entity\Post;
 use Labstag\Form\Admin\Paragraph\Post\YearType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class YearParagraph extends ParagraphLib
+class YearParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'post/year';
     }
@@ -46,26 +47,26 @@ class YearParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Year $postyear): Response
+    public function show(EntityParagraphInterface $entityParagraph): Response
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
         $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $year       = $routeParam['year'] ?? null;
-        /** @var PostRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Post::class);
-        $pagination                 = $this->paginator->paginate(
-            $serviceEntityRepositoryLib->findPublierArchive($year),
+        /** @var PostRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Post::class);
+        $pagination    = $this->paginator->paginate(
+            $repositoryLib->findPublierArchive($year),
             $request->query->getInt('page', 1),
             10
         );
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($postyear)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $postyear,
+                'paragraph'  => $entityParagraph,
             ]
         );
     }

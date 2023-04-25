@@ -11,20 +11,21 @@ class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterf
 {
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
         $templates = $this->installService->getData('template');
         foreach ($templates as $key => $row) {
-            $this->addTemplate($key, $row);
+            $this->addTemplate($key, $row, $objectManager);
         }
+
+        $objectManager->flush();
     }
 
     protected function addTemplate(
         string $key,
-        string $value
+        string $value,
+        ObjectManager $objectManager
     ): void
     {
         $template = new Template();
-        $old      = clone $template;
         $template->setName($value);
         $template->setCode($key);
 
@@ -38,6 +39,6 @@ class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterf
             $template->setText($this->twigEnvironment->render($txtfile));
         }
 
-        $this->templateRequestHandler->handle($old, $template);
+        $objectManager->persist($template);
     }
 }

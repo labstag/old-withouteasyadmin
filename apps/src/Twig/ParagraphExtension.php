@@ -3,21 +3,11 @@
 namespace Labstag\Twig;
 
 use Labstag\Entity\Paragraph;
-use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Lib\ExtensionLib;
-use Labstag\Service\ParagraphService;
-use Twig\Environment;
 
 class ParagraphExtension extends ExtensionLib
 {
-    public function __construct(
-        protected Environment $twigEnvironment,
-        protected ParagraphService $paragraphService
-    )
-    {
-        parent::__construct($twigEnvironment);
-    }
-
     public function getFiltersFunctions(): array
     {
         return [
@@ -27,10 +17,10 @@ class ParagraphExtension extends ExtensionLib
         ];
     }
 
-    public function getParagraphClass(ParagraphInterface $entityParagraphLib): string
+    public function getParagraphClass(EntityParagraphInterface $entityParagraph): string
     {
         /** @var Paragraph $paragraph */
-        $paragraph = $entityParagraphLib->getParagraph();
+        $paragraph = $entityParagraph->getParagraph();
         $dataClass = [
             'paragraph-'.$paragraph->getType(),
         ];
@@ -48,10 +38,10 @@ class ParagraphExtension extends ExtensionLib
         return implode(' ', $dataClass);
     }
 
-    public function getParagraphId(ParagraphInterface $entityParagraphLib): string
+    public function getParagraphId(EntityParagraphInterface $entityParagraph): string
     {
         /** @var Paragraph $paragraph */
-        $paragraph = $entityParagraphLib->getParagraph();
+        $paragraph = $entityParagraph->getParagraph();
 
         return 'paragraph-'.$paragraph->getType().'-'.$paragraph->getId();
     }

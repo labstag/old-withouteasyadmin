@@ -12,7 +12,8 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\EditoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -22,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: EditoRepository::class)]
 #[ApiResource]
-class Edito implements Stringable, FrontInterface, EntityTrashInterface
+class Edito implements Stringable, PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;

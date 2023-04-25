@@ -10,9 +10,6 @@ use Labstag\Lib\FixtureLib;
 
 class MenuFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [
@@ -22,33 +19,34 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
         $generator = $this->setFaker();
         $data      = $this->installService->getData('menu');
         foreach ($data as $menu) {
-            $this->addMenu($generator, $menu);
+            $this->addMenu($generator, $menu, $objectManager);
         }
+
+        $objectManager->flush();
     }
 
     protected function addMenu(
         Generator $generator,
-        array $dataMenu
+        array $dataMenu,
+        ObjectManager $objectManager
     ): void
     {
         $menu = new Menu();
-        $old  = clone $menu;
         if (array_key_exists('clef', $dataMenu)) {
             $this->addReference('menu_'.$dataMenu['clef'], $menu);
             $menu->setClef($dataMenu['clef']);
         }
 
-        $this->menuRequestHandler->handle($old, $menu);
+        $objectManager->persist($menu);
         if (!array_key_exists('childs', $dataMenu)) {
             return;
         }
 
         foreach ($dataMenu['childs'] as $position => $child) {
-            $this->addMenuChild($generator, $position, $menu, $child);
+            $this->addMenuChild($generator, $position, $menu, $child, $objectManager);
         }
     }
 
@@ -56,11 +54,11 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         int $position,
         Menu $parent,
-        array $child
+        array $child,
+        ObjectManager $objectManager
     ): void
     {
         $menu = new Menu();
-        $old  = clone $menu;
         $menu->setPosition($position + 1);
         $menu->setParent($parent);
         $menu->setSeparateur(array_key_exists('separator', $child));
@@ -69,13 +67,13 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
         }
 
         if (array_key_exists('data', $child)) {
-            $menu->setData([$child['data']]);
+            $menu->setData($child['data']);
         }
 
-        $this->menuRequestHandler->handle($old, $menu);
+        $objectManager->persist($menu);
         if (array_key_exists('childs', $child)) {
             foreach ($child['childs'] as $i => $row) {
-                $this->addMenuChild($generator, $i, $menu, $row);
+                $this->addMenuChild($generator, $i, $menu, $row, $objectManager);
             }
         }
     }

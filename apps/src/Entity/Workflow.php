@@ -98,14 +98,20 @@ class Workflow implements EntityInterface
 
     public function removeWorkflowGroupe(WorkflowGroupe $workflowGroupe): self
     {
-        $this->removeElementWorkflow($this->workflowGroupes, $workflowGroupe);
+        $this->removeElementWorkflow(
+            element: $this->workflowGroupes,
+            workflowGroupe: $workflowGroupe
+        );
 
         return $this;
     }
 
     public function removeWorkflowUser(WorkflowUser $workflowUser): self
     {
-        $this->removeElementWorkflow($this->workflowUsers, $workflowUser);
+        $this->removeElementWorkflow(
+            element: $this->workflowUsers,
+            workflowUser: $workflowUser
+        );
 
         return $this;
     }
@@ -126,10 +132,12 @@ class Workflow implements EntityInterface
 
     private function removeElementWorkflow(
         Collection $element,
-        mixed $variable
+        ?WorkflowGroupe $workflowGroupe = null,
+        ?WorkflowUser $workflowUser = null
     ): void
     {
-        if ($element->removeElement($variable) && $variable->getRefworkflow() === $this) {
+        $variable = is_null($workflowGroupe) ? $workflowUser : $workflowGroupe;
+        if (!is_null($variable) && $element->removeElement($variable) && $variable->getRefworkflow() === $this) {
             $variable->setRefworkflow(null);
         }
     }

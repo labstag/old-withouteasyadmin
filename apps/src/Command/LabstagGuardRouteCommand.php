@@ -2,10 +2,7 @@
 
 namespace Labstag\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Lib\CommandLib;
-use Labstag\Service\GuardService;
-use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -16,15 +13,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'labstag:guard-route')]
 class LabstagGuardRouteCommand extends CommandLib
 {
-    public function __construct(
-        RepositoryService $repositoryService,
-        EntityManagerInterface $entityManager,
-        protected GuardService $guardService
-    )
-    {
-        parent::__construct($repositoryService, $entityManager);
-    }
-
     protected function configure(): void
     {
         $this->setDescription('Enregistre les routes pour le système de GUARD');

@@ -6,44 +6,20 @@ use Labstag\Entity\Post;
 
 use Labstag\Form\Admin\PostType;
 use Labstag\Form\Admin\Search\PostType as SearchPostType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\PostRepository;
-use Labstag\RequestHandler\PostRequestHandler;
 use Labstag\Search\PostSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PostDomain extends DomainLib
+class PostDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected PostRequestHandler $postRequestHandler,
-        protected PostRepository $postRepository,
-        protected PostSearch $postSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Post::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->postRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->postRequestHandler;
-    }
-
     public function getSearchData(): PostSearch
     {
-        return $this->postSearch;
+        return new PostSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,17 @@ class PostDomain extends DomainLib
         return SearchPostType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/post/index.html.twig',
+            'trash'   => 'admin/post/index.html.twig',
+            'show'    => 'admin/post/show.html.twig',
+            'preview' => 'admin/post/show.html.twig',
+            'edit'    => 'admin/post/form.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

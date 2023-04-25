@@ -6,108 +6,67 @@ use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Groupe;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
-use Labstag\Repository\WorkflowRepository;
+use Labstag\Service\Admin\Entity\GuardService;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/user/groupe')]
+#[Route(path: '/admin/user/groupe', name: 'admin_groupuser_')]
 class GroupeController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_groupuser_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_groupuser_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Groupe $groupe
+        Groupe $groupe
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($groupe) ? new Groupe() : $groupe
-        );
+        return $this->setAdmin()->edit($groupe);
     }
 
-    #[Route(path: '/{id}/guard', name: 'admin_groupuser_guard')]
-    public function guard(
-        Groupe $groupe,
-        WorkflowRepository $workflowRepository
-    ): Response
+    #[Route(path: '/{id}/guard', name: 'guard')]
+    public function guard(Groupe $groupe): Response
     {
-        $this->adminBtnService->addBtnList(
-            'admin_groupuser_index',
-            'Liste',
-        );
-        $this->adminBtnService->addBtnShow(
-            'admin_groupuser_show',
-            'Show',
-            [
-                'id' => $groupe->getId(),
-            ]
-        );
-        $this->adminBtnService->addBtnEdit(
-            'admin_groupuser_edit',
-            'Editer',
-            [
-                'id' => $groupe->getId(),
-            ]
-        );
-        $routes = $this->guardService->getGuardRoutesForGroupe($groupe);
-        if (0 == count($routes)) {
-            $this->sessionService->flashBagAdd(
-                'danger',
-                $this->translator->trans('admin.group.guard.superadmin.nope')
-            );
-
-            return $this->redirectToRoute('admin_groupuser_index');
+        $guardService = $this->adminService->setDomain('guard');
+        if (!$guardService instanceof GuardService) {
+            throw new Exception('TrashService not found');
         }
 
-        $workflows = $workflowRepository->findBy(
-            [],
-            [
-                'entity'     => 'ASC',
-                'transition' => 'ASC',
-            ]
-        );
-
-        return $this->render(
-            'admin/guard/group.html.twig',
-            [
-                'group'     => $groupe,
-                'routes'    => $routes,
-                'workflows' => $workflows,
-            ]
-        );
+        return $guardService->groupe($groupe);
     }
 
-    #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_groupuser_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_groupuser_index', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/user/groupe/index.html.twig'
-        );
+        return $this->setAdmin()->index();
+    }
+
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(): Response
+    {
+        return $this->setAdmin()->new();
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_groupuser_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_groupuser_preview', methods: ['GET'])]
-    public function showOrPreview(Groupe $groupe): Response
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(Groupe $groupe): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $groupe,
-            'admin/user/groupe/show.html.twig'
-        );
+        return $this->setAdmin()->preview($groupe);
     }
 
-    protected function getDomainEntity(): DomainLib
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Groupe $groupe): Response
     {
-        $domainLib = $this->domainService->getDomain(Groupe::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
-        }
+        return $this->setAdmin()->show($groupe);
+    }
 
-        return $domainLib;
+    #[IgnoreSoftDelete]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
+    {
+        return $this->setAdmin()->trash();
+    }
+
+    protected function setAdmin(): ViewService
+    {
+        return $this->adminService->setDomain(Groupe::class);
     }
 }

@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Uploadable()]
+#[Uploadable]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource]
@@ -28,6 +28,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     use SoftDeleteableEntity;
     use StateableEntity;
 
+    /**
+     * @var int
+     */
+    protected const DATAUNSERIALIZE = 4;
+
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
     protected ?Groupe $groupe = null;
@@ -35,6 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     #[ORM\Column(type: 'string', nullable: true)]
     protected string $password;
 
+    #[Assert\NotCompromisedPassword()]
     protected ?string $plainPassword = null;
 
     #[ORM\Column(type: 'json')]
@@ -184,9 +190,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->histories         = new ArrayCollection();
     }
 
+    public function __serialize(): array
+    {
+        return [
+            $this->id,
+            $this->username,
+            $this->email,
+            $this->password,
+        ];
+    }
+
     public function __toString(): string
     {
         return $this->getUsername();
+    }
+
+    public function __unserialize(array $data): void
+    {
+        if (self::DATAUNSERIALIZE === count($data)) {
+            [
+                $this->id,
+                $this->username,
+                $this->email,
+                $this->password,
+            ] = $data;
+        }
     }
 
     public function addAddressUser(AddressUser $addressUser): self
@@ -499,7 +527,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeBookmark(Bookmark $bookmark): self
     {
-        $this->removeElementUser($this->bookmarks, $bookmark);
+        $this->removeElementUser(
+            element: $this->bookmarks,
+            bookmark: $bookmark
+        );
 
         return $this;
     }
@@ -532,7 +563,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeHistory(History $history): self
     {
-        $this->removeElementUser($this->histories, $history);
+        $this->removeElementUser(
+            element: $this->histories,
+            history: $history
+        );
 
         return $this;
     }
@@ -565,14 +599,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeNoteInterne(Memo $memo): self
     {
-        $this->removeElementUser($this->noteInternes, $memo);
+        $this->removeElementUser(
+            element: $this->noteInternes,
+            memo: $memo
+        );
 
         return $this;
     }
 
     public function removeOauthConnectUser(OauthConnectUser $oauthConnectUser): self
     {
-        $this->removeElementUser($this->oauthConnectUsers, $oauthConnectUser);
+        $this->removeElementUser(
+            element: $this->oauthConnectUsers,
+            oauthConnectUser: $oauthConnectUser
+        );
 
         return $this;
     }
@@ -607,34 +647,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removePost(Post $post): self
     {
-        $this->removeElementUser($this->posts, $post);
+        $this->removeElementUser(
+            element: $this->posts,
+            post: $post
+        );
 
         return $this;
     }
 
     public function removeRoute(RouteUser $routeUser): self
     {
-        $this->removeElementUser($this->routes, $routeUser);
+        $this->removeElementUser(
+            element: $this->routes,
+            routeUser: $routeUser
+        );
 
         return $this;
     }
 
     public function removeWorkflowUser(WorkflowUser $workflowUser): self
     {
-        $this->removeElementUser($this->workflowUsers, $workflowUser);
+        $this->removeElementUser(
+            element: $this->workflowUsers,
+            workflowUser: $workflowUser
+        );
 
         return $this;
-    }
-
-    public function serialize(): string
-    {
-        return serialize(
-            [
-                $this->id,
-                $this->username,
-                $this->password,
-            ]
-        );
     }
 
     public function setAvatar(?Attachment $attachment): self
@@ -694,21 +732,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this;
     }
 
-    public function unserialize(string $serialized): void
-    {
-        [
-            $this->id,
-            $this->username,
-            $this->password,
-        ] = unserialize($serialized);
-    }
-
     private function removeElementUser(
         Collection $element,
-        mixed $variable
+        ?Bookmark $bookmark = null,
+        ?History $history = null,
+        ?Memo $memo = null,
+        ?OauthConnectUser $oauthConnectUser = null,
+        ?Post $post = null,
+        ?RouteUser $routeUser = null,
+        ?WorkflowUser $workflowUser = null
     ): void
     {
-        if ($element->removeElement($variable) && $variable->getRefuser() === $this) {
+        $variable = $bookmark ?? $history ?? $memo ?? $oauthConnectUser ?? $post ?? $routeUser ?? $workflowUser;
+        if (!is_null($variable) && $element->removeElement($variable) && $variable->getRefuser() === $this) {
             $variable->setRefuser(null);
         }
     }

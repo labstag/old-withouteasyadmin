@@ -30,7 +30,7 @@
         {{ form_widget(form) }}
         {{ form_errors(form) }}
         {{ form_help(form) }}
-        {% if field is not null and field.id is not null %}
+        {% if field is defined and field is not null and field.id is not null %}
             {% set file = attachment(field) %}
             {% set state = guard_route(url) %}
             {% if state == false %}
@@ -65,12 +65,12 @@
 
 {% block form_rows %}
     {% set template = formClass(form) %}
-    {{ debug_begin_form(class) }}
+    {{ debug_begin_form(form) }}
     {% include template with {
         'row': form|filter(child => not child.rendered),
         'allow_delete': false
     } %}
-    {{ debug_end_form(class) }}
+    {{ debug_end_form(form) }}
 {% endblock %}
 
 {% block fieldset_widget %}

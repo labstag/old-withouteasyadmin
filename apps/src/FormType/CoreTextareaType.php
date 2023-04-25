@@ -2,12 +2,12 @@
 
 namespace Labstag\FormType;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-class CoreTextareaType extends AbstractType
+class CoreTextareaType extends FormTypeLib
 {
     /**
      * @var int
@@ -21,7 +21,14 @@ class CoreTextareaType extends AbstractType
     ): void
     {
         $attr = $options['attr'];
-        $attr['rows'] ??= self::ROWS;
+        if (!is_array($attr)) {
+            $attr = [];
+        }
+
+        if (!in_array('rows', $attr)) {
+            $attr['rows'] = self::ROWS;
+        }
+
         $formView->vars['attr'] = $attr;
         unset($form);
     }

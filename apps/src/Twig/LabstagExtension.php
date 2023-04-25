@@ -3,38 +3,18 @@
 namespace Labstag\Twig;
 
 use Labstag\Entity\Attachment;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\ExtensionLib;
 use Labstag\Repository\AttachmentRepository;
-use Labstag\Service\PhoneService;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 class LabstagExtension extends ExtensionLib
 {
-    /**
-     * @var string
-     */
-    final public const FOLDER_ENTITY = 'Labstag\\Entity\\';
-
-    public function __construct(
-        protected Environment $twigEnvironment,
-        protected PhoneService $phoneService,
-        protected CacheManager $cacheManager,
-        protected AttachmentRepository $attachmentRepository
-    )
-    {
-        parent::__construct($twigEnvironment);
-    }
-
     public function classEntity(object $entity): string
     {
-        $class = substr(
-            (string) $entity::class,
-            strpos((string) $entity::class, self::FOLDER_ENTITY) + strlen(self::FOLDER_ENTITY)
-        );
+        $path = explode('\\', $entity::class);
 
-        return trim(strtolower($class));
+        return strtolower(array_pop($path));
     }
 
     public function formClass(mixed $class): string
@@ -51,14 +31,16 @@ class LabstagExtension extends ExtensionLib
         return $data['view'];
     }
 
-    public function getAttachment(mixed $data): ?Attachment
+    public function getAttachment(?EntityInterface $entity): ?Attachment
     {
-        if (is_null($data)) {
+        if (is_null($entity)) {
             return null;
         }
 
-        $id         = $data->getId();
-        $attachment = $this->attachmentRepository->findOneBy(['id' => $id]);
+        $id = $entity->getId();
+        /** @var AttachmentRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Attachment::class);
+        $attachment    = $repositoryLib->findOneBy(['id' => $id]);
         if (is_null($attachment)) {
             return null;
         }

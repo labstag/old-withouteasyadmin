@@ -5,15 +5,16 @@ namespace Labstag\Block;
 use Labstag\Entity\Block\Header;
 use Labstag\Form\Admin\Block\HeaderType;
 use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityBlockInterface;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
 use Symfony\Component\HttpFoundation\Response;
 
-class HeaderBlock extends BlockLib
+class HeaderBlock extends BlockLib implements BlockInterface
 {
-    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
+    public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
-        unset($entityBlockLib, $front);
+        unset($entityBlock, $entityFront);
 
         return 'header';
     }
@@ -43,11 +44,15 @@ class HeaderBlock extends BlockLib
         return true;
     }
 
-    public function show(Header $header, ?FrontInterface $front): Response
+    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
     {
+        if (!$entityBlock instanceof Header) {
+            return null;
+        }
+
         return $this->render(
-            $this->getTemplateFile($this->getcode($header, $front)),
-            ['block' => $header]
+            $this->getTemplateFile($this->getcode($entityBlock, $entityFront)),
+            ['block' => $entityBlock]
         );
     }
 }

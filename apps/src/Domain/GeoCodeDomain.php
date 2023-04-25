@@ -6,44 +6,20 @@ use Labstag\Entity\GeoCode;
 use Labstag\Form\Admin\GeoCodeType;
 
 use Labstag\Form\Admin\Search\GeoCodeType as SearchGeoCodeType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\GeoCodeRepository;
-use Labstag\RequestHandler\GeoCodeRequestHandler;
 use Labstag\Search\GeoCodeSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class GeoCodeDomain extends DomainLib
+class GeoCodeDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected GeoCodeRequestHandler $geoCodeRequestHandler,
-        protected GeoCodeRepository $geoCodeRepository,
-        protected GeoCodeSearch $geoCodeSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return GeoCode::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->geoCodeRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->geoCodeRequestHandler;
-    }
-
     public function getSearchData(): GeoCodeSearch
     {
-        return $this->geoCodeSearch;
+        return new GeoCodeSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,16 @@ class GeoCodeDomain extends DomainLib
         return SearchGeoCodeType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/geocode/index.html.twig',
+            'trash'   => 'admin/geocode/index.html.twig',
+            'show'    => 'admin/geocode/show.html.twig',
+            'preview' => 'admin/geocode/show.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

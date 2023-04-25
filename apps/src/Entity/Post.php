@@ -13,18 +13,19 @@ use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\PostRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Uploadable()]
+#[Uploadable]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ApiResource]
-class Post implements Stringable, FrontInterface, EntityTrashInterface
+class Post implements Stringable, PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
@@ -219,14 +220,20 @@ class Post implements Stringable, FrontInterface, EntityTrashInterface
 
     public function removeMeta(Meta $meta): self
     {
-        $this->removeElementPost($this->metas, $meta);
+        $this->removeElementPost(
+            element: $this->metas,
+            meta: $meta
+        );
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        $this->removeElementPost($this->paragraphs, $paragraph);
+        $this->removeElementPost(
+            element: $this->paragraphs,
+            paragraph: $paragraph
+        );
 
         return $this;
     }
@@ -310,9 +317,15 @@ class Post implements Stringable, FrontInterface, EntityTrashInterface
 
     private function removeElementPost(
         Collection $element,
-        mixed $variable
+        ?Meta $meta = null,
+        ?Paragraph $paragraph = null
     ): void
     {
+        if (is_null($meta) && is_null($paragraph)) {
+            return;
+        }
+
+        $variable = is_null($meta) ? $paragraph : $meta;
         if ($element->removeElement($variable) && $variable->getPost() === $this) {
             $variable->setPost(null);
         }

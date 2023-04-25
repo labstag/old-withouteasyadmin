@@ -6,10 +6,10 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\Page;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
 #[Trashable(url: 'admin_page_trash')]
-class PageRepository extends ServiceEntityRepositoryLib
+class PageRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

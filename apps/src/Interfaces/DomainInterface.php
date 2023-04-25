@@ -2,19 +2,24 @@
 
 namespace Labstag\Interfaces;
 
-use Labstag\Lib\RequestHandlerLib;
+use Labstag\Lib\RepositoryLib;
 use Labstag\Lib\SearchLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
 
 interface DomainInterface
 {
-    public function getRepository(): ServiceEntityRepositoryLib;
+    public function getEntity(): string;
 
-    public function getRequestHandler(): RequestHandlerLib;
+    public function getMethodsList(): array;
+
+    public function getRepository(): RepositoryLib;
 
     public function getSearchData(): SearchLib;
 
     public function getSearchForm(): string;
+
+    public function getTemplates(): array;
+
+    public function getTitles(): array;
 
     public function getType(): string;
 

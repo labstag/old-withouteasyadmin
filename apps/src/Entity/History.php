@@ -12,7 +12,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
 #[ApiResource]
-class History implements FrontInterface, EntityTrashInterface
+class History implements PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
@@ -83,7 +84,7 @@ class History implements FrontInterface, EntityTrashInterface
     {
         if (!$this->chapters->contains($chapter)) {
             $this->chapters[] = $chapter;
-            $chapter->setRefhistory($this);
+            $chapter->setHistory($this);
         }
 
         return $this;
@@ -119,6 +120,7 @@ class History implements FrontInterface, EntityTrashInterface
         $arrayCollection = new ArrayCollection();
         $chapters        = $this->getChapters();
         foreach ($chapters as $chapter) {
+            /** @var Chapter $chapter */
             $state     = in_array('publie', (array) $chapter->getState());
             $published = $chapter->getPublished() <= new DateTime();
             if ($state && $published) {
@@ -192,21 +194,30 @@ class History implements FrontInterface, EntityTrashInterface
 
     public function removeChapter(Chapter $chapter): self
     {
-        $this->removeElementHistory($this->chapters, $chapter);
+        $this->removeElementHistory(
+            element: $this->chapters,
+            chapter: $chapter
+        );
 
         return $this;
     }
 
     public function removeMeta(Meta $meta): self
     {
-        $this->removeElementHistory($this->metas, $meta);
+        $this->removeElementHistory(
+            element: $this->metas,
+            meta: $meta
+        );
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        $this->removeElementHistory($this->paragraphs, $paragraph);
+        $this->removeElementHistory(
+            element: $this->paragraphs,
+            paragraph: $paragraph
+        );
 
         return $this;
     }
@@ -269,10 +280,16 @@ class History implements FrontInterface, EntityTrashInterface
 
     private function removeElementHistory(
         Collection $element,
-        mixed $variable
+        ?Chapter $chapter = null,
+        ?Meta $meta = null,
+        ?Paragraph $paragraph = null
     ): void
     {
-        if ($element->removeElement($variable) && $variable->getHistory() === $this) {
+        $variable = is_null($chapter) ? null : $chapter;
+        $variable = is_null($meta) ? $variable : $meta;
+        $variable = is_null($paragraph) ? $variable : $paragraph;
+
+        if (!is_null($variable) && $element->removeElement($variable) && $variable->getHistory() === $this) {
             $variable->setHistory(null);
         }
     }

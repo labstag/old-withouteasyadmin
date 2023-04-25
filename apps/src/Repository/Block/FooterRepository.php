@@ -4,9 +4,9 @@ namespace Labstag\Repository\Block;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Block\Footer;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class FooterRepository extends ServiceEntityRepositoryLib
+class FooterRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

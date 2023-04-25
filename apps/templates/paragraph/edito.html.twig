@@ -8,7 +8,7 @@
         {% set fond = attachment(edito.fond) %}
         {% if fond is not null and fond.name is not null %}
             <picture class="header_edito_img">
-                <img alt="{{ edito.title|e('html_attr') }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}"/>
+                <img loading="lazy" alt="{{ edito.title|e('html_attr') }}" src="{{ asset(fond.name) | imagefilter('my_thumb') }}"/>
             </picture>
         {% endif %}
         <div class="header_edito_content">

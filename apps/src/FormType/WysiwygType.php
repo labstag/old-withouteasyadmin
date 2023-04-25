@@ -2,12 +2,12 @@
 
 namespace Labstag\FormType;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-class WysiwygType extends AbstractType
+class WysiwygType extends FormTypeLib
 {
     public function buildView(
         FormView $formView,
@@ -16,7 +16,18 @@ class WysiwygType extends AbstractType
     ): void
     {
         $attr = $options['attr'];
-        $attr['class'] ??= '';
+        if (!is_array($attr)) {
+            $attr = [];
+        }
+
+        if (!isset($attr['class'])) {
+            $attr['class'] = '';
+        }
+
+        if (!is_string($attr['class'])) {
+            return;
+        }
+
         $attr['class'] = trim($attr['class'].' wysiwyg');
 
         $formView->vars['attr'] = $attr;

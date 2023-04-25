@@ -5,10 +5,10 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
 use Labstag\Entity\GeoCode;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
 #[Trashable(url: 'admin_geocode_trash')]
-class GeoCodeRepository extends ServiceEntityRepositoryLib
+class GeoCodeRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

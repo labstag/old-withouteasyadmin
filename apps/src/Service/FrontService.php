@@ -2,6 +2,7 @@
 
 namespace Labstag\Service;
 
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\Asset\PathPackage;
@@ -57,26 +58,31 @@ class FrontService
                 $function,
             ];
             $meta = call_user_func_array($callable, [$config, $meta]);
+            if (!is_array($meta)) {
+                $meta = [];
+            }
         }
 
         return $meta;
     }
 
-    public function setBreadcrumb(?FrontInterface $front): array
+    public function setBreadcrumb(?EntityFrontInterface $entityFront): array
     {
         $breadcrumb = [];
         foreach ($this->rewindableGenerator as $row) {
-            $breadcrumb = $row->setBreadcrumb($front, $breadcrumb);
+            /** @var FrontInterface $row */
+            $breadcrumb = $row->setBreadcrumb($entityFront, $breadcrumb);
         }
 
         return array_reverse($breadcrumb);
     }
 
-    public function setMeta(?FrontInterface $front): array
+    public function setMeta(?EntityFrontInterface $entityFront): array
     {
         $meta = [];
         foreach ($this->rewindableGenerator as $row) {
-            $meta = $row->setMeta($front, $meta);
+            /** @var FrontInterface $row */
+            $meta = $row->setMeta($entityFront, $meta);
         }
 
         foreach ($meta as $key => $value) {
@@ -235,7 +241,11 @@ class FrontService
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
         $controller = $request->attributes->get('_controller');
-        preg_match(self::ADMIN_CONTROLLER, (string) $controller, $matches);
+        if (!is_string($controller)) {
+            return false;
+        }
+
+        preg_match(self::ADMIN_CONTROLLER, $controller, $matches);
 
         return 0 == count($matches) || !in_array($controller, self::ERROR_CONTROLLER);
     }

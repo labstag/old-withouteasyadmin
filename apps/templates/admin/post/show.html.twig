@@ -27,7 +27,7 @@
                 <th>{{ 'post.image'|trans({}, 'admin.messages') }}</th>
                 <td>
                     <picture>
-                        <img alt="{{ 'post.image'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}" />
+                        <img loading="lazy" alt="{{ 'post.image'|trans({}, 'admin.messages')|e("html_attr") }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}" />
                     </picture>
                 </td>
             </tr>

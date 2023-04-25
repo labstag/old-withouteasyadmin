@@ -5,6 +5,7 @@ namespace Labstag\Lib;
 use Labstag\Entity\Category;
 use Labstag\Entity\User;
 use Labstag\FormType\SearchableType;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Service\WorkflowService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
@@ -140,14 +141,18 @@ abstract class SearchAbstractTypeLib extends AbstractType
 
     protected function showState(
         FormBuilderInterface $formBuilder,
-        object $entityclass,
+        EntityInterface $entity,
         string $label,
         string $help,
         string $placeholder
     ): void
     {
         /** @var WorkflowInterface $workflow */
-        $workflow   = $this->workflowService->get($entityclass);
+        $workflow = $this->workflowService->get($entity);
+        if (!$workflow instanceof WorkflowInterface) {
+            return;
+        }
+
         $definition = $workflow->getDefinition();
         $places     = $definition->getPlaces();
         $formBuilder->add(

@@ -6,21 +6,9 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\Route;
 use Labstag\Entity\User;
 use Labstag\Lib\ExtensionLib;
-use Labstag\Service\GuardService;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Twig\Environment;
 
 class GuardExtension extends ExtensionLib
 {
-    public function __construct(
-        protected Environment $twigEnvironment,
-        protected TokenStorageInterface $tokenStorage,
-        protected GuardService $guardService,
-    )
-    {
-        parent::__construct($twigEnvironment);
-    }
-
     public function getFiltersFunctions(): array
     {
         return [

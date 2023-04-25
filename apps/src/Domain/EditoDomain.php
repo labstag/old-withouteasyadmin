@@ -6,44 +6,20 @@ use Labstag\Entity\Edito;
 use Labstag\Form\Admin\EditoType;
 
 use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\EditoRepository;
-use Labstag\RequestHandler\EditoRequestHandler;
 use Labstag\Search\EditoSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EditoDomain extends DomainLib
+class EditoDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected EditoRequestHandler $editoRequestHandler,
-        protected EditoRepository $editoRepository,
-        protected EditoSearch $editoSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Edito::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->editoRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->editoRequestHandler;
-    }
-
     public function getSearchData(): EditoSearch
     {
-        return $this->editoSearch;
+        return new EditoSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,17 @@ class EditoDomain extends DomainLib
         return SearchEditoType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/edito/index.html.twig',
+            'trash'   => 'admin/edito/index.html.twig',
+            'edit'    => 'admin/edito/form.html.twig',
+            'show'    => 'admin/edito/show.html.twig',
+            'preview' => 'admin/edito/show.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

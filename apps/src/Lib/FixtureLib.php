@@ -3,48 +3,33 @@
 namespace Labstag\Lib;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Faker\Factory;
 use Faker\Generator;
 use finfo;
+use Labstag\Annotation\UploadableField;
 use Labstag\DataFixtures\CategoryFixtures;
 use Labstag\DataFixtures\DataFixtures;
 use Labstag\DataFixtures\LibelleFixtures;
 use Labstag\DataFixtures\UserFixtures;
+use Labstag\Entity\Bookmark;
 use Labstag\Entity\Groupe;
+use Labstag\Entity\Libelle;
 use Labstag\Entity\Meta;
+use Labstag\Entity\Post;
+use Labstag\Interfaces\EntityFrontInterface;
+use Labstag\Interfaces\EntityInterface;
 use Labstag\Reader\UploadAnnotationReader;
-use Labstag\Repository\GroupeRepository;
-use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\AddressUserRequestHandler;
-use Labstag\RequestHandler\AttachmentRequestHandler;
-use Labstag\RequestHandler\BlockRequestHandler;
-use Labstag\RequestHandler\BookmarkRequestHandler;
-use Labstag\RequestHandler\CategoryRequestHandler;
-use Labstag\RequestHandler\ChapterRequestHandler;
-use Labstag\RequestHandler\EditoRequestHandler;
-use Labstag\RequestHandler\EmailUserRequestHandler;
-use Labstag\RequestHandler\GroupeRequestHandler;
-use Labstag\RequestHandler\HistoryRequestHandler;
-use Labstag\RequestHandler\LayoutRequestHandler;
-use Labstag\RequestHandler\LibelleRequestHandler;
-use Labstag\RequestHandler\LinkUserRequestHandler;
-use Labstag\RequestHandler\MemoRequestHandler;
-use Labstag\RequestHandler\MenuRequestHandler;
-use Labstag\RequestHandler\PageRequestHandler;
-use Labstag\RequestHandler\ParagraphRequestHandler;
-use Labstag\RequestHandler\PhoneUserRequestHandler;
-use Labstag\RequestHandler\PostRequestHandler;
-use Labstag\RequestHandler\RenderRequestHandler;
-use Labstag\RequestHandler\TemplateRequestHandler;
-use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Service\BlockService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
 use Labstag\Service\GuardService;
 use Labstag\Service\InstallService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\RepositoryService;
 use Labstag\Service\UserService;
+use Labstag\Service\WorkflowService;
 use Mmo\Faker\LoremSpaceProvider;
 use Mmo\Faker\PicsumProvider;
 use Psr\Log\LoggerInterface;
@@ -123,6 +108,8 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
+        protected RepositoryService $repositoryService,
+        protected WorkflowService $workflowService,
         protected FileService $fileService,
         protected UserService $userService,
         protected ErrorService $errorService,
@@ -131,34 +118,10 @@ abstract class FixtureLib extends Fixture
         protected ContainerBagInterface $containerBag,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected InstallService $installService,
-        protected UserRepository $userRepository,
-        protected GroupeRepository $groupeRepository,
         protected GuardService $guardService,
         protected Environment $twigEnvironment,
         protected BlockService $blockService,
-        protected EmailUserRequestHandler $emailUserRequestHandler,
-        protected LinkUserRequestHandler $linkUserRequestHandler,
-        protected MemoRequestHandler $memoRequestHandler,
-        protected GroupeRequestHandler $groupeRequestHandler,
-        protected EditoRequestHandler $editoRequestHandler,
-        protected UserRequestHandler $userRequestHandler,
-        protected PhoneUserRequestHandler $phoneUserRequestHandler,
-        protected AttachmentRequestHandler $attachmentRequestHandler,
-        protected AddressUserRequestHandler $addressUserRequestHandler,
-        protected TemplateRequestHandler $templateRequestHandler,
-        protected LibelleRequestHandler $libelleRequestHandler,
-        protected CacheInterface $cache,
-        protected BookmarkRequestHandler $bookmarkRequestHandler,
-        protected PostRequestHandler $postRequestHandler,
-        protected CategoryRequestHandler $categoryRequestHandler,
-        protected HistoryRequestHandler $historyRequestHandler,
-        protected ChapterRequestHandler $chapterRequestHandler,
-        protected ParagraphRequestHandler $paragraphRequestHandler,
-        protected BlockRequestHandler $blockRequestHandler,
-        protected LayoutRequestHandler $layoutRequestHandler,
-        protected MenuRequestHandler $menuRequestHandler,
-        protected PageRequestHandler $pageRequestHandler,
-        protected RenderRequestHandler $renderRequestHandler
+        protected CacheInterface $cache
     )
     {
     }
@@ -173,10 +136,15 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
-    protected function addParagraphs(mixed $entity, array $paragraphs): void
+    protected function addParagraphs(
+        EntityFrontInterface $entityFront,
+        array $paragraphs,
+        ObjectManager $objectManager
+    ): void
     {
+        unset($objectManager);
         foreach ($paragraphs as $paragraph) {
-            $this->paragraphService->add($entity, $paragraph);
+            $this->paragraphService->add($entityFront, $paragraph);
         }
     }
 
@@ -217,7 +185,11 @@ abstract class FixtureLib extends Fixture
         ];
     }
 
-    protected function loadForeach(int $number, string $method): void
+    protected function loadForeach(
+        int $number,
+        string $method,
+        ObjectManager $objectManager
+    ): void
     {
         $faker     = $this->setFaker();
         $statesTab = $this->getStatesData();
@@ -229,11 +201,15 @@ abstract class FixtureLib extends Fixture
                 $this,
                 $method,
             ];
-            call_user_func_array($callable, [$faker, $index, $states]);
+            call_user_func_array($callable, [$faker, $index, $states, $objectManager]);
         }
     }
 
-    protected function loadForeachUser(int $number, string $method): void
+    protected function loadForeachUser(
+        int $number,
+        string $method,
+        ObjectManager $objectManager
+    ): void
     {
         $faker = $this->setFaker();
         $users = $this->installService->getData('user');
@@ -245,7 +221,7 @@ abstract class FixtureLib extends Fixture
                 $this,
                 $method,
             ];
-            call_user_func_array($callable, [$faker, $user]);
+            call_user_func_array($callable, [$faker, $user, $objectManager]);
         }
     }
 
@@ -258,16 +234,26 @@ abstract class FixtureLib extends Fixture
         return $generator;
     }
 
-    protected function setLibelles(Generator $generator, mixed $entity): void
+    protected function setLibelles(
+        Generator $generator,
+        ?Bookmark $bookmark = null,
+        ?Post $post = null
+    ): void
     {
-        if (1 != random_int(0, 1)) {
+        if (1 != random_int(0, 1) || (is_null($bookmark) && is_null($post))) {
+            return;
+        }
+
+        $entity = is_null($bookmark) ? $post : $bookmark;
+        if (is_null($entity)) {
             return;
         }
 
         $nbr = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
         for ($i = 0; $i < $nbr; ++$i) {
             $indexLibelle = $generator->numberBetween(0, self::NUMBER_LIBELLE - 1);
-            $libelle      = $this->getReference('libelle_'.$indexLibelle);
+            /** @var Libelle $libelle */
+            $libelle = $this->getReference('libelle_'.$indexLibelle);
             $entity->addLibelle($libelle);
         }
     }
@@ -284,17 +270,27 @@ abstract class FixtureLib extends Fixture
         }
     }
 
-    protected function upload(mixed $entity, Generator $generator): void
+    protected function upload(EntityInterface $entity, Generator $generator): void
     {
         /** @var finfo $finfo */
         $finfo        = finfo_open(FILEINFO_MIME_TYPE);
         $annotations  = $this->uploadAnnotationReader->getUploadableFields($entity);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
+            /** @var UploadableField $annotation */
             $path     = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
-            $title    = $accessor->getValue($entity, $annotation->getSlug());
-            $slug     = $asciiSlugger->slug($title);
+            $slug     = $annotation->getSlug();
+            if (!is_string($slug)) {
+                continue;
+            }
+
+            $title = $accessor->getValue($entity, $slug);
+            if (!is_string($title)) {
+                continue;
+            }
+
+            $slug = $asciiSlugger->slug($title);
 
             try {
                 /** @var PicsumProvider $generator */
@@ -333,7 +329,12 @@ abstract class FixtureLib extends Fixture
 
             if (isset($file)) {
                 $attachment = $this->fileService->setAttachment($file);
-                $accessor->setValue($entity, $annotation->getFilename(), $attachment);
+                $filename   = $annotation->getFilename();
+                if (!is_string($filename)) {
+                    continue;
+                }
+
+                $accessor->setValue($entity, $filename, $attachment);
             }
         }
     }

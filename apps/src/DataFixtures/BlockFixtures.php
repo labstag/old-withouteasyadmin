@@ -11,9 +11,6 @@ use Labstag\Lib\FixtureLib;
 
 class BlockFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [
@@ -24,22 +21,23 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
         $json = $this->installService->getData('data/block');
         foreach ($json as $data) {
-            $this->addBlocks($data['region'], $data['blocks']);
+            $this->addBlocks($data['region'], $data['blocks'], $objectManager);
         }
+
+        $objectManager->flush();
     }
 
     protected function addBlock(
         string $region,
         int $position,
-        array $blockData
+        array $blockData,
+        ObjectManager $objectManager
     ): void
     {
         $type  = $blockData['type'];
         $block = new Block();
-        $old   = clone $block;
         $block->setTitle($region.' - '.$type.'('.($position + 1).')');
         $block->setRegion($region);
         $block->setType($type);
@@ -60,15 +58,19 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
             $block->addMenu($entity);
         }
 
-        $this->blockRequestHandler->handle($old, $block);
-
         $this->addReference('block_'.$region.'-'.$type, $block);
+
+        $objectManager->persist($block);
     }
 
-    protected function addBlocks(string $region, array $blocks): void
+    protected function addBlocks(
+        string $region,
+        array $blocks,
+        ObjectManager $objectManager
+    ): void
     {
         foreach ($blocks as $position => $block) {
-            $this->addBlock($region, $position, $block);
+            $this->addBlock($region, $position, $block, $objectManager);
         }
     }
 }

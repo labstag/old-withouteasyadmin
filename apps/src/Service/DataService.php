@@ -2,8 +2,9 @@
 
 namespace Labstag\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Labstag\Entity\Configuration;
+use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
 use Labstag\Repository\ConfigurationRepository;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -17,7 +18,7 @@ class DataService
     protected array $oauthActivated = [];
 
     public function __construct(
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected CacheInterface $cache,
         protected ConfigurationRepository $configurationRepository
     )
@@ -25,9 +26,6 @@ class DataService
         $this->setData();
     }
 
-    /**
-     * @return array<int|string, mixed>
-     */
     public function compute(ItemInterface $item): array
     {
         $item->expiresAfter(1800);
@@ -35,9 +33,6 @@ class DataService
         return $this->getConfiguration();
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getConfig(): array
     {
         return $this->config;
@@ -58,9 +53,6 @@ class DataService
         return $config;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getOauthActivated(?User $user = null): array
     {
         if (is_null($user)) {
@@ -72,6 +64,7 @@ class DataService
         foreach ($oauthActivateds as $index => $oauthActivated) {
             $trouver = 0;
             foreach ($oauthConnectUsers as $oauthConnectUser) {
+                /** @var OauthConnectUser $oauthConnectUser */
                 if ($oauthConnectUser->getName() == $oauthActivated['type']) {
                     $trouver = 1;
 
@@ -87,41 +80,27 @@ class DataService
         return $oauthActivateds;
     }
 
-    /**
-     * @return array<int|string, mixed>
-     */
     protected function getConfiguration(): array
     {
-        $data   = $this->configurationRepository->findAll();
-        $config = [];
-        /** @var Configuration $row */
-        foreach ($data as $row) {
-            $key          = $row->getName();
-            $value        = $row->getValue();
-            $config[$key] = $value;
+        try {
+            $data   = $this->configurationRepository->findAll();
+            $config = [];
+            /** @var Configuration $row */
+            foreach ($data as $row) {
+                $key          = $row->getName();
+                $value        = $row->getValue();
+                $config[$key] = $value;
+            }
+        } catch (Exception) {
+            $config = [];
         }
 
         return $config;
     }
 
-    protected function setData(): void
-    {
-        $config = $this->cache->get(
-            'configuration',
-            $this->compute(...)
-        );
-        if (0 === (is_countable($config) ? count($config) : 0)) {
-            $config = $this->getConfiguration();
-        }
-
-        $this->config = $config;
-
-        $this->setOauth($config);
-    }
-
     protected function setOauth(array $config): void
     {
-        if (!isset($config['oauth']) || !is_array($config['oauth'])) {
+        if (!in_array('oauth', $config) || !is_iterable($config['oauth'])) {
             return;
         }
 
@@ -137,5 +116,20 @@ class DataService
         }
 
         $this->oauthActivated = $oauth;
+    }
+
+    private function setData(): void
+    {
+        $config = $this->cache->get(
+            'configuration',
+            $this->compute(...)
+        );
+        if (0 === (is_countable($config) ? count($config) : 0)) {
+            $config = $this->getConfiguration();
+        }
+
+        $this->config = $config;
+
+        $this->setOauth($config);
     }
 }

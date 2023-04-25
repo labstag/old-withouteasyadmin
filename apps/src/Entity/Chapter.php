@@ -11,7 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Repository\ChapterRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: ChapterRepository::class)]
 #[ApiResource]
-class Chapter implements FrontInterface, EntityTrashInterface
+class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
@@ -106,6 +107,11 @@ class Chapter implements FrontInterface, EntityTrashInterface
         return $this->created;
     }
 
+    public function getHistory(): ?History
+    {
+        return $this->history;
+    }
+
     public function getId(): ?string
     {
         return $this->id;
@@ -147,11 +153,6 @@ class Chapter implements FrontInterface, EntityTrashInterface
         return $this->published;
     }
 
-    public function getRefhistory(): ?History
-    {
-        return $this->history;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -164,14 +165,20 @@ class Chapter implements FrontInterface, EntityTrashInterface
 
     public function removeMeta(Meta $meta): self
     {
-        $this->removeElementChapter($this->metas, $meta);
+        $this->removeElementChapter(
+            element: $this->metas,
+            meta: $meta
+        );
 
         return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self
     {
-        $this->removeElementChapter($this->paragraphs, $paragraph);
+        $this->removeElementChapter(
+            element: $this->paragraphs,
+            paragraph: $paragraph
+        );
 
         return $this;
     }
@@ -186,6 +193,13 @@ class Chapter implements FrontInterface, EntityTrashInterface
     public function setCreated(DateTimeInterface $dateTime): self
     {
         $this->created = $dateTime;
+
+        return $this;
+    }
+
+    public function setHistory(?History $history): self
+    {
+        $this->history = $history;
 
         return $this;
     }
@@ -218,13 +232,6 @@ class Chapter implements FrontInterface, EntityTrashInterface
         return $this;
     }
 
-    public function setRefhistory(?History $history): self
-    {
-        $this->history = $history;
-
-        return $this;
-    }
-
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
@@ -241,9 +248,15 @@ class Chapter implements FrontInterface, EntityTrashInterface
 
     private function removeElementChapter(
         Collection $element,
-        mixed $variable
+        ?Meta $meta = null,
+        ?Paragraph $paragraph = null
     ): void
     {
+        if (is_null($meta) && is_null($paragraph)) {
+            return;
+        }
+
+        $variable = is_null($meta) ? $paragraph : $meta;
         if ($element->removeElement($variable) && $variable->getChapter() === $this) {
             $variable->setChapter(null);
         }

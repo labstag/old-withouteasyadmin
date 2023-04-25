@@ -84,14 +84,20 @@ class Route implements Stringable, EntityInterface
 
     public function removeGroupe(RouteGroupe $routeGroupe): self
     {
-        $this->removeElementRoute($this->groupes, $routeGroupe);
+        $this->removeElementRoute(
+            element: $this->groupes,
+            routeGroupe: $routeGroupe
+        );
 
         return $this;
     }
 
     public function removeUser(RouteUser $routeUser): self
     {
-        $this->removeElementRoute($this->users, $routeUser);
+        $this->removeElementRoute(
+            element: $this->users,
+            routeUser: $routeUser
+        );
 
         return $this;
     }
@@ -105,9 +111,15 @@ class Route implements Stringable, EntityInterface
 
     private function removeElementRoute(
         Collection $element,
-        mixed $variable
+        ?RouteGroupe $routeGroupe = null,
+        ?RouteUser $routeUser = null
     ): void
     {
+        if (is_null($routeGroupe) && is_null($routeUser)) {
+            return;
+        }
+
+        $variable = is_null($routeGroupe) ? $routeUser : $routeGroupe;
         if ($element->removeElement($variable) && $variable->getRefroute() === $this) {
             $variable->setRefroute(null);
         }

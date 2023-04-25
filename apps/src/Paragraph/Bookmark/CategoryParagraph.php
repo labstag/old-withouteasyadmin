@@ -6,17 +6,18 @@ use Labstag\Entity\Bookmark;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Bookmark\Category;
 use Labstag\Form\Admin\Paragraph\Bookmark\CategoryType;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\BookmarkRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryParagraph extends ParagraphLib
+class CategoryParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return 'bookmark/category';
     }
@@ -46,26 +47,26 @@ class CategoryParagraph extends ParagraphLib
         return false;
     }
 
-    public function show(Category $category): Response
+    public function show(EntityParagraphInterface $entityParagraph): Response
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
         $all        = $request->attributes->all();
         $routeParam = $all['_route_params'];
         $slug       = $routeParam['slug'] ?? null;
-        /** @var BookmarkRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Bookmark::class);
-        $pagination                 = $this->paginator->paginate(
-            $serviceEntityRepositoryLib->findPublierCategory($slug),
+        /** @var BookmarkRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Bookmark::class);
+        $pagination    = $this->paginator->paginate(
+            $repositoryLib->findPublierCategory($slug),
             $request->query->getInt('page', 1),
             10
         );
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($category)),
+            $this->getTemplateFile($this->getCode($entityParagraph)),
             [
                 'pagination' => $pagination,
-                'paragraph'  => $category,
+                'paragraph'  => $entityParagraph,
             ]
         );
     }

@@ -6,44 +6,20 @@ use Labstag\Entity\Memo;
 use Labstag\Form\Admin\MemoType;
 
 use Labstag\Form\Admin\Search\MemoType as SearchMemoType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\MemoRepository;
-use Labstag\RequestHandler\MemoRequestHandler;
 use Labstag\Search\MemoSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class MemoDomain extends DomainLib
+class MemoDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected MemoRequestHandler $memoRequestHandler,
-        protected MemoRepository $memoRepository,
-        protected MemoSearch $memoSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Memo::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->memoRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->memoRequestHandler;
-    }
-
     public function getSearchData(): MemoSearch
     {
-        return $this->memoSearch;
+        return new MemoSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,17 @@ class MemoDomain extends DomainLib
         return SearchMemoType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/memo/index.html.twig',
+            'trash'   => 'admin/memo/index.html.twig',
+            'show'    => 'admin/memo/show.html.twig',
+            'preview' => 'admin/memo/show.html.twig',
+            'edit'    => 'admin/memo/form.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

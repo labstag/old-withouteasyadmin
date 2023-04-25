@@ -2,21 +2,14 @@
 
 namespace Labstag\FormType;
 
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class FlagCountryType extends AbstractType
+class FlagCountryType extends FormTypeLib
 {
-    public function __construct(
-        protected TranslatorInterface $translator
-    )
-    {
-    }
-
     public function buildView(
         FormView $formView,
         FormInterface $form,

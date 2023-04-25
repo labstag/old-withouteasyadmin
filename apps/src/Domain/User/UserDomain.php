@@ -5,44 +5,20 @@ namespace Labstag\Domain\User;
 use Labstag\Entity\User;
 use Labstag\Form\Admin\Search\UserType as SearchUserType;
 use Labstag\Form\Admin\User\UserType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\UserRequestHandler;
 use Labstag\Search\UserSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class UserDomain extends DomainLib
+class UserDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected UserRequestHandler $userRequestHandler,
-        protected UserRepository $userRepository,
-        protected UserSearch $userSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return User::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->userRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->userRequestHandler;
-    }
-
     public function getSearchData(): UserSearch
     {
-        return $this->userSearch;
+        return new UserSearch();
     }
 
     public function getSearchForm(): string
@@ -50,9 +26,19 @@ class UserDomain extends DomainLib
         return SearchUserType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/user/index.html.twig',
+            'trash'   => 'admin/user/index.html.twig',
+            'edit'    => 'admin/user/form.html.twig',
+            'new'     => 'admin/user/form.html.twig',
+            'guard'   => 'admin/guard/user.html.twig',
+            'show'    => 'admin/user/show.html.twig',
+            'preview' => 'admin/user/show.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

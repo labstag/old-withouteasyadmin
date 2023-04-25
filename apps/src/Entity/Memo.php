@@ -12,19 +12,20 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Labstag\Annotation\Uploadable;
 use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Traits\StateableEntity;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\EntityTrashInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityWithParagraphInterface;
 use Labstag\Repository\MemoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Uploadable()]
+#[Uploadable]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: MemoRepository::class)]
 #[ApiResource]
-class Memo implements Stringable, FrontInterface, EntityTrashInterface
+class Memo implements Stringable, EntityFrontInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
@@ -46,7 +47,7 @@ class Memo implements Stringable, FrontInterface, EntityTrashInterface
     private ?string $content = null;
 
     #[UploadableField(filename: 'fond', path: 'memo/fond', slug: 'title')]
-    private string $file;
+    private mixed $file;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]

@@ -9,13 +9,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route(path: '/api/attachment')]
+#[Route(path: '/api/attachment', name: 'api_attachment_')]
 class AttachmentController extends ApiControllerLib
 {
-    #[Route(path: '/delete/{attachment}', name: 'api_attachment_delete')]
+    #[Route(path: '/delete/{attachment}', name: 'delete')]
     public function delete(
+        CsrfTokenManagerInterface $csrfTokenManager,
         AttachmentRepository $attachmentRepository,
+        Request $request,
         Attachment $attachment
     ): JsonResponse
     {
@@ -23,7 +26,11 @@ class AttachmentController extends ApiControllerLib
             'state' => false,
             'error' => '',
         ];
-        $token = $this->verifToken($attachment);
+        $token = $this->verifToken(
+            $csrfTokenManager,
+            $request,
+            $attachment
+        );
         if (!$token) {
             $return['error'] = 'Token incorrect';
 
@@ -36,17 +43,19 @@ class AttachmentController extends ApiControllerLib
         return new JsonResponse($return);
     }
 
-    protected function verifToken(Attachment $attachment): bool
+    protected function verifToken(
+        CsrfTokenManagerInterface $csrfTokenManager,
+        Request $request,
+        Attachment $attachment
+    ): bool
     {
-        /** @var Request $request */
-        $request = $this->requeststack->getCurrentRequest();
-        $token   = (string) $request->request->get('_token');
+        $token = (string) $request->request->get('_token');
 
         $csrfToken = new CsrfToken(
             (string) 'attachment-img-'.$attachment->getId(),
             $token
         );
 
-        return $this->csrfTokenManager->isTokenValid($csrfToken);
+        return $csrfTokenManager->isTokenValid($csrfToken);
     }
 }

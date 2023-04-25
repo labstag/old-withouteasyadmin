@@ -7,19 +7,23 @@ use Labstag\Entity\Groupe;
 use Labstag\Entity\Libelle;
 use Labstag\Entity\User;
 use Labstag\Lib\ApiControllerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
+use Labstag\Service\RepositoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/api/search')]
+#[Route(path: '/api/search', name: 'api_search_')]
 class SearchController extends ApiControllerLib
 {
-    #[Route(path: '/category', name: 'api_search_category')]
-    #[Route(path: '/group', name: 'api_search_group')]
-    #[Route(path: '/libelle', name: 'api_search_postlibelle')]
-    #[Route(path: '/user', name: 'api_search_user')]
-    public function libelle(Request $request): JsonResponse
+    #[Route(path: '/category', name: 'category')]
+    #[Route(path: '/group', name: 'group')]
+    #[Route(path: '/libelle', name: 'postlibelle')]
+    #[Route(path: '/user', name: 'user')]
+    public function libelle(
+        RepositoryService $repositoryService,
+        Request $request
+    ): JsonResponse
     {
         $attributes = $request->attributes->all();
         $route      = $attributes['_route'];
@@ -36,10 +40,11 @@ class SearchController extends ApiControllerLib
             default           => 'findName'
         };
 
-        return $this->showData($request, $entityName, $function);
+        return $this->showData($repositoryService, $request, $entityName, $function);
     }
 
     private function showData(
+        RepositoryService $repositoryService,
         Request $request,
         ?string $entity,
         string $method
@@ -51,8 +56,8 @@ class SearchController extends ApiControllerLib
             return $this->json($return);
         }
 
-        $serviceEntityRepositoryLib = $this->repositoryService->get($entity);
-        if (!$serviceEntityRepositoryLib instanceof ServiceEntityRepositoryLib) {
+        $repositoryLib = $repositoryService->get($entity);
+        if (!$repositoryLib instanceof RepositoryLib) {
             return $this->json($return);
         }
 
@@ -61,10 +66,13 @@ class SearchController extends ApiControllerLib
         ];
         /** @var callable $callable */
         $callable = [
-            $serviceEntityRepositoryLib,
+            $repositoryLib,
             $method,
         ];
         $data = call_user_func($callable, $get['name']);
+        if (!is_iterable($data)) {
+            return $this->json($return);
+        }
 
         foreach ($data as $user) {
             $return['results'][] = [

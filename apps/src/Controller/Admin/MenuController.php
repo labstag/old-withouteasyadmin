@@ -6,163 +6,68 @@ use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Menu;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
-use Labstag\Repository\MenuRepository;
-use Labstag\RequestHandler\MenuRequestHandler;
+use Labstag\Service\Admin\Entity\MenuService as EntityMenuService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
 
-#[Route(path: '/admin/menu')]
+#[Route(path: '/admin/menu', name: 'admin_menu_')]
 class MenuController extends AdminControllerLib
 {
-    #[Route(path: '/add', name: 'admin_menu_add', methods: ['GET', 'POST'])]
-    public function add(
-        Request $request,
-        MenuRepository $menuRepository
-    ): Response
+    #[Route(path: '/add', name: 'add', methods: ['GET', 'POST'])]
+    public function add(): Response
     {
-        $get = $request->query->all();
-        $url = $this->generateUrl('admin_menu_index');
-        if (!isset($get['id'])) {
-            return new RedirectResponse($url);
-        }
-
-        $parent = $menuRepository->find($get['id']);
-        if (!$parent instanceof Menu) {
-            return new RedirectResponse($url);
-        }
-
-        $menu = new Menu();
-        $data = [$menu->getData()];
-        $menu->setClef(null);
-        $menu->setData($data);
-        $menu->setSeparateur(false);
-
-        $children = $parent->getChildren();
-        $position = is_countable($children) ? count($children) : 0;
-        $menu->setPosition($position + 1);
-        $menu->setParent($parent);
-
-        return $this->form(
-            $this->getDomainEntity(),
-            $menu
-        );
+        return $this->setAdmin()->add();
     }
 
-    #[Route(path: '/divider/{id}', name: 'admin_menu_divider')]
-    public function divider(Menu $menu, MenuRequestHandler $menuRequestHandler): RedirectResponse
+    #[Route(path: '/divider/{id}', name: 'divider')]
+    public function divider(
+        Menu $menu
+    ): RedirectResponse
     {
-        $entity    = new Menu();
-        $oldEntity = clone $entity;
-        $children  = $menu->getChildren();
-        $position  = is_countable($children) ? count($children) : 0;
-        $entity->setPosition($position + 1);
-        $entity->setSeparateur(true);
-        $entity->setParent($menu);
-
-        $menuRequestHandler->handle($oldEntity, $entity);
-
-        return new RedirectResponse(
-            $this->generateUrl('admin_menu_index')
-        );
+        return $this->setAdmin()->divider($menu);
     }
 
-    #[Route(path: '/update/{id}', name: 'admin_menu_update', methods: ['GET', 'POST'])]
+    #[Route(path: '/update/{id}', name: 'update', methods: ['GET', 'POST'])]
     public function edit(
         Menu $menu
     ): Response
     {
-        $this->modalAttachmentDelete();
-        $data             = [$menu->getData()];
-        $data[0]['param'] = isset($data[0]['params']) ? json_encode($data[0]['params'], JSON_THROW_ON_ERROR) : '';
-        $menu->setData($data);
-
-        return $this->form(
-            $this->getDomainEntity(),
-            $menu
-        );
+        return $this->setAdmin()->edit($menu);
     }
 
-    #[Route(path: '/', name: 'admin_menu_index', methods: ['GET'])]
-    public function index(
-        Environment $twigEnvironment,
-        MenuRepository $menuRepository
-    ): Response
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
     {
-        $all             = $menuRepository->findAllCode();
-        $globals         = $twigEnvironment->getGlobals();
-        $modal           = $globals['modal'] ?? [];
-        $modal['delete'] = true;
-        $twigEnvironment->addGlobal('modal', $modal);
-        $this->adminBtnService->addBtnNew('admin_menu_new');
-
-        return $this->render(
-            'admin/menu/index.html.twig',
-            ['all' => $all]
-        );
+        return $this->setAdmin()->index();
     }
 
-    #[Route(path: '/move/{id}', name: 'admin_menu_move', methods: ['GET', 'POST'])]
-    public function move(Menu $menu, Request $request): Response
+    #[Route(path: '/move/{id}', name: 'move', methods: ['GET', 'POST'])]
+    public function move(Menu $menu): Response
     {
-        $currentUrl = $this->generateUrl(
-            'admin_menu_move',
-            [
-                'id' => $menu->getId(),
-            ]
-        );
-        if ('POST' == $request->getMethod()) {
-            $this->setPositionEntity($request, Menu::class);
-        }
-
-        $this->adminBtnService->addBtnList(
-            'admin_menu_index',
-            'Liste',
-        );
-        $this->adminBtnService->add(
-            'btn-admin-save-move',
-            'Enregistrer',
-            [
-                'is'   => 'link-btnadminmove',
-                'href' => $currentUrl,
-            ]
-        );
-
-        return $this->render(
-            'admin/menu/move.html.twig',
-            ['menu' => $menu]
-        );
+        return $this->setAdmin()->move($menu);
     }
 
-    #[Route(path: '/new', name: 'admin_menu_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            new Menu()
-        );
+        return $this->setAdmin()->new();
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_menu_trash', methods: ['GET'])]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
     public function trash(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/menu/trash.html.twig',
-        );
+        return $this->setAdmin()->trash();
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function setAdmin(): EntityMenuService
     {
-        $domainLib = $this->domainService->getDomain(Menu::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
+        $viewService = $this->adminService->setDomain(Menu::class);
+        if (!$viewService instanceof EntityMenuService) {
+            throw new Exception('Service not found');
         }
 
-        return $domainLib;
+        return $viewService;
     }
 }

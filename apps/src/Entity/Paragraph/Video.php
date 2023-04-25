@@ -10,16 +10,16 @@ use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityInterface;
-use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Repository\Paragraph\VideoRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-#[Uploadable()]
+#[Uploadable]
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 #[ORM\Table(name: 'paragraph_video')]
 #[ApiResource(routePrefix: '/paragraph')]
-class Video implements Stringable, ParagraphInterface, EntityInterface
+class Video implements Stringable, EntityParagraphInterface, EntityInterface
 {
 
     #[ORM\ManyToOne(targetEntity: Attachment::class, inversedBy: 'paragraphVideos', cascade: ['persist'])]

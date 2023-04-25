@@ -2,22 +2,15 @@
 
 namespace Labstag\FormType;
 
-use Labstag\Service\OauthService;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OauthChoiceType extends AbstractType
+class OauthChoiceType extends FormTypeLib
 {
-    public function __construct(
-        protected OauthService $oauthService
-    )
-    {
-    }
-
     public function buildView(
         FormView $formView,
         FormInterface $form,
@@ -25,8 +18,13 @@ class OauthChoiceType extends AbstractType
     ): void
     {
         /** @var FormInterface $parent */
-        $parent  = $form->getParent();
-        $entity  = $parent->getData();
+        $parent = $form->getParent();
+        if (!$parent instanceof FormInterface) {
+            return;
+        }
+
+        $entity = $parent->getData();
+
         $types   = $this->oauthService->getTypes();
         $choices = [];
         foreach ($types as $type) {

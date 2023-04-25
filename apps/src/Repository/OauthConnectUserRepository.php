@@ -5,9 +5,9 @@ namespace Labstag\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\OauthConnectUser;
 use Labstag\Entity\User;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class OauthConnectUserRepository extends ServiceEntityRepositoryLib
+class OauthConnectUserRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {
@@ -21,7 +21,12 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
         $builder->distinct();
         $builder->orderBy('u.name', 'ASC');
 
-        return $builder->getQuery()->getResult();
+        $results = $builder->getQuery()->getResult();
+        if (!is_array($results)) {
+            return [];
+        }
+
+        return $results;
     }
 
     public function findOauthNotUser(?User $user, ?string $identity, ?string $client): ?OauthConnectUser
@@ -42,7 +47,12 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
             ]
         );
 
-        return $dql->getQuery()->getOneOrNullResult();
+        $result = $dql->getQuery()->getOneOrNullResult();
+        if (!$result instanceof OauthConnectUser) {
+            return null;
+        }
+
+        return $result;
     }
 
     public function findOneOauthByUser(?string $oauthCode, ?User $user): ?OauthConnectUser
@@ -61,7 +71,12 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
             ]
         );
 
-        return $dql->getQuery()->getOneOrNullResult();
+        $result = $dql->getQuery()->getOneOrNullResult();
+        if (!$result instanceof OauthConnectUser) {
+            return null;
+        }
+
+        return $result;
     }
 
     public function login(?string $identity, ?string $oauth): ?OauthConnectUser
@@ -81,6 +96,11 @@ class OauthConnectUserRepository extends ServiceEntityRepositoryLib
             ]
         );
 
-        return $builder->getQuery()->getOneOrNullResult();
+        $result = $builder->getQuery()->getOneOrNullResult();
+        if (!$result instanceof OauthConnectUser) {
+            return null;
+        }
+
+        return $result;
     }
 }

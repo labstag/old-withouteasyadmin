@@ -4,30 +4,17 @@ namespace Labstag\FormType;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Service\RepositoryService;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Lib\FormTypeLib;
+use Labstag\Lib\RepositoryLib;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SearchableType extends AbstractType
+class SearchableType extends FormTypeLib
 {
-    public function __construct(
-        protected RepositoryService $repositoryService,
-        protected RouterInterface $router,
-        protected TranslatorInterface $translator,
-        protected EntityManagerInterface $entityManager
-    )
-    {
-    }
-
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         $formBuilder->addModelTransformer(
@@ -42,19 +29,19 @@ class SearchableType extends AbstractType
                 },
                 function ($ids) use ($options)
                 {
-                    if (empty($ids)) {
-                        return is_array($ids) ? new ArrayCollection([]) : null;
+                    if (empty($ids) || !is_string($options['class'])) {
+                        return is_iterable($ids) ? new ArrayCollection([]) : null;
                     }
 
-                    /** @var ServiceEntityRepositoryLib $serviceEntityRepositoryLib */
-                    $serviceEntityRepositoryLib = $this->repositoryService->get($options['class']);
+                    /** @var RepositoryLib $repositoryLib */
+                    $repositoryLib = $this->repositoryService->get($options['class']);
                     if ($options['add'] && is_array($ids)) {
                         $ids = $this->addToentity($ids, $options);
                     }
 
-                    return is_array($ids) ? new ArrayCollection(
-                        $serviceEntityRepositoryLib->findBy(['id' => $ids])
-                    ) : $serviceEntityRepositoryLib->find($ids);
+                    return is_iterable($ids) ? new ArrayCollection(
+                        $repositoryLib->findBy(['id' => $ids])
+                    ) : $repositoryLib->find($ids);
                 }
             )
         );
@@ -77,11 +64,21 @@ class SearchableType extends AbstractType
         }
 
         $attr = $options['attr'];
+        if (!is_array($attr)) {
+            $attr = [];
+        }
 
-        $attr['data-url'] = $this->router->generate(
-            $options['route'],
-            $options['route_param'] ?? []
-        );
+        if (is_string($options['route'])) {
+            $params = $options['route_param'] ?? [];
+            if (!is_array($params)) {
+                $params = [];
+            }
+
+            $attr['data-url'] = $this->router->generate(
+                $options['route'],
+                $params
+            );
+        }
 
         $attr['data-add'] = $options['add'] ? 1 : 0;
         if ($options['add']) {
@@ -114,16 +111,13 @@ class SearchableType extends AbstractType
         return 'choice';
     }
 
-    /**
-     * @return mixed[]
-     */
     protected function addToentity(array $ids, array $options): array
     {
         if (is_null($options['new'])) {
             return $ids;
         }
 
-        /** @var ServiceEntityRepositoryLib $entityRepository */
+        /** @var RepositoryLib $entityRepository */
         $entityRepository = $this->repositoryService->get($options['class']);
         foreach ($ids as $id => $key) {
             $entity = $entityRepository->find($key);
@@ -133,7 +127,7 @@ class SearchableType extends AbstractType
 
             $entity = clone $options['new'];
             $entity->setString($key);
-            $entityRepository->add($entity);
+            $entityRepository->save($entity);
             $ids[$id] = $entity->getId();
         }
 

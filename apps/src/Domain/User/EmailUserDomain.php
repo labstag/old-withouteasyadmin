@@ -6,44 +6,20 @@ use Labstag\Entity\EmailUser;
 
 use Labstag\Form\Admin\Search\User\EmailUserType as SearchEmailUserType;
 use Labstag\Form\Admin\User\EmailUserType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\EmailUserRepository;
-use Labstag\RequestHandler\EmailUserRequestHandler;
 use Labstag\Search\User\EmailUserSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class EmailUserDomain extends DomainLib
+class EmailUserDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected EmailUserRequestHandler $emailUserRequestHandler,
-        protected EmailUserRepository $emailUserRepository,
-        protected EmailUserSearch $emailUserSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return EmailUser::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->emailUserRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->emailUserRequestHandler;
-    }
-
     public function getSearchData(): EmailUserSearch
     {
-        return $this->emailUserSearch;
+        return new EmailUserSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,16 @@ class EmailUserDomain extends DomainLib
         return SearchEmailUserType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/user/email/index.html.twig',
+            'trash'   => 'admin/user/email/index.html.twig',
+            'show'    => 'admin/user/email/show.html.twig',
+            'preview' => 'admin/user/email/show.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

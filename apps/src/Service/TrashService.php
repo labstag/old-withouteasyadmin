@@ -4,7 +4,7 @@ namespace Labstag\Service;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Annotation\Trashable;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -19,13 +19,11 @@ class TrashService
     {
     }
 
-    /**
-     * @return array<int, array{name: string, properties: mixed, entity: string, total: int, token: string}>
-     */
     public function all(): array
     {
         $data = [];
         foreach ($this->rewindableGenerator as $repository) {
+            /** @var RepositoryLib $repository */
             $isTrashable = $this->isTrashable($repository);
             if (!$isTrashable) {
                 continue;
@@ -35,6 +33,9 @@ class TrashService
             $trash  = $repository->findTrashForAdmin([]);
             $result = $trash->getQuery()->getResult();
             $test   = is_countable($result) ? count($result) : 0;
+            if (0 == $test) {
+                continue;
+            }
 
             $data[] = [
                 'name'       => strtolower(substr((string) $entity, strrpos((string) $entity, '\\') + 1)),
@@ -48,7 +49,7 @@ class TrashService
         return $data;
     }
 
-    protected function getProperties(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): array
+    protected function getProperties(RepositoryLib $serviceEntityRepositoryLib): array
     {
         $properties = [];
         if (!$this->isTrashable($serviceEntityRepositoryLib)) {
@@ -70,7 +71,7 @@ class TrashService
         return $properties;
     }
 
-    private function isTrashable(ServiceEntityRepositoryLib $serviceEntityRepositoryLib): bool
+    private function isTrashable(RepositoryLib $serviceEntityRepositoryLib): bool
     {
         $reflectionClass = new ReflectionClass($serviceEntityRepositoryLib);
         $attributes      = $reflectionClass->getAttributes();

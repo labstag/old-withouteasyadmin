@@ -3,23 +3,23 @@
 namespace Labstag\Twig;
 
 use Labstag\Entity\Block;
-use Labstag\Interfaces\BlockInterface;
+use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Lib\ExtensionLib;
 
 class BlockExtension extends ExtensionLib
 {
-    public function getBlockClass(BlockInterface $entityBlockLib): string
+    public function getBlockClass(EntityBlockInterface $entityBlock): string
     {
         /** @var Block $block */
-        $block = $entityBlockLib->getBlock();
+        $block = $entityBlock->getBlock();
 
         return 'block-'.$block->getType();
     }
 
-    public function getBlockId(BlockInterface $entityBlockLib): string
+    public function getBlockId(EntityBlockInterface $entityBlock): string
     {
         /** @var Block $block */
-        $block = $entityBlockLib->getBlock();
+        $block = $entityBlock->getBlock();
 
         return 'block-'.$block->getType().'-'.$block->getId();
     }

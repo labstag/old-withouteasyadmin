@@ -6,44 +6,20 @@ use Labstag\Entity\Groupe;
 
 use Labstag\Form\Admin\Search\GroupeType as SearchGroupeType;
 use Labstag\Form\Admin\User\GroupeType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\GroupeRepository;
-use Labstag\RequestHandler\GroupeRequestHandler;
 use Labstag\Search\GroupeSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class GroupeDomain extends DomainLib
+class GroupeDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected GroupeRequestHandler $groupeRequestHandler,
-        protected GroupeRepository $groupeRepository,
-        protected GroupeSearch $groupeSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Groupe::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->groupeRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->groupeRequestHandler;
-    }
-
     public function getSearchData(): GroupeSearch
     {
-        return $this->groupeSearch;
+        return new GroupeSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,17 @@ class GroupeDomain extends DomainLib
         return SearchGroupeType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/user/groupe/index.html.twig',
+            'trash'   => 'admin/user/groupe/index.html.twig',
+            'guard'   => 'admin/guard/group.html.twig',
+            'show'    => 'admin/user/groupe/show.html.twig',
+            'preview' => 'admin/user/groupe/show.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

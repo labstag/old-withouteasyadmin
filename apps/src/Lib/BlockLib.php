@@ -2,16 +2,29 @@
 
 namespace Labstag\Lib;
 
-use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Entity\Paragraph;
+use Labstag\Interfaces\EntityBlockInterface;
+use Labstag\Interfaces\EntityFrontInterface;
+use Labstag\Service\FrontService;
+use Labstag\Service\MenuService;
 use Labstag\Service\ParagraphService;
+use Labstag\Service\RepositoryService;
+use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 abstract class BlockLib extends AbstractController
 {
     public function __construct(
+        protected RepositoryService $repositoryService,
+        protected MenuService $menuService,
+        protected ParagraphService $paragraphService,
+        protected FrontService $frontService,
+        protected RequestStack $requestStack,
+        protected RouterInterface $router,
         protected TranslatorInterface $translator,
         protected Environment $twigEnvironment,
         protected array $template = []
@@ -19,34 +32,35 @@ abstract class BlockLib extends AbstractController
     {
     }
 
-    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
+    public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
-        unset($entityBlockLib, $front);
+        unset($entityBlock, $entityFront);
 
         return '';
     }
 
     public function template(
-        BlockInterface $entityBlockLib,
-        ?FrontInterface $front
+        EntityBlockInterface $entityBlock,
+        ?EntityFrontInterface $entityFront
     ): array
     {
-        return $this->showTemplateFile($this->getCode($entityBlockLib, $front));
+        return $this->showTemplateFile($this->getCode($entityBlock, $entityFront));
     }
 
     protected function getParagraphsArray(
         ParagraphService $paragraphService,
-        FrontInterface $front,
+        EntityFrontInterface $entityFront,
         array $paragraphs
     ): array
     {
-        $methods = get_class_methods($front);
+        $methods = get_class_methods($entityFront);
         if (!in_array('getParagraphs', $methods)) {
             return $paragraphs;
         }
 
-        $paragraphsArray = $front->getParagraphs();
+        $paragraphsArray = $entityFront->getParagraphs();
         foreach ($paragraphsArray as $paragraphArray) {
+            /** @var Paragraph $paragraphArray */
             $data = $paragraphService->showContent($paragraphArray);
             if (is_null($data)) {
                 continue;
@@ -110,7 +124,12 @@ abstract class BlockLib extends AbstractController
     {
         $data    = $this->getTemplateData($type);
         $globals = $this->twigEnvironment->getGlobals();
-        if ('dev' == $globals['app']->getDebug()) {
+        if (!isset($globals['app'])) {
+            return [];
+        }
+
+        $app = $globals['app'];
+        if ($app instanceof AppVariable && 'dev' == $app->getDebug()) {
             return $data;
         }
 

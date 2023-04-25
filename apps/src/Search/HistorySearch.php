@@ -3,8 +3,8 @@
 namespace Labstag\Search;
 
 use DateTime;
+use Labstag\Entity\User;
 use Labstag\Lib\SearchLib;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class HistorySearch extends SearchLib
 {
@@ -15,5 +15,5 @@ class HistorySearch extends SearchLib
 
     public ?DateTime $published = null;
 
-    public ?UserInterface $user = null;
+    public ?User $user = null;
 }

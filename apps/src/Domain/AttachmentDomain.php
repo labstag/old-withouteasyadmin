@@ -3,50 +3,30 @@
 namespace Labstag\Domain;
 
 use Labstag\Entity\Attachment;
-
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\AttachmentRepository;
-use Labstag\RequestHandler\AttachmentRequestHandler;
 use Labstag\Search\AttachmentSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AttachmentDomain extends DomainLib
+class AttachmentDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected AttachmentRequestHandler $attachmentRequestHandler,
-        protected AttachmentRepository $attachmentRepository,
-        protected AttachmentSearch $attachmentSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Attachment::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->attachmentRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->attachmentRequestHandler;
-    }
-
     public function getSearchData(): AttachmentSearch
     {
-        return $this->attachmentSearch;
+        return new AttachmentSearch();
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index' => 'admin/attachment/index.html.twig',
+            'trash' => 'admin/attachment/index.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

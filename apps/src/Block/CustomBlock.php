@@ -2,35 +2,23 @@
 
 namespace Labstag\Block;
 
+use Exception;
 use Labstag\Entity\Block\Custom;
+use Labstag\Entity\Layout;
 use Labstag\Form\Admin\Block\CustomType;
 use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\FrontInterface;
+use Labstag\Interfaces\EntityBlockInterface;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\LayoutRepository;
-use Labstag\Service\ParagraphService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
-class CustomBlock extends BlockLib
+class CustomBlock extends BlockLib implements BlockInterface
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        Environment $twigEnvironment,
-        protected RequestStack $requestStack,
-        protected ParagraphService $paragraphService,
-        protected LayoutRepository $layoutRepository
-    )
+    public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
-        parent::__construct($translator, $twigEnvironment);
-    }
-
-    public function getCode(BlockInterface $entityBlockLib, ?FrontInterface $front): string
-    {
-        unset($entityBlockLib, $front);
+        unset($entityBlock, $entityFront);
 
         return 'custom';
     }
@@ -60,15 +48,19 @@ class CustomBlock extends BlockLib
         return false;
     }
 
-    public function show(Custom $custom, ?FrontInterface $front): Response
+    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
     {
-        $paragraphs = $this->setParagraphs($custom);
+        if (!$entityBlock instanceof Custom) {
+            return null;
+        }
+
+        $paragraphs = $this->setParagraphs($entityBlock);
 
         return $this->render(
-            $this->getTemplateFile($this->getCode($custom, $front)),
+            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
             [
                 'paragraphs' => $paragraphs,
-                'block'      => $custom,
+                'block'      => $entityBlock,
             ]
         );
     }
@@ -76,13 +68,21 @@ class CustomBlock extends BlockLib
     private function setParagraphs(Custom $custom): array
     {
         /** @var Request $request */
-        $request     = $this->requestStack->getCurrentRequest();
-        $all         = $request->attributes->all();
-        $route       = $all['_route'];
-        $dataLayouts = $this->layoutRepository->findByCustom($custom);
-        $layouts     = [];
+        $request = $this->requestStack->getCurrentRequest();
+        $all     = $request->attributes->all();
+        $route   = $all['_route'];
+        /** @var LayoutRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Layout::class);
+        $dataLayouts   = $repositoryLib->findByCustom($custom);
+        $layouts       = [];
+        if (!is_iterable($dataLayouts)) {
+            throw new Exception('Layouts invalide');
+        }
+
         foreach ($dataLayouts as $layout) {
-            if (!in_array($route, $layout->getUrl())) {
+            /** @var Layout $layout */
+            $urls = $layout->getUrl();
+            if (!is_iterable($urls) || !in_array($route, $urls)) {
                 continue;
             }
 
@@ -91,7 +91,11 @@ class CustomBlock extends BlockLib
 
         $paragraphs = [];
         foreach ($layouts as $layout) {
-            $paragraphs = $this->getParagraphsArray($this->paragraphService, $layout, $paragraphs);
+            $paragraphs = $this->getParagraphsArray(
+                $this->paragraphService,
+                $layout,
+                $paragraphs
+            );
         }
 
         return $paragraphs;

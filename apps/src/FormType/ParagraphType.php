@@ -2,24 +2,16 @@
 
 namespace Labstag\FormType;
 
-use Labstag\Service\ParagraphService;
-use Symfony\Component\Form\AbstractType;
+use Labstag\Interfaces\EntityFrontInterface;
+use Labstag\Lib\FormTypeLib;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\RouterInterface;
 
-class ParagraphType extends AbstractType
+class ParagraphType extends FormTypeLib
 {
-    public function __construct(
-        protected ParagraphService $paragraphService,
-        protected RouterInterface $router
-    )
-    {
-    }
-
     public function buildView(
         FormView $formView,
         FormInterface $form,
@@ -27,8 +19,12 @@ class ParagraphType extends AbstractType
     ): void
     {
         /** @var FormInterface $parent */
-        $parent     = $form->getParent();
-        $entity     = $parent->getData();
+        $parent = $form->getParent();
+        $entity = $parent->getData();
+        if (!$entity instanceof EntityFrontInterface) {
+            return;
+        }
+
         $paragraphs = $this->paragraphService->getAll($entity);
         $choices    = [];
         foreach ($paragraphs as $name => $type) {
@@ -36,7 +32,7 @@ class ParagraphType extends AbstractType
         }
 
         $formView->vars['label'] = 'Paragraphs';
-        if (!is_null($entity->getId())) {
+        if (!is_null($entity->getId()) && is_string($options['add'])) {
             $formView->vars['urlAdd'] = $this->router->generate($options['add'], ['id' => $entity->getId()]);
         }
 

@@ -3,17 +3,18 @@
 namespace Labstag\Front;
 
 use Labstag\Entity\Page;
+use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\FrontInterface;
 use Labstag\Lib\FrontLib;
 
-class PageFront extends FrontLib
+class PageFront extends FrontLib implements FrontInterface
 {
     public function setBreadcrumb(
-        ?FrontInterface $front,
+        ?EntityFrontInterface $entityFront,
         array $breadcrumb
     ): array
     {
-        if (!$front instanceof Page) {
+        if (!$entityFront instanceof Page) {
             return $breadcrumb;
         }
 
@@ -21,28 +22,28 @@ class PageFront extends FrontLib
             'route' => $this->router->generate(
                 'front',
                 [
-                    'slug' => $front->getSlug(),
+                    'slug' => $entityFront->getSlug(),
                 ]
             ),
-            'title' => $front->getName(),
+            'title' => $entityFront->getName(),
         ];
-        if ($front->getParent() instanceof Page) {
-            $breadcrumb = $this->setBreadcrumbPage($front->getParent(), $breadcrumb);
+        if ($entityFront->getParent() instanceof Page) {
+            $breadcrumb = $this->setBreadcrumbPage($entityFront->getParent(), $breadcrumb);
         }
 
         return $breadcrumb;
     }
 
     public function setMeta(
-        ?FrontInterface $front,
+        ?EntityFrontInterface $entityFront,
         array $meta
     ): array
     {
-        if (!$front instanceof Page) {
+        if (!$entityFront instanceof Page) {
             return $meta;
         }
 
-        return $this->getMeta($front->getMetas(), $meta);
+        return $this->getMeta($entityFront->getMetas(), $meta);
     }
 
     protected function setBreadcrumbPage(

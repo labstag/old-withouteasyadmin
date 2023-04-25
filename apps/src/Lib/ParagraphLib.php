@@ -2,16 +2,16 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Labstag\Entity\Paragraph;
-use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FileService;
 use Labstag\Service\FormService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\RepositoryService;
+use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\MailerInterface;
@@ -24,7 +24,6 @@ abstract class ParagraphLib extends AbstractController
     protected array $template = [];
 
     public function __construct(
-        protected RepositoryService $repositoryService,
         protected FileService $fileService,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected ErrorService $errorService,
@@ -35,14 +34,14 @@ abstract class ParagraphLib extends AbstractController
         protected ParagraphService $paragraphService,
         protected RequestStack $requestStack,
         protected FormService $formService,
-        protected EntityManagerInterface $entityManager
+        protected RepositoryService $repositoryService
     )
     {
     }
 
-    public function getCode(ParagraphInterface $entityParagraphLib): string
+    public function getCode(EntityParagraphInterface $entityParagraph): string
     {
-        unset($entityParagraphLib);
+        unset($entityParagraph);
 
         return '';
     }
@@ -52,9 +51,9 @@ abstract class ParagraphLib extends AbstractController
         unset($paragraph);
     }
 
-    public function template(mixed $entity): array
+    public function template(EntityParagraphInterface $entityParagraph): array
     {
-        return $this->showTemplateFile($this->getCode($entity));
+        return $this->showTemplateFile($this->getCode($entityParagraph));
     }
 
     protected function getTemplateData(string $type): array
@@ -103,7 +102,12 @@ abstract class ParagraphLib extends AbstractController
     {
         $data    = $this->getTemplateData($type);
         $globals = $this->twigEnvironment->getGlobals();
-        if ('dev' == $globals['app']->getDebug()) {
+        if (!isset($globals['app'])) {
+            return [];
+        }
+
+        $app = $globals['app'];
+        if ($app instanceof AppVariable && 'dev' == $app->getDebug()) {
             return $data;
         }
 

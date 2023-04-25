@@ -6,44 +6,20 @@ use Labstag\Entity\Page;
 
 use Labstag\Form\Admin\PageType;
 use Labstag\Form\Admin\Search\PageType as SearchPageType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\PageRepository;
-use Labstag\RequestHandler\PageRequestHandler;
 use Labstag\Search\PageSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PageDomain extends DomainLib
+class PageDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected PageRequestHandler $pageRequestHandler,
-        protected PageRepository $pageRepository,
-        protected PageSearch $pageSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Page::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->pageRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->pageRequestHandler;
-    }
-
     public function getSearchData(): PageSearch
     {
-        return $this->pageSearch;
+        return new PageSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,17 @@ class PageDomain extends DomainLib
         return SearchPageType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/page/index.html.twig',
+            'trash'   => 'admin/page/index.html.twig',
+            'show'    => 'admin/page/show.html.twig',
+            'preview' => 'admin/page/show.html.twig',
+            'edit'    => 'admin/page/form.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

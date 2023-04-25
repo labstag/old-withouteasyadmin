@@ -4,9 +4,9 @@ namespace Labstag\Repository\Paragraph;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Paragraph\Video;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class VideoRepository extends ServiceEntityRepositoryLib
+class VideoRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

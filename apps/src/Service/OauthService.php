@@ -42,33 +42,25 @@ class OauthService
         return array_key_exists($clientName, $this->configProvider);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getConfigProvider(): array
     {
         return $this->configProvider;
     }
 
-    /**
-     * @param null|mixed $data
-     *
-     * @return mixed|void
-     */
-    public function getIdentity($data, ?string $oauth)
+    public function getIdentity(array $data, ?string $oauth): ?string
     {
         if (is_null($oauth)) {
-            return;
+            return null;
         }
 
         $config = $this->getConfig($oauth);
         if (!array_key_exists('identity', $config)) {
-            return;
+            return null;
         }
 
         $identity = $config['identity'];
         if (!array_key_exists($identity, $data)) {
-            return;
+            return null;
         }
 
         return $data[$identity];
@@ -106,6 +98,10 @@ class OauthService
                 512,
                 JSON_THROW_ON_ERROR
             );
+        }
+
+        if (!is_array($data)) {
+            $data = [];
         }
 
         $this->configProvider = $data;
@@ -163,6 +159,10 @@ class OauthService
                 $function,
             ];
             $provider = call_user_func_array($callable, [$clientName, $params, $provider]);
+        }
+
+        if (!$provider instanceof AbstractProvider) {
+            $provider = null;
         }
 
         return $provider;
@@ -269,9 +269,6 @@ class OauthService
         return ('twitch' == $clientName) ? new TwitchHelix($params) : $provider;
     }
 
-    /**
-     * @return mixed[]
-     */
     protected function getConfig(string $clientName): array
     {
         if (isset($this->configProvider[$clientName])) {

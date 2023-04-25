@@ -2,6 +2,13 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Service\GuardService;
+use Labstag\Service\ParagraphService;
+use Labstag\Service\PhoneService;
+use Labstag\Service\RepositoryService;
+use Labstag\Service\WorkflowService;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -13,7 +20,14 @@ abstract class ExtensionLib extends AbstractExtension
     protected array $templates = [];
 
     public function __construct(
-        protected Environment $twigEnvironment
+        protected RepositoryService $repositoryService,
+        protected WorkflowService $workflowService,
+        protected ParagraphService $paragraphService,
+        protected PhoneService $phoneService,
+        protected CacheManager $cacheManager,
+        protected Environment $twigEnvironment,
+        protected TokenStorageInterface $tokenStorage,
+        protected GuardService $guardService,
     )
     {
     }
@@ -93,10 +107,19 @@ abstract class ExtensionLib extends AbstractExtension
             || !array_key_exists('data', $class->vars)
             || is_null($class->vars['data'])
         ) {
-            return $file;
+            return [
+                'hook'  => 'form',
+                'type'  => 'other',
+                'files' => [$file],
+                'view'  => $file,
+            ];
         }
 
         $vars = $class->vars;
+        if (!is_array($vars)) {
+            $vars = [];
+        }
+
         $type = strtolower($this->setTypeformClass($vars));
         if (isset($this->templates['form'][$type])) {
             return $this->templates['form'][$type];
@@ -115,7 +138,7 @@ abstract class ExtensionLib extends AbstractExtension
         return $this->templates['form'][$type];
     }
 
-    protected function getViewByFiles($files): string
+    protected function getViewByFiles(array $files): string
     {
         $loader = $this->twigEnvironment->getLoader();
         $view   = end($files);
@@ -132,12 +155,9 @@ abstract class ExtensionLib extends AbstractExtension
         return $view;
     }
 
-    /**
-     * @return mixed[]
-     */
     protected function setFilesformClass(
         string $type,
-        object $class
+        mixed $class
     ): array
     {
         $htmltwig = '.html.twig';
@@ -147,7 +167,11 @@ abstract class ExtensionLib extends AbstractExtension
 
         if (isset($class->vars)) {
             /** @var array $vars */
-            $vars      = $class->vars;
+            $vars = $class->vars;
+            if (!is_array($vars)) {
+                $vars = [];
+            }
+
             $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
             if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
                 $files[] = 'forms/paragraph/'.$type.$htmltwig;

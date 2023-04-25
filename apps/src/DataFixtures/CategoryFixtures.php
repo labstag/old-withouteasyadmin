@@ -12,18 +12,23 @@ class CategoryFixtures extends DataFixtureLib implements DependentFixtureInterfa
 {
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
         $generator = $this->setFaker();
         for ($index = 0; $index < self::NUMBER_CATEGORY; ++$index) {
-            $this->addCategory($generator, $index);
+            $this->addCategory($generator, $index, $objectManager);
         }
+
+        $objectManager->flush();
     }
 
-    protected function addCategory(Generator $generator, int $index): Category
+    protected function addCategory(
+        Generator $generator,
+        int $index,
+        ObjectManager $objectManager
+    ): Category
     {
-        $category    = new Category();
-        $oldCategory = clone $category;
+        $category = new Category();
         $category->setName($generator->unique()->colorName());
+
         $indexCategory = $generator->numberBetween(0, $index);
         $code          = 'category_'.$indexCategory;
         if ($this->hasReference($code) && 1 == random_int(0, 1)) {
@@ -33,7 +38,7 @@ class CategoryFixtures extends DataFixtureLib implements DependentFixtureInterfa
         }
 
         $this->addReference('category_'.$index, $category);
-        $this->categoryRequestHandler->handle($oldCategory, $category);
+        $objectManager->persist($category);
 
         return $category;
     }

@@ -4,49 +4,33 @@ namespace Labstag\Domain;
 
 use Labstag\Entity\Block;
 use Labstag\Form\Admin\BlockType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\BlockRepository;
-use Labstag\RequestHandler\BlockRequestHandler;
 use Labstag\Search\BlockSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class BlockDomain extends DomainLib
+class BlockDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected BlockRequestHandler $blockRequestHandler,
-        protected BlockRepository $blockRepository,
-        protected BlockSearch $blockSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Block::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->blockRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->blockRequestHandler;
-    }
-
     public function getSearchData(): BlockSearch
     {
-        return $this->blockSearch;
+        return new BlockSearch();
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'  => 'admin/block/index.html.twig',
+            'trash'  => 'admin/block/index.html.twig',
+            'edit'   => 'admin/block/form.html.twig',
+            'move'   => 'admin/block/move.html.twig',
+            'import' => 'admin/block/import.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [
@@ -67,6 +51,8 @@ class BlockDomain extends DomainLib
         return [
             'delete'  => 'api_action_delete',
             'destroy' => 'api_action_destroy',
+            'move'    => 'admin_block_move',
+            'add'     => 'admin_block_new',
             'edit'    => 'admin_block_edit',
             'empty'   => 'api_action_empty',
             'list'    => 'admin_block_index',

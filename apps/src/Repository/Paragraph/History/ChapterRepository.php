@@ -4,9 +4,9 @@ namespace Labstag\Repository\Paragraph\History;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Paragraph\History\Chapter;
-use Labstag\Lib\ServiceEntityRepositoryLib;
+use Labstag\Lib\RepositoryLib;
 
-class ChapterRepository extends ServiceEntityRepositoryLib
+class ChapterRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
     {

@@ -102,21 +102,30 @@ trait EditoEntity
 
     public function removeEdito(ParagraphEdito $paragraphEdito): self
     {
-        $this->removeElementEdito($this->editos, $paragraphEdito);
+        $this->removeElementEdito(
+            element: $this->editos,
+            paragraphEdito: $paragraphEdito
+        );
 
         return $this;
     }
 
     public function removeEditoHeader(EditoHeader $editoHeader): self
     {
-        $this->removeElementEdito($this->editoHeaders, $editoHeader);
+        $this->removeElementEdito(
+            element: $this->editoHeaders,
+            editoHeader: $editoHeader
+        );
 
         return $this;
     }
 
     public function removeShow(EditoShow $editoShow): self
     {
-        $this->removeElementEdito($this->editoShows, $editoShow);
+        $this->removeElementEdito(
+            element: $this->editoShows,
+            editoShow: $editoShow
+        );
 
         return $this;
     }
@@ -130,10 +139,15 @@ trait EditoEntity
 
     private function removeElementEdito(
         Collection $element,
-        mixed $variable
+        ?ParagraphEdito $paragraphEdito = null,
+        ?EditoHeader $editoHeader = null,
+        ?EditoShow $editoShow = null
     ): void
     {
-        if ($element->removeElement($variable) && $variable->getParagraph() === $this) {
+        $variable = is_null($paragraphEdito) ? null : $paragraphEdito;
+        $variable = is_null($editoHeader) ? $variable : $editoHeader;
+        $variable = is_null($editoShow) ? $variable : $editoShow;
+        if (!is_null($variable) && $element->removeElement($variable) && $variable->getParagraph() === $this) {
             $variable->setParagraph(null);
         }
     }

@@ -5,7 +5,7 @@
                 {% set img = attachment(post.img) %}
                 {% if img is not null and img.name is not null %}
                     <picture class="post_img">
-                        <img alt="{{ post.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
+                        <img loading="lazy" alt="{{ post.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
                     </picture>
                 {% endif %}
                 {{ post.title }}

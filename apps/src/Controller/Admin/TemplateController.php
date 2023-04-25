@@ -2,59 +2,58 @@
 
 namespace Labstag\Controller\Admin;
 
-use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
 use Labstag\Entity\Template;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
+use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/template')]
+#[Route(path: '/admin/template', name: 'admin_template_')]
 class TemplateController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_template_edit', methods: ['GET', 'POST'])]
-    #[Route(path: '/new', name: 'admin_template_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?Template $template
+        Template $template
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($template) ? new Template() : $template
-        );
+        return $this->setAdmin()->edit($template);
+    }
+
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->setAdmin()->index();
+    }
+
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
+    public function new(): Response
+    {
+        return $this->setAdmin()->new();
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_template_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_template_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(Template $template): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/template/index.html.twig'
-        );
+        return $this->setAdmin()->preview($template);
+    }
+
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(Template $template): Response
+    {
+        return $this->setAdmin()->show($template);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_template_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_template_preview', methods: ['GET'])]
-    public function showOrPreview(Template $template): Response
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $template,
-            'admin/template/show.html.twig'
-        );
+        return $this->setAdmin()->trash();
     }
 
-    protected function getDomainEntity(): DomainLib
+    protected function setAdmin(): ViewService
     {
-        $domainLib = $this->domainService->getDomain(Template::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
-        }
-
-        return $domainLib;
+        return $this->adminService->setDomain(Template::class);
     }
 }

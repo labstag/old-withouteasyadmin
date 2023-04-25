@@ -6,44 +6,20 @@ use Labstag\Entity\History;
 
 use Labstag\Form\Admin\HistoryType;
 use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\HistoryRepository;
-use Labstag\RequestHandler\HistoryRequestHandler;
 use Labstag\Search\HistorySearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class HistoryDomain extends DomainLib
+class HistoryDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected HistoryRequestHandler $historyRequestHandler,
-        protected HistoryRepository $historyRepository,
-        protected HistorySearch $historySearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return History::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->historyRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->historyRequestHandler;
-    }
-
     public function getSearchData(): HistorySearch
     {
-        return $this->historySearch;
+        return new HistorySearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,18 @@ class HistoryDomain extends DomainLib
         return SearchHistoryType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'edit'    => 'admin/history/form.html.twig',
+            'move'    => 'admin/history/move.html.twig',
+            'index'   => 'admin/history/index.html.twig',
+            'trash'   => 'admin/history/index.html.twig',
+            'show'    => 'admin/history/show.html.twig',
+            'preview' => 'admin/history/show.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

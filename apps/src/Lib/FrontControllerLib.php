@@ -6,10 +6,26 @@ use Labstag\Entity\Block;
 use Labstag\Entity\Page;
 use Labstag\Repository\BlockRepository;
 use Labstag\Repository\PageRepository;
+use Labstag\Service\BlockService;
+use Labstag\Service\DataService;
+use Labstag\Service\FrontService;
+use Labstag\Service\RepositoryService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
-abstract class FrontControllerLib extends ControllerLib
+abstract class FrontControllerLib extends AbstractController
 {
+    public function __construct(
+        protected FrontService $frontService,
+        protected Environment $twigEnvironment,
+        protected RepositoryService $repositoryService,
+        protected DataService $dataService,
+        protected BlockService $blockService
+    )
+    {
+    }
+
     public function page(
         ?string $slug,
         PageRepository $pageRepository
@@ -42,10 +58,10 @@ abstract class FrontControllerLib extends ControllerLib
 
     private function setParameters(array $parameters): array
     {
-        /** @var BlockRepository $serviceEntityRepositoryLib */
-        $serviceEntityRepositoryLib = $this->repositoryService->get(Block::class);
-        $blocksArray                = $serviceEntityRepositoryLib->getDataByRegion();
-        $content                    = null;
+        /** @var BlockRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Block::class);
+        $blocksArray   = $repositoryLib->getDataByRegion();
+        $content       = null;
         if (isset($parameters['content'])) {
             $content = $parameters['content'];
             unset($parameters['content']);
@@ -53,7 +69,11 @@ abstract class FrontControllerLib extends ControllerLib
 
         $globals = $this->twigEnvironment->getGlobals();
 
-        $config   = $globals['config'] ?? $this->dataService->getConfig();
+        $config = $globals['config'] ?? $this->dataService->getConfig();
+        if (!is_array($config)) {
+            $config = [];
+        }
+
         $tagsmeta = $config['meta'] ?? [];
         $tagsmeta = array_merge(
             $tagsmeta,
@@ -61,6 +81,9 @@ abstract class FrontControllerLib extends ControllerLib
         );
 
         $config['meta'] = $this->frontService->configMeta($config, $tagsmeta);
+        if (!is_array($config['meta'])) {
+            $config['meta'] = [];
+        }
 
         $this->frontService->setMetatags($config['meta']);
         $this->twigEnvironment->AddGlobal('config', $config);
@@ -70,6 +93,7 @@ abstract class FrontControllerLib extends ControllerLib
             $key                        = ('content' == $key) ? 'main' : $key;
             $parameters['blocks'][$key] = [];
             foreach ($blocks as $block) {
+                /** @var Block $block */
                 $data = $this->blockService->showContent($block, $content);
                 if (is_null($data)) {
                     continue;

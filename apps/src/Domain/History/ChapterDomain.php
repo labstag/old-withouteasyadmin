@@ -6,44 +6,20 @@ use Labstag\Entity\Chapter;
 
 use Labstag\Form\Admin\ChapterType;
 use Labstag\Form\Admin\Search\ChapterType as SearchChapterType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\ChapterRepository;
-use Labstag\RequestHandler\ChapterRequestHandler;
 use Labstag\Search\ChapterSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ChapterDomain extends DomainLib
+class ChapterDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected ChapterRequestHandler $chapterRequestHandler,
-        protected ChapterRepository $chapterRepository,
-        protected ChapterSearch $chapterSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Chapter::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->chapterRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->chapterRequestHandler;
-    }
-
     public function getSearchData(): ChapterSearch
     {
-        return $this->chapterSearch;
+        return new ChapterSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,17 @@ class ChapterDomain extends DomainLib
         return SearchChapterType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'edit'    => 'admin/history/chapter/form.html.twig',
+            'index'   => 'admin/history/chapter/index.html.twig',
+            'trash'   => 'admin/history/chapter/index.html.twig',
+            'show'    => 'admin/history/chapter/show.html.twig',
+            'preview' => 'admin/history/chapter/show.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

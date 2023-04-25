@@ -8,8 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Entity\Layout;
-use Labstag\Interfaces\BlockInterface;
-use Labstag\Interfaces\EntityInterface;
+use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Repository\Block\CustomRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -17,7 +16,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity(repositoryClass: CustomRepository::class)]
 #[ORM\Table(name: 'block_custom')]
 #[ApiResource(routePrefix: '/block')]
-class Custom implements Stringable, BlockInterface, EntityInterface
+class Custom implements Stringable, EntityBlockInterface
 {
 
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'customs', cascade: ['persist'])]

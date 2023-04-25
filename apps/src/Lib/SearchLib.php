@@ -3,10 +3,10 @@
 namespace Labstag\Lib;
 
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
-use Labstag\Entity\Category;
-use Labstag\Entity\Groupe;
-use Labstag\Entity\User;
+use Labstag\Interfaces\EntityInterface;
+use Labstag\Service\RepositoryService;
+use ReflectionClass;
+use ReflectionNamedType;
 
 abstract class SearchLib
 {
@@ -17,42 +17,73 @@ abstract class SearchLib
 
     public function search(
         array $get,
-        EntityManagerInterface $entityManager
+        RepositoryService $repositoryService
     ): void
     {
-        $entityRepository = $entityManager->getRepository(User::class);
-        $categoryRepo     = $entityManager->getRepository(Category::class);
-        $groupeRepo       = $entityManager->getRepository(Groupe::class);
         foreach ($get as $key => $value) {
-            if (!isset($this->{$key})) {
+            if (!property_exists(static::class, $key) || '' == $value) {
                 continue;
             }
 
-            if ('published' == $key) {
-                if (!empty($value)) {
-                    $dateTime = new DateTime();
-                    [
-                        $year,
-                        $month,
-                        $day,
-                    ] = explode('-', (string) $value);
-                    $dateTime->setDate((int) $year, (int) $month, (int) $day);
-                    $value = $dateTime;
-
-                    continue;
+            $type = $this->getType($key);
+            if (!is_null($type)) {
+                if (Datetime::class == $type) {
+                    $value = $this->initDateTime($value);
+                } elseif (0 != substr_count((string) $type, 'Labstag')) {
+                    $value = $this->initObject($value, $type, $repositoryService);
                 }
 
-                $value = null;
-
-                continue;
+                $this->{$key} = $value;
             }
-
-            $this->{$key} = match ($key) {
-                'user'     => $entityRepository->find($value),
-                'category' => $categoryRepo->find($value),
-                'groupe'   => $groupeRepo->find($value),
-                default    => $value
-            };
         }
+    }
+
+    private function getType(string $key): ?string
+    {
+        $reflectionClass    = new ReflectionClass(static::class);
+        $reflectionProperty = $reflectionClass->getProperty($key);
+        $reflectionType     = $reflectionProperty->getType();
+
+        if (!$reflectionType instanceof ReflectionNamedType) {
+            return null;
+        }
+
+        return $reflectionType->getName();
+    }
+
+    private function initDateTime(mixed $value): ?DateTime
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        $dateTime = new DateTime();
+        [
+            $year,
+            $month,
+            $day,
+        ] = explode('-', (string) $value);
+        $dateTime->setDate((int) $year, (int) $month, (int) $day);
+
+        return $dateTime;
+    }
+
+    private function initObject(
+        mixed $value,
+        string $type,
+        RepositoryService $repositoryService
+    ): mixed
+    {
+        $object = new $type();
+        if (!$object instanceof EntityInterface) {
+            return $value;
+        }
+
+        $repositoryLib = $repositoryService->get($object::class);
+        if (!$repositoryLib instanceof EntityInterface) {
+            return $value;
+        }
+
+        return $repositoryLib->find($value);
     }
 }

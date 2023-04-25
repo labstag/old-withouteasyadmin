@@ -6,44 +6,20 @@ use Labstag\Entity\Render;
 
 use Labstag\Form\Admin\RenderType;
 use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
+use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
-use Labstag\Lib\RequestHandlerLib;
-use Labstag\Lib\ServiceEntityRepositoryLib;
-use Labstag\Repository\RenderRepository;
-use Labstag\RequestHandler\RenderRequestHandler;
 use Labstag\Search\RenderSearch;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class RenderDomain extends DomainLib
+class RenderDomain extends DomainLib implements DomainInterface
 {
-    public function __construct(
-        protected RenderRequestHandler $renderRequestHandler,
-        protected RenderRepository $renderRepository,
-        protected RenderSearch $renderSearch,
-        TranslatorInterface $translator
-    )
-    {
-        parent::__construct($translator);
-    }
-
     public function getEntity(): string
     {
         return Render::class;
     }
 
-    public function getRepository(): ServiceEntityRepositoryLib
-    {
-        return $this->renderRepository;
-    }
-
-    public function getRequestHandler(): RequestHandlerLib
-    {
-        return $this->renderRequestHandler;
-    }
-
     public function getSearchData(): RenderSearch
     {
-        return $this->renderSearch;
+        return new RenderSearch();
     }
 
     public function getSearchForm(): string
@@ -51,9 +27,18 @@ class RenderDomain extends DomainLib
         return SearchRenderType::class;
     }
 
-    /**
-     * @return mixed[]
-     */
+    public function getTemplates(): array
+    {
+        return [
+            'index'   => 'admin/render/index.html.twig',
+            'trash'   => 'admin/render/index.html.twig',
+            'show'    => 'admin/render/show.html.twig',
+            'preview' => 'admin/render/show.html.twig',
+            'edit'    => 'admin/render/form.html.twig',
+            'new'     => 'admin/render/form.html.twig',
+        ];
+    }
+
     public function getTitles(): array
     {
         return [

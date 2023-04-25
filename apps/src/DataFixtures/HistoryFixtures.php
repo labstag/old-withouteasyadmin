@@ -9,12 +9,10 @@ use Labstag\Entity\History;
 use Labstag\Entity\Meta;
 use Labstag\Entity\User;
 use Labstag\Lib\FixtureLib;
+use Labstag\Repository\UserRepository;
 
 class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
 {
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [
@@ -25,22 +23,23 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
-        $this->loadForeach(self::NUMBER_HISTORY, 'addHistory');
+        $this->loadForeach(self::NUMBER_HISTORY, 'addHistory', $objectManager);
     }
 
     protected function addHistory(
         Generator $generator,
         int $index,
-        array $states
+        array $states,
+        ObjectManager $objectManager
     ): void
     {
-        $users   = $this->userRepository->findAll();
-        $history = new History();
-        $meta    = new Meta();
+        /** @var UserRepository $userRepository */
+        $userRepository = $objectManager->getRepository(User::class);
+        $users          = $userRepository->findAll();
+        $history        = new History();
+        $meta           = new Meta();
         $meta->setHistory($history);
         $this->setMeta($meta);
-        $oldHistory = clone $history;
         $history->setName($generator->unique()->colorName());
         /** @var string $content */
         $content = $generator->paragraphs(random_int(2, 4), true);
@@ -52,7 +51,7 @@ class HistoryFixtures extends FixtureLib implements DependentFixtureInterface
         $history->setRefuser($user);
         $history->setPublished($generator->unique()->dateTime('now'));
         $this->addReference('history_'.$index, $history);
-        $this->historyRequestHandler->handle($oldHistory, $history);
-        $this->historyRequestHandler->changeWorkflowState($history, $states);
+        $objectManager->persist($history);
+        $this->workflowService->changeState($history, $states);
     }
 }

@@ -5,12 +5,12 @@ namespace Labstag\Service;
 use DateTime;
 use Exception;
 use finfo;
+use Labstag\Annotation\UploadableField;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Repository\BookmarkRepository;
 use Labstag\Repository\UserRepository;
-use Labstag\RequestHandler\BookmarkRequestHandler;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -28,7 +28,6 @@ class BookmarkService
         private readonly ErrorService $errorService,
         private readonly UploadAnnotationReader $uploadAnnotationReader,
         private readonly ContainerBagInterface $containerBag,
-        private readonly BookmarkRequestHandler $bookmarkRequestHandler,
         protected UserRepository $userRepository,
         protected BookmarkRepository $bookmarkRepository
     )
@@ -53,7 +52,6 @@ class BookmarkService
         }
 
         $bookmark = new bookmark();
-        $old      = clone $bookmark;
         $bookmark->setRefuser($user);
         $bookmark->setUrl($url);
         $bookmark->setIcon($icon);
@@ -74,8 +72,7 @@ class BookmarkService
             $image = $meta['twitter:image'] ?? null;
             $image = (is_null($image) && isset($meta['og:image'])) ? $meta['og:image'] : $image;
             $this->upload($bookmark, $image);
-            $this->bookmarkRepository->add($bookmark);
-            $this->bookmarkRequestHandler->handle($old, $bookmark);
+            $this->bookmarkRepository->save($bookmark);
         } catch (Exception $exception) {
             $this->errorService->set($exception);
         }
@@ -91,10 +88,15 @@ class BookmarkService
         $annotations  = $this->uploadAnnotationReader->getUploadableFields($bookmark);
         $asciiSlugger = new AsciiSlugger();
         foreach ($annotations as $annotation) {
+            /** @var UploadableField $annotation */
             $path     = $this->containerBag->get('file_directory').'/'.$annotation->getPath();
             $accessor = PropertyAccess::createPropertyAccessor();
             $title    = $accessor->getValue($bookmark, $annotation->getSlug());
-            $slug     = $asciiSlugger->slug($title);
+            if (!is_string($title)) {
+                continue;
+            }
+
+            $slug = $asciiSlugger->slug($title);
 
             try {
                 $pathinfo = pathinfo((string) $image);
@@ -126,9 +128,10 @@ class BookmarkService
                 $this->errorService->set($exception);
             }
 
-            if (isset($file)) {
+            $filename = $annotation->getFilename();
+            if (isset($file) && is_string($filename)) {
                 $attachment = $this->fileService->setAttachment($file);
-                $accessor->setValue($bookmark, $annotation->getFilename(), $attachment);
+                $accessor->setValue($bookmark, $filename, $attachment);
             }
         }
     }

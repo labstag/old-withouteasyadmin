@@ -15,9 +15,6 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 
     protected array $position = [];
 
-    /**
-     * @return class-string[]
-     */
     public function getDependencies(): array
     {
         return [
@@ -29,21 +26,20 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 
     public function load(ObjectManager $objectManager): void
     {
-        unset($objectManager);
-        $this->loadForeach(self::NUMBER_HISTORY, 'addChapter');
+        $this->loadForeach(self::NUMBER_HISTORY, 'addChapter', $objectManager);
     }
 
     protected function addChapter(
         Generator $generator,
         int $index,
-        array $states
+        array $states,
+        ObjectManager $objectManager
     ): void
     {
         $chapter = new Chapter();
         $meta    = new Meta();
         $meta->setChapter($chapter);
         $this->setMeta($meta);
-        $oldChapter = clone $chapter;
         $chapter->setName($generator->unique()->colorName());
         /** @var string $content */
         $content = $generator->paragraphs(random_int(4, 10), true);
@@ -55,7 +51,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
             $this->position[$indexHistory] = [];
         }
 
-        $chapter->setRefhistory($history);
+        $chapter->setHistory($history);
         $chapter->setPublished($generator->unique()->dateTime('now'));
 
         $indexposition = $this->position[$indexHistory];
@@ -63,7 +59,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         $chapter->setPosition($position + 1);
         $this->addReference('chapter_'.$index, $chapter);
         $this->position[$indexHistory][] = $chapter;
-        $this->chapterRequestHandler->handle($oldChapter, $chapter);
-        $this->chapterRequestHandler->changeWorkflowState($chapter, $states);
+        $objectManager->persist($chapter);
+        $this->workflowService->changeState($chapter, $states);
     }
 }

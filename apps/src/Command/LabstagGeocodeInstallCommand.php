@@ -2,10 +2,8 @@
 
 namespace Labstag\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Labstag\Lib\CommandLib;
-use Labstag\Service\GeocodeService;
-use Labstag\Service\RepositoryService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -17,15 +15,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'labstag:geocode:install')]
 class LabstagGeocodeInstallCommand extends CommandLib
 {
-    public function __construct(
-        RepositoryService $repositoryService,
-        EntityManagerInterface $entityManager,
-        protected GeocodeService $geocodeService
-    )
-    {
-        parent::__construct($repositoryService, $entityManager);
-    }
-
     protected function configure(): void
     {
         $this->setDescription('Récupération des géocodes');
@@ -37,7 +26,11 @@ class LabstagGeocodeInstallCommand extends CommandLib
         $symfonyStyle = new SymfonyStyle($input, $output);
         $symfonyStyle->title('Récupération des code postaux');
 
-        $country = (string) $input->getArgument('country');
+        $country = $input->getArgument('country');
+        if (!is_string($country)) {
+            throw new Exception('Argument country invalide');
+        }
+
         if (empty($country)) {
             $symfonyStyle->note(
                 sprintf(

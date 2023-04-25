@@ -22,14 +22,6 @@ class PhoneService
         $this->phoneUtil = PhoneNumberUtil::getInstance();
     }
 
-    /**
-     * Verifie le numéro de téléphone en fonction du pays.
-     *
-     * @param null|string $numero Numéro de téléphone
-     * @param null|string $locale code du pays
-     *
-     * @throws NumberParseException
-     */
     public function verif(?string $numero, ?string $locale): array
     {
         $locale                       = (string) $locale;

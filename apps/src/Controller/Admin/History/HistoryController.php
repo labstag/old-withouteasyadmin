@@ -2,152 +2,81 @@
 
 namespace Labstag\Controller\Admin\History;
 
-use DateTime;
 use Exception;
 use Labstag\Annotation\IgnoreSoftDelete;
-use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Lib\AdminControllerLib;
-use Labstag\Lib\DomainLib;
-use Labstag\Repository\HistoryRepository;
-use Labstag\RequestHandler\HistoryRequestHandler;
+use Labstag\Service\Admin\Entity\HistoryService as EntityHistoryService;
 use Labstag\Service\HistoryService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
-#[Route(path: '/admin/history')]
+#[Route(path: '/admin/history', name: 'admin_history_')]
 class HistoryController extends AdminControllerLib
 {
-    #[Route(path: '/{id}/edit', name: 'admin_history_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
-        ?History $history
+        History $history
     ): Response
     {
-        return $this->form(
-            $this->getDomainEntity(),
-            is_null($history) ? new History() : $history,
-            'admin/history/form.html.twig'
-        );
+        return $this->setAdmin()->edit($history);
     }
 
-    #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_history_trash', methods: ['GET'])]
-    #[Route(path: '/', name: 'admin_history_index', methods: ['GET'])]
-    public function indexOrTrash(): Response
+    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    public function index(): Response
     {
-        return $this->listOrTrash(
-            $this->getDomainEntity(),
-            'admin/history/index.html.twig',
-        );
+        return $this->setAdmin()->index();
     }
 
-    #[Route(path: '/new', name: 'admin_history_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
-        HistoryRepository $historyRepository,
-        HistoryRequestHandler $historyRequestHandler,
         Security $security
     ): RedirectResponse
     {
-        $user = $security->getUser();
-        if (is_null($user)) {
-            return $this->redirectToRoute('admin_history_index');
-        }
-
-        $history = new History();
-        $history->setPublished(new DateTime());
-        $history->setName(Uuid::v1());
-        $history->setRefuser($user);
-
-        $old = clone $history;
-        $historyRepository->add($history);
-        $historyRequestHandler->handle($old, $history);
-
-        return $this->redirectToRoute('admin_history_edit', ['id' => $history->getId()]);
+        return $this->setAdmin()->add($security);
     }
 
-    #[Route(path: '/{id}/pdf', name: 'admin_history_pdf', methods: ['GET'])]
+    #[Route(path: '/{id}/pdf', name: 'pdf', methods: ['GET'])]
     public function pdf(HistoryService $historyService, History $history): RedirectResponse
     {
-        $fileDirectory    = $this->getParameter('file_directory');
-        $kernelProjectDir = $this->getParameter('kernel.project_dir');
-        if (!is_string($fileDirectory) || !is_string($kernelProjectDir)) {
-            throw $this->createNotFoundException('Pas de fichier');
-        }
-
-        $historyService->process(
-            (string) $fileDirectory,
-            (string) $history->getId(),
-            true
-        );
-        $filename = $historyService->getFilename();
-        if (empty($filename)) {
-            throw $this->createNotFoundException('Pas de fichier');
-        }
-
-        $filename = str_replace(
-            ((string) $kernelProjectDir).'/public/',
-            '/',
-            $filename
-        );
-
-        return $this->redirect($filename);
+        return $this->setAdmin()->pdf($historyService, $history);
     }
 
-    #[Route(path: '/{id}/move', name: 'admin_history_move', methods: ['GET', 'POST'])]
-    public function position(History $history, Request $request): Response
+    #[Route(path: '/{id}/move', name: 'move', methods: ['GET', 'POST'])]
+    public function position(History $history): Response
     {
-        $currentUrl = $this->generateUrl(
-            'admin_history_move',
-            [
-                'id' => $history->getId(),
-            ]
-        );
-        if ('POST' == $request->getMethod()) {
-            $this->setPositionEntity($request, Chapter::class);
-        }
-
-        $this->adminBtnService->addBtnList(
-            'admin_history_index',
-            'Liste',
-        );
-        $this->adminBtnService->add(
-            'btn-admin-save-move',
-            'Enregistrer',
-            [
-                'is'   => 'link-btnadminmove',
-                'href' => $currentUrl,
-            ]
-        );
-
-        return $this->render(
-            'admin/history/move.html.twig',
-            ['history' => $history]
-        );
+        return $this->setAdmin()->position($history);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/{id}', name: 'admin_history_show', methods: ['GET'])]
-    #[Route(path: '/preview/{id}', name: 'admin_history_preview', methods: ['GET'])]
-    public function showOrPreview(History $history): Response
+    #[Route(path: '/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(History $history): Response
     {
-        return $this->renderShowOrPreview(
-            $this->getDomainEntity(),
-            $history,
-            'admin/history/show.html.twig'
-        );
+        return $this->setAdmin()->preview($history);
     }
 
-    protected function getDomainEntity(): DomainLib
+    #[Route(path: '/{id}', name: 'show', methods: ['GET'])]
+    public function show(History $history): Response
     {
-        $domainLib = $this->domainService->getDomain(History::class);
-        if (!$domainLib instanceof DomainLib) {
-            throw new Exception('Domain not found');
+        return $this->setAdmin()->show($history);
+    }
+
+    #[IgnoreSoftDelete]
+    #[Route(path: '/trash', name: 'trash', methods: ['GET'])]
+    public function trash(): Response
+    {
+        return $this->setAdmin()->trash();
+    }
+
+    protected function setAdmin(): EntityHistoryService
+    {
+        $viewService = $this->adminService->setDomain(History::class);
+        if (!$viewService instanceof EntityHistoryService) {
+            throw new Exception('Service must be instance of '.EntityHistoryService::class);
         }
 
-        return $domainLib;
+        return $viewService;
     }
 }

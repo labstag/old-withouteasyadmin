@@ -13,10 +13,15 @@ class ParagraphType extends ParagraphAbstractTypeLib
 {
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $label    = $this->paragraphService->getName($formBuilder->getData());
-        $formType = $this->paragraphService->getTypeForm($formBuilder->getData());
-        $field    = $this->paragraphService->getEntityField($formBuilder->getData());
-        $show     = $this->paragraphService->isShow($formBuilder->getData());
+        $paragraph = $formBuilder->getData();
+        if (!$paragraph instanceof Paragraph) {
+            return;
+        }
+
+        $label    = $this->paragraphService->getName($paragraph);
+        $formType = $this->paragraphService->getTypeForm($paragraph);
+        $field    = $this->paragraphService->getEntityField($paragraph);
+        $show     = $this->paragraphService->isShow($paragraph);
         $formBuilder->add('background');
         $formBuilder->add('color');
         if ((!is_null($formType) || is_null($field)) && $show) {

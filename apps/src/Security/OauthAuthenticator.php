@@ -2,12 +2,12 @@
 
 namespace Labstag\Security;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Labstag\Entity\User;
 use Labstag\Repository\UserRepository;
 use Labstag\Service\ErrorService;
 use Labstag\Service\OauthService;
+use Labstag\Service\RepositoryService;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use Psr\Log\LoggerInterface;
@@ -43,7 +43,7 @@ class OauthAuthenticator extends AbstractAuthenticator
 
     public function __construct(
         protected ErrorService $errorService,
-        protected EntityManagerInterface $entityManager,
+        protected RepositoryService $repositoryService,
         protected UrlGeneratorInterface $urlGenerator,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected UserPasswordHasherInterface $userPasswordHasher,
@@ -85,10 +85,17 @@ class OauthAuthenticator extends AbstractAuthenticator
             $data          = $resourceOwner->toArray();
             $client        = $attributes['_route_params']['oauthCode'];
             $identity      = $this->oauthService->getIdentity($data, $client);
-            $user          = $this->userRepository->findOauth(
+            if (!is_string($identity)) {
+                throw new CustomUserMessageAuthenticationException('No API token provided');
+            }
+
+            $user = $this->userRepository->findOauth(
                 $identity,
                 $client
             );
+            if (!$user instanceof User) {
+                throw new CustomUserMessageAuthenticationException('No API token provided');
+            }
 
             return new SelfValidatingPassport(
                 new UserBadge($user->getUsername())
@@ -156,10 +163,11 @@ class OauthAuthenticator extends AbstractAuthenticator
         $request = $this->requestStack->getCurrentRequest();
         /** @var ParameterBag $parameterBag */
         $parameterBag = $request->attributes;
-        if ($parameterBag->has('oauthCode')) {
-            return $parameterBag->get('oauthCode');
+        $oauthCode    = $parameterBag->get('oauthCode', '');
+        if (!is_string($oauthCode)) {
+            return '';
         }
 
-        return '';
+        return $oauthCode;
     }
 }
