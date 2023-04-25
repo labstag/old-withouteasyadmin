@@ -19,16 +19,14 @@ class SearchableType extends FormTypeLib
     {
         $formBuilder->addModelTransformer(
             new CallbackTransformer(
-                static function ($value)
-                {
+                static function ($value) {
                     if ($value instanceof Collection) {
                         return $value->map(
                             static fn ($d) => (string) $d->getId()
                         )->toArray();
                     }
                 },
-                function ($ids) use ($options)
-                {
+                function ($ids) use ($options) {
                     if (empty($ids) || !is_string($options['class'])) {
                         return is_iterable($ids) ? new ArrayCollection([]) : null;
                     }

@@ -26,15 +26,13 @@ class ParagraphService
         protected RewindableGenerator $rewindableGenerator,
         protected Environment $twigEnvironment,
         protected ParagraphRepository $paragraphRepository
-    )
-    {
+    ) {
     }
 
     public function add(
         EntityFrontInterface $entityFront,
         string $code
-    ): void
-    {
+    ): void {
         $method = $this->getMethod($entityFront);
         if (is_null($method)) {
             return;

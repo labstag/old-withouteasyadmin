@@ -13,8 +13,7 @@ class WysiwygType extends FormTypeLib
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         $attr = $options['attr'];
         if (!is_array($attr)) {
             $attr = [];

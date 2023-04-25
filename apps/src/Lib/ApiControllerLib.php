@@ -20,8 +20,7 @@ abstract class ApiControllerLib extends AbstractController
         array $data,
         array $get,
         string $entityClass
-    ): array
-    {
+    ): array {
         if (!array_key_exists('user', $get)) {
             return $data;
         }
@@ -73,8 +72,7 @@ abstract class ApiControllerLib extends AbstractController
         RepositoryService $repositoryService,
         Request $request,
         string $entity
-    ): mixed
-    {
+    ): mixed {
         /** @var RepositoryLib $userRepository */
         $userRepository = $repositoryService->get(User::class);
         /** @var RepositoryLib $entityRepository */

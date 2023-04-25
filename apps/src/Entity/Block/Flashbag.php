@@ -15,7 +15,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/block')]
 class Flashbag implements Stringable, EntityBlockInterface
 {
-
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'flashbags', cascade: ['persist'])]
     private ?Block $block = null;
 

@@ -95,8 +95,7 @@ class ChapterParagraph extends ParagraphLib implements ParagraphInterface
     private function getPrevNext(
         Chapter $chapter,
         History $history
-    ): array
-    {
+    ): array {
         $chapters = $history->getchapters();
         $prev     = null;
         $next     = null;

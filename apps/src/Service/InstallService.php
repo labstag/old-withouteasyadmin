@@ -24,8 +24,7 @@ class InstallService
         protected ConfigurationRepository $configurationRepository,
         protected TemplateRepository $templateRepository,
         protected UserRepository $userRepository
-    )
-    {
+    ) {
     }
 
     public function config(array $serverEnv): void
@@ -86,8 +85,7 @@ class InstallService
     protected function addConfig(
         string $key,
         mixed $value
-    ): void
-    {
+    ): void {
         $search        = ['name' => $key];
         $configuration = $this->configurationRepository->findOneBy($search);
         if (!$configuration instanceof Configuration) {
@@ -103,8 +101,7 @@ class InstallService
     protected function addUser(
         array $groupes,
         array $dataUser
-    ): void
-    {
+    ): void {
         $search = [
             'username' => $dataUser['username'],
         ];

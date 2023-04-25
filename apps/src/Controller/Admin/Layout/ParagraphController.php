@@ -16,15 +16,13 @@ class ParagraphController extends AbstractController
 {
     public function __construct(
         protected AdminService $adminService
-    )
-    {
+    ) {
     }
 
     #[Route(path: '/add/{id}', name: 'add')]
     public function add(
         Layout $layout
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         return $this->paragraph()->add($layout);
     }
 
@@ -43,8 +41,7 @@ class ParagraphController extends AbstractController
     #[Route(path: '/show/{id}', name: 'show')]
     public function show(
         Paragraph $paragraph
-    ): Response
-    {
+    ): Response {
         return $this->paragraph()->show($paragraph);
     }
 

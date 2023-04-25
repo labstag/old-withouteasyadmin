@@ -23,8 +23,7 @@ class SearchController extends ApiControllerLib
     public function libelle(
         RepositoryService $repositoryService,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $attributes = $request->attributes->all();
         $route      = $attributes['_route'];
         $entityName = match ($route) {
@@ -48,8 +47,7 @@ class SearchController extends ApiControllerLib
         Request $request,
         ?string $entity,
         string $method
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
         if (!array_key_exists('name', $get) || is_null($entity)) {

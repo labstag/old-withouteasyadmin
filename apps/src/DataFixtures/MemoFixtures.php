@@ -30,8 +30,7 @@ class MemoFixtures extends FixtureLib implements DependentFixtureInterface
         int $index,
         array $states,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $dateTime = $generator->unique()->dateTimeInInterval('now', '+30 years');
         /** @var UserRepository $userRepository */
         $userRepository = $objectManager->getRepository(User::class);

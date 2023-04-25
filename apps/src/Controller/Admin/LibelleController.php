@@ -15,8 +15,7 @@ class LibelleController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Libelle $libelle
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($libelle);
     }
 

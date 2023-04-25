@@ -185,8 +185,7 @@ class Groupe implements Stringable, EntityTrashInterface
         Collection $element,
         ?RouteGroupe $routeGroupe = null,
         ?WorkflowGroupe $workflowGroupe = null
-    ): void
-    {
+    ): void {
         if (is_null($routeGroupe) && is_null($workflowGroupe)) {
             return;
         }

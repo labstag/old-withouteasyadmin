@@ -18,8 +18,7 @@ class EditoController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Edito $edito
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($edito);
     }
 
@@ -32,8 +31,7 @@ class EditoController extends AdminControllerLib
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         Security $security
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         return $this->setAdmin()->add($security);
     }
 

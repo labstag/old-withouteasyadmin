@@ -16,7 +16,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/paragraph')]
 class Text implements Stringable, EntityParagraphInterface, EntityInterface
 {
-
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
 

@@ -26,8 +26,7 @@ abstract class CommandLib extends Command
         protected HistoryService $historyService,
         protected GuardService $guardService,
         protected RepositoryService $repositoryService
-    )
-    {
+    ) {
         parent::__construct();
     }
 }

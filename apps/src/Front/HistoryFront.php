@@ -12,16 +12,14 @@ class HistoryFront extends PageFront implements FrontInterface
     public function setBreadcrumb(
         ?EntityFrontInterface $entityFront,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         return $this->setBreadcrumbHistory($entityFront, $breadcrumb);
     }
 
     public function setBreadcrumbHistory(
         ?EntityFrontInterface $entityFront,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if (!$entityFront instanceof History) {
             return $breadcrumb;
         }
@@ -47,8 +45,7 @@ class HistoryFront extends PageFront implements FrontInterface
     public function setMeta(
         ?EntityFrontInterface $entityFront,
         array $meta
-    ): array
-    {
+    ): array {
         if (!$entityFront instanceof History) {
             return $meta;
         }

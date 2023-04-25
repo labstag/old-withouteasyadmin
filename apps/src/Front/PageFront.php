@@ -12,8 +12,7 @@ class PageFront extends FrontLib implements FrontInterface
     public function setBreadcrumb(
         ?EntityFrontInterface $entityFront,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if (!$entityFront instanceof Page) {
             return $breadcrumb;
         }
@@ -37,8 +36,7 @@ class PageFront extends FrontLib implements FrontInterface
     public function setMeta(
         ?EntityFrontInterface $entityFront,
         array $meta
-    ): array
-    {
+    ): array {
         if (!$entityFront instanceof Page) {
             return $meta;
         }
@@ -49,8 +47,7 @@ class PageFront extends FrontLib implements FrontInterface
     protected function setBreadcrumbPage(
         ?Page $page,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if (!$page instanceof Page) {
             return $breadcrumb;
         }

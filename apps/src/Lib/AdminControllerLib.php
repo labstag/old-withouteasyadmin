@@ -9,7 +9,6 @@ abstract class AdminControllerLib extends AbstractController
 {
     public function __construct(
         protected AdminService $adminService
-    )
-    {
+    ) {
     }
 }

@@ -8,7 +8,6 @@ use Labstag\Lib\SearchLib;
 
 class HistorySearch extends SearchLib
 {
-
     public ?string $etape = null;
 
     public ?string $name = null;

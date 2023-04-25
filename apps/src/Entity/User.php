@@ -309,8 +309,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function addOauthConnectUsers(
         OauthConnectUser $oauthConnectUser
-    ): self
-    {
+    ): self {
         if (!$this->oauthConnectUsers->contains($oauthConnectUser)) {
             $this->oauthConnectUsers[] = $oauthConnectUser;
             $oauthConnectUser->setRefuser($this);
@@ -619,8 +618,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function removeOauthConnectUsers(
         OauthConnectUser $oauthConnectUser
-    ): self
-    {
+    ): self {
         if ($this->oauthConnectUsers->contains($oauthConnectUser)) {
             $this->oauthConnectUsers->removeElement($oauthConnectUser);
             // set the owning side to null (unless already changed)
@@ -741,8 +739,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         ?Post $post = null,
         ?RouteUser $routeUser = null,
         ?WorkflowUser $workflowUser = null
-    ): void
-    {
+    ): void {
         $variable = $bookmark ?? $history ?? $memo ?? $oauthConnectUser ?? $post ?? $routeUser ?? $workflowUser;
         if (!is_null($variable) && $element->removeElement($variable) && $variable->getRefuser() === $this) {
             $variable->setRefuser(null);

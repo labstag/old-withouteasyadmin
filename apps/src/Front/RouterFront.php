@@ -10,8 +10,7 @@ class RouterFront extends PageFront implements FrontInterface
     public function setBreadcrumb(
         ?EntityFrontInterface $entityFront,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         unset($entityFront);
 
         return $breadcrumb;
@@ -20,8 +19,7 @@ class RouterFront extends PageFront implements FrontInterface
     public function setMeta(
         ?EntityFrontInterface $entityFront,
         array $meta
-    ): array
-    {
+    ): array {
         unset($entityFront);
 
         return $meta;

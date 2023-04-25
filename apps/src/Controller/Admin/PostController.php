@@ -18,8 +18,7 @@ class PostController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Post $post
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($post);
     }
 

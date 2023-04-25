@@ -122,8 +122,7 @@ abstract class FixtureLib extends Fixture
         protected Environment $twigEnvironment,
         protected BlockService $blockService,
         protected CacheInterface $cache
-    )
-    {
+    ) {
     }
 
     public function getDependenciesBookmarkPost(): array
@@ -140,8 +139,7 @@ abstract class FixtureLib extends Fixture
         EntityFrontInterface $entityFront,
         array $paragraphs,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         unset($objectManager);
         foreach ($paragraphs as $paragraph) {
             $this->paragraphService->add($entityFront, $paragraph);
@@ -189,8 +187,7 @@ abstract class FixtureLib extends Fixture
         int $number,
         string $method,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $faker     = $this->setFaker();
         $statesTab = $this->getStatesData();
         for ($index = 0; $index < $number; ++$index) {
@@ -209,8 +206,7 @@ abstract class FixtureLib extends Fixture
         int $number,
         string $method,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $faker = $this->setFaker();
         $users = $this->installService->getData('user');
         for ($index = 0; $index < $number; ++$index) {
@@ -238,8 +234,7 @@ abstract class FixtureLib extends Fixture
         Generator $generator,
         ?Bookmark $bookmark = null,
         ?Post $post = null
-    ): void
-    {
+    ): void {
         if (1 != random_int(0, 1) || (is_null($bookmark) && is_null($post))) {
             return;
         }

@@ -14,8 +14,7 @@ abstract class PostFormLib
         protected RequestStack $requestStack,
         protected FormFactoryInterface $formFactory,
         protected Environment $twigEnvironment
-    )
-    {
+    ) {
     }
 
     protected function getEmailFrom(): string

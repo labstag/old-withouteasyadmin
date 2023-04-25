@@ -7,7 +7,6 @@ use Labstag\Lib\SearchLib;
 
 class AddressUserSearch extends SearchLib
 {
-
     public ?string $city = null;
 
     public ?string $country = null;

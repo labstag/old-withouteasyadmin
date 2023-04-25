@@ -12,8 +12,7 @@ class ChapterFront extends HistoryFront implements FrontInterface
     public function setBreadcrumb(
         ?EntityFrontInterface $entityFront,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if (!$entityFront instanceof Chapter) {
             return $breadcrumb;
         }
@@ -37,8 +36,7 @@ class ChapterFront extends HistoryFront implements FrontInterface
     public function setMeta(
         ?EntityFrontInterface $entityFront,
         array $meta
-    ): array
-    {
+    ): array {
         if (!$entityFront instanceof Chapter) {
             return $meta;
         }

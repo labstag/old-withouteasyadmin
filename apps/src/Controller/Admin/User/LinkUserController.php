@@ -15,8 +15,7 @@ class LinkUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         LinkUser $linkUser
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($linkUser);
     }
 

@@ -28,8 +28,7 @@ class GuardRouteController extends ApiControllerLib
         Groupe $groupe,
         GuardService $guardService,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'delete' => 0,
             'add'    => 0,
@@ -59,8 +58,7 @@ class GuardRouteController extends ApiControllerLib
         EntityRoute $entityRoute,
         Request $request,
         GroupeRepository $groupeRepository
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'delete' => 0,
             'add'    => 0,
@@ -88,8 +86,7 @@ class GuardRouteController extends ApiControllerLib
         RepositoryService $repositoryService,
         UserRepository $userRepository,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'group' => [],
         ];
@@ -128,8 +125,7 @@ class GuardRouteController extends ApiControllerLib
         Groupe $groupe,
         EntityRoute $entityRoute,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'delete' => 0,
             'add'    => 0,
@@ -155,8 +151,7 @@ class GuardRouteController extends ApiControllerLib
         User $user,
         EntityRoute $entityRoute,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'delete' => 0,
             'add'    => 0,
@@ -181,8 +176,7 @@ class GuardRouteController extends ApiControllerLib
         GuardService $guardService,
         User $user,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'delete' => 0,
             'add'    => 0,
@@ -213,8 +207,7 @@ class GuardRouteController extends ApiControllerLib
         ?Groupe $groupe,
         ?EntityRoute $entityRoute,
         bool $state
-    ): array
-    {
+    ): array {
         $routeGroupe = $routeGroupeRepository->findOneBy(
             [
                 'refgroupe' => $groupe,
@@ -256,8 +249,7 @@ class GuardRouteController extends ApiControllerLib
         ?UserInterface $user,
         bool $state,
         EntityRoute $entityRoute
-    ): array
-    {
+    ): array {
         $routeUser = $routeUserRepository->findOneBy(['refuser' => $user, 'refroute' => $entityRoute]);
         if (false == $state) {
             if ($routeUser instanceof RouteUser) {

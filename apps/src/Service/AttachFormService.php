@@ -20,8 +20,7 @@ class AttachFormService
         protected ContainerBagInterface $containerBag,
         protected AttachmentRepository $attachmentRepository,
         private readonly UploadAnnotationReader $uploadAnnotationReader
-    )
-    {
+    ) {
     }
 
     public function upload(EntityInterface $entity): void
@@ -61,8 +60,7 @@ class AttachFormService
         PropertyAccessor $propertyAccessor,
         EntityInterface $entity,
         UploadableField $uploadableField
-    ): Attachment
-    {
+    ): Attachment {
         $filename = $uploadableField->getFilename();
         if (!is_string($filename)) {
             return new Attachment();

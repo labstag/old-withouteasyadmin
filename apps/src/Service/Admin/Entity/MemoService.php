@@ -15,8 +15,7 @@ class MemoService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(
         Security $security
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $user   = $security->getUser();
         $routes = $this->getDomain()->getUrlAdmin();
         if (!isset($routes['edit']) || !isset($routes['list'])) {

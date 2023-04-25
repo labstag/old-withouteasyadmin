@@ -15,8 +15,7 @@ class PhoneVerifType extends FormTypeLib
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         /** @var FormInterface $parent */
         $parent    = $form->getParent();
         $phoneUser = $parent->getData();

@@ -10,16 +10,14 @@ class FormService
 {
     public function __construct(
         protected RewindableGenerator $rewindableGenerator
-    )
-    {
+    ) {
     }
 
     public function execute(
         AbstractTypeLib $typeLib,
         array $success,
         string $formName
-    ): array
-    {
+    ): array {
         $formClass = $typeLib::class;
         foreach ($this->rewindableGenerator as $row) {
             /** @var PostFormInterface $row */

@@ -30,8 +30,7 @@ class PageFixtures extends FixtureLib implements DependentFixtureInterface
         array $pageData,
         ObjectManager $objectManager,
         ?Page $parent = null
-    ): void
-    {
+    ): void {
         $page = new Page();
         $page->setName($pageData['name']);
         if (!is_null($parent)) {

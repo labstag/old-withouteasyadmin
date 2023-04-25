@@ -11,7 +11,6 @@ use Labstag\Entity\Paragraph\Edito\Show as EditoShow;
 
 trait EditoEntity
 {
-
     #[ORM\ManyToOne(
         targetEntity: Edito::class,
         inversedBy: 'paragraphs',
@@ -142,8 +141,7 @@ trait EditoEntity
         ?ParagraphEdito $paragraphEdito = null,
         ?EditoHeader $editoHeader = null,
         ?EditoShow $editoShow = null
-    ): void
-    {
+    ): void {
         $variable = is_null($paragraphEdito) ? null : $paragraphEdito;
         $variable = is_null($editoHeader) ? $variable : $editoHeader;
         $variable = is_null($editoShow) ? $variable : $editoShow;

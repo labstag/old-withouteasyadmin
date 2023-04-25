@@ -28,8 +28,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         int $index,
         array $states,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $post = new Post();
         $meta = new Meta();
         $meta->setPost($post);

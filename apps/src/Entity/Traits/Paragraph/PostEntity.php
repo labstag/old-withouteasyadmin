@@ -17,7 +17,6 @@ use Labstag\Entity\Post;
 
 trait PostEntity
 {
-
     #[ORM\ManyToOne(
         targetEntity: Post::class,
         inversedBy: 'paragraphs',
@@ -382,8 +381,7 @@ trait PostEntity
         ?PostShow $postShow = null,
         ?PostUser $postUser = null,
         ?PostYear $postYear = null
-    ): void
-    {
+    ): void {
         $variable = $paragraphPost ?? $postArchive ?? $postCategory ?? $postHeader;
         $variable ??= $postLibelle ?? $postList ?? $postShow ?? $postUser ?? $postYear;
 

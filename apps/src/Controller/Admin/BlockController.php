@@ -17,8 +17,7 @@ class BlockController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Block $block
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($block);
     }
 

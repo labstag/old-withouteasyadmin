@@ -24,8 +24,7 @@ class CategoryFixtures extends DataFixtureLib implements DependentFixtureInterfa
         Generator $generator,
         int $index,
         ObjectManager $objectManager
-    ): Category
-    {
+    ): Category {
         $category = new Category();
         $category->setName($generator->unique()->colorName());
 

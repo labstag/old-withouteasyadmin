@@ -13,7 +13,6 @@ use Labstag\Entity\Paragraph\History\User as HistoryUser;
 
 trait HistoryEntity
 {
-
     #[ORM\OneToMany(
         targetEntity: ParagraphHistory::class,
         mappedBy: 'paragraph',
@@ -226,8 +225,7 @@ trait HistoryEntity
         ?HistoryList $historyList = null,
         ?HistoryShow $historyShow = null,
         ?HistoryUser $historyUser = null
-    ): void
-    {
+    ): void {
         $variable = is_null($paragraphHistory) ? null : $paragraphHistory;
         $variable = is_null($historyChapter) ? $variable : $historyChapter;
         $variable = is_null($historyList) ? $variable : $historyList;

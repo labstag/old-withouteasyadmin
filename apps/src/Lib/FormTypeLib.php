@@ -23,7 +23,6 @@ abstract class FormTypeLib extends AbstractType
         protected RepositoryService $repositoryService,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected RouterInterface $router
-    )
-    {
+    ) {
     }
 }

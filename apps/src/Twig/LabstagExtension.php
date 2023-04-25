@@ -72,8 +72,7 @@ class LabstagExtension extends ExtensionLib
         array $config = [],
         ?string $resolver = null,
         int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    ): string
-    {
+    ): string {
         $url = $this->cacheManager->getBrowserPath(
             (string) parse_url($path, PHP_URL_PATH),
             $filter,

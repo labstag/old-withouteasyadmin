@@ -15,8 +15,7 @@ class CheckController extends ApiControllerLib
     public function phone(
         PhoneService $phoneService,
         Request $request
-    ): Response
-    {
+    ): Response {
         $get    = $request->query->all();
         $return = ['isvalid' => false];
         if (!array_key_exists('country', $get) || !array_key_exists('phone', $get)) {

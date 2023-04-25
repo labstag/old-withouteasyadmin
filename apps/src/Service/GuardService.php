@@ -54,8 +54,7 @@ class GuardService
         protected RouteRepository $routeRepository,
         protected RouteGroupeRepository $routeGroupeRepository,
         protected RouteUserRepository $routeUserRepository
-    )
-    {
+    ) {
     }
 
     /**
@@ -184,8 +183,7 @@ class GuardService
     public function guardRoute(
         ?string $route,
         ?TokenInterface $token
-    ): bool
-    {
+    ): bool {
         $route = (string) $route;
         $all   = $this->all();
         if (!array_key_exists($route, $all)) {
@@ -363,8 +361,7 @@ class GuardService
     private function isRouteGroupe(
         Groupe $groupe,
         string $route
-    ): bool
-    {
+    ): bool {
         $all = $this->all();
         if ('superadmin' == $groupe->getCode()) {
             return true;

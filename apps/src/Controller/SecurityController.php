@@ -41,8 +41,7 @@ class SecurityController extends AbstractController
         SessionService $sessionService,
         User $user,
         Request $request
-    ): Response
-    {
+    ): Response {
         if ('lostpassword' != $user->getState()) {
             $sessionService->flashBagAdd(
                 'danger',
@@ -72,8 +71,7 @@ class SecurityController extends AbstractController
         WorkflowService $workflowService,
         SessionService $sessionService,
         Email $email
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if ('averifier' != $email->getState()) {
             $sessionService->flashBagAdd(
                 'danger',
@@ -98,8 +96,7 @@ class SecurityController extends AbstractController
         WorkflowService $workflowService,
         SessionService $sessionService,
         Phone $phone
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if ('averifier' != $phone->getState()) {
             $sessionService->flashBagAdd(
                 'danger',
@@ -124,8 +121,7 @@ class SecurityController extends AbstractController
         WorkflowService $workflowService,
         SessionService $sessionService,
         User $user
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if ('avalider' != $user->getState()) {
             $sessionService->flashBagAdd(
                 'danger',
@@ -150,8 +146,7 @@ class SecurityController extends AbstractController
         SessionService $sessionService,
         Request $request,
         DataService $dataService
-    ): RedirectResponse|Response
-    {
+    ): RedirectResponse|Response {
         $form = $this->createForm(DisclaimerType::class, []);
         $form->handleRequest($request);
 
@@ -192,8 +187,7 @@ class SecurityController extends AbstractController
     public function login(
         AuthenticationUtils $authenticationUtils,
         OauthConnectUserRepository $oauthConnectUserRepository
-    ): Response
-    {
+    ): Response {
         // get the login error if there is one
         $authenticationException = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -250,8 +244,7 @@ class SecurityController extends AbstractController
         Request $request,
         string $oauthCode,
         OauthService $oauthService
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         /** @var AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
         $session  = $request->getSession();
@@ -301,8 +294,7 @@ class SecurityController extends AbstractController
         ErrorService $errorService,
         OauthService $oauthService,
         UserService $userService
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         /** @var AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
         $query    = $request->query->all();
@@ -389,8 +381,7 @@ class SecurityController extends AbstractController
         string $oauthCode,
         Security $security,
         OauthConnectUserRepository $oauthConnectUserRepository
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $this->denyAccessUnlessGranted('ROLE_USER');
         /** @var User $user */
         $user = $security->getUser();

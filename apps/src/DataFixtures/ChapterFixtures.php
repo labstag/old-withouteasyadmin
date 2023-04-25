@@ -12,7 +12,6 @@ use Labstag\Lib\FixtureLib;
 
 class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
 {
-
     protected array $position = [];
 
     public function getDependencies(): array
@@ -34,8 +33,7 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
         int $index,
         array $states,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $chapter = new Chapter();
         $meta    = new Meta();
         $meta->setChapter($chapter);

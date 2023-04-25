@@ -15,7 +15,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource]
 class Route implements Stringable, EntityInterface
 {
-
     #[ORM\OneToMany(targetEntity: RouteGroupe::class, mappedBy: 'route', cascade: ['persist'], orphanRemoval: true)]
     private Collection $groupes;
 
@@ -113,8 +112,7 @@ class Route implements Stringable, EntityInterface
         Collection $element,
         ?RouteGroupe $routeGroupe = null,
         ?RouteUser $routeUser = null
-    ): void
-    {
+    ): void {
         if (is_null($routeGroupe) && is_null($routeUser)) {
             return;
         }

@@ -11,7 +11,6 @@ use Labstag\Entity\Paragraph\Bookmark\Liste as BookmarkList;
 
 trait BookmarkEntity
 {
-
     #[ORM\OneToMany(
         targetEntity: BookmarkCategory::class,
         mappedBy: 'paragraph',
@@ -164,8 +163,7 @@ trait BookmarkEntity
         ?BookmarkCategory $bookmarkCategory = null,
         ?BookmarkLibelle $bookmarkLibelle = null,
         ?BookmarkList $bookmarkList = null
-    ): void
-    {
+    ): void {
         $variable = is_null($paragraphBookmark) ? null : $paragraphBookmark;
         $variable = is_null($bookmarkCategory) ? $variable : $bookmarkCategory;
         $variable = is_null($bookmarkLibelle) ? $variable : $bookmarkLibelle;

@@ -15,8 +15,7 @@ class EmailUserController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         EmailUser $emailUser
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($emailUser);
     }
 

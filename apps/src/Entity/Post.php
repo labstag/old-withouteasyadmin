@@ -319,8 +319,7 @@ class Post implements Stringable, PublicInterface, EntityTrashInterface, EntityW
         Collection $element,
         ?Meta $meta = null,
         ?Paragraph $paragraph = null
-    ): void
-    {
+    ): void {
         if (is_null($meta) && is_null($paragraph)) {
             return;
         }

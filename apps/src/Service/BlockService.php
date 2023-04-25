@@ -18,8 +18,7 @@ class BlockService
     public function __construct(
         protected RewindableGenerator $rewindableGenerator,
         protected BlockRepository $blockRepository
-    )
-    {
+    ) {
     }
 
     public function getAll(): array
@@ -202,8 +201,7 @@ class BlockService
     public function showContent(
         Block $block,
         ?EntityFrontInterface $entityFront
-    ): ?Response
-    {
+    ): ?Response {
         $type   = $block->getType();
         $entity = $this->getEntity($block);
         if (!$entity instanceof EntityBlockInterface || is_null($type)) {
@@ -226,8 +224,7 @@ class BlockService
     public function showTemplate(
         Block $block,
         ?EntityFrontInterface $entityFront
-    ): ?array
-    {
+    ): ?array {
         $type   = $block->getType();
         $entity = $this->getEntity($block);
         if (!$entity instanceof EntityBlockInterface || is_null($type)) {

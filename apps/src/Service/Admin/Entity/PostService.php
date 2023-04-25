@@ -16,8 +16,7 @@ class PostService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(
         Security $security
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $routes = $this->getDomain()->getUrlAdmin();
         if (!isset($routes['edit']) || !isset($routes['list'])) {
             throw new Exception('Route edit not found');

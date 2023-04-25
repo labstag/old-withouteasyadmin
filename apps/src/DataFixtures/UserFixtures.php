@@ -40,8 +40,7 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
         array $dataUser,
         Generator $generator,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $user = new User();
 
         $user->setRefgroupe($this->getRefgroupe($groupes, $dataUser['groupe']));

@@ -23,16 +23,14 @@ class MenuController extends AdminControllerLib
     #[Route(path: '/divider/{id}', name: 'divider')]
     public function divider(
         Menu $menu
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         return $this->setAdmin()->divider($menu);
     }
 
     #[Route(path: '/update/{id}', name: 'update', methods: ['GET', 'POST'])]
     public function edit(
         Menu $menu
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($menu);
     }
 

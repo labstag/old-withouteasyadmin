@@ -27,8 +27,7 @@ class BookmarkFixtures extends FixtureLib implements DependentFixtureInterface
         int $index,
         array $states,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $bookmark = new Bookmark();
         $this->setLibelles(
             generator: $generator,

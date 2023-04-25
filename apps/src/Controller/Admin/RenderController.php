@@ -15,8 +15,7 @@ class RenderController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Render $render
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($render);
     }
 

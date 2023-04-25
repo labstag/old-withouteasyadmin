@@ -29,8 +29,7 @@ class ActionsController extends ApiControllerLib
         Request $request,
         string $entity,
         string $id
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'action' => false,
             'error'  => '',
@@ -66,8 +65,7 @@ class ActionsController extends ApiControllerLib
         CsrfTokenManagerInterface $csrfTokenManager,
         string $entity,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $this->deleteOrRestore(
             $repositoryService,
             $csrfTokenManager,
@@ -84,8 +82,7 @@ class ActionsController extends ApiControllerLib
         CsrfTokenManagerInterface $csrfTokenManager,
         string $entity,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $this->deleteOrRestore(
             $repositoryService,
             $csrfTokenManager,
@@ -103,8 +100,7 @@ class ActionsController extends ApiControllerLib
         Request $request,
         string $entity,
         string $id
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'action' => false,
             'error'  => '',
@@ -143,8 +139,7 @@ class ActionsController extends ApiControllerLib
         RepositoryService $repositoryService,
         CsrfTokenManagerInterface $csrfTokenManager,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'action' => false,
             'error'  => '',
@@ -184,8 +179,7 @@ class ActionsController extends ApiControllerLib
         Request $request,
         CsrfTokenManagerInterface $csrfTokenManager,
         string $entity
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'action' => false,
             'error'  => '',
@@ -222,8 +216,7 @@ class ActionsController extends ApiControllerLib
         CsrfTokenManagerInterface $csrfTokenManager,
         Request $request,
         TrashService $trashService
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $tokenValid = $this->tokenVerif($csrfTokenManager, $request, 'emptyall');
         $data       = [
             'action' => false,
@@ -252,8 +245,7 @@ class ActionsController extends ApiControllerLib
         Request $request,
         string $entity,
         string $id
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'action' => false,
             'error'  => '',
@@ -285,8 +277,7 @@ class ActionsController extends ApiControllerLib
         CsrfTokenManagerInterface $csrfTokenManager,
         string $entity,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $this->deleteOrRestore($repositoryService, $csrfTokenManager, $entity, $request, 'restories');
     }
 
@@ -299,8 +290,7 @@ class ActionsController extends ApiControllerLib
         string $entity,
         string $state,
         string $id
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'action' => false,
             'error'  => '',
@@ -336,8 +326,7 @@ class ActionsController extends ApiControllerLib
     private function deleteAll(
         RepositoryService $repositoryService,
         TrashService $trashService
-    ): array
-    {
+    ): array {
         $all   = $trashService->all();
         $error = [];
         foreach ($all as $data) {
@@ -358,8 +347,7 @@ class ActionsController extends ApiControllerLib
     private function deleteEntity(
         RepositoryService $repositoryService,
         ?EntityTrashInterface $entityTrash
-    ): void
-    {
+    ): void {
         if (is_null($entityTrash) || !is_null($entityTrash->getDeletedAt())) {
             return;
         }
@@ -407,8 +395,7 @@ class ActionsController extends ApiControllerLib
         string $entity,
         Request $request,
         string $token
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'action' => false,
             'error'  => '',
@@ -458,8 +445,7 @@ class ActionsController extends ApiControllerLib
     private function destroyEntity(
         RepositoryService $repositoryService,
         ?EntityTrashInterface $entityTrash
-    ): void
-    {
+    ): void {
         if (is_null($entityTrash) || is_null($entityTrash->getDeletedAt())) {
             return;
         }
@@ -482,8 +468,7 @@ class ActionsController extends ApiControllerLib
         RepositoryService $repositoryService,
         string $entity,
         string $id
-    ): ?EntityTrashInterface
-    {
+    ): ?EntityTrashInterface {
         /** @var RepositoryLib $repository */
         $repository = $repositoryService->get($entity);
 
@@ -498,8 +483,7 @@ class ActionsController extends ApiControllerLib
     private function restoreEntity(
         RepositoryService $repositoryService,
         ?EntityTrashInterface $entityTrash
-    ): void
-    {
+    ): void {
         if (is_null($entityTrash) || is_null($entityTrash->getDeletedAt())) {
             return;
         }
@@ -515,8 +499,7 @@ class ActionsController extends ApiControllerLib
         Request $request,
         string $action,
         ?EntityInterface $entity = null
-    ): bool
-    {
+    ): bool {
         $token = $request->get('_token');
         if (!is_string($token)) {
             return false;

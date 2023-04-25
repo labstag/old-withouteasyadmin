@@ -250,8 +250,7 @@ class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagr
         Collection $element,
         ?Meta $meta = null,
         ?Paragraph $paragraph = null
-    ): void
-    {
+    ): void {
         if (is_null($meta) && is_null($paragraph)) {
             return;
         }

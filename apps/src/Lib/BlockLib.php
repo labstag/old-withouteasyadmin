@@ -28,8 +28,7 @@ abstract class BlockLib extends AbstractController
         protected TranslatorInterface $translator,
         protected Environment $twigEnvironment,
         protected array $template = []
-    )
-    {
+    ) {
     }
 
     public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
@@ -42,8 +41,7 @@ abstract class BlockLib extends AbstractController
     public function template(
         EntityBlockInterface $entityBlock,
         ?EntityFrontInterface $entityFront
-    ): array
-    {
+    ): array {
         return $this->showTemplateFile($this->getCode($entityBlock, $entityFront));
     }
 
@@ -51,8 +49,7 @@ abstract class BlockLib extends AbstractController
         ParagraphService $paragraphService,
         EntityFrontInterface $entityFront,
         array $paragraphs
-    ): array
-    {
+    ): array {
         $methods = get_class_methods($entityFront);
         if (!in_array('getParagraphs', $methods)) {
             return $paragraphs;

@@ -15,8 +15,7 @@ class CategoryController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Category $category
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($category);
     }
 

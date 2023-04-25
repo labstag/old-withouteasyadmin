@@ -16,7 +16,6 @@ use Twig\TwigFunction;
 
 abstract class ExtensionLib extends AbstractExtension
 {
-
     protected array $templates = [];
 
     public function __construct(
@@ -28,8 +27,7 @@ abstract class ExtensionLib extends AbstractExtension
         protected Environment $twigEnvironment,
         protected TokenStorageInterface $tokenStorage,
         protected GuardService $guardService,
-    )
-    {
+    ) {
     }
 
     /**
@@ -158,8 +156,7 @@ abstract class ExtensionLib extends AbstractExtension
     protected function setFilesformClass(
         string $type,
         mixed $class
-    ): array
-    {
+    ): array {
         $htmltwig = '.html.twig';
         $files    = [
             'forms/'.$type.$htmltwig,

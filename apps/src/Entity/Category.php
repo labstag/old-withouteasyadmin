@@ -181,8 +181,7 @@ class Category implements Stringable, EntityTrashInterface
         Collection $element,
         ?Bookmark $bookmark = null,
         ?Post $post = null
-    ): void
-    {
+    ): void {
         if (is_null($bookmark) && is_null($post)) {
             return;
         }

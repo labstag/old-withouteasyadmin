@@ -13,7 +13,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiResource]
 class OauthConnectUser implements UserDataInterface
 {
-
     #[ORM\Column(type: 'array')]
     protected array $data = [];
 

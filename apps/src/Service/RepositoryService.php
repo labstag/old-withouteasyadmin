@@ -9,8 +9,7 @@ class RepositoryService
 {
     public function __construct(
         protected RewindableGenerator $rewindableGenerator
-    )
-    {
+    ) {
     }
 
     public function get(string $entity): ?RepositoryLib

@@ -34,8 +34,7 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
         string $region,
         array $dataLayout,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         /** @var Block $block */
         $block   = $this->getReference('block_'.$region.'-'.$type);
         $layout  = new Layout();
@@ -64,8 +63,7 @@ class LayoutFixtures extends FixtureLib implements DependentFixtureInterface
     protected function addLayouts(
         array $data,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $type   = $data['block-type'];
         $region = $data['block-region'];
         foreach ($data['layouts'] as $layout) {

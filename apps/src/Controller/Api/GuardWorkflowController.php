@@ -27,8 +27,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowRepository $workflowRepository,
         Request $request,
         Groupe $groupe
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $this->setWorkflow(
             $workflowUserRepository,
             $workflowRepository,
@@ -43,8 +42,7 @@ class GuardWorkflowController extends ApiControllerLib
         Workflow $workflow,
         Request $request,
         GroupeRepository $groupeRepository
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'delete' => 0,
             'add'    => 0,
@@ -71,8 +69,7 @@ class GuardWorkflowController extends ApiControllerLib
         UserRepository $userRepository,
         RepositoryService $repositoryService,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'group' => [],
         ];
@@ -111,8 +108,7 @@ class GuardWorkflowController extends ApiControllerLib
         Groupe $groupe,
         Workflow $workflow,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'delete' => 0,
             'add'    => 0,
@@ -136,8 +132,7 @@ class GuardWorkflowController extends ApiControllerLib
         User $user,
         Workflow $workflow,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'delete' => 0,
             'add'    => 0,
@@ -161,8 +156,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowRepository $workflowRepository,
         User $user,
         Request $request
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $this->setWorkflow(
             $workflowUserRepository,
             $workflowRepository,
@@ -176,8 +170,7 @@ class GuardWorkflowController extends ApiControllerLib
         WorkflowRepository $workflowRepository,
         Request $request,
         mixed $entity
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = [
             'delete' => 0,
             'add'    => 0,
@@ -205,8 +198,7 @@ class GuardWorkflowController extends ApiControllerLib
         Groupe $groupe,
         Workflow $workflow,
         bool $state
-    ): array
-    {
+    ): array {
         $workflowGroupe = $workflowGroupeRepository->findOneBy(
             [
                 'refgroupe'   => $groupe,
@@ -244,8 +236,7 @@ class GuardWorkflowController extends ApiControllerLib
         ?User $user,
         ?Workflow $workflow,
         bool $state
-    ): array
-    {
+    ): array {
         $workflowUser = $workflowUserRepository->findOneBy(['refuser' => $user, 'refworkflow' => $workflow]);
         if (false === $state) {
             if ($workflowUser instanceof WorkflowUser) {

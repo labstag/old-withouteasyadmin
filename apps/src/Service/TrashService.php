@@ -15,8 +15,7 @@ class TrashService
         protected RewindableGenerator $rewindableGenerator,
         protected ManagerRegistry $managerRegistry,
         protected CsrfTokenManagerInterface $csrfTokenManager
-    )
-    {
+    ) {
     }
 
     public function all(): array

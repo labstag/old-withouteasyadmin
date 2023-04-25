@@ -18,8 +18,7 @@ class GeocodeService
         protected HttpClientInterface $httpClient,
         protected RepositoryService $repositoryService,
         protected GeoCodeRepository $geoCodeRepository
-    )
-    {
+    ) {
     }
 
     public function add(array $row): void

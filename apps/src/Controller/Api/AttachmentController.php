@@ -20,8 +20,7 @@ class AttachmentController extends ApiControllerLib
         AttachmentRepository $attachmentRepository,
         Request $request,
         Attachment $attachment
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $return = [
             'state' => false,
             'error' => '',
@@ -47,8 +46,7 @@ class AttachmentController extends ApiControllerLib
         CsrfTokenManagerInterface $csrfTokenManager,
         Request $request,
         Attachment $attachment
-    ): bool
-    {
+    ): bool {
         $token = (string) $request->request->get('_token');
 
         $csrfToken = new CsrfToken(

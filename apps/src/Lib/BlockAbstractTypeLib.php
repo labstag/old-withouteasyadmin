@@ -16,8 +16,7 @@ abstract class BlockAbstractTypeLib extends AbstractTypeLib
         protected RouterInterface $router,
         protected BlockService $blockService,
         protected Environment $twigEnvironment
-    )
-    {
+    ) {
         parent::__construct($translator, $guardService);
     }
 

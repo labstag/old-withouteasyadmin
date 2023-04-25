@@ -41,14 +41,12 @@ abstract class EventListenerLib implements EventSubscriberInterface
         protected EnqueueMethod $enqueueMethod,
         protected ParameterBagInterface $parameterBag,
         protected LoggerInterface $logger
-    )
-    {
+    ) {
     }
 
     protected function verifMetas(
         PublicInterface $public
-    ): void
-    {
+    ): void {
         $title = null;
         $metas = $public->getMetas();
         if (0 != count($metas)) {
@@ -80,8 +78,7 @@ abstract class EventListenerLib implements EventSubscriberInterface
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Chapter) {
             return;
         }
@@ -94,8 +91,7 @@ abstract class EventListenerLib implements EventSubscriberInterface
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Edito) {
             return;
         }
@@ -108,8 +104,7 @@ abstract class EventListenerLib implements EventSubscriberInterface
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof History) {
             return;
         }
@@ -122,8 +117,7 @@ abstract class EventListenerLib implements EventSubscriberInterface
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Page) {
             return;
         }
@@ -136,8 +130,7 @@ abstract class EventListenerLib implements EventSubscriberInterface
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Post) {
             return;
         }
@@ -150,8 +143,7 @@ abstract class EventListenerLib implements EventSubscriberInterface
         mixed $entity,
         string &$method,
         string &$title
-    ): void
-    {
+    ): void {
         if (!$entity instanceof Render) {
             return;
         }

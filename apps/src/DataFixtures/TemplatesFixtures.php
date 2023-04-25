@@ -23,8 +23,7 @@ class TemplatesFixtures extends DataFixtureLib implements DependentFixtureInterf
         string $key,
         string $value,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $template = new Template();
         $template->setName($value);
         $template->setCode($key);

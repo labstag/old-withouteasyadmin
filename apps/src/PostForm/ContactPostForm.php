@@ -13,8 +13,7 @@ class ContactPostForm extends PostFormLib implements PostFormInterface
     public function execute(
         array $success,
         string $formName
-    ): array
-    {
+    ): array {
         $request = $this->requestStack->getCurrentRequest();
         $form    = $this->formFactory->create(ContactType::class);
         $form->handleRequest($request);
@@ -45,8 +44,7 @@ class ContactPostForm extends PostFormLib implements PostFormInterface
         FormInterface $form,
         array $toArray,
         string $formName
-    ): array
-    {
+    ): array {
         $body = [
             'name'      => '',
             'firstname' => '',

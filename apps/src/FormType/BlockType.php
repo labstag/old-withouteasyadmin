@@ -14,8 +14,7 @@ class BlockType extends FormTypeLib
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         unset($formView, $form, $options);
     }
 

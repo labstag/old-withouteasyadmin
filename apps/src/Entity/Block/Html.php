@@ -15,7 +15,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/block')]
 class Html implements Stringable, EntityBlockInterface
 {
-
     #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'htmls', cascade: ['persist'])]
     private ?Block $block = null;
 

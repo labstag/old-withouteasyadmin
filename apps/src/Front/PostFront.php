@@ -19,8 +19,7 @@ class PostFront extends PageFront implements FrontInterface
     public function setBreadcrumb(
         ?EntityFrontInterface $entityFront,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         $breadcrumb = $this->setBreadcrumbRouting($breadcrumb);
         if (!$entityFront instanceof Post) {
             return $breadcrumb;
@@ -47,8 +46,7 @@ class PostFront extends PageFront implements FrontInterface
     public function setMeta(
         ?EntityFrontInterface $entityFront,
         array $meta
-    ): array
-    {
+    ): array {
         if (!$entityFront instanceof Post) {
             return $meta;
         }
@@ -65,8 +63,7 @@ class PostFront extends PageFront implements FrontInterface
         string $route,
         array $params,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if ('front_article_category' != $route) {
             return $breadcrumb;
         }
@@ -99,8 +96,7 @@ class PostFront extends PageFront implements FrontInterface
         string $route,
         array $params,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if ('front_article_libelle' != $route) {
             return $breadcrumb;
         }
@@ -133,8 +129,7 @@ class PostFront extends PageFront implements FrontInterface
         string $route,
         array $params,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         if ('front_article_year' != $route && !isset($params['year'])) {
             return $breadcrumb;
         }

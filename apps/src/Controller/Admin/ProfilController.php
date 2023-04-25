@@ -16,8 +16,7 @@ class ProfilController extends AdminControllerLib
     #[Route(path: '/', name: 'admin_profil', methods: ['GET', 'POST'])]
     public function profil(
         Security $security
-    ): Response
-    {
+    ): Response {
         /** @var User $user */
         $user = $security->getUser();
 

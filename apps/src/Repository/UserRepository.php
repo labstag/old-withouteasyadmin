@@ -18,8 +18,7 @@ class UserRepository extends RepositoryLib
     public function findOauth(
         string $identity,
         string $name
-    ): mixed
-    {
+    ): mixed {
         $query = $this->createQueryBuilder('u');
         $query->leftJoin('u.oauthConnectUsers', 'o');
         $query->where('o.name = :name');

@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiResource]
 class AddressUser extends Address implements UserDataInterface
 {
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addressUsers', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refuser_id')]
     protected ?UserInterface $user = null;

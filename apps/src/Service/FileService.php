@@ -12,8 +12,7 @@ class FileService
     public function __construct(
         protected ContainerBagInterface $containerBag,
         protected AttachmentRepository $attachmentRepository
-    )
-    {
+    ) {
     }
 
     public function moveFile(
@@ -21,8 +20,7 @@ class FileService
         string $path,
         string $filename,
         ?Attachment $attachment
-    ): void
-    {
+    ): void {
         $uploadedFile->move(
             $path,
             $filename
@@ -35,8 +33,7 @@ class FileService
     public function setAttachment(
         string $file,
         ?Attachment $attachment = null
-    ): Attachment
-    {
+    ): Attachment {
         if (is_null($attachment)) {
             $attachment = new Attachment();
         }

@@ -87,15 +87,13 @@ class ViewService
         protected RepositoryService $repositoryService,
         protected RequestStack $requeststack,
         protected DomainService $domainService
-    )
-    {
+    ) {
     }
 
     public function edit(
         EntityInterface $entity,
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         return $this->editOrNew('edit', $entity, $parameters);
     }
 
@@ -111,8 +109,7 @@ class ViewService
 
     public function index(
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash('index', $parameters);
     }
 
@@ -130,8 +127,7 @@ class ViewService
 
     public function new(
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         $domain = $this->getDomain();
         if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
@@ -148,8 +144,7 @@ class ViewService
 
     public function preview(
         EntityInterface $entity
-    ): Response
-    {
+    ): Response {
         return $this->showOrPreview($entity, 'preview');
     }
 
@@ -157,8 +152,7 @@ class ViewService
         string $view,
         array $parameters = [],
         ?Response $response = null
-    ): Response
-    {
+    ): Response {
         $parameters = $this->generateMenus($parameters);
         $this->setBreadcrumbsPage();
         $parameters = $this->setTitleHeader($parameters);
@@ -196,15 +190,13 @@ class ViewService
 
     public function show(
         EntityInterface $entity
-    ): Response
-    {
+    ): Response {
         return $this->showOrPreview($entity, 'show');
     }
 
     public function trash(
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash('trash', $parameters);
     }
 
@@ -212,8 +204,7 @@ class ViewService
         Route $data,
         array $routeParam,
         string $route
-    ): void
-    {
+    ): void {
         $compiledRoute   = $data->compile();
         $breadcrumbTitle = array_merge(
             $this->setHeaderTitle(),
@@ -257,16 +248,14 @@ class ViewService
         string $type,
         mixed $data = null,
         array $options = []
-    ): FormInterface
-    {
+    ): FormInterface {
         return $this->formFactory->create($type, $data, $options);
     }
 
     protected function createNotFoundException(
         string $message = 'Not Found',
         ?Throwable $throwable = null
-    ): NotFoundHttpException
-    {
+    ): NotFoundHttpException {
         return new NotFoundHttpException($message, $throwable);
     }
 
@@ -274,8 +263,7 @@ class ViewService
         string $attribute,
         EntityInterface $entity,
         string $message = 'Access Denied.'
-    ): void
-    {
+    ): void {
         if (!$this->isGranted($attribute, $entity)) {
             $accessDeniedException = new AccessDeniedException($message, null);
             $accessDeniedException->setAttributes([$attribute]);
@@ -289,8 +277,7 @@ class ViewService
         string $type,
         EntityInterface $entity,
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         $domain = $this->getDomain();
         if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
@@ -349,8 +336,7 @@ class ViewService
         string $route,
         array $parameters = [],
         int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    ): string
-    {
+    ): string {
         return $this->router->generate($route, $parameters, $referenceType);
     }
 
@@ -365,15 +351,13 @@ class ViewService
     protected function isGranted(
         string $method,
         EntityInterface $entity
-    ): bool
-    {
+    ): bool {
         return $this->authorizationChecker->isGranted($method, $entity);
     }
 
     protected function isRouteEnable(
         string $route
-    ): bool
-    {
+    ): bool {
         return $this->guardService->guardRoute(
             $route,
             $this->tokenStorage->getToken()
@@ -438,8 +422,7 @@ class ViewService
 
     protected function setPagination(
         string $routeType
-    ): PaginationInterface
-    {
+    ): PaginationInterface {
         $domain = $this->getDomain();
         if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
@@ -491,8 +474,7 @@ class ViewService
 
     protected function setSearchForms(
         array $parameters
-    ): array
-    {
+    ): array {
         $domain = $this->getDomain();
         if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
@@ -561,8 +543,7 @@ class ViewService
         TraceableUrlMatcher $traceableUrlMatcher,
         string $pathinfo,
         array $breadcrumb
-    ): array
-    {
+    ): array {
         $traces = $traceableUrlMatcher->getTraces($pathinfo);
         foreach ($traces as $trace) {
             $testadmin = 0 != substr_count((string) $trace['name'], 'admin');
@@ -590,8 +571,7 @@ class ViewService
     private function listOrTrash(
         string $type,
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         $domain = $this->getDomain();
         if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
@@ -697,8 +677,7 @@ class ViewService
     private function showOrPreview(
         EntityInterface $entity,
         string $type
-    ): Response
-    {
+    ): Response {
         $domain = $this->getDomain();
         if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');

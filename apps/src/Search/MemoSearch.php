@@ -8,7 +8,6 @@ use Labstag\Lib\SearchLib;
 
 class MemoSearch extends SearchLib
 {
-
     public ?DateTime $dateEnd = null;
 
     public ?DateTime $dateStart = null;

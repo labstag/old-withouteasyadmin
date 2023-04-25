@@ -283,8 +283,7 @@ class History implements PublicInterface, EntityTrashInterface, EntityWithParagr
         ?Chapter $chapter = null,
         ?Meta $meta = null,
         ?Paragraph $paragraph = null
-    ): void
-    {
+    ): void {
         $variable = is_null($chapter) ? null : $chapter;
         $variable = is_null($meta) ? $variable : $meta;
         $variable = is_null($paragraph) ? $variable : $paragraph;

@@ -15,8 +15,7 @@ class ChapterService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(
         History $history
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $routes = $this->getDomain()->getUrlAdmin();
         if (!isset($routes['edit'])) {
             throw new Exception('Route not found');

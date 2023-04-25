@@ -32,8 +32,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         array $dataMenu,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $menu = new Menu();
         if (array_key_exists('clef', $dataMenu)) {
             $this->addReference('menu_'.$dataMenu['clef'], $menu);
@@ -56,8 +55,7 @@ class MenuFixtures extends FixtureLib implements DependentFixtureInterface
         Menu $parent,
         array $child,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $menu = new Menu();
         $menu->setPosition($position + 1);
         $menu->setParent($parent);

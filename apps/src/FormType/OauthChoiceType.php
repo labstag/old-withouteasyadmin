@@ -15,8 +15,7 @@ class OauthChoiceType extends FormTypeLib
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         /** @var FormInterface $parent */
         $parent = $form->getParent();
         if (!$parent instanceof FormInterface) {

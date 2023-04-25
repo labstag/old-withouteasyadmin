@@ -55,7 +55,6 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected UserPasswordHasherInterface $userPasswordHasher,
         protected UserMailService $userMailService,
         protected TranslatorInterface $translator
-    )
-    {
+    ) {
     }
 }

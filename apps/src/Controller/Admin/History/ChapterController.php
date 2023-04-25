@@ -18,8 +18,7 @@ class ChapterController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Chapter $chapter
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($chapter);
     }
 

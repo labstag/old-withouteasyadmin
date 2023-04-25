@@ -22,8 +22,7 @@ class AdminService
         protected RewindableGenerator $rewindableGenerator,
         protected ParagraphService $paragraphService,
         protected ViewService $viewService
-    )
-    {
+    ) {
     }
 
     public function paragraph(): ParagraphService

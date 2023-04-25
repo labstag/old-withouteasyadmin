@@ -13,8 +13,7 @@ class MinMaxCollectionType extends FormTypeLib
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         $formView->vars['row_attr'] = 'minmax';
         unset($form, $options);
     }

@@ -14,8 +14,7 @@ class FlagCountryType extends FormTypeLib
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         $formView->vars['attr']['is'] = 'select-country';
 
         unset($form, $options);

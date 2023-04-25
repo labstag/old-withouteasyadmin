@@ -20,8 +20,7 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
     public function edit(
         EntityInterface $entity,
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         if (!$entity instanceof Block) {
             throw new Exception('Entity not found');
         }
@@ -42,8 +41,7 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
 
     public function index(
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash('index', $parameters);
     }
 
@@ -91,8 +89,7 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
 
     public function new(
         array $parameters = []
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         unset($parameters);
         /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
@@ -121,16 +118,14 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
 
     public function trash(
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash('trash', $parameters);
     }
 
     private function listOrTrash(
         string $type,
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         $domain = $this->getDomain();
         $region = null;
         $routes = $domain->getUrlAdmin();

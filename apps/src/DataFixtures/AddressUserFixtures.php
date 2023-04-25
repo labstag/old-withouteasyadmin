@@ -30,8 +30,7 @@ class AddressUserFixtures extends FixtureLib implements DependentInterface
         Generator $generator,
         User $user,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $addressUser = new AddressUser();
         $addressUser->setRefuser($user);
         $addressUser->setStreet($generator->streetAddress);

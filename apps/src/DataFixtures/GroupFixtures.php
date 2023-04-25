@@ -23,8 +23,7 @@ class GroupFixtures extends DataFixtureLib implements DependentFixtureInterface
         int $key,
         string $row,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $groupe = new Groupe();
         $groupe->setCode($row);
         $groupe->setName($row);

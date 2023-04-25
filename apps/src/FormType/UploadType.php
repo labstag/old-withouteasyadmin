@@ -17,8 +17,7 @@ class UploadType extends FormTypeLib
         FormView $formView,
         FormInterface $form,
         array $options
-    ): void
-    {
+    ): void {
         /** @var FormInterface $parent */
         $parent = $form->getParent();
         if (is_null($parent)) {
@@ -62,16 +61,14 @@ class UploadType extends FormTypeLib
     private function setFieldArray(
         array $entity,
         string $name
-    ): ?Attachment
-    {
+    ): ?Attachment {
         return (isset($entity[$name]) && $entity[$name] instanceof Attachment) ? $entity[$name] : null;
     }
 
     private function setFieldEntity(
         ?EntityInterface $entity,
         string $name
-    ): ?Attachment
-    {
+    ): ?Attachment {
         $field = null;
         if (!$entity instanceof EntityInterface) {
             return null;

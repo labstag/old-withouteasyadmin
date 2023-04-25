@@ -10,7 +10,6 @@ use ReflectionNamedType;
 
 abstract class SearchLib
 {
-
     public int $limit = 10;
 
     public int $page = 0;
@@ -18,8 +17,7 @@ abstract class SearchLib
     public function search(
         array $get,
         RepositoryService $repositoryService
-    ): void
-    {
+    ): void {
         foreach ($get as $key => $value) {
             if (!property_exists(static::class, $key) || '' == $value) {
                 continue;
@@ -72,8 +70,7 @@ abstract class SearchLib
         mixed $value,
         string $type,
         RepositoryService $repositoryService
-    ): mixed
-    {
+    ): mixed {
         $object = new $type();
         if (!$object instanceof EntityInterface) {
             return $value;

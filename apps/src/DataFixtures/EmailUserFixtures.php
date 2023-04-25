@@ -37,8 +37,7 @@ class EmailUserFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         User $user,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $emailUser = new EmailUser();
         $emailUser->setRefuser($user);
         $emailUser->setAddress($generator->safeEmail);

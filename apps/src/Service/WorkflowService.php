@@ -18,7 +18,6 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 class WorkflowService
 {
-
     private array $data = [];
 
     public function __construct(
@@ -33,8 +32,7 @@ class WorkflowService
         protected WorkflowInterface $postStateMachine,
         protected WorkflowInterface $userStateMachine,
         protected RepositoryService $repositoryService
-    )
-    {
+    ) {
         $this->data = [
             Attachment::class => $this->attachmentStateMachine,
             Bookmark::class   => $this->bookmarkStateMachine,

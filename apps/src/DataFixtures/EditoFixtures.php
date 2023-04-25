@@ -31,8 +31,7 @@ class EditoFixtures extends FixtureLib implements DependentFixtureInterface
         int $index,
         array $states,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         /** @var UserRepository $userRepository */
         $userRepository = $objectManager->getRepository(User::class);
         $users          = $userRepository->findAll();

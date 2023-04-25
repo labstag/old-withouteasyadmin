@@ -23,8 +23,7 @@ class PostController extends FrontControllerLib
         string $slug,
         PostRepository $postRepository,
         PageRepository $pageRepository
-    ): Response
-    {
+    ): Response {
         $post = $postRepository->findOneBy(
             ['slug' => $slug]
         );
@@ -51,8 +50,7 @@ class PostController extends FrontControllerLib
     public function category(
         string $slug,
         RenderRepository $renderRepository
-    ): Response
-    {
+    ): Response {
         unset($slug);
         $render = $renderRepository->findOneBy(
             ['url' => 'front_article_category']
@@ -72,8 +70,7 @@ class PostController extends FrontControllerLib
     public function libelle(
         string $slug,
         RenderRepository $renderRepository
-    ): Response
-    {
+    ): Response {
         unset($slug);
         $render = $renderRepository->findOneBy(
             ['url' => 'front_article_libelle']
@@ -93,8 +90,7 @@ class PostController extends FrontControllerLib
     public function user(
         string $username,
         RenderRepository $renderRepository
-    ): Response
-    {
+    ): Response {
         unset($username);
         $render = $renderRepository->findOneBy(
             ['url' => 'front_article_user']
@@ -114,8 +110,7 @@ class PostController extends FrontControllerLib
     public function year(
         string $year,
         RenderRepository $renderRepository
-    ): Response
-    {
+    ): Response {
         unset($year);
         $render = $renderRepository->findOneBy(
             ['url' => 'front_article_year']

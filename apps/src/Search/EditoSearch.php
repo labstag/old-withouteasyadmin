@@ -8,7 +8,6 @@ use Labstag\Lib\SearchLib;
 
 class EditoSearch extends SearchLib
 {
-
     public ?string $etape = null;
 
     public ?DateTime $published = null;

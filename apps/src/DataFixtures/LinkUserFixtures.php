@@ -28,8 +28,7 @@ class LinkUserFixtures extends FixtureLib implements DependentFixtureInterface
         Generator $generator,
         User $user,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $linkUser = new LinkUser();
         $linkUser->setRefUser($user);
         $linkUser->setName($generator->word());

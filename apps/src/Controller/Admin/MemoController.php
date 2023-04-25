@@ -18,8 +18,7 @@ class MemoController extends AdminControllerLib
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(
         Memo $memo
-    ): Response
-    {
+    ): Response {
         return $this->setAdmin()->edit($memo);
     }
 
@@ -32,8 +31,7 @@ class MemoController extends AdminControllerLib
     #[Route(path: '/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(
         Security $security
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         return $this->setAdmin()->add($security);
     }
 
