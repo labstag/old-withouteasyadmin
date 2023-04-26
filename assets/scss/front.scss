@@ -1,6 +1,6 @@
-@import "front/_mixin.scss";
-@import "front/_variables.scss";
-@import "global.scss";
+@import url("front/_mixin.scss");
+@import url("front/_variables.scss");
+@import url("global.scss");
 
 header {
   @extend .container;
@@ -32,15 +32,15 @@ main {
   background-color: $mbg;
 }
 
-.post_img {
+.post-img {
   img {
     height: 20vh;
-    margin: 0 0 2vh 0;
+    margin: 0 0 2vh;
   }
 }
 
-.header_post_img,
-.header_edito_img {
+.header-post-img,
+.header-edito-img {
   @extend .col-12;
 
   padding: 0;
@@ -50,7 +50,7 @@ main {
   }
 }
 
-.home_logo {
+.home-logo {
   img {
     width: 100%;
     margin: 0;
@@ -146,7 +146,7 @@ main {
   section {
     @include make-col(12);
 
-    padding: 15px 0 15px 0;
+    padding: 15px 0;
 
     @include media-breakpoint-up(md) {
       @include make-col(9);
@@ -156,7 +156,7 @@ main {
   aside {
     @include make-col(12);
 
-    padding: 15px 15px 15px 15px;
+    padding: 15px;
 
     @include media-breakpoint-up(md) {
       @include make-col(3);
@@ -172,30 +172,30 @@ main {
   }
 }
 
-.header_row {
+.header-row {
   @extend .row;
 }
 
-.header_top-title {
+.header-top-title {
   @include make-col(6);
 
-  padding: 15px 0 15px 0;
+  padding: 15px 0;
 }
 
-.header_top-login {
+.header-top-login {
   @include make-col(6);
 
   text-align: right;
   padding: 0 15px 0 0;
 }
 
-.header_menu {
+.header-menu {
   @extend .col-12;
 
   justify-content: space-between;
   align-items: center;
   min-height: 5vh;
-  padding: 1% 5% 0 5%;
+  padding: 1% 5% 0;
   text-align: center;
 
   a {
@@ -204,15 +204,15 @@ main {
   }
 }
 
-.header_edito,
-.header_post {
+.header-edito,
+.header-post {
   @extend .col-12;
 
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   min-height: 50vh;
-  padding: 15px 0 15px 0;
+  padding: 15px 0;
 }
 
 .footer-gotop {
@@ -225,7 +225,7 @@ main {
   transform: translateY(-50%);
   left: calc(50% - #{$gotop_hw} / 2);
   text-align: center;
-  padding: 10px 0 0 0;
+  padding: 10px 0 0;
   cursor: pointer;
 
   @extend .fas;
@@ -262,26 +262,26 @@ main {
   }
 }
 
-.header_edito_title {
+.header-edito-title {
   padding: 0 0 0 1em;
 }
 
-.post_content,
-.post_date,
-.header_edito_content {
+.post-content,
+.post-date,
+.header-edito-content {
   padding: 1em 0 2em 1em;
 }
 
-.post_title {
+.post-title {
   text-align: center;
 }
 
-.header_edito {
+.header-edito {
   @extend .col-12;
 }
 
-.post_libelle,
-.bookmark_libelle {
+.post-libelle,
+.bookmark-libelle {
   &::before {
     @extend .fas;
     @extend .fa-tag;
@@ -290,8 +290,8 @@ main {
   }
 }
 
-.post_category,
-.bookmark_category {
+.post-category,
+.bookmark-category {
   &::before {
     @extend .far;
     @extend .fa-folder;

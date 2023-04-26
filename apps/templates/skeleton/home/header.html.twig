@@ -1,7 +1,7 @@
-<div class="header_top-title">
+<div class="header-top-title">
     <a href="{{ path('front') }}">
         {% if imageglobal is not null and imageglobal.name is not null %}
-            <picture class="home_logo">
+            <picture class="home-logo">
                 <img loading="lazy" alt="{{ config.site_title|e('html_attr') }}" src="{{ asset(imageglobal.name) | imagefilter('my_thumb') }}" />
             </picture>
         {% else %}
@@ -10,7 +10,7 @@
     </a>
 </div>
 {#
-<div class="header_top-login">
+<div class="header-top-login">
     <a href="{{ path('admin') }}">Se connecter</a>
 </div>
 #}

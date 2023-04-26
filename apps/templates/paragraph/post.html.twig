@@ -4,7 +4,7 @@
             <a href="{{ path('front_article', {'slug': post.slug}) }}">
                 {% set img = attachment(post.img) %}
                 {% if img is not null and img.name is not null %}
-                    <picture class="post_img">
+                    <picture class="post-img">
                         <img loading="lazy" alt="{{ post.title|e('html_attr') }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}"/>
                     </picture>
                 {% endif %}

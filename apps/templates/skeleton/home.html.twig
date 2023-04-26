@@ -1,7 +1,7 @@
 {% extends 'front.html.twig' %}
 {% block body %}
     <header{% if headerclass is defined %} class="{{ headerclass }}"{% endif %}>
-        <div class="header_row">
+        <div class="header-row">
             {% include "skeleton/home/header.html.twig" %}
             {% block header %}{% endblock %}
         </div>

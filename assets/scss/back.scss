@@ -1,6 +1,6 @@
-@import "back/_mixin.scss";
-@import "back/_variables.scss";
-@import "global.scss";
+@import url('back/_mixin.scss');
+@import url('back/_variables.scss');
+@import url('global.scss');
 
 header {
   .row {
@@ -57,7 +57,7 @@ picture {
     line-height: 20px;
     color: #369;
     font-weight: bold;
-    border-left: 1px solid rgb(100, 100, 100);
+    border-left: 1px solid rgb(100 100 100);
 
     &::before {
       position: relative;
@@ -65,7 +65,7 @@ picture {
       height: 1em;
       width: 12px;
       color: white;
-      border-bottom: 1px solid rgb(100, 100, 100);
+      border-bottom: 1px solid rgb(100 100 100);
       content: "";
       display: inline-block;
       left: -7px;
@@ -75,7 +75,7 @@ picture {
       border-left: none;
 
       &::before {
-        border-left: 1px solid rgb(100, 100, 100);
+        border-left: 1px solid rgb(100 100 100);
       }
     }
   }
@@ -427,7 +427,7 @@ picture {
   }
 }
 
-@media all and (min-width: 992px) {
+@media all and (width >= 992px) {
   .nav-item {
     .dropdown-menu {
       display: none;
