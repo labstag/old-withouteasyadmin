@@ -7,9 +7,9 @@
     {% for row, blockhtml in blocks %}
         <{{ row }}>
             {% for row in blockhtml %}
-                {{ debug_begin(row.template) }}
+                {{ row.template|debug_begin }}
                 {{ row.data.content|raw }}
-                {{ debug_end(row.template) }}
+                {{ row.template|debug_end }}
             {% endfor %}
         </{{ row }}>
     {% endfor %}

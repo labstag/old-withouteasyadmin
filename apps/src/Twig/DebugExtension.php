@@ -74,49 +74,14 @@ class DebugExtension extends ExtensionLib
      */
     public function getFilters(): array
     {
-        $dataFilters = $this->getFiltersFunctions();
-        $filters     = [];
-        foreach ($dataFilters as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $filters[] = new TwigFilter($key, $callable, ['is_safe' => ['all']]);
-        }
-
-        return $filters;
-    }
-
-    public function getFiltersFunctions(): array
-    {
         return [
-            'debug_begin_prototype' => 'debugBeginPrototype',
-            'debug_end_prototype'   => 'debugEndPrototype',
-            'debug_begin_form'      => 'debugBeginForm',
-            'debug_end_form'        => 'debugEndForm',
-            'debug_begin'           => 'debugBegin',
-            'debug_end'             => 'debugEnd',
+            new TwigFilter('debug_begin_prototype', [$this, 'debugBeginPrototype'], ['is_safe' => ['all']]),
+            new TwigFilter('debug_end_prototype', [$this, 'debugEndPrototype'], ['is_safe' => ['all']]),
+            new TwigFilter('debug_begin_form', [$this, 'debugBeginForm'], ['is_safe' => ['all']]),
+            new TwigFilter('debug_end_form', [$this, 'debugEndForm'], ['is_safe' => ['all']]),
+            new TwigFilter('debug_begin', [$this, 'debugBegin'], ['is_safe' => ['all']]),
+            new TwigFilter('debug_end', [$this, 'debugEnd'], ['is_safe' => ['all']]),
         ];
-    }
-
-    /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
-    {
-        $dataFunctions = $this->getFiltersFunctions();
-        $functions     = [];
-        foreach ($dataFunctions as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $functions[] = new TwigFunction($key, $callable, ['is_safe' => ['all']]);
-        }
-
-        return $functions;
     }
 
     private function beginDebug(array $data): string

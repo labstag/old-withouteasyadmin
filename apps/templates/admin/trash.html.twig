@@ -18,14 +18,14 @@
                         {{ data.total }}
                     </td>
                     <td>
-                        {% set state = guard_route(data.properties.url) %}
+                        {% set state = data.properties.url|guard_route %}
                         {% if state == true %}
                         <link-trash
                             href="{{ path(data.properties.url) }}"
                             title="{{ 'trash.go'|trans({}, 'admin.messages') }}"
                         />
                         {% endif %}
-                        {% set state = guard_route('api_action_empty') %}
+                        {% set state = 'api_action_empty'|guard_route %}
                         {% if state == true %}
                             <link-empty
                                 data-redirect="{{ path(app.request.attributes.get('_route')) }}"

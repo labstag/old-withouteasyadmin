@@ -1,5 +1,5 @@
 {% if edito.id is defined %}
-    <section id="{{ paragraph_id(paragraph) }}" class="{{ paragraph_class(paragraph) }}">
+    <section id="{{ paragraph|paragraph_id }}" class="{{ paragraph|paragraph_class }}">
         <h1 class="header-edito-title">
             <a href="{{ path('front_edito') }}">
                 {{ edito.title }}

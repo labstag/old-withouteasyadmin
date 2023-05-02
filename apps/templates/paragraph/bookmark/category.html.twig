@@ -1,4 +1,4 @@
-<section id="{{ paragraph_id(paragraph) }}" class="{{ paragraph_class(paragraph) }}">
+<section id="{{ paragraph|paragraph_id }}" class="{{ paragraph|paragraph_class }}">
     {% for bookmark in pagination %}
 		<div class="bookmark-data">
 			<h2 class="bookmark-name">
@@ -18,7 +18,7 @@
                         '%date%': bookmark.published|format_datetime(pattern=formatdatetime.public)
                     }
                 )|raw }}
-				{% set state = guard_route('admin_bookmark_edit') %}
+				{% set state = 'admin_bookmark_edit'|guard_route %}
 				{% if state == true %}
 					<a href="{{ path('admin_bookmark_edit', {'id': bookmark.id}) }}" target="_blank">Modifier</a>
 				{% endif %}

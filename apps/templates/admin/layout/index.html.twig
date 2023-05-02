@@ -35,7 +35,7 @@
                     <td>
                         <ul>
                             {% for paragraph in entity.paragraphs %}
-                                <li>{{ paragraph_name(paragraph.type) }}</li>
+                                <li>{{ paragraph.type|paragraph_name }}</li>
                             {% endfor %}
                         </ul>
                     </td>

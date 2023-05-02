@@ -32,7 +32,7 @@
         {{ form_help(form) }}
         {% if field is defined and field is not null and field.id is not null %}
             {% set file = attachment(field) %}
-            {% set state = guard_route(url) %}
+            {% set state = url|guard_route %}
             {% if state == false %}
                 {% set url = '#' %}
             {% endif %}
@@ -64,13 +64,13 @@
 {% endblock %}
 
 {% block form_rows %}
-    {% set template = formClass(form) %}
-    {{ debug_begin_form(form) }}
+    {% set template = form|formClass %}
+    {{ form|debug_begin_form }}
     {% include template with {
         'row': form|filter(child => not child.rendered),
         'allow_delete': false
     } %}
-    {{ debug_end_form(form) }}
+    {{ form|debug_end_form }}
 {% endblock %}
 
 {% block fieldset_widget %}
@@ -457,13 +457,13 @@
 
 {% block collection_item_widget %}
 	<div class="collection-row">
-        {{ debug_begin_prototype(prototype.vars.block_prefixes) }}
-        {% set template = formPrototype(prototype.vars.block_prefixes) %}
+        {{ prototype.vars.block_prefixes|debug_begin_prototype }}
+        {% set template = prototype.vars.block_prefixes|formPrototype %}
         {% include template with {
             'allow_delete': allow_delete,
             'prototype': prototype
         } %}
-        {{ debug_end_prototype(prototype.vars.block_prefixes) }}
+        {{ prototype.vars.block_prefixes|debug_end_prototype }}
 	</div>
 {% endblock %}
 
@@ -474,13 +474,13 @@
 {% block collection_widget %}
     <div class="field-row">
         {% for row in form %}
-            {% set template = formClass(row) %}
+            {% set template = row|formClass %}
             {% if prototype is defined %}
                 <div class="collection-row">
             {% endif %}
-            {{ debug_begin_form(row) }}
+            {{ row|debug_begin_form }}
             {% include template with {'row': row, 'allow_delete': allow_delete} %}
-            {{ debug_end_form(row) }}
+            {{ row|debug_end_form }}
             {% if prototype is defined %}
                 </div>
             {% endif %}

@@ -61,29 +61,11 @@ class LabstagExtension extends ExtensionLib
      */
     public function getFilters(): array
     {
-        $dataFilters = $this->getFiltersFunctions();
-        $filters     = [];
-        foreach ($dataFilters as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $filters[] = new TwigFilter($key, $callable);
-        }
-
-        return $filters;
-    }
-
-    public function getFiltersFunctions(): array
-    {
         return [
-            'attachment'    => 'getAttachment',
-            'class_entity'  => 'classEntity',
-            'formClass'     => 'formClass',
-            'formPrototype' => 'formPrototype',
-            'imagefilter'   => 'imagefilter',
-            'verifPhone'    => 'verifPhone',
+            new TwigFilter('attachment', [$this, 'getAttachment']),
+            new TwigFilter('class_entity', [$this, 'classEntity']),
+            new TwigFilter('formClass', [$this, 'formClass']),
+            new TwigFilter('formPrototype', [$this, 'formPrototype']),
         ];
     }
 
@@ -92,18 +74,11 @@ class LabstagExtension extends ExtensionLib
      */
     public function getFunctions(): array
     {
-        $dataFunctions = $this->getFiltersFunctions();
-        $functions     = [];
-        foreach ($dataFunctions as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $functions[] = new TwigFunction($key, $callable);
-        }
-
-        return $functions;
+        return [
+            new TwigFunction('attachment', [$this, 'getAttachment']),
+            new TwigFunction('imagefilter', [$this, 'imagefilter']),
+            new TwigFunction('verifPhone', [$this, 'verifPhone']),
+        ];
     }
 
     public function imagefilter(

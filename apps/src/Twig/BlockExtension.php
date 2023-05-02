@@ -31,44 +31,9 @@ class BlockExtension extends ExtensionLib
      */
     public function getFilters(): array
     {
-        $dataFilters = $this->getFiltersFunctions();
-        $filters     = [];
-        foreach ($dataFilters as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $filters[] = new TwigFilter($key, $callable);
-        }
-
-        return $filters;
-    }
-
-    public function getFiltersFunctions(): array
-    {
         return [
-            'block_id'    => 'getBlockId',
-            'block_class' => 'getBlockClass',
+            new TwigFilter('block_id', [$this, 'getBlockId']),
+            new TwigFilter('block_class', [$this, 'getBlockClass']),
         ];
-    }
-
-    /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
-    {
-        $dataFunctions = $this->getFiltersFunctions();
-        $functions     = [];
-        foreach ($dataFunctions as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $functions[] = new TwigFunction($key, $callable);
-        }
-
-        return $functions;
     }
 }

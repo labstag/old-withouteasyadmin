@@ -15,46 +15,11 @@ class ParagraphExtension extends ExtensionLib
      */
     public function getFilters(): array
     {
-        $dataFilters = $this->getFiltersFunctions();
-        $filters     = [];
-        foreach ($dataFilters as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $filters[] = new TwigFilter($key, $callable);
-        }
-
-        return $filters;
-    }
-
-    public function getFiltersFunctions(): array
-    {
         return [
-            'paragraph_name'  => 'getParagraphName',
-            'paragraph_id'    => 'getParagraphId',
-            'paragraph_class' => 'getParagraphClass',
+            new TwigFilter('paragraph_name', [$this, 'getParagraphName']),
+            new TwigFilter('paragraph_id', [$this, 'getParagraphId']),
+            new TwigFilter('paragraph_class', [$this, 'getParagraphClass']),
         ];
-    }
-
-    /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
-    {
-        $dataFunctions = $this->getFiltersFunctions();
-        $functions     = [];
-        foreach ($dataFunctions as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $functions[] = new TwigFunction($key, $callable);
-        }
-
-        return $functions;
     }
 
     public function getParagraphClass(EntityParagraphInterface $entityParagraph): string

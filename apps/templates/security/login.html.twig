@@ -17,13 +17,13 @@
         {{ form_row(formLogin.remember_me) }}
         {{ form_row(formLogin.submit) }}
     </div>
-    {% set state = guard_route('app_lost') %}
+    {% set state = 'app_lost'|guard_route %}
     {% if state == true %}
         <div class="links">
             <a href="{{ path('app_lost') }}">{{ 'user.lostpassword.link'|trans }}</a>
         </div>
     {% endif %}
-    {% set state = guard_route('connect_start') %}
+    {% set state = 'connect_start'|guard_route %}
     {% if state == true and oauths|length != 0 %}
         <div class="oauth">
             <div class="oauth-title">{{ 'user.login.oauth'|trans }}</div>

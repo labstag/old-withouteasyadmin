@@ -3,7 +3,7 @@
 {% block content %}
 	{{ macro_site.flashbag(app) }}
 	<fieldset>
-		<legend>{{ paragraph_name(paragraph.type) }}</legend>
+		<legend>{{ paragraph.type|paragraph_name }}</legend>
 		{{ form_start(form) }}
 		{{ form_end(form) }}
 	</fieldset>

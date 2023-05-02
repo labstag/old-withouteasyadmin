@@ -1,5 +1,5 @@
 {% import "macro.html.twig" as macro_site %}
-<section id="{{ paragraph_id(paragraph) }}" class="{{ paragraph_class(paragraph) }}">
+<section id="{{ paragraph|paragraph_id }}" class="{{ paragraph|paragraph_class }}">
     <h2 class="post-title">{{ post.title }}</h2>
     <div class="post-date">
         {{ 'post.infodateuser'|trans(
@@ -8,7 +8,7 @@
                     '%user%': macro_site.user(post.refuser, path('front_article_user', {'username': post.refuser.username}))
                 }
             )|raw }}
-        {% set state = guard_route('admin_post_edit') %}
+        {% set state = 'admin_post_edit'|guard_route %}
         {% if state == true %}
             <a href="{{ path('admin_post_edit', {'id': post.id}) }}" target="_blank">{{ 'post.update'|trans }}</a>
         {% endif %}

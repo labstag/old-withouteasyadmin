@@ -1,6 +1,6 @@
-{% set state1 = guard_route('api_guard_route') %}
-{% set state2 = guard_route('api_guard_routegroup') %}
-{% set state3 = guard_route('api_guard_routesetgroup') %}
+{% set state1 = 'api_guard_route'|guard_route %}
+{% set state2 = 'api_guard_routegroup'|guard_route %}
+{% set state3 = 'api_guard_routesetgroup'|guard_route %}
 {% set state = state1 and state2 and state3 %}
 {% if state1 == false %}
     {{ 'guard.lost'|trans({}, 'admin.messages') }}

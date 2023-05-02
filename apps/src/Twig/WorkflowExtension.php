@@ -14,42 +14,9 @@ class WorkflowExtension extends ExtensionLib
      */
     public function getFilters(): array
     {
-        $dataFilters = $this->getFiltersFunctions();
-        $filters     = [];
-        foreach ($dataFilters as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $filters[] = new TwigFilter($key, $callable);
-        }
-
-        return $filters;
-    }
-
-    public function getFiltersFunctions(): array
-    {
-        return ['workflow_has' => 'workflowHas'];
-    }
-
-    /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
-    {
-        $dataFunctions = $this->getFiltersFunctions();
-        $functions     = [];
-        foreach ($dataFunctions as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $functions[] = new TwigFunction($key, $callable);
-        }
-
-        return $functions;
+        return [
+            new TwigFilter('workflow_has', [$this, 'workflowHas']),
+        ];
     }
 
     public function workflowHas(EntityInterface $entity): bool
