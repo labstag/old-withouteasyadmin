@@ -6,7 +6,6 @@ use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Lib\ExtensionLib;
 use Twig\TwigFilter;
-use Twig\TwigFunction;
 
 class ParagraphExtension extends ExtensionLib
 {
@@ -16,9 +15,9 @@ class ParagraphExtension extends ExtensionLib
     public function getFilters(): array
     {
         return [
-            new TwigFilter('paragraph_name', [$this, 'getParagraphName']),
-            new TwigFilter('paragraph_id', [$this, 'getParagraphId']),
-            new TwigFilter('paragraph_class', [$this, 'getParagraphClass']),
+            new TwigFilter('paragraph_name', fn(string $code): string => $this->getParagraphName($code)),
+            new TwigFilter('paragraph_id', fn(EntityParagraphInterface $entityParagraph): string => $this->getParagraphId($entityParagraph)),
+            new TwigFilter('paragraph_class', fn(EntityParagraphInterface $entityParagraph): string => $this->getParagraphClass($entityParagraph)),
         ];
     }
 

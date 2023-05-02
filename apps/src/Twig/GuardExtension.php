@@ -17,9 +17,9 @@ class GuardExtension extends ExtensionLib
     public function getFilters(): array
     {
         return [
-            new TwigFilter('guard_group_access', [$this, 'guardAccessGroupRoutes']),
-            new TwigFilter('guard_route', [$this, 'guardRoute']),
-            new TwigFilter('guard_user_access', [$this, 'guardAccessUserRoutes']),
+            new TwigFilter('guard_group_access', fn(Groupe $groupe): bool => $this->guardAccessGroupRoutes($groupe)),
+            new TwigFilter('guard_route', fn(string $route): bool => $this->guardRoute($route)),
+            new TwigFilter('guard_user_access', fn(User $user): bool => $this->guardAccessUserRoutes($user)),
         ];
     }
 
@@ -29,7 +29,7 @@ class GuardExtension extends ExtensionLib
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('guard_route_enable_group', [$this, 'guardRouteEnableGroupe']),
+            new TwigFunction('guard_route_enable_group', fn(Route $route, Groupe $groupe): bool => $this->guardRouteEnableGroupe($route, $groupe)),
         ];
     }
 

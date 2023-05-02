@@ -6,7 +6,6 @@ use Labstag\Entity\Block;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Lib\ExtensionLib;
 use Twig\TwigFilter;
-use Twig\TwigFunction;
 
 class BlockExtension extends ExtensionLib
 {
@@ -32,8 +31,8 @@ class BlockExtension extends ExtensionLib
     public function getFilters(): array
     {
         return [
-            new TwigFilter('block_id', [$this, 'getBlockId']),
-            new TwigFilter('block_class', [$this, 'getBlockClass']),
+            new TwigFilter('block_id', fn(EntityBlockInterface $entityBlock): string => $this->getBlockId($entityBlock)),
+            new TwigFilter('block_class', fn(EntityBlockInterface $entityBlock): string => $this->getBlockClass($entityBlock)),
         ];
     }
 }
