@@ -11,8 +11,6 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
 
 abstract class ExtensionLib extends AbstractExtension
 {
@@ -30,49 +28,6 @@ abstract class ExtensionLib extends AbstractExtension
         protected GuardService $guardService,
     )
     {
-    }
-
-    /**
-     * @return TwigFilter[]
-     */
-    public function getFilters(): array
-    {
-        $dataFilters = $this->getFiltersFunctions();
-        $filters     = [];
-        foreach ($dataFilters as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $filters[] = new TwigFilter($key, $callable, ['is_safe' => ['all']]);
-        }
-
-        return $filters;
-    }
-
-    public function getFiltersFunctions(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
-    {
-        $dataFunctions = $this->getFiltersFunctions();
-        $functions     = [];
-        foreach ($dataFunctions as $key => $function) {
-            /** @var callable $callable */
-            $callable = [
-                $this,
-                $function,
-            ];
-            $functions[] = new TwigFunction($key, $callable, ['is_safe' => ['all']]);
-        }
-
-        return $functions;
     }
 
     protected function formPrototypeData(array $blockPrefixes): array

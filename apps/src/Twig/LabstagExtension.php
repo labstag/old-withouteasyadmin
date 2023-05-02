@@ -7,6 +7,8 @@ use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\ExtensionLib;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class LabstagExtension extends ExtensionLib
 {
@@ -54,6 +56,25 @@ class LabstagExtension extends ExtensionLib
         return $attachment;
     }
 
+    /**
+     * @return TwigFilter[]
+     */
+    public function getFilters(): array
+    {
+        $dataFilters = $this->getFiltersFunctions();
+        $filters     = [];
+        foreach ($dataFilters as $key => $function) {
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $filters[] = new TwigFilter($key, $callable);
+        }
+
+        return $filters;
+    }
+
     public function getFiltersFunctions(): array
     {
         return [
@@ -64,6 +85,25 @@ class LabstagExtension extends ExtensionLib
             'imagefilter'   => 'imagefilter',
             'verifPhone'    => 'verifPhone',
         ];
+    }
+
+    /**
+     * @return TwigFunction[]
+     */
+    public function getFunctions(): array
+    {
+        $dataFunctions = $this->getFiltersFunctions();
+        $functions     = [];
+        foreach ($dataFunctions as $key => $function) {
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $functions[] = new TwigFunction($key, $callable);
+        }
+
+        return $functions;
     }
 
     public function imagefilter(

@@ -29,7 +29,6 @@ use Labstag\Service\RepositoryService;
 use Labstag\Service\SessionService;
 use Labstag\Service\TrashService;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -509,6 +508,7 @@ class ViewService
 
         $searchLib = $domain->getSearchData();
         $searchLib->search($get, $this->repositoryService);
+
         $route = $request->get('_route');
         if (!is_string($route)) {
             return $parameters;

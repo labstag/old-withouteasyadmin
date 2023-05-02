@@ -22,7 +22,7 @@ class EnqueueMethod
     {
         $stamps = [];
         // Le service doit être appelé avec un délai
-        if (null !== $dateTime) {
+        if ($dateTime instanceof DateTimeInterface) {
             $delay = 1000 * ($dateTime->getTimestamp() - time());
             if ($delay > 0) {
                 $stamps[] = new DelayStamp($delay);

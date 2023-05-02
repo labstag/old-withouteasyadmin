@@ -5,9 +5,30 @@ namespace Labstag\Twig;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Lib\ExtensionLib;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class ParagraphExtension extends ExtensionLib
 {
+    /**
+     * @return TwigFilter[]
+     */
+    public function getFilters(): array
+    {
+        $dataFilters = $this->getFiltersFunctions();
+        $filters     = [];
+        foreach ($dataFilters as $key => $function) {
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $filters[] = new TwigFilter($key, $callable);
+        }
+
+        return $filters;
+    }
+
     public function getFiltersFunctions(): array
     {
         return [
@@ -15,6 +36,25 @@ class ParagraphExtension extends ExtensionLib
             'paragraph_id'    => 'getParagraphId',
             'paragraph_class' => 'getParagraphClass',
         ];
+    }
+
+    /**
+     * @return TwigFunction[]
+     */
+    public function getFunctions(): array
+    {
+        $dataFunctions = $this->getFiltersFunctions();
+        $functions     = [];
+        foreach ($dataFunctions as $key => $function) {
+            /** @var callable $callable */
+            $callable = [
+                $this,
+                $function,
+            ];
+            $functions[] = new TwigFunction($key, $callable);
+        }
+
+        return $functions;
     }
 
     public function getParagraphClass(EntityParagraphInterface $entityParagraph): string

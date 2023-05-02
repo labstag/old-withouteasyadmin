@@ -14,7 +14,6 @@ use Labstag\Repository\ParagraphRepository;
 use Labstag\Service\AttachFormService;
 use Labstag\Service\ParagraphService as ServiceParagraphService;
 use Labstag\Service\SessionService;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

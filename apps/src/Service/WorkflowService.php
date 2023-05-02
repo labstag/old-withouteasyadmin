@@ -64,6 +64,7 @@ class WorkflowService
 
             $workflow->apply($entity, $state);
         }
+
         /** @var RepositoryLib $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $this->repositoryService->get($entity::class);
         $serviceEntityRepositoryLib->save($entity);
