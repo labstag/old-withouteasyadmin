@@ -63,6 +63,7 @@ class LabstagExtension extends ExtensionLib
     {
         return [
             new TwigFilter('attachment', fn(?EntityInterface $entity): ?Attachment => $this->getAttachment($entity)),
+            new TwigFilter('imagefilter', fn(string $path, string $filter, array $config = [], ?string $resolver = null, int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string => $this->imagefilter($path, $filter, $config, $resolver, $referenceType)),
             new TwigFilter('class_entity', fn(object $entity): string => $this->classEntity($entity)),
             new TwigFilter('formClass', fn($class): string => $this->formClass($class)),
             new TwigFilter('formPrototype', fn(array $blockPrefixes): string => $this->formPrototype($blockPrefixes)),
@@ -76,7 +77,6 @@ class LabstagExtension extends ExtensionLib
     {
         return [
             new TwigFunction('attachment', fn(?EntityInterface $entity): ?Attachment => $this->getAttachment($entity)),
-            new TwigFunction('imagefilter', fn(string $path, string $filter, array $config = [], ?string $resolver = null, int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string => $this->imagefilter($path, $filter, $config, $resolver, $referenceType)),
             new TwigFunction('verifPhone', fn(string $country, string $phone): bool => $this->verifPhone($country, $phone)),
         ];
     }
