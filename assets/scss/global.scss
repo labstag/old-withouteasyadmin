@@ -1,10 +1,10 @@
-@import url("bootstrap/scss/bootstrap.scss");
-@import url("@fortawesome/fontawesome-free/scss/brands.scss");
-@import url("@fortawesome/fontawesome-free/scss/fontawesome.scss");
-@import url("@fortawesome/fontawesome-free/scss/regular.scss");
-@import url("@fortawesome/fontawesome-free/scss/solid.scss");
-@import url("flag-icons/sass/flag-icons.scss");
-@import url("tom-select/dist/css/tom-select.bootstrap5.css");
+@import 'bootstrap/scss/bootstrap.scss';
+@import '@fortawesome/fontawesome-free/scss/brands.scss';
+@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '@fortawesome/fontawesome-free/scss/regular.scss';
+@import '@fortawesome/fontawesome-free/scss/solid.scss';
+@import 'flag-icons/sass/flag-icons.scss';
+@import 'tom-select/dist/css/tom-select.bootstrap5.css';
 
 a {
   @extend .text-decoration-none;

@@ -1,6 +1,6 @@
-@import url("front/_mixin.scss");
-@import url("front/_variables.scss");
-@import url("global.scss");
+@import 'front/_mixin.scss';
+@import 'front/_variables.scss';
+@import 'global.scss';
 
 header {
   @extend .container;
