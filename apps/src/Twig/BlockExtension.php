@@ -31,8 +31,14 @@ class BlockExtension extends ExtensionLib
     public function getFilters(): array
     {
         return [
-            new TwigFilter('block_id', fn(EntityBlockInterface $entityBlock): string => $this->getBlockId($entityBlock)),
-            new TwigFilter('block_class', fn(EntityBlockInterface $entityBlock): string => $this->getBlockClass($entityBlock)),
+            new TwigFilter(
+                'block_id',
+                fn (EntityBlockInterface $entityBlock): string => $this->getBlockId($entityBlock)
+            ),
+            new TwigFilter(
+                'block_class',
+                fn (EntityBlockInterface $entityBlock): string => $this->getBlockClass($entityBlock)
+            ),
         ];
     }
 }

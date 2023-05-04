@@ -62,11 +62,41 @@ class LabstagExtension extends ExtensionLib
     public function getFilters(): array
     {
         return [
-            new TwigFilter('attachment', fn(?EntityInterface $entity): ?Attachment => $this->getAttachment($entity)),
-            new TwigFilter('imagefilter', fn(string $path, string $filter, array $config = [], ?string $resolver = null, int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string => $this->imagefilter($path, $filter, $config, $resolver, $referenceType)),
-            new TwigFilter('class_entity', fn(object $entity): string => $this->classEntity($entity)),
-            new TwigFilter('form_class', fn($class): string => $this->formClass($class)),
-            new TwigFilter('form_prototype', fn(array $blockPrefixes): string => $this->formPrototype($blockPrefixes)),
+            new TwigFilter(
+                'attachment',
+                fn (?EntityInterface $entity): ?Attachment => $this->getAttachment($entity)
+            ),
+            new TwigFilter(
+                'imagefilter',
+                function (
+                    string $path,
+                    string $filter,
+                    array $config = [],
+                    ?string $resolver = null,
+                    int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+                ): string
+                {
+                    return $this->imagefilter(
+                        $path,
+                        $filter,
+                        $config,
+                        $resolver,
+                        $referenceType
+                    );
+                }
+            ),
+            new TwigFilter(
+                'class_entity',
+                fn (object $entity): string => $this->classEntity($entity)
+            ),
+            new TwigFilter(
+                'form_class',
+                fn ($class): string => $this->formClass($class)
+            ),
+            new TwigFilter(
+                'form_prototype',
+                fn (array $blockPrefixes): string => $this->formPrototype($blockPrefixes)
+            ),
         ];
     }
 
@@ -76,8 +106,14 @@ class LabstagExtension extends ExtensionLib
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('attachment', fn(?EntityInterface $entity): ?Attachment => $this->getAttachment($entity)),
-            new TwigFunction('verif_phone', fn(string $country, string $phone): bool => $this->verifPhone($country, $phone)),
+            new TwigFunction(
+                'attachment',
+                fn (?EntityInterface $entity): ?Attachment => $this->getAttachment($entity)
+            ),
+            new TwigFunction(
+                'verif_phone',
+                fn (string $country, string $phone): bool => $this->verifPhone($country, $phone)
+            ),
         ];
     }
 

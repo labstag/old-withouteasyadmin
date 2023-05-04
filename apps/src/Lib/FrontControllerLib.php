@@ -40,7 +40,7 @@ abstract class FrontControllerLib extends AbstractController
         }
 
         return $this->render(
-            'front.html.twig',
+            'skeleton/front.html.twig',
             ['content' => $page]
         );
     }

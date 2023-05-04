@@ -23,6 +23,9 @@ class Layout implements EntityFrontInterface, EntityTrashInterface, EntityWithPa
     #[ORM\ManyToOne(targetEntity: Custom::class, inversedBy: 'layouts', cascade: ['persist'])]
     private ?Custom $custom = null;
 
+    #[ORM\ManyToMany(targetEntity: Groupe::class, inversedBy: 'layouts')]
+    private Collection $groupes;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
@@ -42,6 +45,16 @@ class Layout implements EntityFrontInterface, EntityTrashInterface, EntityWithPa
     public function __construct()
     {
         $this->paragraphs = new ArrayCollection();
+        $this->groupes    = new ArrayCollection();
+    }
+
+    public function addGroupe(Groupe $groupe): self
+    {
+        if (!$this->groupes->contains($groupe)) {
+            $this->groupes->add($groupe);
+        }
+
+        return $this;
     }
 
     public function addParagraph(Paragraph $paragraph): self
@@ -57,6 +70,14 @@ class Layout implements EntityFrontInterface, EntityTrashInterface, EntityWithPa
     public function getCustom(): ?Custom
     {
         return $this->custom;
+    }
+
+    /**
+     * @return Collection<int, Groupe>
+     */
+    public function getGroupes(): Collection
+    {
+        return $this->groupes;
     }
 
     public function getId(): ?string
@@ -80,6 +101,13 @@ class Layout implements EntityFrontInterface, EntityTrashInterface, EntityWithPa
     public function getUrl(): ?array
     {
         return $this->url;
+    }
+
+    public function removeGroupe(Groupe $groupe): self
+    {
+        $this->groupes->removeElement($groupe);
+
+        return $this;
     }
 
     public function removeParagraph(Paragraph $paragraph): self

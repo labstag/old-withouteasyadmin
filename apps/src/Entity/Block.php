@@ -40,6 +40,9 @@ class Block implements EntityTrashInterface
     #[ORM\OneToMany(targetEntity: Footer::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private Collection $footers;
 
+    #[ORM\ManyToMany(targetEntity: Groupe::class, inversedBy: 'blocks')]
+    private Collection $groupes;
+
     #[ORM\OneToMany(targetEntity: Header::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private Collection $headers;
 
@@ -80,6 +83,7 @@ class Block implements EntityTrashInterface
         $this->menu        = new ArrayCollection();
         $this->flashbags   = new ArrayCollection();
         $this->customs     = new ArrayCollection();
+        $this->groupes     = new ArrayCollection();
     }
 
     public function addBreadcrumb(Breadcrumb $breadcrumb): self
@@ -117,6 +121,15 @@ class Block implements EntityTrashInterface
         if (!$this->footers->contains($footer)) {
             $this->footers[] = $footer;
             $footer->setBlock($this);
+        }
+
+        return $this;
+    }
+
+    public function addGroupe(Groupe $groupe): self
+    {
+        if (!$this->groupes->contains($groupe)) {
+            $this->groupes->add($groupe);
         }
 
         return $this;
@@ -180,6 +193,14 @@ class Block implements EntityTrashInterface
     public function getFooters(): Collection
     {
         return $this->footers;
+    }
+
+    /**
+     * @return Collection<int, Groupe>
+     */
+    public function getGroupes(): Collection
+    {
+        return $this->groupes;
     }
 
     public function getHeaders(): Collection
@@ -251,6 +272,13 @@ class Block implements EntityTrashInterface
     public function removeFooter(Footer $footer): self
     {
         $this->removeElementBlock($this->footers, $footer);
+
+        return $this;
+    }
+
+    public function removeGroupe(Groupe $groupe): self
+    {
+        $this->groupes->removeElement($groupe);
 
         return $this;
     }

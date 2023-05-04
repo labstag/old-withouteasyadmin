@@ -15,9 +15,18 @@ class ParagraphExtension extends ExtensionLib
     public function getFilters(): array
     {
         return [
-            new TwigFilter('paragraph_name', fn(string $code): string => $this->getParagraphName($code)),
-            new TwigFilter('paragraph_id', fn(EntityParagraphInterface $entityParagraph): string => $this->getParagraphId($entityParagraph)),
-            new TwigFilter('paragraph_class', fn(EntityParagraphInterface $entityParagraph): string => $this->getParagraphClass($entityParagraph)),
+            new TwigFilter(
+                'paragraph_name',
+                fn (string $code): string => $this->getParagraphName($code)
+            ),
+            new TwigFilter(
+                'paragraph_id',
+                fn (EntityParagraphInterface $entityParagraph): string => $this->getParagraphId($entityParagraph)
+            ),
+            new TwigFilter(
+                'paragraph_class',
+                fn (EntityParagraphInterface $entityParagraph): string => $this->getParagraphClass($entityParagraph)
+            ),
         ];
     }
 

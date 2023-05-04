@@ -14,7 +14,10 @@ class WorkflowExtension extends ExtensionLib
     public function getFilters(): array
     {
         return [
-            new TwigFilter('workflow_has', fn(EntityInterface $entity): bool => $this->workflowHas($entity)),
+            new TwigFilter(
+                'workflow_has',
+                fn (EntityInterface $entity): bool => $this->workflowHas($entity)
+            ),
         ];
     }
 

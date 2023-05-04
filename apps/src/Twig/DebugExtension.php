@@ -74,12 +74,36 @@ class DebugExtension extends ExtensionLib
     public function getFilters(): array
     {
         return [
-            new TwigFilter('debug_begin_prototype', fn(array $blockPrefixes): string => $this->debugBeginPrototype($blockPrefixes), ['is_safe' => ['all']]),
-            new TwigFilter('debug_end_prototype', fn(array $blockPrefixes): string => $this->debugEndPrototype($blockPrefixes), ['is_safe' => ['all']]),
-            new TwigFilter('debug_begin_form', fn($class): string => $this->debugBeginForm($class), ['is_safe' => ['all']]),
-            new TwigFilter('debug_end_form', fn($class): string => $this->debugEndForm($class), ['is_safe' => ['all']]),
-            new TwigFilter('debug_begin', fn(array $data): string => $this->debugBegin($data), ['is_safe' => ['all']]),
-            new TwigFilter('debug_end', fn(array $data): string => $this->debugEnd($data), ['is_safe' => ['all']]),
+            new TwigFilter(
+                'debug_begin_prototype',
+                fn (array $blockPrefixes): string => $this->debugBeginPrototype($blockPrefixes),
+                ['is_safe' => ['all']]
+            ),
+            new TwigFilter(
+                'debug_end_prototype',
+                fn (array $blockPrefixes): string => $this->debugEndPrototype($blockPrefixes),
+                ['is_safe' => ['all']]
+            ),
+            new TwigFilter(
+                'debug_begin_form',
+                fn ($class): string => $this->debugBeginForm($class),
+                ['is_safe' => ['all']]
+            ),
+            new TwigFilter(
+                'debug_end_form',
+                fn ($class): string => $this->debugEndForm($class),
+                ['is_safe' => ['all']]
+            ),
+            new TwigFilter(
+                'debug_begin',
+                fn (array $data): string => $this->debugBegin($data),
+                ['is_safe' => ['all']]
+            ),
+            new TwigFilter(
+                'debug_end',
+                fn (array $data): string => $this->debugEnd($data),
+                ['is_safe' => ['all']]
+            ),
         ];
     }
 

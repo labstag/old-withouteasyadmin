@@ -144,7 +144,7 @@ class SecurityController extends AbstractController
         return $this->redirectToRoute('front');
     }
 
-    #[Route(path: '/disclaimer', name: 'disclaimer', priority: 1)]
+    #[Route(path: '/disclaimer-old', name: 'disclaimer', priority: 1)]
     public function disclaimer(
         TranslatorInterface $translator,
         SessionService $sessionService,
