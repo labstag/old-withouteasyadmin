@@ -64,7 +64,7 @@
 {% endblock %}
 
 {% block form_rows %}
-    {% set template = form|formClass %}
+    {% set template = form|form_class %}
     {{ form|debug_begin_form }}
     {% include template with {
         'row': form|filter(child => not child.rendered),
@@ -458,7 +458,7 @@
 {% block collection_item_widget %}
 	<div class="collection-row">
         {{ prototype.vars.block_prefixes|debug_begin_prototype }}
-        {% set template = prototype.vars.block_prefixes|formPrototype %}
+        {% set template = prototype.vars.block_prefixes|form_prototype %}
         {% include template with {
             'allow_delete': allow_delete,
             'prototype': prototype
@@ -474,7 +474,7 @@
 {% block collection_widget %}
     <div class="field-row">
         {% for row in form %}
-            {% set template = row|formClass %}
+            {% set template = row|form_class %}
             {% if prototype is defined %}
                 <div class="collection-row">
             {% endif %}

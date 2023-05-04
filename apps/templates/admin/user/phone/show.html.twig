@@ -9,7 +9,7 @@
             <tr>
                 <th>{{ 'user.phone.verif'|trans({}, 'admin.messages') }}</th>
                 <td>
-                    {% set check = verifPhone(entity.country, entity.numero)  ? 'ok' : 'ko' %}
+                    {% set check = verif_phone(entity.country, entity.numero)  ? 'ok' : 'ko' %}
                     <span class="check-{{ check }}"></span>
                 </td>
             </tr>
