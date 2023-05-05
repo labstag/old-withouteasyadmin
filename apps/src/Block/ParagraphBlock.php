@@ -8,6 +8,7 @@ use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ParagraphBlock extends BlockLib implements BlockInterface
@@ -51,6 +52,19 @@ class ParagraphBlock extends BlockLib implements BlockInterface
         }
 
         $data = $this->setParagraphs($entityFront);
+        $redirect = null;
+        foreach ($data as $paragraphs) {
+            if (!$paragraphs['data'] instanceof RedirectResponse) {
+                continue;
+            }
+
+            $redirect = $paragraphs['data'];
+            break;
+        }
+
+        if (!is_null($redirect)) {
+            return $redirect;
+        }
 
         return $this->render(
             $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),

@@ -11,6 +11,7 @@ use Labstag\Service\DataService;
 use Labstag\Service\FrontService;
 use Labstag\Service\RepositoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
@@ -52,8 +53,33 @@ abstract class FrontControllerLib extends AbstractController
     ): Response
     {
         $parameters = $this->setParameters($parameters);
+        if (isset($parameters['blocks'])) {
+            $redirect = $this->getRedirection($parameters['blocks']);
+        }
+
+        if(!is_null($redirect)) {
+            return $redirect;
+        }
 
         return parent::render($view, $parameters, $response);
+    }
+
+    private function getRedirection($blocks): ?RedirectResponse
+    {
+        $redirect =  null;
+
+        foreach ($blocks as $blockhtml) {
+            foreach ($blockhtml as $row) {
+                if (!$row['data'] instanceof RedirectResponse) {
+                    continue;
+                }
+                
+                $redirect = $row['data'];
+                break;
+            }
+        }
+
+        return $redirect;
     }
 
     private function setParameters(array $parameters): array

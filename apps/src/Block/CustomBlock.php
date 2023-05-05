@@ -11,6 +11,7 @@ use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
 use Labstag\Repository\LayoutRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -54,12 +55,25 @@ class CustomBlock extends BlockLib implements BlockInterface
             return null;
         }
 
-        $paragraphs = $this->setParagraphs($entityBlock);
+        $data = $this->setParagraphs($entityBlock);
+        $redirect = null;
+        foreach ($data as $paragraphs) {
+            if (!$paragraphs['data'] instanceof RedirectResponse) {
+                continue;
+            }
+
+            $redirect = $paragraphs['data'];
+            break;
+        }
+
+        if (!is_null($redirect)) {
+            return $redirect;
+        }
 
         return $this->render(
             $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
             [
-                'paragraphs' => $paragraphs,
+                'paragraphs' => $data,
                 'block'      => $entityBlock,
             ]
         );
