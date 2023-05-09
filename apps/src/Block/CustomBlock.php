@@ -55,7 +55,7 @@ class CustomBlock extends BlockLib implements BlockInterface
             return null;
         }
 
-        $data = $this->setParagraphs($entityBlock);
+        $data     = $this->setParagraphs($entityBlock);
         $redirect = null;
         foreach ($data as $paragraphs) {
             if (!$paragraphs['data'] instanceof RedirectResponse) {
@@ -63,6 +63,7 @@ class CustomBlock extends BlockLib implements BlockInterface
             }
 
             $redirect = $paragraphs['data'];
+
             break;
         }
 

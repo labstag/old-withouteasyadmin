@@ -49,4 +49,9 @@ class DisclaimerType extends AbstractTypeLib
             ['csrf_token_id' => 'login']
         );
     }
+
+    public function getBlockPrefix(): string
+    {
+        return 'disclaimer';
+    }
 }

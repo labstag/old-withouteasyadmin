@@ -5,6 +5,7 @@ namespace Labstag\Lib;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 abstract class PostFormLib
@@ -12,6 +13,7 @@ abstract class PostFormLib
     public function __construct(
         protected MailerInterface $mailer,
         protected RequestStack $requestStack,
+        protected TranslatorInterface $translator,
         protected FormFactoryInterface $formFactory,
         protected Environment $twigEnvironment
     )

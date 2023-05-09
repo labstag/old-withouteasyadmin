@@ -40,6 +40,11 @@ class ContactPostForm extends PostFormLib implements PostFormInterface
         return ContactType::class;
     }
 
+    public function getName(): string
+    {
+        return $this->translator->trans('contact.name', [], 'postform');
+    }
+
     private function setMail(
         array $success,
         FormInterface $form,

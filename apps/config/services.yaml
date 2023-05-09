@@ -42,6 +42,14 @@ services:
       resource: "../src/Front/"
       public: true
       tags: [frontclass]
+  Labstag\Form\Front\:
+      resource: "../src/Form/Front/"
+      public: true
+      tags: [frontform]
+  Labstag\Form\Security\:
+      resource: "../src/Form/Security/"
+      public: true
+      tags: [securityform]
   Labstag\PostForm\:
     resource: "../src/PostForm/"
     public: true
@@ -74,6 +82,8 @@ services:
   Labstag\Service\FormService:
     arguments:
       - !tagged_iterator postform
+      - !tagged_iterator securityform
+      - !tagged_iterator frontform
   Labstag\Service\BlockService:
     arguments:
       - !tagged_iterator blocksclass

@@ -100,7 +100,7 @@
         "phpunit/phpunit": "10.1.*",
         "povils/phpmnd": "3.1.*",
         "rector/phpstan-rules": "0.6.*",
-        "rector/rector": "0.15.*",
+        "rector/rector": "0.16.*",
         "symfony/browser-kit": "6.2.*",
         "symfony/css-selector": "6.2.*",
         "symfony/debug-bundle": "6.2.*",

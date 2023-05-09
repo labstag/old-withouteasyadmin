@@ -52,12 +52,13 @@ abstract class FrontControllerLib extends AbstractController
         ?Response $response = null
     ): Response
     {
+        $redirect   = null;
         $parameters = $this->setParameters($parameters);
         if (isset($parameters['blocks'])) {
             $redirect = $this->getRedirection($parameters['blocks']);
         }
 
-        if(!is_null($redirect)) {
+        if (!is_null($redirect)) {
             return $redirect;
         }
 
@@ -66,15 +67,16 @@ abstract class FrontControllerLib extends AbstractController
 
     private function getRedirection($blocks): ?RedirectResponse
     {
-        $redirect =  null;
+        $redirect = null;
 
-        foreach ($blocks as $blockhtml) {
-            foreach ($blockhtml as $row) {
+        foreach ($blocks as $block) {
+            foreach ($block as $row) {
                 if (!$row['data'] instanceof RedirectResponse) {
                     continue;
                 }
-                
+
                 $redirect = $row['data'];
+
                 break;
             }
         }

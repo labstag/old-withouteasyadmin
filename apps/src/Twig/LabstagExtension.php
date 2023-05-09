@@ -68,22 +68,19 @@ class LabstagExtension extends ExtensionLib
             ),
             new TwigFilter(
                 'imagefilter',
-                function (
+                fn (
                     string $path,
                     string $filter,
-                    array $config = [],
-                    ?string $resolver = null,
+                    array $config      = [],
+                    ?string $resolver  = null,
                     int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-                ): string
-                {
-                    return $this->imagefilter(
-                        $path,
-                        $filter,
-                        $config,
-                        $resolver,
-                        $referenceType
-                    );
-                }
+                ): string => $this->imagefilter(
+                    $path,
+                    $filter,
+                    $config,
+                    $resolver,
+                    $referenceType
+                )
             ),
             new TwigFilter(
                 'class_entity',
