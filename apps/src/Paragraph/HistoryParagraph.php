@@ -14,11 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HistoryParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'history';
+        return ['history'];
     }
 
     public function getEntity(): string

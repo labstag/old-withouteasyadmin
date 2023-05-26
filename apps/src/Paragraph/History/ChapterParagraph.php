@@ -16,11 +16,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ChapterParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'history/chapter';
+        return ['history/chapter'];
     }
 
     public function getEntity(): string

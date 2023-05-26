@@ -5,6 +5,7 @@ namespace Labstag\Queue\Handler;
 use Labstag\Queue\Message\ServiceMethodMessage;
 use Labstag\Service\BookmarkService;
 use Labstag\Service\HistoryService;
+use Labstag\Service\ParagraphService;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -34,9 +35,10 @@ class ServiceMethodMessageHandler implements ServiceSubscriberInterface
     public static function getSubscribedServices(): array
     {
         return [
-            MailerInterface::class => MailerInterface::class,
-            BookmarkService::class => BookmarkService::class,
-            HistoryService::class  => HistoryService::class,
+            MailerInterface::class  => MailerInterface::class,
+            ParagraphService::class => ParagraphService::class,
+            BookmarkService::class  => BookmarkService::class,
+            HistoryService::class   => HistoryService::class,
         ];
     }
 }

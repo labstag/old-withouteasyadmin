@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LibelleParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'post/libelle';
+        return ['post/libelle'];
     }
 
     public function getEntity(): string

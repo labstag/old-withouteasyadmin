@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class YearParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'post/year';
+        return ['post/year'];
     }
 
     public function getEntity(): string

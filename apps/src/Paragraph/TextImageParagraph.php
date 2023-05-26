@@ -21,11 +21,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TextImageParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'textimage';
+        return ['textimage'];
     }
 
     public function getEntity(): string

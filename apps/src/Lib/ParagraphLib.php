@@ -39,11 +39,11 @@ abstract class ParagraphLib extends AbstractController
     {
     }
 
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return '';
+        return [];
     }
 
     public function setData(Paragraph $paragraph): void
@@ -56,18 +56,20 @@ abstract class ParagraphLib extends AbstractController
         return $this->showTemplateFile($this->getCode($entityParagraph));
     }
 
-    protected function getTemplateData(string $type): array
+    protected function getTemplateData(array $types): array
     {
-        if (isset($this->template[$type])) {
-            return $this->template[$type];
+        $code = md5(serialize($types));
+        if (isset($this->template[$code])) {
+            return $this->template[$code];
         }
 
         $loader   = $this->twigEnvironment->getLoader();
         $htmltwig = '.html.twig';
-        $files    = [
-            'paragraph/'.$type.$htmltwig,
-            'paragraph/default'.$htmltwig,
-        ];
+        $files    = array_map(
+            static fn ($type): string => 'paragraph/'.$type.$htmltwig,
+            $types
+        );
+        $files[] = 'paragraph/default'.$htmltwig;
 
         $view = end($files);
 
@@ -81,26 +83,26 @@ abstract class ParagraphLib extends AbstractController
             break;
         }
 
-        $this->template[$type] = [
+        $this->template[$code] = [
             'hook'  => 'paragraph',
-            'type'  => $type,
+            'types' => $types,
             'files' => $files,
             'view'  => $view,
         ];
 
-        return $this->template[$type];
+        return $this->template[$code];
     }
 
-    protected function getTemplateFile(string $type): string
+    protected function getTemplateFile(array $types): string
     {
-        $data = $this->getTemplateData($type);
+        $data = $this->getTemplateData($types);
 
         return $data['view'];
     }
 
-    protected function showTemplateFile(string $type): array
+    protected function showTemplateFile(array $types): array
     {
-        $data    = $this->getTemplateData($type);
+        $data    = $this->getTemplateData($types);
         $globals = $this->twigEnvironment->getGlobals();
         if (!isset($globals['app'])) {
             return [];

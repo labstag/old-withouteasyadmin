@@ -65,7 +65,7 @@ abstract class FrontControllerLib extends AbstractController
         return parent::render($view, $parameters, $response);
     }
 
-    private function getRedirection($blocks): ?RedirectResponse
+    private function getRedirection(array $blocks): ?RedirectResponse
     {
         $redirect = null;
 

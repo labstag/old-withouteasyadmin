@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CategoryParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'bookmark/category';
+        return ['bookmark/category'];
     }
 
     public function getEntity(): string

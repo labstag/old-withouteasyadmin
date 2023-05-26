@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ShowParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'post/show';
+        return ['post/show'];
     }
 
     public function getEntity(): string

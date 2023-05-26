@@ -18,11 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TextParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'text';
+        return ['text'];
     }
 
     public function getEntity(): string

@@ -58,6 +58,9 @@ class Block implements EntityTrashInterface
     #[ORM\OneToMany(targetEntity: Navbar::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private Collection $menu;
 
+    #[ORM\ManyToMany(targetEntity: Page::class, inversedBy: 'blocks')]
+    private Collection $notinpages;
+
     #[ORM\OneToMany(targetEntity: Paragraph::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
     private Collection $paragraphs;
 
@@ -84,6 +87,7 @@ class Block implements EntityTrashInterface
         $this->flashbags   = new ArrayCollection();
         $this->customs     = new ArrayCollection();
         $this->groupes     = new ArrayCollection();
+        $this->notinpages  = new ArrayCollection();
     }
 
     public function addBreadcrumb(Breadcrumb $breadcrumb): self
@@ -165,6 +169,15 @@ class Block implements EntityTrashInterface
         return $this;
     }
 
+    public function addNotinpage(Page $page): self
+    {
+        if (!$this->notinpages->contains($page)) {
+            $this->notinpages->add($page);
+        }
+
+        return $this;
+    }
+
     public function addParagraph(Paragraph $paragraph): self
     {
         if (!$this->paragraphs->contains($paragraph)) {
@@ -221,6 +234,14 @@ class Block implements EntityTrashInterface
     public function getMenu(): Collection
     {
         return $this->menu;
+    }
+
+    /**
+     * @return Collection<int, Page>
+     */
+    public function getNotinpages(): Collection
+    {
+        return $this->notinpages;
     }
 
     public function getParagraphs(): Collection
@@ -300,6 +321,13 @@ class Block implements EntityTrashInterface
     public function removeMenu(Navbar $navbar): self
     {
         $this->removeElementBlock($this->menu, $navbar);
+
+        return $this;
+    }
+
+    public function removeNotinpage(Page $page): self
+    {
+        $this->notinpages->removeElement($page);
 
         return $this;
     }

@@ -1,0 +1,12 @@
+<section id="{{ paragraph|paragraph_id }}" class="{{ paragraph|paragraph_class }}">
+    {{ form_start(form) }}
+    <div>
+        {{ config['disclaimer']['message']|raw }}
+    </div>
+    {{ form_row(form.confirm) }}
+    <div class="btns">
+        {{ form_row(form.submit) }}
+        {{ form_row(form.reset) }}
+    </div>
+    {{ form_end(form) }}
+</section>

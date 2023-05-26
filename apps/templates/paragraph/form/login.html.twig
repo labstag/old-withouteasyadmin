@@ -1,8 +1,4 @@
-{% extends 'skeleton/landing.html.twig' %}
-
-{% block page_title %}Log in!{% endblock %}
-{% block box_title %}Please sign in{% endblock %}
-{% block box %}
+<section id="{{ paragraph|paragraph_id }}" class="{{ paragraph|paragraph_class }}">
     {% if error %}
         <div class="alert alert-danger" role="alert">
             <p>
@@ -10,12 +6,12 @@
             </p>
         </div>
     {% endif %}
-    {{ form_start(formLogin) }}
-    {{ form_row(formLogin.username) }}
-    {{ form_row(formLogin.password) }}
+    {{ form_start(form) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.password) }}
     <div class="btns">
-        {{ form_row(formLogin.remember_me) }}
-        {{ form_row(formLogin.submit) }}
+        {{ form_row(form.remember_me) }}
+        {{ form_row(form.submit) }}
     </div>
     {% set state = 'app_lost'|guard_route %}
     {% if state == true %}
@@ -37,5 +33,5 @@
             </div>
         </div>
     {% endif %}
-    {{ form_end(formLogin) }}
-{% endblock %}
+    {{ form_end(form) }}
+</section>

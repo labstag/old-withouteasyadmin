@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'post/list';
+        return ['post/list'];
     }
 
     public function getEntity(): string

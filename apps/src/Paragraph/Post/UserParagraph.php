@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'post/user';
+        return ['post/user'];
     }
 
     public function getEntity(): string

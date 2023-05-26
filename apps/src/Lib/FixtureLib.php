@@ -144,7 +144,9 @@ abstract class FixtureLib extends Fixture
     {
         unset($objectManager);
         foreach ($paragraphs as $paragraph) {
-            $this->paragraphService->add($entityFront, $paragraph);
+            $name   = is_array($paragraph) ? $paragraph['name'] : $paragraph;
+            $config = is_array($paragraph) ? $paragraph['config'] : [];
+            $this->paragraphService->add($entityFront, $name, $config);
         }
     }
 

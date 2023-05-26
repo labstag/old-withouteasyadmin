@@ -2,7 +2,6 @@
 
 namespace Labstag\Service;
 
-use Labstag\Interfaces\PostFormInterface;
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 
@@ -17,25 +16,21 @@ class FormService
     }
 
     public function execute(
-        AbstractTypeLib $typeLib,
-        array $success,
-        string $formName
-    ): array
+        $formClass,
+        string $template,
+        array $params
+    )
     {
-        $formClass = $typeLib::class;
         foreach ($this->postform as $row) {
-            /** @var PostFormInterface $row */
-            if ($row->getForm() == $formClass) {
-                $success = $row->execute($success, $formName);
-
-                break;
+            if ($row->getForm() != $formClass::class) {
+                continue;
             }
-        }
 
-        return $success;
+            return $row->execute($template, $params);
+        }
     }
 
-    public function getForm()
+    public function getForm(): array
     {
         $data = [];
         foreach ($this->postform as $row) {
@@ -48,6 +43,24 @@ class FormService
         ksort($data);
 
         return $data;
+    }
+
+    public function init(string $nameform): ?object
+    {
+        $formClass = null;
+        foreach ($this->postform as $row) {
+            $formclass = $row->getForm();
+            $form      = $this->getFormByClass($formclass);
+            if ($form->getBlockPrefix() !== $nameform) {
+                continue;
+            }
+
+            $formClass = $form;
+
+            break;
+        }
+
+        return $formClass;
     }
 
     private function getFormByClass(string $class): ?AbstractTypeLib

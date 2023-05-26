@@ -14,11 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HeaderParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'edito/header';
+        return ['edito/header'];
     }
 
     public function getEntity(): string

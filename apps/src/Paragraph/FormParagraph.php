@@ -12,11 +12,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FormParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
-        unset($entityParagraph);
+        /** @var FormParagraph $entityParagraph */
+        $code = $entityParagraph->getForm();
 
-        return 'form';
+        return [
+            'form/'.$code,
+            'form/default',
+        ];
     }
 
     public function getEntity(): string
@@ -44,10 +48,16 @@ class FormParagraph extends ParagraphLib implements ParagraphInterface
         return true;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): Response
+    public function show(EntityParagraphInterface $entityParagraph): ?Response
     {
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
+        $template = $this->getTemplateFile($this->getCode($entityParagraph));
+        /** @var FormParagraph $entityParagraph */
+        $code      = $entityParagraph->getForm();
+        $formClass = $this->formService->init($code);
+
+        return $this->formService->execute(
+            $formClass,
+            $template,
             ['paragraph' => $entityParagraph]
         );
     }

@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ArchiveParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'post/archive';
+        return ['post/archive'];
     }
 
     public function getEntity(): string

@@ -24,6 +24,9 @@ class Page implements Stringable, PublicInterface, EntityTrashInterface, EntityW
 {
     use SoftDeleteableEntity;
 
+    #[ORM\ManyToMany(targetEntity: Block::class, mappedBy: 'notinpages')]
+    private Collection $blocks;
+
     #[ORM\OneToMany(targetEntity: Page::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
     private Collection $children;
 
@@ -67,11 +70,22 @@ class Page implements Stringable, PublicInterface, EntityTrashInterface, EntityW
         $this->children   = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
         $this->metas      = new ArrayCollection();
+        $this->blocks     = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    public function addBlock(Block $block): self
+    {
+        if (!$this->blocks->contains($block)) {
+            $this->blocks->add($block);
+            $block->addNotinpage($this);
+        }
+
+        return $this;
     }
 
     public function addChild(self $child): self
@@ -102,6 +116,14 @@ class Page implements Stringable, PublicInterface, EntityTrashInterface, EntityW
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Block>
+     */
+    public function getBlocks(): Collection
+    {
+        return $this->blocks;
     }
 
     public function getChildren(): Collection
@@ -148,6 +170,15 @@ class Page implements Stringable, PublicInterface, EntityTrashInterface, EntityW
     public function getSlug(): ?string
     {
         return $this->slug;
+    }
+
+    public function removeBlock(Block $block): self
+    {
+        if ($this->blocks->removeElement($block)) {
+            $block->removeNotinpage($this);
+        }
+
+        return $this;
     }
 
     public function removeChild(self $child): self

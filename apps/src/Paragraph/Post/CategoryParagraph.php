@@ -15,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CategoryParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'post/category';
+        return ['post/category'];
     }
 
     public function getEntity(): string

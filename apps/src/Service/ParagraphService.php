@@ -13,6 +13,7 @@ use Labstag\Entity\Post;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Queue\EnqueueMethod;
 use Labstag\Repository\ParagraphRepository;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
@@ -25,6 +26,7 @@ class ParagraphService
     public function __construct(
         protected RewindableGenerator $rewindableGenerator,
         protected Environment $twigEnvironment,
+        protected EnqueueMethod $enqueueMethod,
         protected ParagraphRepository $paragraphRepository
     )
     {
@@ -32,7 +34,8 @@ class ParagraphService
 
     public function add(
         EntityFrontInterface $entityFront,
-        string $code
+        string $code,
+        ?array $config = []
     ): void
     {
         $method = $this->getMethod($entityFront);
@@ -52,6 +55,16 @@ class ParagraphService
         ];
         call_user_func($callable, $entityFront);
         $this->paragraphRepository->save($paragraph);
+        if (0 != count($config)) {
+            $this->enqueueMethod->enqueue(
+                static::class,
+                'process',
+                [
+                    'paragraphId' => $paragraph->getId(),
+                    'config'      => $config,
+                ]
+            );
+        }
     }
 
     public function getAll(EntityFrontInterface $entityFront): array
@@ -218,6 +231,22 @@ class ParagraphService
         }
 
         return $show;
+    }
+
+    public function process(string $paragraphId, array $config): void
+    {
+        $paragraph = $this->paragraphRepository->find($paragraphId);
+        if (!$paragraph instanceof Paragraph) {
+            return;
+        }
+
+        $entity          = $this->getEntity($paragraph);
+        $reflectionClass = new ReflectionClass($entity::class);
+        foreach ($config as $key => $value) {
+            $reflectionClass->getProperty($key)->setValue($entity, $value);
+        }
+
+        $this->paragraphRepository->save($entity);
     }
 
     public function setData(Paragraph $paragraph): void
