@@ -7,7 +7,9 @@ use Labstag\Entity\Block;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
+use Labstag\Queue\EnqueueMethod;
 use Labstag\Repository\BlockRepository;
+use Labstag\Repository\PageRepository;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +19,8 @@ class BlockService
 {
     public function __construct(
         protected RewindableGenerator $rewindableGenerator,
+        protected EnqueueMethod $enqueueMethod,
+        protected PageRepository $pageRepository,
         protected BlockRepository $blockRepository
     )
     {
@@ -197,6 +201,28 @@ class BlockService
         }
 
         return $show;
+    }
+
+    public function process(string $region, int $position, array $notinpages): void
+    {
+        $block = $this->blockRepository->findOneBy(
+            [
+                'region'   => $region,
+                'position' => $position,
+            ]
+        );
+        if (!$block instanceof Block) {
+            return;
+        }
+
+        $pages = $this->pageRepository->getBySlugs($notinpages);
+        if (0 != count($pages)) {
+            foreach ($pages as $page) {
+                $block->addNotinpage($page);
+            }
+        }
+
+        $this->blockRepository->save($block);
     }
 
     public function showContent(

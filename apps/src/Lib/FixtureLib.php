@@ -20,6 +20,7 @@ use Labstag\Entity\Meta;
 use Labstag\Entity\Post;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\EntityInterface;
+use Labstag\Queue\EnqueueMethod;
 use Labstag\Reader\UploadAnnotationReader;
 use Labstag\Service\BlockService;
 use Labstag\Service\ErrorService;
@@ -108,6 +109,7 @@ abstract class FixtureLib extends Fixture
     protected const NUMBER_TEMPLATES = 10;
 
     public function __construct(
+        protected EnqueueMethod $enqueueMethod,
         protected RepositoryService $repositoryService,
         protected WorkflowService $workflowService,
         protected FileService $fileService,

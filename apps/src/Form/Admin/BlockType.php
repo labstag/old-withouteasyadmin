@@ -71,6 +71,10 @@ class BlockType extends BlockAbstractTypeLib
             ]
         );
 
+        $formBuilder->add(
+            'notinpages',
+        );
+
         unset($options);
     }
 

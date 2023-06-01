@@ -3,6 +3,7 @@
 namespace Labstag\Queue\Handler;
 
 use Labstag\Queue\Message\ServiceMethodMessage;
+use Labstag\Service\BlockService;
 use Labstag\Service\BookmarkService;
 use Labstag\Service\HistoryService;
 use Labstag\Service\ParagraphService;
@@ -36,6 +37,7 @@ class ServiceMethodMessageHandler implements ServiceSubscriberInterface
     {
         return [
             MailerInterface::class  => MailerInterface::class,
+            BlockService::class     => BlockService::class,
             ParagraphService::class => ParagraphService::class,
             BookmarkService::class  => BookmarkService::class,
             HistoryService::class   => HistoryService::class,

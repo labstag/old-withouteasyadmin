@@ -50,8 +50,8 @@ class UserFixtures extends FixtureLib implements DependentFixtureInterface
         $user->setEmail($dataUser['email']);
 
         $objectManager->persist($user);
-        $this->workflowService->changeState($user, $dataUser['state']);
         $this->upload($user, $generator);
         $this->addReference('user_'.$index, $user);
+        $this->workflowService->changeState($user, $dataUser['state']);
     }
 }

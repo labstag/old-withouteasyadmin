@@ -88,16 +88,15 @@ abstract class FrontControllerLib extends AbstractController
     {
         /** @var BlockRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Block::class);
-        $blocksArray   = $repositoryLib->getDataByRegion();
         $content       = null;
         if (isset($parameters['content'])) {
             $content = $parameters['content'];
             unset($parameters['content']);
         }
 
-        $globals = $this->twigEnvironment->getGlobals();
-
-        $config = $globals['config'] ?? $this->dataService->getConfig();
+        $blocksArray = $repositoryLib->getDataByRegion($content);
+        $globals     = $this->twigEnvironment->getGlobals();
+        $config      = $globals['config'] ?? $this->dataService->getConfig();
         if (!is_array($config)) {
             $config = [];
         }

@@ -8,6 +8,7 @@ use Labstag\Entity\Block;
 use Labstag\Entity\Block\Navbar;
 use Labstag\Entity\Menu;
 use Labstag\Lib\FixtureLib;
+use Labstag\Service\BlockService;
 
 class BlockFixtures extends FixtureLib implements DependentFixtureInterface
 {
@@ -56,6 +57,18 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
             $entity->setBlock($block);
             $entity->setMenu($menu);
             $block->addMenu($entity);
+        }
+
+        if (array_key_exists('notinpages', $blockData)) {
+            $this->enqueueMethod->enqueue(
+                BlockService::class,
+                'process',
+                [
+                    'region'     => $region,
+                    'position'   => $position + 1,
+                    'notinpages' => $blockData['notinpages'],
+                ]
+            );
         }
 
         $this->addReference('block_'.$region.'-'.$type, $block);
