@@ -195,7 +195,7 @@ abstract class FixtureLib extends Fixture
         ObjectManager $objectManager
     ): void
     {
-        $faker     = $this->setFaker();
+        $generator     = $this->setFaker();
         $statesTab = $this->getStatesData();
         for ($index = 0; $index < $number; ++$index) {
             $stateId = array_rand($statesTab);
@@ -205,7 +205,7 @@ abstract class FixtureLib extends Fixture
                 $this,
                 $method,
             ];
-            call_user_func_array($callable, [$faker, $index, $states, $objectManager]);
+            call_user_func_array($callable, [$generator, $index, $states, $objectManager]);
         }
     }
 
@@ -215,17 +215,17 @@ abstract class FixtureLib extends Fixture
         ObjectManager $objectManager
     ): void
     {
-        $faker = $this->setFaker();
+        $generator = $this->setFaker();
         $users = $this->installService->getData('user');
         for ($index = 0; $index < $number; ++$index) {
-            $indexUser = $faker->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
+            $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
             $user      = $this->getReference('user_'.$indexUser);
             /** @var callable $callable */
             $callable = [
                 $this,
                 $method,
             ];
-            call_user_func_array($callable, [$faker, $user, $objectManager]);
+            call_user_func_array($callable, [$generator, $user, $objectManager]);
         }
     }
 
@@ -264,11 +264,11 @@ abstract class FixtureLib extends Fixture
 
     protected function setMeta(Meta $meta): void
     {
-        $faker = $this->setFaker();
-        $meta->setTitle($faker->unique()->colorName());
-        $meta->setDescription($faker->unique()->sentence());
+        $generator = $this->setFaker();
+        $meta->setTitle($generator->unique()->colorName());
+        $meta->setDescription($generator->unique()->sentence());
 
-        $keywords = $faker->unique()->words(random_int(1, 5), true);
+        $keywords = $generator->unique()->words(random_int(1, 5), true);
         if (is_string($keywords)) {
             $meta->setKeywords($keywords);
         }

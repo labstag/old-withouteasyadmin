@@ -4,6 +4,7 @@ namespace Labstag\Service;
 
 use Labstag\Lib\AbstractTypeLib;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
+use Symfony\Component\HttpFoundation\Response;
 
 class FormService
 {
@@ -16,10 +17,10 @@ class FormService
     }
 
     public function execute(
-        $formClass,
+        object $formClass,
         string $template,
         array $params
-    )
+    ): ?Response
     {
         foreach ($this->postform as $row) {
             if ($row->getForm() != $formClass::class) {
@@ -28,6 +29,8 @@ class FormService
 
             return $row->execute($template, $params);
         }
+
+        return null;
     }
 
     public function getForm(): array

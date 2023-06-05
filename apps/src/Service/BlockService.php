@@ -216,7 +216,7 @@ class BlockService
         }
 
         $pages = $this->pageRepository->getBySlugs($notinpages);
-        if (0 != count($pages)) {
+        if (0 != (is_countable($pages) ? count($pages) : 0)) {
             foreach ($pages as $page) {
                 $block->addNotinpage($page);
             }
@@ -231,8 +231,8 @@ class BlockService
     ): ?Response
     {
         $type   = $block->getType();
-        $entity = $this->getEntity($block);
-        if (!$entity instanceof EntityBlockInterface || is_null($type)) {
+        $entityBlock = $this->getEntity($block);
+        if (!$entityBlock instanceof EntityBlockInterface || is_null($type)) {
             return null;
         }
 
@@ -240,7 +240,7 @@ class BlockService
         foreach ($this->rewindableGenerator as $row) {
             /** @var BlockInterface $row */
             if ($type === $row->getType()) {
-                $html = $row->show($entity, $entityFront);
+                $html = $row->show($entityBlock, $entityFront);
 
                 break;
             }
@@ -255,8 +255,8 @@ class BlockService
     ): ?array
     {
         $type   = $block->getType();
-        $entity = $this->getEntity($block);
-        if (!$entity instanceof EntityBlockInterface || is_null($type)) {
+        $entityBlock = $this->getEntity($block);
+        if (!$entityBlock instanceof EntityBlockInterface || is_null($type)) {
             return null;
         }
 
@@ -264,7 +264,7 @@ class BlockService
         foreach ($this->rewindableGenerator as $row) {
             /** @var BlockInterface $row */
             if ($type === $row->getType()) {
-                $template = $row->template($entity, $entityFront);
+                $template = $row->template($entityBlock, $entityFront);
             }
         }
 

@@ -271,11 +271,7 @@ class OauthService
 
     protected function getConfig(string $clientName): array
     {
-        if (isset($this->configProvider[$clientName])) {
-            return $this->configProvider[$clientName];
-        }
-
-        return [];
+        return $this->configProvider[$clientName] ?? [];
     }
 
     protected function initProvider(string $clientName): AbstractProvider

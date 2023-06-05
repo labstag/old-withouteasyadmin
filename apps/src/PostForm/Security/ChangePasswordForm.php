@@ -32,7 +32,7 @@ class ChangePasswordForm extends PostFormLib implements PostFormInterface
             ]
         );
 
-        if (!$user instanceof $user || 'lostpassword' != $user->getState()) {
+        if (!$user instanceof User || 'lostpassword' != $user->getState()) {
             $this->sessionService->flashBagAdd(
                 'danger',
                 $this->translator->trans('security.user.sendlostpassword.fail')

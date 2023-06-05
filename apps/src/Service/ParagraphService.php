@@ -2,17 +2,13 @@
 
 namespace Labstag\Service;
 
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\PersistentCollection;
-use Labstag\Entity\Chapter;
-use Labstag\Entity\History;
-use Labstag\Entity\Layout;
-use Labstag\Entity\Memo;
-use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
-use Labstag\Entity\Post;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
+use Labstag\Interfaces\PublicInterface;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Repository\ParagraphRepository;
 use ReflectionClass;
@@ -38,24 +34,15 @@ class ParagraphService
         ?array $config = []
     ): void
     {
-        $method = $this->getMethod($entityFront);
-        if (is_null($method)) {
-            return;
-        }
-
         $position = (is_countable($entityFront->getParagraphs()) ? count($entityFront->getParagraphs()) : 0) + 1;
 
         $paragraph = new Paragraph();
         $paragraph->setType($code);
         $paragraph->setPosition($position);
-        /** @var callable $callable */
-        $callable = [
-            $paragraph,
-            $method,
-        ];
-        call_user_func($callable, $entityFront);
+        $paragraph = $this->setParent($paragraph, $entityFront);
+
         $this->paragraphRepository->save($paragraph);
-        if (0 != count($config)) {
+        if (0 != count((array) $config)) {
             $this->enqueueMethod->enqueue(
                 static::class,
                 'process',
@@ -173,6 +160,33 @@ class ParagraphService
         return $name;
     }
 
+    public function getParent(Paragraph $paragraph): ?PublicInterface
+    {
+        $entity           = null;
+        $reflectionClass  = new ReflectionClass($paragraph);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            $attributes = $reflectionProperty->getAttributes();
+            foreach ($attributes as $attribute) {
+                if (ManyToOne::class == $attribute->getName()) {
+                    $entity = $propertyAccessor->getValue(
+                        $paragraph,
+                        $reflectionProperty->getName()
+                    );
+                    if (!is_null($entity)) {
+                        break;
+                    }
+                }
+            }
+
+            if (!is_null($entity)) {
+                break;
+            }
+        }
+
+        return $entity;
+    }
+
     public function getTypeEntity(Paragraph $paragraph): ?string
     {
         $type = $paragraph->getType();
@@ -240,20 +254,20 @@ class ParagraphService
             return;
         }
 
-        $entity          = $this->getEntity($paragraph);
-        $reflectionClass = new ReflectionClass($entity::class);
+        $entityParagraph          = $this->getEntity($paragraph);
+        $reflectionClass = new ReflectionClass($entityParagraph::class);
         foreach ($config as $key => $value) {
-            $reflectionClass->getProperty($key)->setValue($entity, $value);
+            $reflectionClass->getProperty($key)->setValue($entityParagraph, $value);
         }
 
-        $this->paragraphRepository->save($entity);
+        $this->paragraphRepository->save($entityParagraph);
     }
 
     public function setData(Paragraph $paragraph): void
     {
-        $entity = $this->getEntity($paragraph);
+        $entityParagraph = $this->getEntity($paragraph);
         $type   = $paragraph->getType();
-        if ($entity instanceof EntityParagraphInterface || is_null($type)) {
+        if ($entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
             return;
         }
 
@@ -267,11 +281,40 @@ class ParagraphService
         }
     }
 
+    public function setParent(Paragraph $paragraph, ?EntityFrontInterface $entityFront): Paragraph
+    {
+        $find             = false;
+        $reflectionClass  = new ReflectionClass($paragraph);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            $attributes = $reflectionProperty->getAttributes();
+            foreach ($attributes as $attribute) {
+                $arguments = $attribute->getArguments();
+                if (ManyToOne::class == $attribute->getName() && $arguments['targetEntity'] == $entityFront::class) {
+                    $propertyAccessor->setValue(
+                        $paragraph,
+                        $reflectionProperty->getName(),
+                        $entityFront
+                    );
+                    $find = true;
+
+                    break;
+                }
+            }
+
+            if ($find) {
+                break;
+            }
+        }
+
+        return $paragraph;
+    }
+
     public function showContent(Paragraph $paragraph): ?Response
     {
         $type   = $paragraph->getType();
-        $entity = $this->getEntity($paragraph);
-        if (!$entity instanceof EntityParagraphInterface || is_null($type)) {
+        $entityParagraph = $this->getEntity($paragraph);
+        if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
             return null;
         }
 
@@ -279,7 +322,7 @@ class ParagraphService
         foreach ($this->rewindableGenerator as $row) {
             /** @var ParagraphInterface $row */
             if ($type === $row->getType()) {
-                $html = $row->show($entity);
+                $html = $row->show($entityParagraph);
 
                 break;
             }
@@ -291,34 +334,21 @@ class ParagraphService
     public function showTemplate(Paragraph $paragraph): ?array
     {
         $type     = $paragraph->getType();
-        $entity   = $this->getEntity($paragraph);
+        $entityParagraph   = $this->getEntity($paragraph);
         $template = null;
-        if (is_null($entity)) {
+        if (is_null($entityParagraph)) {
             return $template;
         }
 
         foreach ($this->rewindableGenerator as $row) {
             /** @var ParagraphInterface $row */
             if ($type == $row->getType()) {
-                $template = $row->template($entity);
+                $template = $row->template($entityParagraph);
 
                 break;
             }
         }
 
         return $template;
-    }
-
-    private function getMethod(EntityFrontInterface $entityFront): ?string
-    {
-        return match (true) {
-            $entityFront instanceof Chapter => 'setChapter',
-            $entityFront instanceof History => 'setHistory',
-            $entityFront instanceof Layout  => 'setLayout',
-            $entityFront instanceof Memo    => 'setMemo',
-            $entityFront instanceof Page    => 'setPage',
-            $entityFront instanceof Post    => 'setPost',
-            default                         => null,
-        };
     }
 }

@@ -74,9 +74,9 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
             ]
         );
 
-        /** @var BlockRepository $blockRepository */
-        $blockRepository = $this->repositoryService->get(Block::class);
-        $data            = $blockRepository->getDataByRegion();
+        /** @var BlockRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Block::class);
+        $data            = $repositoryLib->getDataByRegion(null);
 
         $templates = $this->getDomain()->getTemplates();
         if (!isset($templates['move'])) {
@@ -168,7 +168,7 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
         /** @var BlockRepository $serviceEntityRepositoryLib */
         $serviceEntityRepositoryLib = $domain->getRepository();
         $this->btnService->setBtnListOrTrash($domain, $routeType);
-        $data  = $serviceEntityRepositoryLib->getDataByRegion();
+        $data  = $serviceEntityRepositoryLib->getDataByRegion(null);
         $total = 0;
         foreach ($data as $region) {
             $total += is_countable($region) ? count($region) : 0;

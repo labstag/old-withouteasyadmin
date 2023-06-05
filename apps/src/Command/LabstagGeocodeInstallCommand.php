@@ -31,7 +31,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
             throw new Exception('Argument country invalide');
         }
 
-        if (empty($country)) {
+        if ($country === '') {
             $symfonyStyle->note(
                 sprintf(
                     'Argument countrie obligatoire: %s',

@@ -2,6 +2,7 @@
 
 namespace Labstag\Repository;
 
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Labstag\Entity\Block;
 use Labstag\Entity\Page;
@@ -14,17 +15,17 @@ class BlockRepository extends RepositoryLib
         parent::__construct($managerRegistry, Block::class);
     }
 
-    public function getBlock(?Page $page)
+    public function getBlock(?Page $page): Query
     {
-        $query = $this->createQueryBuilder('c');
-        $query->select('c.id');
-        $query->innerjoin('c.notinpages', 'p');
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->select('c.id');
+        $queryBuilder->innerjoin('c.notinpages', 'p');
         if ($page instanceof Page) {
-            $query->andWhere('p.id = :pid');
-            $query->setParameter('pid', $page->getId());
+            $queryBuilder->andWhere('p.id = :pid');
+            $queryBuilder->setParameter('pid', $page->getId());
         }
 
-        return $query->getQuery();
+        return $queryBuilder->getQuery();
     }
 
     /**

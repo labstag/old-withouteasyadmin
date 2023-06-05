@@ -15,10 +15,10 @@ class FormParagraph extends ParagraphLib implements ParagraphInterface
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         /** @var FormParagraph $entityParagraph */
-        $code = $entityParagraph->getForm();
+        $form = $entityParagraph->getForm();
 
         return [
-            'form/'.$code,
+            'form/'.$form,
             'form/default',
         ];
     }
@@ -52,8 +52,8 @@ class FormParagraph extends ParagraphLib implements ParagraphInterface
     {
         $template = $this->getTemplateFile($this->getCode($entityParagraph));
         /** @var FormParagraph $entityParagraph */
-        $code      = $entityParagraph->getForm();
-        $formClass = $this->formService->init($code);
+        $form      = $entityParagraph->getForm();
+        $formClass = $this->formService->init($form);
 
         return $this->formService->execute(
             $formClass,

@@ -70,8 +70,8 @@ class ParagraphService
 
     public function delete(Paragraph $paragraph): Response
     {
-        $edito = $paragraph->getEdito();
-        if (!$edito instanceof PublicInterface) {
+        $public = $this->serviceParagraphService->getParent($paragraph);
+        if (!$public instanceof PublicInterface) {
             throw new Exception('entity is not public interface');
         }
 
@@ -84,7 +84,7 @@ class ParagraphService
         return $this->redirectToRoute(
             (string) $this->urls['edit'],
             [
-                'id'        => $edito->getId(),
+                'id'        => $public->getId(),
                 '_fragment' => 'paragraph-list',
             ]
         );
@@ -133,11 +133,11 @@ class ParagraphService
         /** @var Request $request */
         $request = $this->requeststack->getCurrentRequest();
         $form->handleRequest($request);
-        /** @var EntityInterface $entity */
-        $entity = $this->serviceParagraphService->getEntity($paragraph);
+        /** @var EntityInterface $entityParagraph */
+        $entityParagraph = $this->serviceParagraphService->getEntity($paragraph);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->paragraphRepository->save($paragraph);
-            $this->attachFormService->upload($entity);
+            $this->attachFormService->upload($entityParagraph);
             $this->sessionService->flashBagAdd('success', 'Paragraph sauvegardé.');
             $referer = (string) $request->headers->get('referer');
 
@@ -208,11 +208,11 @@ class ParagraphService
 
     private function modalAttachmentDelete(Paragraph $paragraph, FormInterface $form): void
     {
-        /** @var EntityInterface $entity */
-        $entity      = $this->serviceParagraphService->getEntity($paragraph);
+        /** @var EntityInterface $entityParagraph */
+        $entityParagraph      = $this->serviceParagraphService->getEntity($paragraph);
         $annotations = array_merge(
             $this->uploadAnnotationReader->getUploadableFields($paragraph),
-            $this->uploadAnnotationReader->getUploadableFields($entity),
+            $this->uploadAnnotationReader->getUploadableFields($entityParagraph),
         );
         if (0 == count($annotations)) {
             return;

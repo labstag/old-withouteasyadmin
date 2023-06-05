@@ -44,10 +44,10 @@ class ParagraphListener extends EventListenerLib
     private function init(Paragraph $paragraph): void
     {
         $classentity = $this->paragraphService->getTypeEntity($paragraph);
-        /** @var ParagraphRepository $paragraphRepository */
-        $paragraphRepository = $this->repositoryService->get($paragraph::class);
+        /** @var ParagraphRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get($paragraph::class);
         if (is_null($classentity)) {
-            $paragraphRepository->remove($paragraph);
+            $repositoryLib->remove($paragraph);
 
             return;
         }

@@ -302,14 +302,14 @@ class ViewService
         $formType = $domain->getType();
         $url      = $domain->getUrlAdmin();
         $this->denyAccessUnlessGranted(
-            empty($entity->getId()) ? 'new' : 'edit',
+            $entity->getId() === null || $entity->getId() === '' ? 'new' : 'edit',
             $entity
         );
         $this->btnService->setBtnViewUpdate($url, $entity);
         $form = $this->createForm($formType, $entity);
         $this->btnService->addBtnSave(
             $form->getName(),
-            empty($entity->getId()) ? 'Ajouter' : 'Sauvegarder'
+            $entity->getId() === null || $entity->getId() === '' ? 'Ajouter' : 'Sauvegarder'
         );
         if ($form->has('paragraph')) {
             $this->modalParagraphs();
@@ -319,8 +319,8 @@ class ViewService
         if ($form->isSubmitted() && $form->isValid()) {
             $this->setPositionParagraphs();
             $this->attachFormService->upload($entity);
-            $repository = $domain->getRepository();
-            $repository->save($entity);
+            $repositoryLib = $domain->getRepository();
+            $repositoryLib->save($entity);
             $this->sessionService->flashBagAdd(
                 'success',
                 $this->translator->trans('data.save')
@@ -653,17 +653,17 @@ class ViewService
             return;
         }
 
-        /** @var ParagraphRepository $paragraphRepository */
-        $paragraphRepository = $this->repositoryService->get(Paragraph::class);
+        /** @var ParagraphRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Paragraph::class);
         foreach ($paragraphs as $id => $position) {
             /** @var int $position */
-            $paragraph = $paragraphRepository->find($id);
+            $paragraph = $repositoryLib->find($id);
             if (!$paragraph instanceof Paragraph) {
                 continue;
             }
 
             $paragraph->setPosition($position);
-            $paragraphRepository->save($paragraph);
+            $repositoryLib->save($paragraph);
         }
     }
 

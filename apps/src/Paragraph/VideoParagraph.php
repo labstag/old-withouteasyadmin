@@ -67,8 +67,8 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
 
     public function setData(Paragraph $paragraph): void
     {
-        /** @var VideoRepository $videoRepository */
-        $videoRepository = $this->repositoryService->get(Video::class);
+        /** @var VideoRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Video::class);
         /** @var AttachmentRepository $attachmentRepository */
         $attachmentRepository = $this->repositoryService->get(Attachment::class);
         $videos               = $paragraph->getVideos();
@@ -92,7 +92,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
             $video->setTitle($title);
             $slug = (string) $asciiSlugger->slug($title);
             $video->setSlug($slug);
-            $videoRepository->save($video);
+            $repositoryLib->save($video);
         } catch (Exception) {
             $image = '';
         }
@@ -114,7 +114,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
         $annotations = $this->uploadAnnotationReader->getUploadableFields($video);
         foreach ($annotations as $annotation) {
             /** @var UploadableField $annotation */
-            $this->setDataAnnotation($annotation, $image, $video, $videoRepository, $slug);
+            $this->setDataAnnotation($annotation, $image, $video, $repositoryLib, $slug);
         }
     }
 
@@ -142,7 +142,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
         $metas = $extractor->getMetas();
 
         $datas = $metas->get('og:video:url');
-        $embed = (0 != count($datas)) ? $datas[0] : null;
+        $embed = (0 != (is_countable($datas) ? count($datas) : 0)) ? $datas[0] : null;
 
         return $this->render(
             $this->getTemplateFile($this->getCode($entityParagraph)),

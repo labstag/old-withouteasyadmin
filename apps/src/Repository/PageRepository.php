@@ -36,15 +36,15 @@ class PageRepository extends RepositoryLib
 
     public function getBySlugs(array $slugs): mixed
     {
-        $query = $this->createQueryBuilder('p');
+        $queryBuilder = $this->createQueryBuilder('p');
 
-        $query->where(
+        $queryBuilder->where(
             'p.slug IN (:slugs)'
         );
-        $query->setParameters(
+        $queryBuilder->setParameters(
             ['slugs' => $slugs]
         );
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 }

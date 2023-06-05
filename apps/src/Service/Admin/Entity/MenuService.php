@@ -28,9 +28,9 @@ class MenuService extends ViewService implements AdminEntityServiceInterface
             return new RedirectResponse($url);
         }
 
-        /** @var MenuRepository $menuRepository */
-        $menuRepository = $this->repositoryService->get(Menu::class);
-        $parent         = $menuRepository->find($get['id']);
+        /** @var MenuRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Menu::class);
+        $parent         = $repositoryLib->find($get['id']);
         if (!$parent instanceof Menu) {
             return new RedirectResponse($url);
         }
@@ -81,9 +81,9 @@ class MenuService extends ViewService implements AdminEntityServiceInterface
         array $parameters = []
     ): Response
     {
-        /** @var MenuRepository $menuRepository */
-        $menuRepository = $this->repositoryService->get(Menu::class);
-        $all            = $menuRepository->findAllCode();
+        /** @var MenuRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Menu::class);
+        $all            = $repositoryLib->findAllCode();
         $globals        = $this->twigEnvironment->getGlobals();
         $modal          = $globals['modal'] ?? [];
         if (!is_array($modal)) {
