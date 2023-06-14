@@ -52,7 +52,7 @@ class LayoutService extends ViewService implements AdminEntityServiceInterface
 
         /** @var CustomRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Custom::class);
-        $custom           = $repositoryLib->findOneBy(
+        $custom        = $repositoryLib->findOneBy(
             [
                 'id' => $post['custom'],
             ]

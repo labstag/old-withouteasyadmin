@@ -2,6 +2,7 @@
 
 namespace Labstag\Event\Listener;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\Block;
@@ -9,17 +10,11 @@ use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Lib\EventListenerLib;
 use Labstag\Repository\BlockRepository;
 
+#[AsDoctrineListener(event: Events::postPersist)]
+#[AsDoctrineListener(event: Events::postRemove)]
+#[AsDoctrineListener(event: Events::postUpdate)]
 class BlockListener extends EventListenerLib
 {
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::postPersist,
-            Events::postRemove,
-            Events::postUpdate,
-        ];
-    }
-
     public function postPersist(LifecycleEventArgs $lifecycleEventArgs): void
     {
         $this->logActivity('persist', $lifecycleEventArgs);

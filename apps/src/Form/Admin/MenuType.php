@@ -23,7 +23,7 @@ class MenuType extends AbstractTypeLib
             return;
         }
 
-        if ($entity->getClef() === null || $entity->getClef() === '') {
+        if (null === $entity->getClef() || '' === $entity->getClef()) {
             $this->setChildren($formBuilder);
 
             return;

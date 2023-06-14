@@ -295,27 +295,11 @@ class ViewService
             throw new Exception('Domain not found');
         }
 
-        $templates = $domain->getTemplates();
-        $template  = (array_key_exists($type, $templates)) ? $templates[$type] : 'admin/crud/form.html.twig';
-
-        $this->modalAttachmentDelete();
-        $formType = $domain->getType();
-        $url      = $domain->getUrlAdmin();
-        $this->denyAccessUnlessGranted(
-            $entity->getId() === null || $entity->getId() === '' ? 'new' : 'edit',
-            $entity
-        );
-        $this->btnService->setBtnViewUpdate($url, $entity);
-        $form = $this->createForm($formType, $entity);
-        $this->btnService->addBtnSave(
-            $form->getName(),
-            $entity->getId() === null || $entity->getId() === '' ? 'Ajouter' : 'Sauvegarder'
-        );
-        if ($form->has('paragraph')) {
-            $this->modalParagraphs();
-        }
-
-        $form->handleRequest($this->requeststack->getCurrentRequest());
+        $url = $domain->getUrlAdmin();
+        [
+            $template,
+            $form,
+        ] = $this->initEditOrNew($domain, $type, $entity, $url);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->setPositionParagraphs();
             $this->attachFormService->upload($entity);
@@ -585,6 +569,40 @@ class ViewService
         }
 
         return $breadcrumb;
+    }
+
+    private function initEditOrNew(
+        DomainInterface $domain,
+        string $type,
+        EntityInterface $entity,
+        array $url
+    ): array
+    {
+        $templates = $domain->getTemplates();
+        $template  = (array_key_exists($type, $templates)) ? $templates[$type] : 'admin/crud/form.html.twig';
+
+        $this->modalAttachmentDelete();
+        $formType = $domain->getType();
+        $this->denyAccessUnlessGranted(
+            null === $entity->getId() || '' === $entity->getId() ? 'new' : 'edit',
+            $entity
+        );
+        $this->btnService->setBtnViewUpdate($url, $entity);
+        $form = $this->createForm($formType, $entity);
+        $this->btnService->addBtnSave(
+            $form->getName(),
+            null === $entity->getId() || '' === $entity->getId() ? 'Ajouter' : 'Sauvegarder'
+        );
+        if ($form->has('paragraph')) {
+            $this->modalParagraphs();
+        }
+
+        $form->handleRequest($this->requeststack->getCurrentRequest());
+
+        return [
+            $template,
+            $form,
+        ];
     }
 
     private function listOrTrash(

@@ -60,7 +60,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         }
 
         if (array_key_exists('notinpages', $blockData)) {
-            $this->enqueueMethod->enqueue(
+            $this->enqueueMethod->async(
                 BlockService::class,
                 'process',
                 [

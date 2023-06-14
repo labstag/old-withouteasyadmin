@@ -550,8 +550,8 @@ class LabstagUserCommand extends CommandLib
     {
         /** @var GroupeRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Groupe::class);
-        $groupes    = $repositoryLib->findBy([], ['name' => 'DESC']);
-        $data       = [];
+        $groupes       = $repositoryLib->findBy([], ['name' => 'DESC']);
+        $data          = [];
         foreach ($groupes as $groupe) {
             /** @var Groupe $groupe */
             if ('visiteur' == $groupe->getCode()) {

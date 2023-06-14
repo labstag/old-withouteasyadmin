@@ -29,15 +29,15 @@ final class UploadableField implements MappingAttribute
         ?string $slug = null
     )
     {
-        if ($filename === null || $filename === '') {
+        if (null === $filename || '' === $filename) {
             throw new InvalidArgumentException("L'annotation UplodableField doit avoir un attribut 'filename'");
         }
 
-        if ($path === null || $path === '') {
+        if (null === $path || '' === $path) {
             throw new InvalidArgumentException("L'annotation UplodableField doit avoir un attribut 'path'");
         }
 
-        if ($slug === null || $slug === '') {
+        if (null === $slug || '' === $slug) {
             throw new InvalidArgumentException("L'annotation UplodableField doit avoir un attribut 'slug'");
         }
 

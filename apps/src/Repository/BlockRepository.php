@@ -31,7 +31,7 @@ class BlockRepository extends RepositoryLib
     /**
      * @return array<string, mixed[]>
      */
-    public function getDataByRegion(?Page $page): array
+    public function getDataByRegion(?object $page): array
     {
         $regions = [
             'header',
@@ -41,7 +41,7 @@ class BlockRepository extends RepositoryLib
         $data       = [];
         $query      = $this->createQueryBuilder('b');
         $parameters = [];
-        if (!is_null($page)) {
+        if (!is_null($page) && $page instanceof Page) {
             $pageQuery = $this->getBlock($page);
             $query->andWhere($query->expr()->notIn('b.id', $pageQuery->getDQL()));
             $paramsPages = $pageQuery->getParameters()->toArray();

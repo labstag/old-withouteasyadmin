@@ -230,7 +230,7 @@ class BlockService
         ?EntityFrontInterface $entityFront
     ): ?Response
     {
-        $type   = $block->getType();
+        $type        = $block->getType();
         $entityBlock = $this->getEntity($block);
         if (!$entityBlock instanceof EntityBlockInterface || is_null($type)) {
             return null;
@@ -254,7 +254,7 @@ class BlockService
         ?EntityFrontInterface $entityFront
     ): ?array
     {
-        $type   = $block->getType();
+        $type        = $block->getType();
         $entityBlock = $this->getEntity($block);
         if (!$entityBlock instanceof EntityBlockInterface || is_null($type)) {
             return null;

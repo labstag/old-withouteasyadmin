@@ -209,8 +209,8 @@ class ParagraphService
     private function modalAttachmentDelete(Paragraph $paragraph, FormInterface $form): void
     {
         /** @var EntityInterface $entityParagraph */
-        $entityParagraph      = $this->serviceParagraphService->getEntity($paragraph);
-        $annotations = array_merge(
+        $entityParagraph = $this->serviceParagraphService->getEntity($paragraph);
+        $annotations     = array_merge(
             $this->uploadAnnotationReader->getUploadableFields($paragraph),
             $this->uploadAnnotationReader->getUploadableFields($entityParagraph),
         );

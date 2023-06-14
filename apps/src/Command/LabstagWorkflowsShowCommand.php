@@ -73,7 +73,7 @@ class LabstagWorkflowsShowCommand extends CommandLib
     {
         /** @var WorkflowRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Workflow::class);
-        $toDelete   = $repositoryLib->toDeleteEntities($entities);
+        $toDelete      = $repositoryLib->toDeleteEntities($entities);
         if (!is_iterable($toDelete)) {
             return;
         }

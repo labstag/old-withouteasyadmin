@@ -588,7 +588,7 @@ class BtnService
     ): void
     {
         $this->setBtnList($url);
-        if ($entity->getId() === null || $entity->getId() === '') {
+        if (null === $entity->getId() || '' === $entity->getId()) {
             return;
         }
 

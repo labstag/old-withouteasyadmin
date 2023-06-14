@@ -43,7 +43,7 @@ class ParagraphService
 
         $this->paragraphRepository->save($paragraph);
         if (0 != count((array) $config)) {
-            $this->enqueueMethod->enqueue(
+            $this->enqueueMethod->async(
                 static::class,
                 'process',
                 [
@@ -254,7 +254,7 @@ class ParagraphService
             return;
         }
 
-        $entityParagraph          = $this->getEntity($paragraph);
+        $entityParagraph = $this->getEntity($paragraph);
         $reflectionClass = new ReflectionClass($entityParagraph::class);
         foreach ($config as $key => $value) {
             $reflectionClass->getProperty($key)->setValue($entityParagraph, $value);
@@ -266,7 +266,7 @@ class ParagraphService
     public function setData(Paragraph $paragraph): void
     {
         $entityParagraph = $this->getEntity($paragraph);
-        $type   = $paragraph->getType();
+        $type            = $paragraph->getType();
         if ($entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
             return;
         }
@@ -312,7 +312,7 @@ class ParagraphService
 
     public function showContent(Paragraph $paragraph): ?Response
     {
-        $type   = $paragraph->getType();
+        $type            = $paragraph->getType();
         $entityParagraph = $this->getEntity($paragraph);
         if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
             return null;
@@ -333,9 +333,9 @@ class ParagraphService
 
     public function showTemplate(Paragraph $paragraph): ?array
     {
-        $type     = $paragraph->getType();
-        $entityParagraph   = $this->getEntity($paragraph);
-        $template = null;
+        $type            = $paragraph->getType();
+        $entityParagraph = $this->getEntity($paragraph);
+        $template        = null;
         if (is_null($entityParagraph)) {
             return $template;
         }

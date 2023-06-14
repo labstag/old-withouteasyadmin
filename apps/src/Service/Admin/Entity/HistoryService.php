@@ -66,7 +66,7 @@ class HistoryService extends ViewService implements AdminEntityServiceInterface
             true
         );
         $filename = $serviceHistoryService->getFilename();
-        if ($filename === null || $filename === '') {
+        if (null === $filename || '' === $filename) {
             throw $this->createNotFoundException('Pas de fichier');
         }
 

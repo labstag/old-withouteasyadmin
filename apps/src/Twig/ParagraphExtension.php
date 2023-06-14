@@ -39,12 +39,12 @@ class ParagraphExtension extends ExtensionLib
         ];
 
         $code = $paragraph->getBackground();
-        if ($code !== null && $code !== '') {
+        if (null !== $code && '' !== $code) {
             $dataClass[] = 'm--background-'.$code;
         }
 
         $code = $paragraph->getColor();
-        if ($code !== null && $code !== '') {
+        if (null !== $code && '' !== $code) {
             $dataClass[] = 'm--theme-'.$code;
         }
 

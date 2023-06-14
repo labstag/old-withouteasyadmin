@@ -30,7 +30,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         /** @var ChapterRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Chapter::class);
-        $all        = $repositoryLib->findAll();
+        $all           = $repositoryLib->findAll();
         foreach ($all as $entity) {
             /** @var Chapter $entity */
             $repositoryLib->save($entity);
@@ -41,7 +41,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         /** @var EditoRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Edito::class);
-        $all        = $repositoryLib->findAll();
+        $all           = $repositoryLib->findAll();
         foreach ($all as $entity) {
             /** @var Edito $entity */
             $repositoryLib->save($entity);
@@ -52,7 +52,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         /** @var HistoryRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(History::class);
-        $all        = $repositoryLib->findAll();
+        $all           = $repositoryLib->findAll();
         foreach ($all as $entity) {
             /** @var History $entity */
             $repositoryLib->save($entity);
@@ -63,7 +63,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         /** @var PageRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Page::class);
-        $all        = $repositoryLib->findAll();
+        $all           = $repositoryLib->findAll();
         foreach ($all as $entity) {
             /** @var Page $entity */
             $repositoryLib->save($entity);
@@ -74,7 +74,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         /** @var PostRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Post::class);
-        $all        = $repositoryLib->findAll();
+        $all           = $repositoryLib->findAll();
         foreach ($all as $entity) {
             /** @var Post $entity */
             $repositoryLib->save($entity);
@@ -85,7 +85,7 @@ class LabstagMetatagsCorrectionCommand extends CommandLib
     {
         /** @var RenderRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Render::class);
-        $all        = $repositoryLib->findAll();
+        $all           = $repositoryLib->findAll();
         foreach ($all as $entity) {
             /** @var Render $entity */
             $repositoryLib->save($entity);

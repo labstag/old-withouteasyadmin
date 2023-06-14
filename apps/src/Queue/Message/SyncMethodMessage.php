@@ -2,7 +2,7 @@
 
 namespace Labstag\Queue\Message;
 
-class ServiceMethodMessage
+class SyncMethodMessage
 {
     public function __construct(protected string $serviceName, protected string $method, protected array $params = [])
     {

@@ -195,7 +195,7 @@ abstract class FixtureLib extends Fixture
         ObjectManager $objectManager
     ): void
     {
-        $generator     = $this->setFaker();
+        $generator = $this->setFaker();
         $statesTab = $this->getStatesData();
         for ($index = 0; $index < $number; ++$index) {
             $stateId = array_rand($statesTab);
@@ -216,7 +216,7 @@ abstract class FixtureLib extends Fixture
     ): void
     {
         $generator = $this->setFaker();
-        $users = $this->installService->getData('user');
+        $users     = $this->installService->getData('user');
         for ($index = 0; $index < $number; ++$index) {
             $indexUser = $generator->numberBetween(0, (is_countable($users) ? count($users) : 0) - 1);
             $user      = $this->getReference('user_'.$indexUser);

@@ -2,6 +2,7 @@
 
 namespace Labstag\Event\Listener;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Entity\AddressUser;
@@ -11,6 +12,9 @@ use Labstag\Entity\User;
 use Labstag\Interfaces\UserDataInterface;
 use Labstag\Lib\EventListenerLib;
 
+#[AsDoctrineListener(event: Events::postPersist)]
+#[AsDoctrineListener(event: Events::postRemove)]
+#[AsDoctrineListener(event: Events::postUpdate)]
 class UserDataListener extends EventListenerLib
 {
     public function getSubscribedEvents(): array

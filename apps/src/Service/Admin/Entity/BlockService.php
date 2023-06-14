@@ -76,7 +76,7 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
 
         /** @var BlockRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Block::class);
-        $data            = $repositoryLib->getDataByRegion(null);
+        $data          = $repositoryLib->getDataByRegion(null);
 
         $templates = $this->getDomain()->getTemplates();
         if (!isset($templates['move'])) {
