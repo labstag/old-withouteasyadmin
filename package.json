@@ -114,7 +114,7 @@
     "homepage": "https://github.com/koromerzhin/labstag#readme",
     "devDependencies": {
         "@symfony/stimulus-bridge": "2.0.*",
-        "@symfony/webpack-encore": "1.6.*",
+        "@symfony/webpack-encore": "1.8.*",
         "core-js": "3.21.*",
         "eslint": "7.12.*",
         "eslint-config-standard": "16.0.*",
