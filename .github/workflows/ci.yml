@@ -40,13 +40,13 @@ jobs:
       - name: 'docker ls'
         run: npm run docker:ls
       - name: linter PHP Code Sniffer
-        run: npm run lint:phpcs:error
-      - name: linter PHP MD
         uses: nick-fields/retry@v2
         with:
             timeout_minutes: 10
             max_attempts: 3
-            command: npm run lint:phpmd
+            command: npm run lint:phpcs:error
+      - name: linter PHP MD
+        run: npm run lint:phpmd
       - name: linter PHPMND
         run: npm run lint:phpmnd
       - name: Add assets
