@@ -44,9 +44,8 @@ jobs:
       - name: linter PHP MD
         uses: nick-fields/retry@v2
         with:
-            retries: 3
-            delay: 5
-            run: npm run lint:phpmd
+            max_attempts: 3
+            command: npm run lint:phpmd
       - name: linter PHPMND
         run: npm run lint:phpmnd
       - name: Add assets
