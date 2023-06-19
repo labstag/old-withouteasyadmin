@@ -31,7 +31,7 @@
     "docker:waiting": "korojscommands docker_waiting --status running --container apache phpfpm",
     "doctrine:fixtures": "docker exec -i $($npm_package_config_phpfpm) symfony console doctrine:fixtures:load -n",
     "doctrine:migrate": "docker exec -i $($npm_package_config_phpfpm) symfony console doctrine:migrations:migrate -n",
-    "doctrine:schema:update": "docker exec -i $($npm_package_config_phpfpm) symfony console doctrine:schema:update --force",
+    "doctrine:schema:update": "docker exec -i $($npm_package_config_phpfpm) symfony console doctrine:schema:update --complete --force",
     "doctrine:validate": "docker exec -i $($npm_package_config_phpfpm) symfony console doctrine:schema:validate",
     "download:phar": "korojscommands php_download-phar",
     "encore:build": "encore production --progress",
