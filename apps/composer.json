@@ -153,7 +153,7 @@
       "phpcs:warning": "phpcs --report=full --extensions=php --error-severity=0 --standard=phpcs.xml",
       "phpdoc": "php phpDocumentor.phar -d src -t public/docs",
       "phploc": "php phploc.phar src",
-      "phpmd": "phpmd -e error_reporting=24575 src,features/bootstrap ansi phpmd.xml",
+      "phpmd": "phpmd src,features/bootstrap ansi phpmd.xml",
       "phpmnd": "phpmnd src features/bootstrap tests",
       "rector": "rector process --clear-cache",
       "rector-dry": "rector process --clear-cache --dry-run",
