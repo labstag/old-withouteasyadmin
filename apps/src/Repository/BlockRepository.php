@@ -58,7 +58,6 @@ class BlockRepository extends RepositoryLib
             $parameters['region'] = $region;
             $query->setParameters($parameters);
             $result = $query->getQuery()->getResult();
-            dump(['result' => $result]);
             $data[$region] = $result;
         }
 

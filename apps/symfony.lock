@@ -144,19 +144,6 @@
     "guzzlehttp/psr7": {
         "version": "2.1.0"
     },
-    "helios-ag/fm-elfinder-bundle": {
-        "version": "10.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "10.0",
-            "ref": "addd79a9903ee92664f4cff61eb6cdd1b95945e7"
-        },
-        "files": [
-            "config/packages/fm_elfinder.yaml",
-            "config/routes/fm_elfinder.yaml"
-        ]
-    },
     "imagine/imagine": {
         "version": "1.2.4"
     },
@@ -388,6 +375,18 @@
     "spipu/html2pdf": {
         "version": "v5.2.3"
     },
+    "squizlabs/php_codesniffer": {
+        "version": "3.7",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.6",
+            "ref": "1019e5c08d4821cb9b77f4891f8e9c31ff20ac6f"
+        },
+        "files": [
+            "phpcs.xml.dist"
+        ]
+    },
     "stevenmaguire/oauth2-bitbucket": {
         "version": "3.0.0"
     },
@@ -396,9 +395,6 @@
     },
     "stevenmaguire/oauth2-paypal": {
         "version": "2.0.0"
-    },
-    "studio-42/elfinder": {
-        "version": "2.1.59"
     },
     "symfony/apache-pack": {
         "version": "1.0",
@@ -543,7 +539,7 @@
         "version": "v5.4.2"
     },
     "symfony/lock": {
-        "version": "6.2",
+        "version": "6.3",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
