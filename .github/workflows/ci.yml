@@ -44,6 +44,7 @@ jobs:
       - name: linter PHP MD
         uses: nick-fields/retry@v2
         with:
+            timeout_minutes: 10
             max_attempts: 3
             command: npm run lint:phpmd
       - name: linter PHPMND
