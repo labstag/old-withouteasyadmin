@@ -149,7 +149,7 @@
       "php-cs-fixer:dry": "php php-cs-fixer.phar fix src --dry-run -v --diff",
       "phpcbf": "phpcbf --report=diff --extensions=php --standard=phpcs.xml",
       "phpcs": "phpcs --report=full --extensions=php src --standard=phpcs.xml",
-      "phpcs:error": "phpcs  --report=full --extensions=php --warning-severity=0 --standard=phpcs.xml",
+      "phpcs:error": "phpcs --report=full --extensions=php --warning-severity=0 --standard=phpcs.xml",
       "phpcs:warning": "phpcs --report=full --extensions=php --error-severity=0 --standard=phpcs.xml",
       "phpdoc": "php phpDocumentor.phar -d src -t public/docs",
       "phploc": "php phploc.phar src",
