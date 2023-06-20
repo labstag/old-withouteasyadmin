@@ -15,7 +15,16 @@ jobs:
           ref: 'v2.0'
           repository: koromerzhin/lampy
           path: lampy
+      - name: Cache npm packages
+        id: npm-cache
+        uses: actions/cache@v3
+        with:
+            path: node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+            restore-keys: |
+              ${{ runner.os }}-node-
       - name: Install npm dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm install
       - name: 'set apps/.env'
         run: 'cp apps/.env.test apps/.env'
