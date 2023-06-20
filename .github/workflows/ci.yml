@@ -17,7 +17,7 @@ jobs:
           path: lampy
       - name: Install npm dependencies
         run: npm install
-      - name: 'set .env'
+      - name: 'set apps/.env'
         run: 'cp apps/.env.test apps/.env'
       - name: 'set .env'
         run: 'cp .env.example .env'
