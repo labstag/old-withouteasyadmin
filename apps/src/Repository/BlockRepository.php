@@ -57,7 +57,7 @@ class BlockRepository extends RepositoryLib
         foreach ($regions as $region) {
             $parameters['region'] = $region;
             $query->setParameters($parameters);
-            $result = $query->getQuery()->getResult();
+            $result        = $query->getQuery()->getResult();
             $data[$region] = $result;
         }
 

@@ -83,7 +83,7 @@
         "twig/extra-bundle": "3.6.*",
         "twig/intl-extra": "3.6.*",
         "vantezzen/oauth2-pinterest": "2.2.*",
-        "vertisan/oauth2-twitch-helix": "1.1.*",
+        "vertisan/oauth2-twitch-helix": "2.0.*",
         "webonyx/graphql-php": "15.5.*",
         "wohali/oauth2-discord-new": "1.2.*"
     },
@@ -181,8 +181,7 @@
       "phpstan:9": "phpstan analyse -l 9",
       "rector": "rector process --clear-cache",
       "rector-dry": "rector process --clear-cache --dry-run",
-      "simple-phpunit": "simple-phpunit --verbose",
-      "simple-phpunit-unit-integration": "simple-phpunit --testsuite unit,integration --verbose",
+      "phpunit": "phpunit",
       "translation:en": "symfony console translation:extract --force --format=yaml en",
       "translation:fr": "symfony console translation:extract --force --format=yaml fr",
       "auto-scripts": {

@@ -13,16 +13,8 @@ use Labstag\Interfaces\UserDataInterface;
 use Labstag\Lib\EventListenerLib;
 
 #[AsDoctrineListener(event: Events::postPersist)]
-#[AsDoctrineListener(event: Events::postRemove)]
-#[AsDoctrineListener(event: Events::postUpdate)]
 class UserDataListener extends EventListenerLib
 {
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::postPersist,
-        ];
-    }
 
     public function postPersist(LifecycleEventArgs $lifecycleEventArgs): void
     {
