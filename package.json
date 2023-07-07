@@ -127,7 +127,7 @@
         "sass": "1.49.*",
         "sass-loader": "12.4.*",
         "stimulus": "2.0.*",
-        "stylelint": "13.13.*",
+        "stylelint": "15.10.*",
         "stylelint-config-standard": "22.0.*",
         "url-loader": "4.1.*",
         "webpack-notifier": "1.15.*"
