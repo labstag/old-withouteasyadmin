@@ -13,12 +13,14 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 abstract class BlockLib extends AbstractController
 {
     public function __construct(
+        protected CacheInterface $cache,
         protected RepositoryService $repositoryService,
         protected MenuService $menuService,
         protected ParagraphService $paragraphService,

@@ -6,6 +6,7 @@ use Labstag\Entity\User;
 use Labstag\Form\Security\ChangePasswordType;
 use Labstag\Interfaces\PostFormInterface;
 use Labstag\Lib\PostFormLib;
+use Labstag\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,8 +25,8 @@ class ChangePasswordForm extends PostFormLib implements PostFormInterface
             return $this->redirectToRoute('front');
         }
 
+        /** @var UserRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(User::class);
-
         $user = $repositoryLib->findOneBy(
             [
                 'id' => $request->attributes->get('id'),

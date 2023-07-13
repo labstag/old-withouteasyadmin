@@ -14,10 +14,24 @@ Encore
   // only needed for CDN's or sub-directory deploy
   .setManifestKeyPrefix('assets/')
   .copyFiles([
-    {from: './node_modules/tarteaucitronjs', to: 'tarteaucitron/[path][name].[ext]', pattern: /\.(js)$/, includeSubdirectories: false},
-    {from: './node_modules/tarteaucitronjs/css', to: 'tarteaucitron/css/[path][name].[ext]'},
-    {from: './node_modules/tarteaucitronjs/lang', to: 'tarteaucitron/lang/[path][name].[ext]'},
-    {from: './node_modules/@ckeditor/ckeditor5-build-classic/build', to: 'ckeditor/[path][name].[ext]'}
+    {
+      from: './node_modules/tarteaucitronjs',
+      to: 'tarteaucitron/[path][name].[ext]',
+      pattern: /\.(js)$/,
+      includeSubdirectories: false
+    },
+    {
+      from: './node_modules/tarteaucitronjs/css',
+      to: 'tarteaucitron/css/[path][name].[ext]'
+    },
+    {
+      from: './node_modules/tarteaucitronjs/lang',
+      to: 'tarteaucitron/lang/[path][name].[ext]'
+    },
+    {
+      from: './node_modules/@ckeditor/ckeditor5-build-classic/build',
+      to: 'ckeditor/[path][name].[ext]'
+    }
   ])
   /*
    * ENTRY CONFIG
@@ -53,13 +67,20 @@ Encore
   .enableVersioning(true)
 
   // enables @babel/preset-env polyfills
-  .configureBabelPresetEnv((config) => {
-    config.useBuiltIns = 'usage';
-    config.corejs = 3;
-  })
+  // .configureBabelPresetEnv((config) => {
+  //   config.useBuiltIns = 'usage';
+  //   config.corejs = 3;
+  // })
 
   // enables Sass/SCSS support
   .enableSassLoader()
+  .enablePostCssLoader(
+    (options) => {
+      options.postcssOptions = {
+        path: path.resolve(__dirname, 'postcss.config.js')
+      };
+    }
+  )
 
   // uncomment if you use TypeScript
   //.enableTypeScriptLoader()
@@ -76,13 +97,12 @@ Encore
   .configureDevServerOptions(options => {
     options.allowedHosts = 'all';
   })
+
+  .addAliases({
+    '@nm': path.resolve(__dirname, 'node_modules'),
+    '@': path.resolve(__dirname, 'assets'),
+    '@scss': path.resolve(__dirname, 'assets/scss')
+  })
 ;
 
-const config = Encore.getWebpackConfig();
-config.resolve.alias = {
-  ...config.resolve.alias,
-  '@': path.resolve(__dirname, 'assets'),
-  '@scss': path.resolve(__dirname, 'assets/scss')
-}
-
-module.exports = config;
+module.exports = Encore.getWebpackConfig();

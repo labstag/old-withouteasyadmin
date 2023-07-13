@@ -15,6 +15,7 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -24,6 +25,7 @@ abstract class ParagraphLib extends AbstractController
     protected array $template = [];
 
     public function __construct(
+        protected CacheInterface $cache,
         protected FileService $fileService,
         protected UploadAnnotationReader $uploadAnnotationReader,
         protected ErrorService $errorService,

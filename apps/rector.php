@@ -78,7 +78,6 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::NAMING,
         SetList::PHP_82,
         // SetList::TYPE_DECLARATION,
-        SensiolabsSetList::FRAMEWORK_EXTRA_61,
         SensiolabsSetList::ANNOTATIONS_TO_ATTRIBUTES,
         LevelSetList::UP_TO_PHP_82
     ]);

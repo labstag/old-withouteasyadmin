@@ -15,7 +15,6 @@ use Labstag\Lib\EventListenerLib;
 #[AsDoctrineListener(event: Events::postPersist)]
 class UserDataListener extends EventListenerLib
 {
-
     public function postPersist(LifecycleEventArgs $lifecycleEventArgs): void
     {
         $this->logActivity('persist', $lifecycleEventArgs);
