@@ -14,8 +14,7 @@ class MailerService
         protected EnqueueMethod $enqueueMethod,
         protected MailerInterface $mailer,
         protected DataService $dataService
-    )
-    {
+    ) {
     }
 
     public function createEmail(array $data = []): Email

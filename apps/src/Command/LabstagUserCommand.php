@@ -26,8 +26,7 @@ class LabstagUserCommand extends CommandLib
         InputInterface $input,
         OutputInterface $output,
         User $user
-    ): void
-    {
+    ): void {
         $accept = false;
         while (!$accept) {
             $question = new Question("Entrer l'email de l'utilisateur : ");
@@ -49,8 +48,7 @@ class LabstagUserCommand extends CommandLib
         InputInterface $input,
         OutputInterface $output,
         User $user
-    ): void
-    {
+    ): void {
         $accept = false;
         while (!$accept) {
             $question = new Question("Entrer le password de l'utilisateur : ");
@@ -78,8 +76,7 @@ class LabstagUserCommand extends CommandLib
         InputInterface $input,
         OutputInterface $output,
         User $user
-    ): void
-    {
+    ): void {
         $accept = false;
         while (!$accept) {
             $question = new Question("Entrer le username de l'utilisateur : ");
@@ -101,8 +98,7 @@ class LabstagUserCommand extends CommandLib
         OutputInterface $output,
         SymfonyStyle $symfonyStyle,
         string $action
-    ): void
-    {
+    ): void {
         /** @var QuestionHelper $helper */
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -145,8 +141,7 @@ class LabstagUserCommand extends CommandLib
         InputInterface $input,
         OutputInterface $output,
         SymfonyStyle $symfonyStyle
-    ): void
-    {
+    ): void {
         /** @var QuestionHelper $helper */
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -168,8 +163,7 @@ class LabstagUserCommand extends CommandLib
         InputInterface $input,
         OutputInterface $output,
         SymfonyStyle $symfonyStyle
-    ): void
-    {
+    ): void {
         /** @var QuestionHelper $helper */
         $helper         = $this->getHelper('question');
         $choiceQuestion = new ChoiceQuestion(
@@ -197,8 +191,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $symfonyStyle = new SymfonyStyle($input, $output);
         $user         = new User();
         $functions    = [
@@ -227,8 +220,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
@@ -262,8 +254,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
@@ -312,8 +303,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
@@ -407,8 +397,7 @@ class LabstagUserCommand extends CommandLib
         UserRepository $userRepository,
         SymfonyStyle $symfonyStyle,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $users = $userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         /** @var User $user */
@@ -442,8 +431,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
@@ -482,8 +470,7 @@ class LabstagUserCommand extends CommandLib
 
     protected function tableQuestionUser(
         UserRepository $userRepository
-    ): array
-    {
+    ): array {
         $users = $userRepository->findBy([], ['username' => 'ASC']);
         $table = [];
         /** @var User $user */
@@ -511,8 +498,7 @@ class LabstagUserCommand extends CommandLib
         SymfonyStyle $symfonyStyle,
         InputInterface $input,
         OutputInterface $output
-    ): void
-    {
+    ): void {
         $entity = $userRepository->findOneBy(['username' => $username]);
         if (!$entity instanceof User) {
             $symfonyStyle->warning(
@@ -546,8 +532,7 @@ class LabstagUserCommand extends CommandLib
         InputInterface $input,
         OutputInterface $output,
         User $user
-    ): void
-    {
+    ): void {
         /** @var GroupeRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Groupe::class);
         $groupes       = $repositoryLib->findBy([], ['name' => 'DESC']);

@@ -19,7 +19,8 @@ framework:
           max_retries: 0
           delay: 5000
       failed: doctrine://default
-      sync: "sync://"
+      sync:
+        "sync://"
         # async: '%env(MESSENGER_TRANSPORT_DSN)%'
         # failed: 'doctrine://default?queue_name=failed'
         # sync: 'sync://'

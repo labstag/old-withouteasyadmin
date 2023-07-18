@@ -14,8 +14,7 @@ class DisclaimerType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $formBuilder,
         array $options
-    ): void
-    {
+    ): void {
         $formBuilder->add(
             'confirm',
             CheckboxType::class,

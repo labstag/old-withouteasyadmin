@@ -370,8 +370,7 @@ class Block implements EntityTrashInterface
     private function removeElementBlock(
         Collection $element,
         EntityBlockInterface $entityBlock
-    ): void
-    {
+    ): void {
         if ($element->removeElement($entityBlock) && $entityBlock->getBlock() === $this) {
             $entityBlock->setBlock(null);
         }

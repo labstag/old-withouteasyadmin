@@ -26,15 +26,13 @@ class LayoutService extends ViewService implements AdminEntityServiceInterface
 
     public function index(
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash('index', $parameters);
     }
 
     public function new(
         array $parameters = []
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $domain = $this->getDomain();
         if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');
@@ -75,16 +73,14 @@ class LayoutService extends ViewService implements AdminEntityServiceInterface
 
     public function trash(
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         return $this->listOrTrash('trash', $parameters);
     }
 
     private function listOrTrash(
         string $type,
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         $domain = $this->getDomain();
         if (!$domain instanceof DomainInterface) {
             throw new Exception('Domain not found');

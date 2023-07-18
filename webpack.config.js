@@ -1,37 +1,38 @@
-const path = require('path');
-var Encore = require('@symfony/webpack-encore');
-// Manually configure the runtime environment if not already configured yet by the "encore" command.
-// It's useful when you use tools that rely on webpack.config.js file.
+const path = require("path");
+var Encore = require("@symfony/webpack-encore");
+// Manually configure the runtime environment if not already configured yet by
+// the "encore" command. It's useful when you use tools that rely on
+// webpack.config.js file.
 if (!Encore.isRuntimeEnvironmentConfigured()) {
-    Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
+  Encore.configureRuntimeEnvironment(process.env.NODE_ENV || "dev");
 }
 
 Encore
   // directory where compiled assets will be stored
-  .setOutputPath('apps/public/assets/')
+  .setOutputPath("apps/public/assets/")
   // public path used by the web server to access the output path
-  .setPublicPath('/assets')
+  .setPublicPath("/assets")
   // only needed for CDN's or sub-directory deploy
-  .setManifestKeyPrefix('assets/')
+  .setManifestKeyPrefix("assets/")
   .copyFiles([
     {
-      from: './node_modules/tarteaucitronjs',
-      to: 'tarteaucitron/[path][name].[ext]',
+      from: "./node_modules/tarteaucitronjs",
+      to: "tarteaucitron/[path][name].[ext]",
       pattern: /\.(js)$/,
-      includeSubdirectories: false
+      includeSubdirectories: false,
     },
     {
-      from: './node_modules/tarteaucitronjs/css',
-      to: 'tarteaucitron/css/[path][name].[ext]'
+      from: "./node_modules/tarteaucitronjs/css",
+      to: "tarteaucitron/css/[path][name].[ext]",
     },
     {
-      from: './node_modules/tarteaucitronjs/lang',
-      to: 'tarteaucitron/lang/[path][name].[ext]'
+      from: "./node_modules/tarteaucitronjs/lang",
+      to: "tarteaucitron/lang/[path][name].[ext]",
     },
     {
-      from: './node_modules/@ckeditor/ckeditor5-build-classic/build',
-      to: 'ckeditor/[path][name].[ext]'
-    }
+      from: "./node_modules/@ckeditor/ckeditor5-build-classic/build",
+      to: "ckeditor/[path][name].[ext]",
+    },
   ])
   /*
    * ENTRY CONFIG
@@ -39,13 +40,14 @@ Encore
    * Each entry will result in one JavaScript file (e.g. app.js)
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
-  .addEntry('front', './assets/js/front.js')
-  .addEntry('back', './assets/js/back.js')
+  .addEntry("front", "./assets/js/front.js")
+  .addEntry("back", "./assets/js/back.js")
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   // .enableStimulusBridge('./assets/controllers.json')
 
-  // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
+  // When enabled, Webpack "splits" your files into smaller pieces for greater
+  // optimization.
   .splitEntryChunks()
 
   // will require an extra script tag for runtime.js
@@ -74,13 +76,11 @@ Encore
 
   // enables Sass/SCSS support
   .enableSassLoader()
-  .enablePostCssLoader(
-    (options) => {
-      options.postcssOptions = {
-        path: path.resolve(__dirname, 'postcss.config.js')
-      };
-    }
-  )
+  .enablePostCssLoader((options) => {
+    options.postcssOptions = {
+      path: path.resolve(__dirname, "postcss.config.js"),
+    };
+  })
 
   // uncomment if you use TypeScript
   //.enableTypeScriptLoader()
@@ -94,19 +94,18 @@ Encore
 
   // uncomment if you're having problems with a jQuery plugin
   // .autoProvidejQuery()
-  .configureDevServerOptions(options => {
-    options.allowedHosts = 'all';
+  .configureDevServerOptions((options) => {
+    options.allowedHosts = "all";
   })
 
   .addAliases({
-    '@nm': path.resolve(__dirname, 'node_modules'),
-    '@': path.resolve(__dirname, 'assets'),
-    '@scss': path.resolve(__dirname, 'assets/scss'),
-    '@fonts': path.resolve(__dirname, 'assets/fonts'),
-    '@images': path.resolve(__dirname, 'assets/images'),
-    '@scssback': path.resolve(__dirname, 'assets/scss/back'),
-    '@scssfront': path.resolve(__dirname, 'assets/scss/front')
-  })
-;
+    "@nm": path.resolve(__dirname, "node_modules"),
+    "@": path.resolve(__dirname, "assets"),
+    "@scss": path.resolve(__dirname, "assets/scss"),
+    "@fonts": path.resolve(__dirname, "assets/fonts"),
+    "@images": path.resolve(__dirname, "assets/images"),
+    "@scssback": path.resolve(__dirname, "assets/scss/back"),
+    "@scssfront": path.resolve(__dirname, "assets/scss/front"),
+  });
 
 module.exports = Encore.getWebpackConfig();

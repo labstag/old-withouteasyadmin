@@ -1,7 +1,7 @@
-import './global/elements/index'
-require('bootstrap')
-function loadGlobal () {
-  document.querySelectorAll('.wysiwyg').forEach(element => {
+import "./global/elements/index";
+require("bootstrap");
+function loadGlobal() {
+  document.querySelectorAll(".wysiwyg").forEach((element) => {
     // const idinput = element.getAttribute('id')
 
     // if (global.CKEDITOR.instances[idinput]) {
@@ -11,7 +11,9 @@ function loadGlobal () {
 
     // global.CKEDITOR.replace(idinput)
 
-    global.ClassicEditor.create(element).catch(error => { console.error(error) })
-  })
+    global.ClassicEditor.create(element).catch((error) => {
+      console.error(error);
+    });
+  });
 }
-window.addEventListener('load', () => loadGlobal())
+window.addEventListener("load", () => loadGlobal());

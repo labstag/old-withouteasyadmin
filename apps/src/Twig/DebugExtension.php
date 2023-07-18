@@ -7,7 +7,6 @@ use Twig\TwigFilter;
 
 class DebugExtension extends ExtensionLib
 {
-
     protected array $templates = [];
 
     public function debugBegin(array $data): string

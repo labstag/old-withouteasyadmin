@@ -33,8 +33,7 @@ abstract class PostFormLib extends AbstractController
         protected AuthenticationUtils $authenticationUtils,
         protected OauthConnectUserRepository $oauthConnectUserRepository,
         protected Environment $twigEnvironment
-    )
-    {
+    ) {
     }
 
     protected function getEmailFrom(): string

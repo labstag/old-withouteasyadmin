@@ -78,8 +78,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
         WorkflowGroupeRepository $workflowGroupeRepository,
         Groupe $groupe,
         ?Workflow $workflow = null
-    ): bool
-    {
+    ): bool {
         if ('superadmin' === $groupe->getCode()) {
             return true;
         }
@@ -104,8 +103,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
         Groupe $groupe,
         ?User $user = null,
         ?Workflow $workflow = null
-    ): bool
-    {
+    ): bool {
         $code = $groupe->getCode();
         if (is_null($code)) {
             return false;
@@ -134,8 +132,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
     private function setGroupe(
         GroupeRepository $groupeRepository,
         ?User $user = null
-    ): Groupe
-    {
+    ): Groupe {
         $groupe = $groupeRepository->findOneBy(['code' => 'visiteur']);
         if (!$groupe instanceof Groupe) {
             $groupe = new Groupe();
@@ -161,8 +158,7 @@ class WorkflowGuardSubscriber extends EventSubscriberLib
         ?GroupeRepository $groupeRepository = null,
         ?WorkflowGroupeRepository $workflowGroupeRepository = null,
         ?WorkflowUserRepository $workflowUserRepository = null
-    ): bool
-    {
+    ): bool {
         $tab = [
             $workflowRepository,
             $groupeRepository,

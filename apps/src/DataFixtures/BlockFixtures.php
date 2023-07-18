@@ -35,8 +35,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         int $position,
         array $blockData,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         $type  = $blockData['type'];
         $block = new Block();
         $block->setTitle($region.' - '.$type.'('.($position + 1).')');
@@ -80,8 +79,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         string $region,
         array $blocks,
         ObjectManager $objectManager
-    ): void
-    {
+    ): void {
         foreach ($blocks as $position => $block) {
             $this->addBlock($region, $position, $block, $objectManager);
         }

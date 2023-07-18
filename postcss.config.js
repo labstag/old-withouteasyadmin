@@ -1,11 +1,6 @@
-const discardComments = require('postcss-discard-comments');
-const autoprefixer = require('autoprefixer');
+const discardComments = require("postcss-discard-comments");
+const autoprefixer = require("autoprefixer");
 
 module.exports = {
-  plugins: [
-    autoprefixer({}),
-    discardComments({
-      removeAll: true
-    })
-  ]
-}
+  plugins: [autoprefixer({}), discardComments({ removeAll: true })],
+};

@@ -186,8 +186,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
         Video $video,
         RepositoryLib $serviceEntityRepositoryLib,
         string $slug
-    ): void
-    {
+    ): void {
         /** @var finfo $finfo */
         $finfo         = finfo_open(FILEINFO_MIME_TYPE);
         $fileDirectory = $this->getParameter('file_directory');

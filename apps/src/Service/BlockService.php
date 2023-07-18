@@ -22,8 +22,7 @@ class BlockService
         protected EnqueueMethod $enqueueMethod,
         protected PageRepository $pageRepository,
         protected BlockRepository $blockRepository
-    )
-    {
+    ) {
     }
 
     public function getAll(): array
@@ -228,8 +227,7 @@ class BlockService
     public function showContent(
         Block $block,
         ?EntityFrontInterface $entityFront
-    ): ?Response
-    {
+    ): ?Response {
         $type        = $block->getType();
         $entityBlock = $this->getEntity($block);
         if (!$entityBlock instanceof EntityBlockInterface || is_null($type)) {
@@ -252,8 +250,7 @@ class BlockService
     public function showTemplate(
         Block $block,
         ?EntityFrontInterface $entityFront
-    ): ?array
-    {
+    ): ?array {
         $type        = $block->getType();
         $entityBlock = $this->getEntity($block);
         if (!$entityBlock instanceof EntityBlockInterface || is_null($type)) {

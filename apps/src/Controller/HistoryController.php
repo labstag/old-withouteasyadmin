@@ -27,8 +27,7 @@ class HistoryController extends FrontControllerLib
         string $slug,
         HistoryRepository $historyRepository,
         PageRepository $pageRepository
-    ): Response
-    {
+    ): Response {
         $history = $historyRepository->findOneBy(
             ['slug' => $slug]
         );
@@ -57,8 +56,7 @@ class HistoryController extends FrontControllerLib
         string $chapter,
         ChapterRepository $chapterRepository,
         HistoryRepository $historyRepository
-    ): Response
-    {
+    ): Response {
         /** @var History $history */
         $history = $historyRepository->findOneBy(
             ['slug' => $history]
@@ -98,8 +96,7 @@ class HistoryController extends FrontControllerLib
         string $slug,
         HistoryService $historyService,
         HistoryRepository $historyRepository
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $history = $historyRepository->findOneBy(
             ['slug' => $slug]
         );
@@ -136,8 +133,7 @@ class HistoryController extends FrontControllerLib
     public function user(
         string $username,
         RenderRepository $renderRepository
-    ): Response
-    {
+    ): Response {
         unset($username);
         $render = $renderRepository->findOneBy(
             ['url' => 'front_history_user']

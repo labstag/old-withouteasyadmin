@@ -24,16 +24,14 @@ class ParagraphService
         protected Environment $twigEnvironment,
         protected EnqueueMethod $enqueueMethod,
         protected ParagraphRepository $paragraphRepository
-    )
-    {
+    ) {
     }
 
     public function add(
         EntityFrontInterface $entityFront,
         string $code,
         ?array $config = []
-    ): void
-    {
+    ): void {
         $position = (is_countable($entityFront->getParagraphs()) ? count($entityFront->getParagraphs()) : 0) + 1;
 
         $paragraph = new Paragraph();

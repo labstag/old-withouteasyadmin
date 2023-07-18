@@ -32,8 +32,7 @@ class SecurityController extends FrontControllerLib
     #[Route(path: '/change-password/{id}', name: 'app_changepassword', priority: 1)]
     public function changePassword(
         PageRepository $pageRepository
-    ): Response
-    {
+    ): Response {
         return $this->page('change-password', $pageRepository);
     }
 
@@ -43,8 +42,7 @@ class SecurityController extends FrontControllerLib
         WorkflowService $workflowService,
         SessionService $sessionService,
         Email $email
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if ('averifier' != $email->getState()) {
             $sessionService->flashBagAdd(
                 'danger',
@@ -69,8 +67,7 @@ class SecurityController extends FrontControllerLib
         WorkflowService $workflowService,
         SessionService $sessionService,
         Phone $phone
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if ('averifier' != $phone->getState()) {
             $sessionService->flashBagAdd(
                 'danger',
@@ -95,8 +92,7 @@ class SecurityController extends FrontControllerLib
         WorkflowService $workflowService,
         SessionService $sessionService,
         User $user
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         if ('avalider' != $user->getState()) {
             $sessionService->flashBagAdd(
                 'danger',
@@ -118,16 +114,14 @@ class SecurityController extends FrontControllerLib
     #[Route(path: '/disclaimer', name: 'disclaimer', priority: 1)]
     public function disclaimer(
         PageRepository $pageRepository
-    ): Response
-    {
+    ): Response {
         return $this->page('disclaimer', $pageRepository);
     }
 
     #[Route(path: '/login', name: 'app_login', priority: 1)]
     public function login(
         PageRepository $pageRepository
-    ): Response
-    {
+    ): Response {
         return $this->page('login', $pageRepository);
     }
 
@@ -142,8 +136,7 @@ class SecurityController extends FrontControllerLib
     #[Route(path: '/lost', name: 'app_lost', priority: 1)]
     public function lost(
         PageRepository $pageRepository
-    ): Response
-    {
+    ): Response {
         return $this->page('lost', $pageRepository);
     }
 
@@ -157,8 +150,7 @@ class SecurityController extends FrontControllerLib
         Request $request,
         string $oauthCode,
         OauthService $oauthService
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         /** @var AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
         $session  = $request->getSession();
@@ -208,8 +200,7 @@ class SecurityController extends FrontControllerLib
         ErrorService $errorService,
         OauthService $oauthService,
         UserService $userService
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         /** @var AbstractProvider $provider */
         $provider = $oauthService->setProvider($oauthCode);
         $query    = $request->query->all();
@@ -296,8 +287,7 @@ class SecurityController extends FrontControllerLib
         string $oauthCode,
         Security $security,
         OauthConnectUserRepository $oauthConnectUserRepository
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $this->denyAccessUnlessGranted('ROLE_USER');
         /** @var User $user */
         $user = $security->getUser();

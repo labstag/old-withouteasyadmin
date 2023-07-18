@@ -1,26 +1,26 @@
-import TwigComponent from '../apps/templates/components/button.html.twig';
+import TwigComponent from "../apps/templates/components/button.html.twig";
 
 export default {
-  title: 'Atoms/Button',
+  title: "Atoms/Button",
   argTypes: {
-    content: { control: 'text' },
+    content: { control: "text" },
     size: {
-      options: [ 'sm', 'md', 'lg' ],
-      control: 'select',
+      options: ["sm", "md", "lg"],
+      control: "select",
     },
     type: {
-      options: [ 'primary', 'gray', 'white' ],
-      control: 'select',
+      options: ["primary", "gray", "white"],
+      control: "select",
     },
-    isPlain: { control: 'boolean' },
-    isStretched: { control: 'boolean' },
+    isPlain: { control: "boolean" },
+    isStretched: { control: "boolean" },
     iconName: {
-      options: [ 'star', 'burger-menu' ],
-      control: 'select',
+      options: ["star", "burger-menu"],
+      control: "select",
     },
     iconPosition: {
-      options: [ 'left', 'right' ],
-      control: 'radio',
+      options: ["left", "right"],
+      control: "radio",
     },
   },
 };
@@ -39,11 +39,11 @@ const Template = (args) => {
 
 export const Button = Template.bind({});
 Button.args = {
-  content: 'Voir le lieu',
-  size: 'md',
-  type: 'primary',
+  content: "Voir le lieu",
+  size: "md",
+  type: "primary",
   isPlain: false,
   isStretched: false,
-  iconName: '',
-  iconPosition: 'left',
+  iconName: "",
+  iconPosition: "left",
 };

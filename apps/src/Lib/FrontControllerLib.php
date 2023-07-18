@@ -23,15 +23,13 @@ abstract class FrontControllerLib extends AbstractController
         protected RepositoryService $repositoryService,
         protected DataService $dataService,
         protected BlockService $blockService
-    )
-    {
+    ) {
     }
 
     public function page(
         ?string $slug,
         PageRepository $pageRepository
-    ): Response
-    {
+    ): Response {
         $page = $pageRepository->findOneBy(
             ['slug' => $slug]
         );
@@ -50,8 +48,7 @@ abstract class FrontControllerLib extends AbstractController
         string $view,
         array $parameters = [],
         ?Response $response = null
-    ): Response
-    {
+    ): Response {
         $redirect   = null;
         $parameters = $this->setParameters($parameters);
         if (isset($parameters['blocks'])) {
