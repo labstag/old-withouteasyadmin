@@ -1,7 +1,7 @@
 import './../scss/back.scss'
 import './global'
 import './back/elements/index'
-function clickFormSave (event) {
+function clickFormSave(event) {
   event.preventDefault()
   const formId = event.currentTarget.getAttribute('form')
   const formElement = document.querySelector("form[name='" + formId + "']")
@@ -10,7 +10,7 @@ function clickFormSave (event) {
   }
 }
 
-function clickReset (event) {
+function clickReset(event) {
   event.preventDefault()
   const element = event.currentTarget
   window.location.href = element.closest('form').getAttribute('action')

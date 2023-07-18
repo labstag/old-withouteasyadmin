@@ -3,7 +3,7 @@ import TwigComponent from '../apps/templates/components/button.html.twig';
 export default {
   title: 'Atoms/Button',
   argTypes: {
-    content: { control: 'text' },
+    content: {control: 'text'},
     size: {
       options: [ 'sm', 'md', 'lg' ],
       control: 'select',
@@ -12,8 +12,8 @@ export default {
       options: [ 'primary', 'gray', 'white' ],
       control: 'select',
     },
-    isPlain: { control: 'boolean' },
-    isStretched: { control: 'boolean' },
+    isPlain: {control: 'boolean'},
+    isStretched: {control: 'boolean'},
     iconName: {
       options: [ 'star', 'burger-menu' ],
       control: 'select',
@@ -27,23 +27,23 @@ export default {
 
 const Template = (args) => {
   return TwigComponent({
-    button_content: args.content,
-    button_size: args.size,
-    button_type: args.type,
-    button_isPlain: args.isPlain,
-    button_isStretched: args.isStretched,
-    button_iconName: args.iconName,
-    button_iconPosition: args.iconPosition,
+    button_content : args.content,
+    button_size : args.size,
+    button_type : args.type,
+    button_isPlain : args.isPlain,
+    button_isStretched : args.isStretched,
+    button_iconName : args.iconName,
+    button_iconPosition : args.iconPosition,
   });
 };
 
 export const Button = Template.bind({});
 Button.args = {
-  content: 'Voir le lieu',
-  size: 'md',
-  type: 'primary',
-  isPlain: false,
-  isStretched: false,
-  iconName: '',
-  iconPosition: 'left',
+  content : 'Voir le lieu',
+  size : 'md',
+  type : 'primary',
+  isPlain : false,
+  isStretched : false,
+  iconName : '',
+  iconPosition : 'left',
 };
