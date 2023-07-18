@@ -5,12 +5,7 @@
       {
         "type": "navbar",
         "code-menu": "front-header",
-        "notinpages": [
-          "login",
-          "disclaimer",
-          "lost",
-          "change-password"
-        ]
+        "notinpages": ["login", "disclaimer", "lost", "change-password"]
       },
       {
         "type": "header"
@@ -25,12 +20,7 @@
     "blocks": [
       {
         "type": "breadcrumb",
-        "notinpages": [
-          "login",
-          "disclaimer",
-          "lost",
-          "change-password"
-        ]
+        "notinpages": ["login", "disclaimer", "lost", "change-password"]
       },
       {
         "type": "flashbag"

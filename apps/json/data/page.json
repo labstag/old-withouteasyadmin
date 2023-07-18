@@ -2,12 +2,7 @@
   {
     "slug": "",
     "name": "Home",
-    "paragraphs": [
-      "edito",
-      "post",
-      "history",
-      "bookmark"
-    ],
+    "paragraphs": ["edito", "post", "history", "bookmark"],
     "pages": [
       {
         "slug": "disclaimer",
@@ -60,33 +55,24 @@
       {
         "slug": "mes-articles",
         "name": "Mes articles",
-        "paragraphs": [
-          "postlist",
-          "postarchive"
-        ],
+        "paragraphs": ["postlist", "postarchive"],
         "pages": [
           {
             "slug": "mes-articles/archive",
             "name": "Archive",
-            "paragraphs": [
-              "postarchive"
-            ]
+            "paragraphs": ["postarchive"]
           }
         ]
       },
       {
         "slug": "mes-liens",
         "name": "Mes liens",
-        "paragraphs": [
-          "bookmarklist"
-        ]
+        "paragraphs": ["bookmarklist"]
       },
       {
         "slug": "mes-histoires",
         "name": "Mes histoires",
-        "paragraphs": [
-          "historylist"
-        ]
+        "paragraphs": ["historylist"]
       }
     ]
   }
