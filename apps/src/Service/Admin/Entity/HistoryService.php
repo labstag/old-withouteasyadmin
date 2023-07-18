@@ -20,8 +20,7 @@ class HistoryService extends ViewService implements AdminEntityServiceInterface
 {
     public function add(
         Security $security
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $routes = $this->getDomain()->getUrlAdmin();
         if (!isset($routes['list']) || !isset($routes['edit'])) {
             throw new Exception('Route not found');
@@ -52,8 +51,7 @@ class HistoryService extends ViewService implements AdminEntityServiceInterface
     public function pdf(
         ServiceHistoryService $serviceHistoryService,
         History $history
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $fileDirectory    = $this->getParameter('file_directory');
         $kernelProjectDir = $this->getParameter('kernel.project_dir');
         if (!is_string($fileDirectory) || !is_string($kernelProjectDir)) {

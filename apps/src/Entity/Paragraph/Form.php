@@ -16,7 +16,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ApiResource(routePrefix: '/paragraph')]
 class Form implements EntityParagraphInterface, EntityInterface, Stringable
 {
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $form = null;
 

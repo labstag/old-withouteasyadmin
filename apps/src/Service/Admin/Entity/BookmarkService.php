@@ -58,8 +58,7 @@ class BookmarkService extends ViewService implements AdminEntityServiceInterface
         FormInterface $form,
         Security $security,
         EnqueueMethod $enqueueMethod
-    ): void
-    {
+    ): void {
         $file = $form->get('file')->getData();
         if (!$file instanceof UploadedFile) {
             return;

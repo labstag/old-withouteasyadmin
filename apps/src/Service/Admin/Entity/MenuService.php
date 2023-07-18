@@ -79,8 +79,7 @@ class MenuService extends ViewService implements AdminEntityServiceInterface
 
     public function index(
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         /** @var MenuRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Menu::class);
         $all           = $repositoryLib->findAllCode();
@@ -113,8 +112,7 @@ class MenuService extends ViewService implements AdminEntityServiceInterface
     public function move(
         Menu $menu,
         array $parameters = []
-    ): Response
-    {
+    ): Response {
         $routes = $this->getDomain()->getUrlAdmin();
         if (!isset($routes['list']) || !isset($routes['position'])) {
             throw new Exception('Route list not found');

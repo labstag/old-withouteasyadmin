@@ -14,8 +14,7 @@ class FrontController extends FrontControllerLib
     #[Route(path: '/edito', name: 'front_edito', priority: 1)]
     public function edio(
         EditoRepository $editoRepository
-    ): Response
-    {
+    ): Response {
         $edito = $editoRepository->findOnePublier();
 
         if (!$edito instanceof Edito) {
@@ -40,8 +39,7 @@ class FrontController extends FrontControllerLib
     public function index(
         string $slug,
         PageRepository $pageRepository
-    ): Response
-    {
+    ): Response {
         return $this->page($slug, $pageRepository);
     }
 }

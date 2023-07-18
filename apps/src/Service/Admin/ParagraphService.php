@@ -43,8 +43,7 @@ class ParagraphService
         protected RequestStack $requeststack,
         protected ParagraphRepository $paragraphRepository,
         protected ServiceParagraphService $serviceParagraphService,
-    )
-    {
+    ) {
     }
 
     public function add(EntityWithParagraphInterface $entityWithParagraph): RedirectResponse
@@ -111,8 +110,7 @@ class ParagraphService
         string $urlEdit,
         string $urlShow,
         string $urlDelete
-    ): void
-    {
+    ): void {
         $this->urls = [
             'list'   => $urlList,
             'edit'   => $urlEdit,
@@ -123,8 +121,7 @@ class ParagraphService
 
     public function show(
         Paragraph $paragraph
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(
             ParagraphType::class,
             $paragraph
@@ -161,8 +158,7 @@ class ParagraphService
         string $type,
         mixed $data = null,
         array $options = []
-    ): FormInterface
-    {
+    ): FormInterface {
         return $this->formFactory->create($type, $data, $options);
     }
 
@@ -170,8 +166,7 @@ class ParagraphService
         string $route,
         array $parameters = [],
         int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
-    ): string
-    {
+    ): string {
         return $this->router->generate($route, $parameters, $referenceType);
     }
 
@@ -238,8 +233,7 @@ class ParagraphService
         string $view,
         array $parameters = [],
         ?Response $response = null
-    ): Response
-    {
+    ): Response {
         $content = $this->renderView($view, $parameters);
         $response ??= new Response();
 

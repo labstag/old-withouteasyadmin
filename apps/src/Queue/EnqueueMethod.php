@@ -19,8 +19,7 @@ class EnqueueMethod
         string $method,
         array $params = [],
         ?DateTimeInterface $dateTime = null
-    ): void
-    {
+    ): void {
         $stamps = [];
         // Le service doit être appelé avec un délai
         if ($dateTime instanceof DateTimeInterface) {
@@ -41,8 +40,7 @@ class EnqueueMethod
         string $method,
         array $params = [],
         ?DateTimeInterface $dateTime = null
-    ): void
-    {
+    ): void {
         $stamps = [];
         // Le service doit être appelé avec un délai
         if ($dateTime instanceof DateTimeInterface) {

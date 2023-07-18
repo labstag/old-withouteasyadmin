@@ -12,16 +12,14 @@ class FormService
         protected RewindableGenerator $postform,
         protected RewindableGenerator $securityform,
         protected RewindableGenerator $frontform
-    )
-    {
+    ) {
     }
 
     public function execute(
         object $formClass,
         string $template,
         array $params
-    ): ?Response
-    {
+    ): ?Response {
         foreach ($this->postform as $row) {
             if ($row->getForm() != $formClass::class) {
                 continue;

@@ -16,7 +16,6 @@ use InvalidArgumentException;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class UploadableField implements MappingAttribute
 {
-
     private ?string $filename = null;
 
     private ?string $path = null;
@@ -27,8 +26,7 @@ final class UploadableField implements MappingAttribute
         ?string $filename = null,
         ?string $path = null,
         ?string $slug = null
-    )
-    {
+    ) {
         if (null === $filename || '' === $filename) {
             throw new InvalidArgumentException("L'annotation UplodableField doit avoir un attribut 'filename'");
         }

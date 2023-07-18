@@ -21,7 +21,6 @@ use Twig\Environment;
 
 abstract class ParagraphLib extends AbstractController
 {
-
     protected array $template = [];
 
     public function __construct(
@@ -37,8 +36,7 @@ abstract class ParagraphLib extends AbstractController
         protected RequestStack $requestStack,
         protected FormService $formService,
         protected RepositoryService $repositoryService
-    )
-    {
+    ) {
     }
 
     public function getCode(EntityParagraphInterface $entityParagraph): array

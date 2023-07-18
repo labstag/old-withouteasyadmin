@@ -11,8 +11,7 @@ abstract class DomainLib
     public function __construct(
         protected RepositoryService $repositoryService,
         protected TranslatorInterface $translator
-    )
-    {
+    ) {
     }
 
     public function getEntity(): string

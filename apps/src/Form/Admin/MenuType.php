@@ -15,8 +15,7 @@ class MenuType extends AbstractTypeLib
     public function buildForm(
         FormBuilderInterface $formBuilder,
         array $options
-    ): void
-    {
+    ): void {
         unset($options);
         $entity = $formBuilder->getData();
         if (!$entity instanceof Menu) {

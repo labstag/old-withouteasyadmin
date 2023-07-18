@@ -21,7 +21,6 @@ use Twig\Environment;
 
 class BtnService
 {
-
     protected array $bouton = [];
 
     public function __construct(
@@ -33,16 +32,14 @@ class BtnService
         protected TokenStorageInterface $tokenStorage,
         protected CsrfTokenManagerInterface $csrfTokenManager,
         protected GuardService $guardService
-    )
-    {
+    ) {
     }
 
     public function add(
         string $icon,
         string $text,
         array $attr = []
-    ): self
-    {
+    ): self {
         if (!isset($attr['href'])) {
             $attr['href'] = '#';
         }
@@ -66,8 +63,7 @@ class BtnService
         array $route,
         string $text = 'Supprimer',
         array $routeParam = []
-    ): self
-    {
+    ): self {
         if (!isset($route['list']) || !isset($route['delete'])) {
             return $this;
         }
@@ -117,8 +113,7 @@ class BtnService
         array $route,
         string $text = 'Destroy',
         array $routeParam = []
-    ): void
-    {
+    ): void {
         $this->addBtnDestroyRestore('destroy', $entity, $route, $routeParam, $text);
     }
 
@@ -126,8 +121,7 @@ class BtnService
         string $route,
         string $text = 'Editer',
         array $routeParam = []
-    ): self
-    {
+    ): self {
         if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
@@ -190,8 +184,7 @@ class BtnService
         string $route,
         string $text = 'Editer',
         array $routeParam = []
-    ): self
-    {
+    ): self {
         if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
@@ -263,8 +256,7 @@ class BtnService
         array $route,
         string $text = 'Restore',
         array $routeParam = []
-    ): void
-    {
+    ): void {
         $this->addBtnDestroyRestore('restore', $entity, $route, $routeParam, $text);
     }
 
@@ -286,8 +278,7 @@ class BtnService
         string $route,
         string $text = 'Show',
         array $routeParam = []
-    ): self
-    {
+    ): self {
         if ('' == $route || !$this->isRouteEnable($route)) {
             return $this;
         }
@@ -325,8 +316,7 @@ class BtnService
         array $methods,
         string $routeType,
         array $url = [],
-    ): void
-    {
+    ): void {
         $this->listOrTrashRouteTrashsetTrashIcon(
             $methods,
             $serviceEntityRepositoryLib,
@@ -351,8 +341,7 @@ class BtnService
         array $routes,
         string $code,
         string $title = 'Restaurer'
-    ): void
-    {
+    ): void {
         $this->addBtnVider('restories', $routes, $code, $title);
     }
 
@@ -360,8 +349,7 @@ class BtnService
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    ): void
-    {
+    ): void {
         $this->addBtnVider('deleties', $routes, $code, $title);
     }
 
@@ -369,8 +357,7 @@ class BtnService
         array $routes,
         string $code,
         string $title = 'Supprimer'
-    ): void
-    {
+    ): void {
         $this->addBtnVider('empties', $routes, $code, $title);
     }
 
@@ -385,8 +372,7 @@ class BtnService
     public function listOrTrashRouteTrash(
         array $url,
         RepositoryLib $serviceEntityRepositoryLib
-    ): void
-    {
+    ): void {
         $path   = explode('\\', $serviceEntityRepositoryLib->getClassName());
         $entity = strtolower(array_pop($path));
         if (isset($url['list'])) {
@@ -458,8 +444,7 @@ class BtnService
         RepositoryLib $serviceEntityRepositoryLib,
         array $url,
         string $routeType
-    ): void
-    {
+    ): void {
         if ('trash' == $routeType) {
             $this->listOrTrashRouteTrash($url, $serviceEntityRepositoryLib);
 
@@ -500,8 +485,7 @@ class BtnService
         string $route,
         array $routeParams,
         RepositoryLib $serviceEntityRepositoryLib
-    ): void
-    {
+    ): void {
         if ('trash' == $routeType) {
             return;
         }
@@ -553,8 +537,7 @@ class BtnService
     public function setBtnListOrTrash(
         DomainInterface $domain,
         string $routeType
-    ): void
-    {
+    ): void {
         $url                        = $domain->getUrlAdmin();
         $serviceEntityRepositoryLib = $domain->getRepository();
         /** @var Request $request */
@@ -585,8 +568,7 @@ class BtnService
     public function setBtnViewUpdate(
         array $url,
         EntityInterface $entity
-    ): void
-    {
+    ): void {
         $this->setBtnList($url);
         if (null === $entity->getId() || '' === $entity->getId()) {
             return;
@@ -612,8 +594,7 @@ class BtnService
         array $methods,
         RepositoryLib $serviceEntityRepositoryLib,
         array $url
-    ): void
-    {
+    ): void {
         $methodTrash      = $methods['trash'];
         $filterCollection = $this->entityManager->getFilters();
         $filterCollection->disable('softdeleteable');
@@ -653,8 +634,7 @@ class BtnService
         array $url,
         string $routeType,
         EntityInterface $entity
-    ): void
-    {
+    ): void {
         $functions = [
             'showOrPreviewaddBtnList',
             'showOrPreviewaddBtnGuard',
@@ -678,8 +658,7 @@ class BtnService
         array $url,
         string $routeType,
         EntityInterface $entity
-    ): void
-    {
+    ): void {
         if (!(isset($url['destroy']) && 'preview' == $routeType)) {
             return;
         }
@@ -702,8 +681,7 @@ class BtnService
         array $url,
         string $routeType,
         EntityInterface $entity
-    ): void
-    {
+    ): void {
         if (!(isset($url['edit']) && 'show' == $routeType) || !$this->isGranted('edit', $entity)) {
             return;
         }
@@ -721,8 +699,7 @@ class BtnService
         array $url,
         string $routeType,
         EntityInterface $entity
-    ): void
-    {
+    ): void {
         if (!(isset($url['guard']) && 'show' == $routeType) || !$this->enableBtnGuard($entity)) {
             return;
         }
@@ -740,8 +717,7 @@ class BtnService
         array $url,
         string $routeType,
         EntityInterface $entity
-    ): void
-    {
+    ): void {
         unset($entity);
         if (!(isset($url['list']) && 'show' == $routeType)) {
             return;
@@ -757,8 +733,7 @@ class BtnService
         array $url,
         string $routeType,
         EntityInterface $entity
-    ): void
-    {
+    ): void {
         if (isset($url['restore']) && 'preview' == $routeType) {
             $this->addBtnRestore(
                 $entity,
@@ -779,8 +754,7 @@ class BtnService
         array $url,
         string $routeType,
         EntityInterface $entity
-    ): void
-    {
+    ): void {
         unset($entity);
         if (!(isset($url['trash']) && 'preview' == $routeType)) {
             return;
@@ -797,8 +771,7 @@ class BtnService
         array $routes,
         string $code,
         string $title = 'Restaurer',
-    ): void
-    {
+    ): void {
         $value = $this->csrfTokenManager->getToken($code)->getValue();
         if ($this->arrayKeyExistsRedirect($routes) || $this->arrayKeyExistsUrl($routes)) {
             return;
@@ -857,8 +830,7 @@ class BtnService
     protected function isGranted(
         string $method,
         EntityInterface $entity
-    ): bool
-    {
+    ): bool {
         return $this->authorizationChecker->isGranted($method, $entity);
     }
 
@@ -892,8 +864,7 @@ class BtnService
         array $route,
         array $routeParam,
         string $text
-    ): void
-    {
+    ): void {
         if (!isset($route['list']) || !isset($route[$word])) {
             return;
         }
