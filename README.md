@@ -54,8 +54,8 @@ npm run cmd:install:dev
 
 ## Users
 
-| Username   | Password | Email               | enable | Check | Lost  |
-| ---------- | -------- | ------------------- | ------ | ----- | ----- |
+| Username   | Password | Email                 | enable | Check | Lost  |
+| ---------- | -------- | --------------------- | ------ | ----- | ----- |
 | disable    | password | <disable@email.fr>    | FALSE  | TRUE  | FALSE |
 | unverif    | password | <unverif@email.fr>    | FALSE  | FALSE | FALSE |
 | lost       | password | <lost@email.fr>       | FALSE  | TRUE  | TRUE  |
