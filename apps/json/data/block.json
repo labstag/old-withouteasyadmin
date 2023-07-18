@@ -1,51 +1,61 @@
 [
-    {
-        "region": "header",
-        "blocks": [
-            {
-                "type": "navbar",
-                "code-menu": "front-header",
-                "notinpages": ["login", "disclaimer", "lost", "change-password"]
-            },
-            {
-                "type": "header"
-            },
-            {
-                "type": "custom"
-            }
+  {
+    "region": "header",
+    "blocks": [
+      {
+        "type": "navbar",
+        "code-menu": "front-header",
+        "notinpages": [
+          "login",
+          "disclaimer",
+          "lost",
+          "change-password"
         ]
-    },
-    {
-        "region": "content",
-        "blocks": [
-            {
-                "type": "breadcrumb",
-                "notinpages": ["login", "disclaimer", "lost", "change-password"]
-            },
-            {
-                "type": "flashbag"
-            },
-            {
-                "type": "custom"
-            },
-            {
-                "type": "paragraph"
-            }
+      },
+      {
+        "type": "header"
+      },
+      {
+        "type": "custom"
+      }
+    ]
+  },
+  {
+    "region": "content",
+    "blocks": [
+      {
+        "type": "breadcrumb",
+        "notinpages": [
+          "login",
+          "disclaimer",
+          "lost",
+          "change-password"
         ]
-    },
-    {
-        "region": "footer",
-        "blocks": [
-            {
-                "type": "custom"
-            },
-            {
-                "type": "footer"
-            },
-            {
-                "type": "navbar",
-                "code-menu": "front-footer"
-            }
-        ]
-    }
+      },
+      {
+        "type": "flashbag"
+      },
+      {
+        "type": "custom"
+      },
+      {
+        "type": "paragraph"
+      }
+    ]
+  },
+  {
+    "region": "footer",
+    "blocks": [
+      {
+        "type": "custom"
+      },
+      {
+        "type": "footer"
+      },
+      {
+        "type": "navbar",
+        "code-menu": "front-footer"
+      }
+    ]
+  }
 ]
