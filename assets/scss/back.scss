@@ -1,12 +1,10 @@
-@import 'back/_mixin.scss';
-@import 'back/_variables.scss';
-@import 'bootstrap/scss/bootstrap.scss';
-@import '@fortawesome/fontawesome-free/scss/brands.scss';
-@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
-@import '@fortawesome/fontawesome-free/scss/regular.scss';
-@import '@fortawesome/fontawesome-free/scss/solid.scss';
-@import 'flag-icons/sass/flag-icons.scss';
-@import 'tom-select/dist/css/tom-select.bootstrap5.css';
+@import '@nm/bootstrap/scss/bootstrap.scss';
+@import '@nm/@fortawesome/fontawesome-free/scss/brands.scss';
+@import '@nm/@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '@nm/@fortawesome/fontawesome-free/scss/regular.scss';
+@import '@nm/@fortawesome/fontawesome-free/scss/solid.scss';
+@import '@nm/flag-icons/sass/flag-icons.scss';
+@import '@nm/tom-select/dist/css/tom-select.bootstrap5.css';
 
 a {
   @extend .text-decoration-none;

@@ -1,8 +1,9 @@
 const path = require('path');
+const { sep } = require('path');
 const srcDir = '../assets';
 const tplDir = '../apps/templates';
-
 /** @type { import('@storybook/web-components-webpack5').StorybookConfig } */
+import webpack, { entry } from '../webpack.config.js';
 const config = {
   stories: [
     "../stories/**/*.mdx",
@@ -26,8 +27,15 @@ const config = {
     }
   ],
   async webpackFinal(config) {
+    config.plugins = [
+      ...config.plugins,
+      ...webpack.plugins
+    ];
     config.module.rules = [
       ...config.module.rules,
+      ...webpack.module.rules
+    ];
+    config.module.rules.push(
       {
         test: /\.twig$/,
         use:  {
@@ -48,12 +56,10 @@ const config = {
           },
         },
       }
-    ];
+    );
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@fonts': path.resolve(__dirname, `${srcDir}/fonts`),
-      '@images': path.resolve(__dirname, `${srcDir}/images`),
-      '@theme': path.resolve(__dirname, tplDir),
+      ...webpack.resolve.alias,
     };
     return config;
   }

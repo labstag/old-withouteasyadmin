@@ -1,6 +1,6 @@
+import './../scss/front.scss'
 import './global'
-import '../scss/front.scss'
-const gotop = document.getElementById('footer-gotop')
+const gotop = document.querySelector('#footer-gotop')
 function gotopClick () {
   window.scrollTo(
     {
@@ -10,6 +10,6 @@ function gotopClick () {
     }
   )
 }
-if (gotop !== undefined) {
+if (gotop !== null) {
   gotop.addEventListener('click', gotopClick)
 }

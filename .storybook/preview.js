@@ -1,4 +1,6 @@
 /** @type { import('@storybook/web-components').Preview } */
+import './../assets/js/back.js';
+import './../assets/js/front.js';
 const preview = {
   parameters: {
     actions: {

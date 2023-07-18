@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { Header } from './Header';
-import './page.css';
+import './page.scss';
 
 export const Page = ({ user, onLogin, onLogout, onCreateAccount }) => html`
   <article>

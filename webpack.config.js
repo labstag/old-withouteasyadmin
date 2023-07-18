@@ -101,7 +101,11 @@ Encore
   .addAliases({
     '@nm': path.resolve(__dirname, 'node_modules'),
     '@': path.resolve(__dirname, 'assets'),
-    '@scss': path.resolve(__dirname, 'assets/scss')
+    '@scss': path.resolve(__dirname, 'assets/scss'),
+    '@fonts': path.resolve(__dirname, 'assets/fonts'),
+    '@images': path.resolve(__dirname, 'assets/images'),
+    '@scssback': path.resolve(__dirname, 'assets/scss/back'),
+    '@scssfront': path.resolve(__dirname, 'assets/scss/front')
   })
 ;
 

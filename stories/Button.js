@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
-import './button.css';
+import './button.scss';
 
 /**
  * Primary UI component for user interaction
