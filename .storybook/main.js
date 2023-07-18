@@ -6,19 +6,22 @@ const tplDir = '../apps/templates';
 import webpack, { entry } from '../webpack.config.js';
 const config = {
   stories: [
-    "../stories/**/*.mdx",
-    "../stories/**/*.stories.@(js|jsx|ts|tsx)"
+    '../stories/**/*.mdx',
+    '../stories/**/*.stories.@(js|jsx|ts|tsx)'
   ],
   addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials"
+    '@storybook/addon-a11y',
+    '@storybook/addon-backgrounds',
+    '@storybook/addon-viewport',
+    '@storybook/addon-links',
+    '@storybook/addon-essentials'
   ],
   framework: {
-    name: "@storybook/web-components-webpack5",
+    name: '@storybook/web-components-webpack5',
     options: {},
   },
   docs: {
-    autodocs: "tag",
+    autodocs: 'tag',
   },
   staticDirs: [
     {
