@@ -1,7 +1,7 @@
-import TwigComponent from '../apps/templates/components/button.html.twig';
+import TwigComponent from '@components/elementHTML/back/link/move.html.twig';
 
 export default {
-  title: 'Atoms/Button',
+  title: 'ElementHTML/Back/Link',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -37,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const Button = Template.bind({});
-Button.args = {
+export const move = Template.bind({});
+move.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',
