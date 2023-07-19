@@ -2,7 +2,7 @@
 
 namespace Labstag\Form\Admin\Paragraph\Bookmark;
 
-use Labstag\Entity\Paragraph\Bookmark\Libelle;
+use Labstag\Entity\Paragraph\Bookmark\Libelle as BookmarkLibelle;
 use Labstag\Lib\ParagraphAbstractTypeLib;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

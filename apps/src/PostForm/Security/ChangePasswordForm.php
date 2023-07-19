@@ -27,7 +27,7 @@ class ChangePasswordForm extends PostFormLib implements PostFormInterface
 
         /** @var UserRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(User::class);
-        $user = $repositoryLib->findOneBy(
+        $user          = $repositoryLib->findOneBy(
             [
                 'id' => $request->attributes->get('id'),
             ]

@@ -40,10 +40,10 @@ abstract class ApiControllerLib extends AbstractController
                 return $data;
             }
 
-            foreach ($results as $row) {
-                /** @var RouteUser $row */
+            foreach ($results as $result) {
+                /** @var RouteUser $result */
                 /** @var Route $route */
-                $route          = $row->getRefroute();
+                $route          = $result->getRefroute();
                 $data['user'][] = [
                     'route' => $route->getName(),
                 ];

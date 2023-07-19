@@ -1,6 +1,6 @@
 /** @type { import('@storybook/web-components').Preview } */
-import './../assets/js/back.js';
-import './../assets/js/front.js';
+import './../assets/back.js';
+import './../assets/front.js';
 const preview = {
   parameters: {
     actions: {

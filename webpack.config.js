@@ -39,8 +39,8 @@ Encore
    * Each entry will result in one JavaScript file (e.g. app.js)
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
-  .addEntry('front', './assets/js/front.js')
-  .addEntry('back', './assets/js/back.js')
+  .addEntry('front', './assets/front.js')
+  .addEntry('back', './assets/back.js')
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   // .enableStimulusBridge('./assets/controllers.json')
@@ -101,6 +101,12 @@ Encore
   .addAliases({
     '@nm': path.resolve(__dirname, 'node_modules'),
     '@': path.resolve(__dirname, 'assets'),
+    '@components': path.resolve(__dirname, 'apps/templates/components'),
+    '@back': path.resolve(__dirname, 'assets/back'),
+    '@front': path.resolve(__dirname, 'assets/front'),
+    '@global': path.resolve(__dirname, 'assets/global'),
+    '@class': path.resolve(__dirname, 'assets/class'),
+
     '@scss': path.resolve(__dirname, 'assets/scss'),
     '@fonts': path.resolve(__dirname, 'assets/fonts'),
     '@images': path.resolve(__dirname, 'assets/images'),
