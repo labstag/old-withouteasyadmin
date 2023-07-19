@@ -1,12 +1,12 @@
-import { LinkBtnAdmin } from '@back/Link.BtnAdmin'
+import { LinkBtnAdmin } from '@back/Link/BtnAdmin'
 
-export class LinkBtnAdminEmpty extends LinkBtnAdmin {
+export class LinkBtnAdminDestroy extends LinkBtnAdmin {
   constructor () {
     super()
     this.dataset.bsToggle = 'modal'
-    this.dataset.bsTarget = '#empty-modal'
+    this.dataset.bsTarget = '#destroy-modal'
     this.addEventListener('click', this.onClick)
-    const btnConfirm = document.querySelector('confirm-empty')
+    const btnConfirm = document.querySelector('confirm-destroy')
     if (btnConfirm !== null) {
       return
     }
@@ -18,7 +18,7 @@ export class LinkBtnAdminEmpty extends LinkBtnAdmin {
     const url = element.currentTarget.getAttribute('url')
     const token = element.currentTarget.getAttribute('token')
     const redirect = element.currentTarget.getAttribute('redirect')
-    const btnConfirm = document.querySelector('confirm-empty')
+    const btnConfirm = document.querySelector('confirm-destroy')
     if (btnConfirm === null) {
       return
     }

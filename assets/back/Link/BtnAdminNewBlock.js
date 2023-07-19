@@ -1,4 +1,4 @@
-import { LinkBtnAdmin } from '@back/Link.BtnAdmin'
+import { LinkBtnAdmin } from '@back/Link/BtnAdmin'
 
 export class LinkBtnAdminNewBlock extends LinkBtnAdmin {
   constructor () {

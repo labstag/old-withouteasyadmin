@@ -1,5 +1,5 @@
-import { SelectAll } from '@global/Select.All'
-import { SelectElement } from '@global/Select.Element'
+import { SelectAll } from '@global/Select/All'
+import { SelectElement } from '@global/Select/Element'
 
 export class TableDatatable extends HTMLTableElement {
   constructor () {

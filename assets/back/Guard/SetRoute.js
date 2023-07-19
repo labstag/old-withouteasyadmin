@@ -1,4 +1,4 @@
-import { GuardSet } from '@back/Guard.Set'
+import { GuardSet } from '@back/Guard/Set'
 export class GuardSetRoute extends GuardSet {
   changeState () {
     const allrouteElement = this.closest('tr').querySelector('guard-allroute')

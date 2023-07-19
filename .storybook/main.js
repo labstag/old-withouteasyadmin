@@ -34,6 +34,10 @@ const config = {
       ...config.plugins,
       ...webpack.plugins
     ];
+    // disable plugins CleanWebpackPlugin
+    config.plugins = config.plugins.filter(plugin => {
+      return plugin.constructor.name !== 'CleanWebpackPlugin';
+    });
     config.module.rules = [
       ...config.module.rules,
       ...webpack.module.rules

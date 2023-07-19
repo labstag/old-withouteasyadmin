@@ -1,4 +1,4 @@
-import { GuardSet } from '@back/Guard.Set'
+import { GuardSet } from '@back/Guard/Set'
 export class GuardAll extends GuardSet {
   forEachMutationObserver (mutation) {
     if (mutation.type === 'attributes') {

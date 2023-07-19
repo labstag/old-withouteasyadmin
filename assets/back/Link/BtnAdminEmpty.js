@@ -1,13 +1,12 @@
-import { LinkBtnAdmin } from '@back/Link.BtnAdmin'
+import { LinkBtnAdmin } from '@back/Link/BtnAdmin'
 
-export class LinkBtnAdminRestories extends LinkBtnAdmin {
+export class LinkBtnAdminEmpty extends LinkBtnAdmin {
   constructor () {
     super()
     this.dataset.bsToggle = 'modal'
-    this.dataset.bsTarget = '#restories-modal'
+    this.dataset.bsTarget = '#empty-modal'
     this.addEventListener('click', this.onClick)
-    const btnConfirm = document.querySelector('confirm-restories')
-    this.style.display = 'none'
+    const btnConfirm = document.querySelector('confirm-empty')
     if (btnConfirm !== null) {
       return
     }
@@ -19,7 +18,7 @@ export class LinkBtnAdminRestories extends LinkBtnAdmin {
     const url = element.currentTarget.getAttribute('url')
     const token = element.currentTarget.getAttribute('token')
     const redirect = element.currentTarget.getAttribute('redirect')
-    const btnConfirm = document.querySelector('confirm-restories')
+    const btnConfirm = document.querySelector('confirm-empty')
     if (btnConfirm === null) {
       return
     }

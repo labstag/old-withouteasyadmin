@@ -1,5 +1,5 @@
 import { ElementHTML } from '@class/ElementHTML'
-import { AttachmentDelete } from '@back/Attachment.Delete'
+import { AttachmentDelete } from '@back/Attachment/Delete'
 export class AttachmentImg extends ElementHTML {
   constructor () {
     super()
