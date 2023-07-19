@@ -106,12 +106,8 @@ Encore
     '@front': path.resolve(__dirname, 'assets/front'),
     '@global': path.resolve(__dirname, 'assets/global'),
     '@class': path.resolve(__dirname, 'assets/class'),
-
-    '@scss': path.resolve(__dirname, 'assets/scss'),
     '@fonts': path.resolve(__dirname, 'assets/fonts'),
-    '@images': path.resolve(__dirname, 'assets/images'),
-    '@scssback': path.resolve(__dirname, 'assets/scss/back'),
-    '@scssfront': path.resolve(__dirname, 'assets/scss/front')
+    '@images': path.resolve(__dirname, 'assets/images')
   })
 ;
 

@@ -51,6 +51,8 @@ import { LinkTrash } from '@back/Link/Trash'
 import { EntityMove } from '@back/Entity.Move'
 import { WorkflowAction } from '@back/Workflow.Action'
 
+import { TableDatatable } from '@back/Table.Datatable'
+
 window.customElements.define('attachment-delete', AttachmentDelete)
 window.customElements.define('attachment-img', AttachmentImg)
 
@@ -103,3 +105,5 @@ window.customElements.define('link-trash', LinkTrash)
 
 window.customElements.define('workflow-action', WorkflowAction)
 window.customElements.define('entity-move', EntityMove, { extends: 'ul' })
+
+customElements.define('table-datatable', TableDatatable, { extends: 'table' })
