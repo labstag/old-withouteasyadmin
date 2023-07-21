@@ -2,6 +2,7 @@ const path = require('path');
 const { sep } = require('path');
 const srcDir = '../assets';
 const tplDir = '../apps/templates';
+import { exit } from 'process';
 /** @type { import('@storybook/web-components-webpack5').StorybookConfig } */
 import webpack, { entry } from '../webpack.config.js';
 const config = {
@@ -14,6 +15,7 @@ const config = {
     '@storybook/addon-backgrounds',
     '@storybook/addon-viewport',
     '@storybook/addon-links',
+    '@storybook/addon-styling',
     '@storybook/addon-essentials'
   ],
   framework: {
@@ -30,10 +32,23 @@ const config = {
     }
   ],
   async webpackFinal(config) {
+    config.entry['front'] = webpack.entry['front'];
+    config.entry['back'] = webpack.entry['back'];
+
+
     config.plugins = [
       ...config.plugins,
       ...webpack.plugins
     ];
+
+    // Disable plugins CleanWebpackPlugin AssetOutputDisplayPlugin AssetsWebpackPlugin
+    config.plugins = config.plugins.filter(
+      (plugin) => (
+        plugin.constructor.name !== 'AssetOutputDisplayPlugin' &&
+        plugin.constructor.name !== 'AssetOutputDisplayPlugin' &&
+        plugin.constructor.name !== 'AssetOutputDisplayPlugin'
+      )
+    );
     config.module.rules = [
       ...config.module.rules,
       ...webpack.module.rules
@@ -64,6 +79,7 @@ const config = {
       ...config.resolve.alias,
       ...webpack.resolve.alias,
     };
+
     return config;
   }
 };
