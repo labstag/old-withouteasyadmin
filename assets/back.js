@@ -1,5 +1,4 @@
 import mitt from 'mitt'
-import './back.scss'
 window.emitter = mitt()
 document.addEventListener(
   'DOMContentLoaded',

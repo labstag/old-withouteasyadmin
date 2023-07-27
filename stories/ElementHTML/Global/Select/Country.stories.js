@@ -1,5 +1,6 @@
 import TwigComponent from '@components/elementHTML/global/select/country.html.twig';
-
+import '@/back.scss';
+import '@/front.scss';
 export default {
   title: 'ElementHTML/Global/Select',
   argTypes: {

@@ -1,5 +1,5 @@
 import TwigComponent from '@components/elementHTML/back/entity/move.html.twig';
-
+import '@/back.scss';
 export default {
   title: 'ElementHTML/Back/Entity',
   argTypes: {

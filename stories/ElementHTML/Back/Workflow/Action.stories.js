@@ -1,5 +1,5 @@
 import TwigComponent from '@components/elementHTML/back/workflow/action.html.twig';
-
+import '@/back.scss';
 export default {
   title: 'ElementHTML/Back/Workflow',
   argTypes: {

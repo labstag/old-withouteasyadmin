@@ -1,5 +1,5 @@
 import TwigComponent from '@components/elementHTML/back/link/btnadminrestory.html.twig';
-
+import '@/back.scss';
 export default {
   title: 'ElementHTML/Back/Link',
   argTypes: {

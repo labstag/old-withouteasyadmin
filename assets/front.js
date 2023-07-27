@@ -1,5 +1,4 @@
 import mitt from 'mitt'
-import './front.scss'
 window.emitter = mitt()
 document.addEventListener(
   'DOMContentLoaded',

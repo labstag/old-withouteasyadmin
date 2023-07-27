@@ -1,5 +1,5 @@
 import TwigComponent from '@components/elementHTML/back/attachment/img.html.twig';
-
+import '@/back.scss';
 export default {
   title: 'ElementHTML/Back/Attachment',
   argTypes: {

@@ -1,5 +1,5 @@
 import TwigComponent from '@components/elementHTML/back/guard/route.html.twig';
-
+import '@/back.scss';
 export default {
   title: 'ElementHTML/Back/Guard',
   argTypes: {

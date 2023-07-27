@@ -15,7 +15,6 @@ const config = {
     '@storybook/addon-backgrounds',
     '@storybook/addon-viewport',
     '@storybook/addon-links',
-    '@storybook/addon-styling',
     '@storybook/addon-essentials'
   ],
   framework: {
@@ -32,10 +31,6 @@ const config = {
     }
   ],
   async webpackFinal(config) {
-    config.entry['front'] = webpack.entry['front'];
-    config.entry['back'] = webpack.entry['back'];
-
-
     config.plugins = [
       ...config.plugins,
       ...webpack.plugins
@@ -44,9 +39,9 @@ const config = {
     // Disable plugins CleanWebpackPlugin AssetOutputDisplayPlugin AssetsWebpackPlugin
     config.plugins = config.plugins.filter(
       (plugin) => (
+        plugin.constructor.name !== 'CleanWebpackPlugin' &&
         plugin.constructor.name !== 'AssetOutputDisplayPlugin' &&
-        plugin.constructor.name !== 'AssetOutputDisplayPlugin' &&
-        plugin.constructor.name !== 'AssetOutputDisplayPlugin'
+        plugin.constructor.name !== 'AssetsWebpackPlugin'
       )
     );
     config.module.rules = [

@@ -1,5 +1,5 @@
 import TwigComponent from '@components/elementHTML/back/table/datatable.html.twig';
-
+import '@/back.scss';
 export default {
   title: 'ElementHTML/Back/Table',
   argTypes: {

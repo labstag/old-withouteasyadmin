@@ -1,5 +1,6 @@
 import TwigComponent from '@components/elementHTML/global/btn/togglefieldset.html.twig';
-
+import '@/back.scss';
+import '@/front.scss';
 export default {
   title: 'ElementHTML/Global/Btn',
   argTypes: {
