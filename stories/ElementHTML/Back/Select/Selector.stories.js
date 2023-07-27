@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/input/url.html.twig';
+import TwigComponent from '@components/elementHTML/global/select/selector.html.twig';
 import '@/back.scss';
-import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Input',
+  title: 'ElementHTML/Back/Select',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const Url = Template.bind({});
-Url.args = {
+export const Selector = Template.bind({});
+Selector.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',

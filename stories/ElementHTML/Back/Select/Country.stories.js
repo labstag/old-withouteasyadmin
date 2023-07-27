@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/ckeditor.html.twig';
+import TwigComponent from '@components/elementHTML/global/select/country.html.twig';
 import '@/back.scss';
-import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global',
+  title: 'ElementHTML/Back/Select',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const Ckeditor = Template.bind({});
-Ckeditor.args = {
+export const Country = Template.bind({});
+Country.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',

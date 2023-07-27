@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/btn/delete.html.twig';
-import '@/back.scss';
+import TwigComponent from '@components/elementHTML/global/btn/addcollection.html.twig';
 import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Btn',
+  title: 'ElementHTML/Front/Btn',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const Delete = Template.bind({});
-Delete.args = {
+export const AddCollection = Template.bind({});
+AddCollection.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',

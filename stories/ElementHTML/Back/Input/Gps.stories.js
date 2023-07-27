@@ -1,8 +1,7 @@
 import TwigComponent from '@components/elementHTML/global/input/gps.html.twig';
 import '@/back.scss';
-import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Input',
+  title: 'ElementHTML/Back/Input',
   argTypes: {
     content: { control: 'text' },
     size: {

@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/btn/togglefieldset.html.twig';
+import TwigComponent from '@components/elementHTML/global/ckeditor.html.twig';
 import '@/back.scss';
-import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Btn',
+  title: 'ElementHTML/Back',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const Togglefieldset = Template.bind({});
-Togglefieldset.args = {
+export const Ckeditor = Template.bind({});
+Ckeditor.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',

@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/input/phone.html.twig';
+import TwigComponent from '@components/elementHTML/global/btn/addcollection.html.twig';
 import '@/back.scss';
-import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Input',
+  title: 'ElementHTML/Back/Btn',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const Phone = Template.bind({});
-Phone.args = {
+export const AddCollection = Template.bind({});
+AddCollection.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',

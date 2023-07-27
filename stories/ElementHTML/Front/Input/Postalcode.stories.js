@@ -1,8 +1,7 @@
 import TwigComponent from '@components/elementHTML/global/input/postalcode.html.twig';
-import '@/back.scss';
 import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Input',
+  title: 'ElementHTML/Front/Input',
   argTypes: {
     content: { control: 'text' },
     size: {

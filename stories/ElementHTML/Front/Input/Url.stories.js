@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/input/email.html.twig';
-import '@/back.scss';
+import TwigComponent from '@components/elementHTML/global/input/url.html.twig';
 import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Input',
+  title: 'ElementHTML/Front/Input',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const Email = Template.bind({});
-Email.args = {
+export const Url = Template.bind({});
+Url.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',

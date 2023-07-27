@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/select/all.html.twig';
+import TwigComponent from '@components/elementHTML/global/input/postalcode.html.twig';
 import '@/back.scss';
-import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Select',
+  title: 'ElementHTML/Back/Input',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const All = Template.bind({});
-All.args = {
+export const PostalCode = Template.bind({});
+PostalCode.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',

@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/select/element.html.twig';
-import '@/back.scss';
+import TwigComponent from '@components/elementHTML/global/select/country.html.twig';
 import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Select',
+  title: 'ElementHTML/Front/Select',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const Element = Template.bind({});
-Element.args = {
+export const Country = Template.bind({});
+Country.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',

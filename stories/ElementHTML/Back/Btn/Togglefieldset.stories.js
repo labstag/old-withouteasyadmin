@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/input/city.html.twig';
+import TwigComponent from '@components/elementHTML/global/btn/togglefieldset.html.twig';
 import '@/back.scss';
-import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Input',
+  title: 'ElementHTML/Back/Btn',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const City = Template.bind({});
-City.args = {
+export const Togglefieldset = Template.bind({});
+Togglefieldset.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',

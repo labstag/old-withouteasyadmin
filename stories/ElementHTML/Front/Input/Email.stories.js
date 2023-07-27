@@ -1,8 +1,7 @@
-import TwigComponent from '@components/elementHTML/global/btn/addcollection.html.twig';
-import '@/back.scss';
+import TwigComponent from '@components/elementHTML/global/input/email.html.twig';
 import '@/front.scss';
 export default {
-  title: 'ElementHTML/Global/Btn',
+  title: 'ElementHTML/Front/Input',
   argTypes: {
     content: { control: 'text' },
     size: {
@@ -38,8 +37,8 @@ const Template = (args) => {
   });
 };
 
-export const AddCollection = Template.bind({});
-AddCollection.args = {
+export const Email = Template.bind({});
+Email.args = {
   content: 'Voir le lieu',
   size: 'md',
   type: 'primary',
