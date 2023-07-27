@@ -12,7 +12,7 @@ class LibelleType extends ParagraphAbstractTypeLib
     {
         $optionsResolver->setDefaults(
             [
-                'data_class' => Libelle::class,
+                'data_class' => BookmarkLibelle::class,
             ]
         );
     }
