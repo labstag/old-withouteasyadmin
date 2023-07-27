@@ -101,7 +101,7 @@ Encore
   .addAliases({
     '@nm': path.resolve(__dirname, 'node_modules'),
     '@': path.resolve(__dirname, 'assets'),
-    '@components': path.resolve(__dirname, 'apps/templates/components'),
+    '@components': path.resolve(__dirname, 'components'),
     '@back': path.resolve(__dirname, 'assets/back'),
     '@front': path.resolve(__dirname, 'assets/front'),
     '@global': path.resolve(__dirname, 'assets/global'),
