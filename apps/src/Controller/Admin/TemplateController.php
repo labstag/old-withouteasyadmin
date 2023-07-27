@@ -9,7 +9,7 @@ use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/template', name: 'admin_template_')]
+#[Route(path: '/%admin_route%/template', name: 'admin_template_')]
 class TemplateController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]

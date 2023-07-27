@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/admin/memo/paragraph', name: 'admin_memo_paragraph_')]
+#[Route(path: '/%admin_route%/memo/paragraph', name: 'admin_memo_paragraph_')]
 class ParagraphController extends AbstractController
 {
     public function __construct(

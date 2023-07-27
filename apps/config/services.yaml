@@ -6,6 +6,7 @@
 parameters:
   file_directory: '%kernel.project_dir%/public/uploads'
   metatags: ['disclaimer', 'meta', 'tarteaucitron', 'format_datetime']
+  admin_route: 'back'
 
 services:
   # default configuration for services in *this* file
