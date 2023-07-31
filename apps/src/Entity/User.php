@@ -35,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
-    protected ?Groupe $groupe = null;
+    protected ?Groupe $refgroupe = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     protected string $password;
@@ -463,7 +463,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function getRefgroupe(): ?Groupe
     {
-        return $this->groupe;
+        return $this->refgroupe;
     }
 
     /**
@@ -713,7 +713,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->groupe = $groupe;
+        $this->refgroupe = $groupe;
 
         return $this;
     }

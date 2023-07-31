@@ -8,7 +8,7 @@ use Labstag\Service\Admin\Entity\GuardService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/%admin_route%/guard')]
+#[Route(path: '/admin/guard')]
 class GuardController extends AdminControllerLib
 {
     #[Route(path: '/', name: 'admin_guard_index', methods: ['GET', 'POST'])]

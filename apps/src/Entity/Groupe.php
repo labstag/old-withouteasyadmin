@@ -52,7 +52,7 @@ class Groupe implements Stringable, EntityTrashInterface
 
     #[ORM\OneToMany(
         targetEntity: User::class,
-        mappedBy: 'groupe',
+        mappedBy: 'refgroupe',
         cascade: ['persist'],
         orphanRemoval: true
     )

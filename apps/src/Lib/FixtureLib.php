@@ -152,7 +152,7 @@ abstract class FixtureLib extends Fixture
         }
     }
 
-    protected function getRefgroupe(array $groupes, string $code): ?Groupe
+    protected function getGroupe(array $groupes, string $code): ?Groupe
     {
         foreach ($groupes as $groupe) {
             if ($groupe->getCode() == $code) {

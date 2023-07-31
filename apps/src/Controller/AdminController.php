@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/%admin_route%')]
+#[Route(path: '/admin')]
 class AdminController extends AdminControllerLib
 {
     #[Route(path: '/export', name: 'admin_export')]

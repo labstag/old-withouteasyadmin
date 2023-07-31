@@ -9,7 +9,7 @@ use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/%admin_route%/user/email', name: 'admin_emailuser_')]
+#[Route(path: '/admin/user/email', name: 'admin_emailuser_')]
 class EmailUserController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]

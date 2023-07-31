@@ -9,7 +9,7 @@ use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/%admin_route%/attachment', name: 'admin_attachment_')]
+#[Route(path: '/admin/attachment', name: 'admin_attachment_')]
 class AttachmentController extends AdminControllerLib
 {
     #[Route(path: '/', name: 'index', methods: ['GET'])]

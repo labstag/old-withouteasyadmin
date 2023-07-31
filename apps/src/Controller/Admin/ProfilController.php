@@ -10,7 +10,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/%admin_route%/profil')]
+#[Route(path: '/admin/profil')]
 class ProfilController extends AdminControllerLib
 {
     #[Route(path: '/', name: 'admin_profil', methods: ['GET', 'POST'])]

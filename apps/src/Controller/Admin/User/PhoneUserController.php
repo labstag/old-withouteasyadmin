@@ -9,7 +9,7 @@ use Labstag\Service\Admin\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/%admin_route%/user/phone', name: 'admin_phoneuser_')]
+#[Route(path: '/admin/user/phone', name: 'admin_phoneuser_')]
 class PhoneUserController extends AdminControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]

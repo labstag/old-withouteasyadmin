@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/%admin_route%/history/chapter/paragraph', name: 'admin_chapter_paragraph_')]
+#[Route(path: '/admin/history/chapter/paragraph', name: 'admin_chapter_paragraph_')]
 class ChapterController extends AbstractController
 {
     public function __construct(

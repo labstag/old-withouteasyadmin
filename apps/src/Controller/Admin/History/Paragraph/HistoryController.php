@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/%admin_route%/history/paragraph', name: 'admin_history_paragraph_')]
+#[Route(path: '/admin/history/paragraph', name: 'admin_history_paragraph_')]
 class HistoryController extends AbstractController
 {
     public function __construct(
