@@ -19,9 +19,9 @@ class DebugExtension extends ExtensionLib
         return $this->beginDebug($data);
     }
 
-    public function debugBeginForm(mixed $class): string
+    public function debugBeginForm(mixed $class, string $state): string
     {
-        $data = $this->getformClassData($class);
+        $data = $this->getformClassData($class, $state);
         if (0 == (is_countable($data) ? count($data) : 0)) {
             return '';
         }
@@ -29,9 +29,9 @@ class DebugExtension extends ExtensionLib
         return $this->beginDebug($data);
     }
 
-    public function debugBeginPrototype(array $blockPrefixes): string
+    public function debugBeginPrototype(array $blockPrefixes, string $state): string
     {
-        $data = $this->formPrototypeData($blockPrefixes);
+        $data = $this->formPrototypeData($blockPrefixes, $state);
         if (0 == (is_countable($data) ? count($data) : 0)) {
             return '';
         }
@@ -48,9 +48,9 @@ class DebugExtension extends ExtensionLib
         return $this->endDebug($data);
     }
 
-    public function debugEndForm(mixed $class): string
+    public function debugEndForm(mixed $class, string $state): string
     {
-        $data = $this->getformClassData($class);
+        $data = $this->getformClassData($class, $state);
         if (0 == (is_countable($data) ? count($data) : 0)) {
             return '';
         }
@@ -58,9 +58,9 @@ class DebugExtension extends ExtensionLib
         return $this->endDebug($data);
     }
 
-    public function debugEndPrototype(array $blockPrefixes): string
+    public function debugEndPrototype(array $blockPrefixes, string $state): string
     {
-        $data = $this->formPrototypeData($blockPrefixes);
+        $data = $this->formPrototypeData($blockPrefixes, $state);
         if (0 == (is_countable($data) ? count($data) : 0)) {
             return '';
         }
@@ -76,22 +76,22 @@ class DebugExtension extends ExtensionLib
         return [
             new TwigFilter(
                 'debug_begin_prototype',
-                fn (array $blockPrefixes): string => $this->debugBeginPrototype($blockPrefixes),
+                fn (array $blockPrefixes, $state): string => $this->debugBeginPrototype($blockPrefixes, $state),
                 ['is_safe' => ['all']]
             ),
             new TwigFilter(
                 'debug_end_prototype',
-                fn (array $blockPrefixes): string => $this->debugEndPrototype($blockPrefixes),
+                fn (array $blockPrefixes, $state): string => $this->debugEndPrototype($blockPrefixes, $state),
                 ['is_safe' => ['all']]
             ),
             new TwigFilter(
                 'debug_begin_form',
-                fn ($class): string => $this->debugBeginForm($class),
+                fn ($class, $state): string => $this->debugBeginForm($class, $state),
                 ['is_safe' => ['all']]
             ),
             new TwigFilter(
                 'debug_end_form',
-                fn ($class): string => $this->debugEndForm($class),
+                fn ($class, $state): string => $this->debugEndForm($class, $state),
                 ['is_safe' => ['all']]
             ),
             new TwigFilter(

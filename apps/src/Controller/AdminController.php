@@ -50,14 +50,14 @@ class AdminController extends AdminControllerLib
         return $configurationService->form();
     }
 
-    #[Route(path: '/themes', name: 'admin_themes')]
-    public function themes(): Response
+    #[Route(path: '/themes/{state}', name: 'admin_themes', defaults: ['state' => 'admin'])]
+    public function themes(string $state): Response
     {
-        return $this->adminConfig()->themes();
+        return $this->adminConfig()->themes($state);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_trash')]
+    #[Route(path: '/trash', name: 'admin_trash',)]
     public function trash(): Response
     {
         $viewService = $this->adminService->setDomain('trash');

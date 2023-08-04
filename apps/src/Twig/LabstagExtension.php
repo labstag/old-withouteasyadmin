@@ -19,16 +19,16 @@ class LabstagExtension extends ExtensionLib
         return strtolower(array_pop($path));
     }
 
-    public function formClass(mixed $class): string
+    public function formClass(mixed $class, string $state): string
     {
-        $data = $this->getformClassData($class);
+        $data = $this->getformClassData($class, $state);
 
         return $data['view'];
     }
 
-    public function formPrototype(array $blockPrefixes): string
+    public function formPrototype(array $blockPrefixes, string $state): string
     {
-        $data = $this->formPrototypeData($blockPrefixes);
+        $data = $this->formPrototypeData($blockPrefixes, $state);
 
         return $data['view'];
     }
@@ -88,13 +88,32 @@ class LabstagExtension extends ExtensionLib
             ),
             new TwigFilter(
                 'form_class',
-                fn ($class): string => $this->formClass($class)
+                fn ($class, $state): string => $this->formClass($class, $state)
+            ),
+            new TwigFilter(
+                'prototype',
+                fn ($content): string => $this->prototype($content),
+                ['is_safe' => ['all']]
             ),
             new TwigFilter(
                 'form_prototype',
-                fn (array $blockPrefixes): string => $this->formPrototype($blockPrefixes)
+                fn (array $blockPrefixes, $state): string => $this->formPrototype($blockPrefixes, $state)
             ),
         ];
+    }
+
+    public function prototype(string $content): string
+    {
+        $tab = [
+            '"'  => "'",
+            "\n" => "",
+            "\t" => ""
+        ];
+        foreach ($tab as $key => $value) {
+            $content = str_replace($key, $value, $content);
+        }
+
+        return $content;
     }
 
     /**

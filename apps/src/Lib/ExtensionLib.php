@@ -30,7 +30,7 @@ abstract class ExtensionLib extends AbstractExtension
     {
     }
 
-    protected function formPrototypeData(array $blockPrefixes): array
+    protected function formPrototypeData(array $blockPrefixes, string $state): array
     {
         $type = ('collection_entry' != $blockPrefixes[1]) ? $blockPrefixes[2] : 'other';
         if (isset($this->templates['prototype'][$type])) {
@@ -38,8 +38,8 @@ abstract class ExtensionLib extends AbstractExtension
         }
 
         $files = [
-            'prototype/'.$type.'.html.twig',
-            'prototype/default.html.twig',
+            'prototype/'.$state.'/'.$type.'.html.twig',
+            'prototype/'.$state.'/default.html.twig',
         ];
         $view = $this->getViewByFiles($files);
 
@@ -53,9 +53,9 @@ abstract class ExtensionLib extends AbstractExtension
         return $this->templates['prototype'][$type];
     }
 
-    protected function getformClassData(mixed $class): array
+    protected function getformClassData(mixed $class, string $state): array
     {
-        $file = 'forms/default.html.twig';
+        $file = 'forms/'.$state.'/default.html.twig';
 
         $methods = get_class_vars($class::class);
         if (!array_key_exists('vars', $methods)
@@ -80,7 +80,7 @@ abstract class ExtensionLib extends AbstractExtension
             return $this->templates['form'][$type];
         }
 
-        $files = $this->setFilesformClass($type, $class);
+        $files = $this->setFilesformClass($type, $class, $state);
         $view  = $this->getViewByFiles($files);
 
         $this->templates['form'][$type] = [
@@ -112,12 +112,14 @@ abstract class ExtensionLib extends AbstractExtension
 
     protected function setFilesformClass(
         string $type,
-        mixed $class
+        mixed $class,
+        string $state
     ): array
     {
-        $htmltwig = '.html.twig';
-        $files    = [
-            'forms/'.$type.$htmltwig,
+        $htmltwig  = '.html.twig';
+        $formstate = 'forms/'.$state.'/';
+        $files     = [
+            $formstate.$type.$htmltwig,
         ];
 
         if (isset($class->vars)) {
@@ -129,17 +131,17 @@ abstract class ExtensionLib extends AbstractExtension
 
             $classtype = (isset($vars['value']) && is_object($vars['value'])) ? $vars['value']::class : null;
             if (!is_null($classtype) && 1 == substr_count($classtype, '\Paragraph')) {
-                $files[] = 'forms/paragraph/'.$type.$htmltwig;
-                $files[] = 'forms/paragraph/default'.$htmltwig;
+                $files[] = $formstate.'paragraph/'.$type.$htmltwig;
+                $files[] = $formstate.'paragraph/default'.$htmltwig;
             }
 
             if (!is_null($classtype) && 1 == substr_count($classtype, '\Block')) {
-                $files[] = 'forms/block/'.$type.$htmltwig;
-                $files[] = 'forms/block/default'.$htmltwig;
+                $files[] = $formstate.'block/'.$type.$htmltwig;
+                $files[] = $formstate.'block/default'.$htmltwig;
             }
         }
 
-        $files[] = 'forms/default'.$htmltwig;
+        $files[] = $formstate.'default'.$htmltwig;
 
         return $files;
     }
