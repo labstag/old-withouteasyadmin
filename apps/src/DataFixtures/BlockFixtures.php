@@ -72,7 +72,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         $objectManager->persist($block);
         $this->addReference('block_'.$region.'-'.$type, $block);
         if (array_key_exists('notinpages', $blockData)) {
-            $this->enqueueMethod->sync(
+            $this->enqueueMethod->async(
                 BlockService::class,
                 'process',
                 [
