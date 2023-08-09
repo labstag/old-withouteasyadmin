@@ -1,4 +1,6 @@
-{% form_theme form 'tmpl/back-form_themes.html.twig' %}
+{% if form is defined %}
+    {% form_theme form 'tmpl/back-form_themes.html.twig' %}
+{% endif %}
 {% set sitemetatags = sitemetatags|merge([
     {
         'name': 'robots',
@@ -51,6 +53,7 @@
 		{{ macro_site.breadcrumbs(breadcrumbs) }}
 		{{ macro_site.flashbag(app) }}
 		{% if searchform is defined %}
+            {% form_theme searchform 'tmpl/back-form_themes.html.twig' %}
             {{ macro_site.searchform(searchform) }}
 		{% endif %}
 		{% block body %}{% endblock %}

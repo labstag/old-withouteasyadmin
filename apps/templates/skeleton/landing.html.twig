@@ -1,4 +1,6 @@
-{% form_theme form 'tmpl/front-form_themes.html.twig' %}
+{% if form is defined %}
+    {% form_theme form 'tmpl/front-form_themes.html.twig' %}
+{% endif %}
 {% set bodyclass = 'body-landing' %}
 {% extends 'base.html.twig' %}
 {% import "macro.html.twig" as macro_site %}

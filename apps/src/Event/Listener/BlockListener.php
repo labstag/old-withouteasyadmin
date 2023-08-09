@@ -49,8 +49,8 @@ class BlockListener extends EventListenerLib
         /** @var EntityBlockInterface $entity */
         $entity = new $classentity();
         $entity->setBlock($block);
-
-        $repositoryLib->save($entity);
+        $repositoryLib->save($block);
+        $this->blockService->setEntity($block, $entity);
     }
 
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void

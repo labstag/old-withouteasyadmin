@@ -56,6 +56,22 @@ class BlockService
         return $data;
     }
 
+    public function setEntity(Block $block, $entity)
+    {
+        $field  = $this->getEntityField($block);
+        if (is_null($field)) {
+            return $entity;
+        }
+
+        $reflectionClass  = new ReflectionClass($block);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        foreach ($reflectionClass->getProperties() as $reflectionProperty) {
+            if ($reflectionProperty->getName() === $field) {
+                $propertyAccessor->setValue($block, $field, [$entity]);
+            }
+        }
+    }
+
     public function getEntity(Block $block): ?EntityBlockInterface
     {
         $entity = null;

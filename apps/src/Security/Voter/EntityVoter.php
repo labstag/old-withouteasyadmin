@@ -79,7 +79,7 @@ class EntityVoter extends Voter
 
         $status = false;
         foreach ($entities as $entity) {
-            if (is_object($entity) && $subject::class == $entity) {
+            if ($subject::class == $entity) {
                 $status = true;
 
                 break;
