@@ -127,6 +127,7 @@
     "@storybook/web-components": "7.2.*",
     "@storybook/web-components-webpack5": "7.2.*",
     "@symfony/webpack-encore": "4.4.*",
+    "at-rule-packer": "0.4.*",
     "autoprefixer": "10.4.*",
     "browserslist": "4.21.*",
     "core-js": "3.32.*",
@@ -143,7 +144,7 @@
     "postcss-scss": "4.0.*",
     "react": "18.2.*",
     "react-dom": "18.2.*",
-    "regenerator-runtime": "0.13.*",
+    "regenerator-runtime": "0.14.*",
     "resolve-url-loader": "^5.0.0",
     "sass": "1.64.*",
     "sass-loader": "13.3.*",
@@ -151,7 +152,7 @@
     "style-loader": "3.3.*",
     "stylelint": "15.10.*",
     "stylelint-config-standard": "34.0.*",
-    "stylelint-scss": "5.0.*",
+    "stylelint-scss": "5.1.*",
     "twig": "1.16.*",
     "twigjs-loader": "1.0.*",
     "url-loader": "4.1.*",
@@ -165,14 +166,14 @@
     "last 4 versions"
   ],
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "38.1.*",
+    "@ckeditor/ckeditor5-build-classic": "39.0.*",
     "@fortawesome/fontawesome-free": "6.4.*",
     "@popperjs/core": "2.11.*",
     "bootstrap": "5.3.*",
     "flag-icons": "6.9.*",
     "get-google-fonts": "^1.2.2",
     "korojscommands": "1.2.*",
-    "lit": "2.7.*",
+    "lit": "2.8.*",
     "matchmedia-polyfill": "0.3.*",
     "mitt": "3.0.*",
     "perfect-scrollbar": "1.5.*",
@@ -180,7 +181,7 @@
     "sortablejs": "1.15.*",
     "svg4everybody": "2.1.*",
     "swiper": "10.1.*",
-    "tarteaucitronjs": "1.13.*",
+    "tarteaucitronjs": "1.14.*",
     "tom-select": "2.2.*"
   }
 }

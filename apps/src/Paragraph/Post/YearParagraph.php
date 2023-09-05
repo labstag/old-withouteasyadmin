@@ -57,7 +57,7 @@ class YearParagraph extends ParagraphLib implements ParagraphInterface
         /** @var PostRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Post::class);
         $pagination    = $this->paginator->paginate(
-            $repositoryLib->findPublierArchive($year),
+            $repositoryLib->findPublierArchive((int) $year),
             $request->query->getInt('page', 1),
             10
         );
