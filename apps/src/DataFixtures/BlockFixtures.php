@@ -30,31 +30,6 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         $objectManager->flush();
     }
 
-    protected function addSubBlock(
-        Block $block,
-        array $blockData, 
-        ObjectManager $objectManager
-    ): void
-    {
-        $classentity = $this->blockService->getTypeEntity($block);
-        $entity      = $this->blockService->getEntity($block);
-        if (!is_null($entity) || is_null($classentity)) {
-            return;
-        }
-
-        $entity = new $classentity();
-        $entity->setBlock($block);
-        if (array_key_exists('code-menu', $blockData)) {
-            /** @var Menu $menu */
-            $menu        = $this->getReference('menu_'.$blockData['code-menu']);
-
-            /** @var Navbar $entity */
-            $entity->setMenu($menu);
-        }
-        
-        $this->blockService->setEntity($block, $entity);
-    }
-
     protected function addBlock(
         string $region,
         int $position,
@@ -82,7 +57,6 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
                 ]
             );
         }
-
     }
 
     protected function addBlocks(
@@ -94,5 +68,30 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         foreach ($blocks as $position => $block) {
             $this->addBlock($region, $position, $block, $objectManager);
         }
+    }
+
+    protected function addSubBlock(
+        Block $block,
+        array $blockData,
+        ObjectManager $objectManager
+    ): void
+    {
+        $classentity = $this->blockService->getTypeEntity($block);
+        $entity      = $this->blockService->getEntity($block);
+        if (!is_null($entity) || is_null($classentity)) {
+            return;
+        }
+
+        $entity = new $classentity();
+        $entity->setBlock($block);
+        if (array_key_exists('code-menu', $blockData)) {
+            /** @var Menu $menu */
+            $menu = $this->getReference('menu_'.$blockData['code-menu']);
+
+            /** @var Navbar $entity */
+            $entity->setMenu($menu);
+        }
+
+        $this->blockService->setEntity($block, $entity);
     }
 }

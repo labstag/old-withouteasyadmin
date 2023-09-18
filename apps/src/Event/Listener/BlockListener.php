@@ -49,6 +49,7 @@ class BlockListener extends EventListenerLib
         /** @var EntityBlockInterface $entity */
         $entity = new $classentity();
         $entity->setBlock($block);
+
         $repositoryLib->save($block);
         $this->blockService->setEntity($block, $entity);
     }

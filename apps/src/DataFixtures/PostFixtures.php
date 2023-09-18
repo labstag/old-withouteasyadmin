@@ -44,6 +44,7 @@ class PostFixtures extends FixtureLib implements DependentFixtureInterface
         $user = $this->getReference('user_'.$indexUser);
         $post->setRefuser($user);
         $post->setPublished($generator->unique()->dateTime('now'));
+
         $indexLibelle = $generator->numberBetween(0, self::NUMBER_CATEGORY - 1);
         /** @var Category $category */
         $category = $this->getReference('category_'.$indexLibelle);

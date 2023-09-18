@@ -34,6 +34,7 @@ class PostListener extends EventListenerLib
         if (!$object instanceof Post) {
             return;
         }
+
         $this->logger->info($action.' '.$object::class);
         $this->verifMetas($object);
     }

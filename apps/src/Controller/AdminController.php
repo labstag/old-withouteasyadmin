@@ -57,7 +57,7 @@ class AdminController extends AdminControllerLib
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_trash',)]
+    #[Route(path: '/trash', name: 'admin_trash')]
     public function trash(): Response
     {
         $viewService = $this->adminService->setDomain('trash');

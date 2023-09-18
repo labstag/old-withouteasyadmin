@@ -102,20 +102,6 @@ class LabstagExtension extends ExtensionLib
         ];
     }
 
-    public function prototype(string $content): string
-    {
-        $tab = [
-            '"'  => "'",
-            "\n" => "",
-            "\t" => ""
-        ];
-        foreach ($tab as $key => $value) {
-            $content = str_replace($key, $value, $content);
-        }
-
-        return $content;
-    }
-
     /**
      * @return TwigFunction[]
      */
@@ -150,6 +136,20 @@ class LabstagExtension extends ExtensionLib
         );
 
         return (string) parse_url($url, PHP_URL_PATH);
+    }
+
+    public function prototype(string $content): string
+    {
+        $tab = [
+            '"'  => "'",
+            "\n" => '',
+            "\t" => '',
+        ];
+        foreach ($tab as $key => $value) {
+            $content = str_replace($key, $value, $content);
+        }
+
+        return $content;
     }
 
     public function verifPhone(string $country, string $phone): bool

@@ -33,15 +33,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
      */
     protected const DATAUNSERIALIZE = 4;
 
-    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
-    protected ?Groupe $refgroupe = null;
-
     #[ORM\Column(type: 'string', nullable: true)]
     protected string $password;
 
     #[Assert\NotCompromisedPassword()]
     protected ?string $plainPassword = null;
+
+    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
+    protected ?Groupe $refgroupe = null;
 
     #[ORM\Column(type: 'json')]
     protected array $roles = ['ROLE_USER'];

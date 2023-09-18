@@ -35,4 +35,3 @@ export class BtnToggleFieldset extends ElementHTML {
     }
   }
 }
-

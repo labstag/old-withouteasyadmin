@@ -74,7 +74,7 @@ class FormType extends AbstractTypeLib
             'text',
             MinMaxCollectionType::class,
             [
-                'entry_type'   => TextFieldsType::class,
+                'entry_type' => TextFieldsType::class,
             ]
         );
         $formBuilder->add(

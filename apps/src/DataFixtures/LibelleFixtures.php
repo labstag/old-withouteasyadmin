@@ -28,6 +28,7 @@ class LibelleFixtures extends DataFixtureLib implements DependentFixtureInterfac
     {
         $libelle = new Libelle();
         $libelle->setName($generator->unique()->colorName());
+
         $objectManager->persist($libelle);
         $this->addReference('libelle_'.$index, $libelle);
     }

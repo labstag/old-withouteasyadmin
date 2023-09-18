@@ -101,6 +101,7 @@ class UserListener extends EventListenerLib
         $emailUser->setRefuser($user);
         $emailUser->setPrincipal(true);
         $emailUser->setAddress($email);
+
         $repository = $this->repositoryService->get($emailUser::class);
         $repository->save($emailUser);
 
