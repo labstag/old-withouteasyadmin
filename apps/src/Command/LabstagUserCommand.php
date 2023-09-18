@@ -414,7 +414,7 @@ class LabstagUserCommand extends CommandLib
         /** @var User $user */
         foreach ($users as $user) {
             /** @var Groupe $groupe */
-            $groupe  = $user->getGroupe();
+            $groupe  = $user->getRefgroupe();
             $table[] = [
                 'username' => $user->getUsername(),
                 'email'    => $user->getEmail(),
@@ -489,7 +489,7 @@ class LabstagUserCommand extends CommandLib
         /** @var User $user */
         foreach ($users as $user) {
             /** @var Groupe $groupe */
-            $groupe                      = $user->getGroupe();
+            $groupe                      = $user->getRefgroupe();
             $table[$user->getUsername()] = json_encode(
                 [
                     'username' => $user->getUsername(),
@@ -572,7 +572,7 @@ class LabstagUserCommand extends CommandLib
                 continue;
             }
 
-            $user->setGroupe($groupe);
+            $user->setRefgroupe($groupe);
         }
     }
 }

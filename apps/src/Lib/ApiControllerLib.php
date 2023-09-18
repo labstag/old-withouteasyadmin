@@ -84,7 +84,7 @@ abstract class ApiControllerLib extends AbstractController
             /** @var User $user */
             $user = $repositoryLib->find($get['user']);
 
-            return $entityRepository->findEnableByGroupe($user->getGroupe());
+            return $entityRepository->findEnableByGroupe($user->getRefgroupe());
         }
 
         return $entityRepository->findEnableByGroupe();
