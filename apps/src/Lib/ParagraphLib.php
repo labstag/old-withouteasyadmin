@@ -41,6 +41,16 @@ abstract class ParagraphLib extends AbstractController
     {
     }
 
+    public function getClassCSS(
+        array $dataClass,
+        EntityParagraphInterface $entityParagraph
+    ): array
+    {
+        unset($entityParagraph);
+
+        return $dataClass;
+    }
+
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);

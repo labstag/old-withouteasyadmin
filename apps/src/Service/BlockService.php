@@ -265,6 +265,27 @@ class BlockService
         return $html;
     }
 
+    public function getClassCSS(
+        array $dataClass,
+        Block $block
+    ): array
+    {
+        $type        = $block->getType();
+        $entityBlock = $this->getEntity($block);
+        if (!$entityBlock instanceof EntityBlockInterface || is_null($type)) {
+            return $dataClass;
+        }
+
+        foreach ($this->rewindableGenerator as $row) {
+            /** @var BlockInterface $row */
+            if ($type === $row->getType()) {
+                $dataClass = $row->getClassCSS($dataClass, $entityBlock);
+            }
+        }
+
+        return $dataClass;
+    }
+
     public function showTemplate(
         Block $block,
         ?EntityFrontInterface $entityFront

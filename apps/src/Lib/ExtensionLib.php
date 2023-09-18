@@ -2,6 +2,7 @@
 
 namespace Labstag\Lib;
 
+use Labstag\Service\BlockService;
 use Labstag\Service\GuardService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\PhoneService;
@@ -18,6 +19,7 @@ abstract class ExtensionLib extends AbstractExtension
     protected array $templates = [];
 
     public function __construct(
+        protected BlockService $blockService,
         protected RepositoryService $repositoryService,
         protected WorkflowService $workflowService,
         protected ParagraphService $paragraphService,

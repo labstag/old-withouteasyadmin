@@ -16,6 +16,8 @@ interface BlockInterface
 
     public function isShowForm(): bool;
 
+    public function getClassCSS(array $dataClass, EntityBlockInterface $entityBlock): array;
+
     public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response;
 
     public function template(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): array;

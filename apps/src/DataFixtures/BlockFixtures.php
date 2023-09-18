@@ -43,7 +43,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
         $block->setRegion($region);
         $block->setType($type);
         $block->setPosition($position + 1);
-        $this->addSubBlock($block, $blockData, $objectManager);
+        $this->addSubBlock($block, $blockData);
         $objectManager->persist($block);
         $this->addReference('block_'.$region.'-'.$type, $block);
         if (array_key_exists('notinpages', $blockData)) {
@@ -72,8 +72,7 @@ class BlockFixtures extends FixtureLib implements DependentFixtureInterface
 
     protected function addSubBlock(
         Block $block,
-        array $blockData,
-        ObjectManager $objectManager
+        array $blockData
     ): void
     {
         $classentity = $this->blockService->getTypeEntity($block);

@@ -48,6 +48,8 @@ class ParagraphExtension extends ExtensionLib
             $dataClass[] = 'm--theme-'.$code;
         }
 
+        $dataClass = $this->paragraphService->getClassCSS($dataClass, $paragraph);
+
         return implode(' ', $dataClass);
     }
 

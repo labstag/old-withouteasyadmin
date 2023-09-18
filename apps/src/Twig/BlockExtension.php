@@ -13,8 +13,13 @@ class BlockExtension extends ExtensionLib
     {
         /** @var Block $block */
         $block = $entityBlock->getBlock();
+        $dataClass = [
+            'block-'.$block->getType(),
+        ];
 
-        return 'block-'.$block->getType();
+        $dataClass = $this->blockService->getClassCss($dataClass, $block);
+
+        return implode(' ', $dataClass);
     }
 
     public function getBlockId(EntityBlockInterface $entityBlock): string

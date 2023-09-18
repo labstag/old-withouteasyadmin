@@ -70,6 +70,29 @@ class ParagraphService
         return $data;
     }
 
+    public function getClassCSS(
+        array $dataClass,
+        Paragraph $paragraph
+    ): array
+    {
+        $type            = $paragraph->getType();
+        $entityParagraph = $this->getEntity($paragraph);
+        if (is_null($entityParagraph)) {
+            return $dataClass;
+        }
+
+        foreach ($this->rewindableGenerator as $row) {
+            /** @var ParagraphInterface $row */
+            if ($type == $row->getType()) {
+                $dataClass = $row->getClassCSS($dataClass, $entityParagraph);
+
+                break;
+            }
+        }
+
+        return $dataClass;
+    }
+
     public function getEntity(Paragraph $paragraph): ?EntityParagraphInterface
     {
         $entity = null;

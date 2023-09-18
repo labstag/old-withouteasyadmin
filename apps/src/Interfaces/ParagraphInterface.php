@@ -18,6 +18,9 @@ interface ParagraphInterface
     public function isShowForm(): bool;
 
     public function setData(Paragraph $paragraph): void;
+    
+
+    public function getClassCSS(array $dataClass, EntityParagraphInterface $entityParagraph): array;
 
     public function show(EntityParagraphInterface $entityParagraph): ?Response;
 

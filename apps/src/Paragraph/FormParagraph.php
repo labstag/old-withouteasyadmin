@@ -12,6 +12,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FormParagraph extends ParagraphLib implements ParagraphInterface
 {
+    public function getClassCSS(
+        array $dataClass,
+        EntityParagraphInterface $entityParagraph
+    ): array
+    {
+        /** @var FormParagraph $paragraph */
+        if ('' == $entityParagraph->getForm()) {
+            return $dataClass;
+        }
+
+        $dataClass[] = 'form-'.$entityParagraph->getForm();
+
+        return $dataClass;
+    }
+
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         /** @var FormParagraph $entityParagraph */

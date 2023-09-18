@@ -9,17 +9,6 @@
         <link rel="stylesheet" href="{{ asset('assets/tarteaucitron/css/tarteaucitron.css') }}">
     {% endif %}
 {% endblock %}
-{% block content %}
-    {% for row, blockhtml in blocks %}
-        <{{ row }}>
-            {% for row in blockhtml %}
-                {{ row.template|debug_begin }}
-                {{ row.data.content|raw }}
-                {{ row.template|debug_end }}
-            {% endfor %}
-        </{{ row }}>
-    {% endfor %}
-{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('front') }}
@@ -35,4 +24,15 @@
     {% endif %}
         </script>
     {% endif %}
+{% endblock %}
+{% block content %}
+    {% for row, blockhtml in blocks %}
+        <{{ row }}>
+            {% for row in blockhtml %}
+                {{ row.template|debug_begin }}
+                {{ row.data.content|raw }}
+                {{ row.template|debug_end }}
+            {% endfor %}
+        </{{ row }}>
+    {% endfor %}
 {% endblock %}

@@ -34,6 +34,17 @@ abstract class BlockLib extends AbstractController
     {
     }
 
+    public function getClassCSS(
+        array $dataClass,
+        EntityBlockInterface $entityBlock
+    ): array
+    {
+        $block = $entityBlock->getBlock();
+        $dataClass[] = $block->getRegion().'-block-'.$block->getType();
+
+        return $dataClass;
+    }
+
     public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
         unset($entityBlock, $entityFront);
