@@ -46,7 +46,7 @@ class HistoryParagraph extends ParagraphLib implements ParagraphInterface
         return false;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         /** @var HistoryRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(EntityHistory::class);
@@ -56,13 +56,10 @@ class HistoryParagraph extends ParagraphLib implements ParagraphInterface
             0
         );
 
-        return $this->render(
-            $this->getTemplateFile($this->getcode($entityParagraph)),
-            [
-                'histories' => $histories,
-                'paragraph' => $entityParagraph,
-            ]
-        );
+        return [
+            'histories' => $histories,
+            'paragraph' => $entityParagraph,
+        ];
     }
 
     public function useIn(): array

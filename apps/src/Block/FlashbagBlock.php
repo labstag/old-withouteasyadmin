@@ -44,15 +44,12 @@ class FlashbagBlock extends BlockLib implements BlockInterface
         return false;
     }
 
-    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
+    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
     {
         if (!$entityBlock instanceof Flashbag) {
             return null;
         }
 
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
-            ['block' => $entityBlock]
-        );
+        return ['block' => $entityBlock];
     }
 }

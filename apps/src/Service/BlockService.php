@@ -241,10 +241,10 @@ class BlockService
         }
     }
 
-    public function showContent(
+    public function getContext(
         Block $block,
         ?EntityFrontInterface $entityFront
-    ): ?Response
+    ): mixed
     {
         $type        = $block->getType();
         $entityBlock = $this->getEntity($block);
@@ -252,17 +252,64 @@ class BlockService
             return null;
         }
 
-        $html = null;
+        $context = null;
         foreach ($this->rewindableGenerator as $row) {
             /** @var BlockInterface $row */
             if ($type === $row->getType()) {
-                $html = $row->show($entityBlock, $entityFront);
+                $context = $row->context($entityBlock, $entityFront);
 
                 break;
             }
         }
 
-        return $html;
+        return $context;
+    }
+
+    public function getClass(
+        Block $block
+    ): ?BlockInterface
+    {
+        $type        = $block->getType();
+        $entityBlock = $this->getEntity($block);
+        if (!$entityBlock instanceof EntityBlockInterface || is_null($type)) {
+            return null;
+        }
+
+        $class = null;
+        foreach ($this->rewindableGenerator as $row) {
+            /** @var BlockInterface $row */
+            if ($type === $row->getType()) {
+                $class = $row;
+
+                break;
+            }
+        }
+
+        return $class;
+    }
+
+    public function getTwigTemplate(
+        Block $block,
+        ?EntityFrontInterface $entityFront
+    ): ?string
+    {
+        $type        = $block->getType();
+        $entityBlock = $this->getEntity($block);
+        if (!$entityBlock instanceof EntityBlockInterface || is_null($type)) {
+            return null;
+        }
+
+        $template = null;
+        foreach ($this->rewindableGenerator as $row) {
+            /** @var BlockInterface $row */
+            if ($type === $row->getType()) {
+                $template = $row->twig($entityBlock, $entityFront);
+
+                break;
+            }
+        }
+
+        return $template;
     }
 
     public function getClassCSS(

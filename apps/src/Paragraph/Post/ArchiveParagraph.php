@@ -47,7 +47,7 @@ class ArchiveParagraph extends ParagraphLib implements ParagraphInterface
         return false;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): ?Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         /** @var PostRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Post::class);
@@ -59,13 +59,10 @@ class ArchiveParagraph extends ParagraphLib implements ParagraphInterface
             return null;
         }
 
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
-            [
-                'archives'  => $archives,
-                'paragraph' => $entityParagraph,
-            ]
-        );
+        return [
+            'archives'  => $archives,
+            'paragraph' => $entityParagraph,
+        ];
     }
 
     public function useIn(): array

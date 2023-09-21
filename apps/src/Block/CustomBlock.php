@@ -49,37 +49,6 @@ class CustomBlock extends BlockLib implements BlockInterface
         return false;
     }
 
-    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
-    {
-        if (!$entityBlock instanceof Custom) {
-            return null;
-        }
-
-        $data     = $this->setParagraphs($entityBlock);
-        $redirect = null;
-        foreach ($data as $paragraphs) {
-            if (!$paragraphs['data'] instanceof RedirectResponse) {
-                continue;
-            }
-
-            $redirect = $paragraphs['data'];
-
-            break;
-        }
-
-        if (!is_null($redirect)) {
-            return $redirect;
-        }
-
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
-            [
-                'paragraphs' => $data,
-                'block'      => $entityBlock,
-            ]
-        );
-    }
-
     private function setParagraphs(Custom $custom): array
     {
         /** @var Request $request */
@@ -114,5 +83,33 @@ class CustomBlock extends BlockLib implements BlockInterface
         }
 
         return $paragraphs;
+    }
+
+    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
+    {
+        if (!$entityBlock instanceof Custom) {
+            return null;
+        }
+
+        $data     = $this->setParagraphs($entityBlock);
+        $redirect = null;
+        foreach ($data as $paragraphs) {
+            if (!$paragraphs['data'] instanceof RedirectResponse) {
+                continue;
+            }
+
+            $redirect = $paragraphs['data'];
+
+            break;
+        }
+
+        if (!is_null($redirect)) {
+            return $redirect;
+        }
+
+        return [
+            'paragraphs' => $data,
+            'block'      => $entityBlock,
+        ];
     }
 }

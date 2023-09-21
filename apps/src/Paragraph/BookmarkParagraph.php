@@ -46,7 +46,7 @@ class BookmarkParagraph extends ParagraphLib implements ParagraphInterface
         return false;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         /** @var BookmarkRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(EntityBookmark::class);
@@ -56,13 +56,10 @@ class BookmarkParagraph extends ParagraphLib implements ParagraphInterface
             0
         );
 
-        return $this->render(
-            $this->getTemplateFile($this->getcode($entityParagraph)),
-            [
-                'paragraph' => $entityParagraph,
-                'bookmarks' => $bookmarks,
-            ]
-        );
+        return [
+            'paragraph' => $entityParagraph,
+            'bookmarks' => $bookmarks,
+        ];
     }
 
     public function useIn(): array

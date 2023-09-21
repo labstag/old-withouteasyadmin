@@ -47,7 +47,7 @@ class ShowParagraph extends ParagraphLib implements ParagraphInterface
         return false;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): ?Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
@@ -64,13 +64,10 @@ class ShowParagraph extends ParagraphLib implements ParagraphInterface
             return null;
         }
 
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
-            [
-                'history'   => $history,
-                'paragraph' => $entityParagraph,
-            ]
-        );
+        return [
+            'history'   => $history,
+            'paragraph' => $entityParagraph,
+        ];
     }
 
     /**

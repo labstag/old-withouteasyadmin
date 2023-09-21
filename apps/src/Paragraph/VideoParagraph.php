@@ -118,7 +118,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
         }
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): ?Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         if (!$entityParagraph instanceof Video) {
             return null;
@@ -144,15 +144,12 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
         $datas = $metas->get('og:video:url');
         $embed = (0 != (is_countable($datas) ? count($datas) : 0)) ? $datas[0] : null;
 
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
-            [
-                'paragraph' => $entityParagraph,
-                'image'     => $image,
-                'data'      => $extractor,
-                'embed'     => $embed,
-            ]
-        );
+        return [
+            'paragraph' => $entityParagraph,
+            'image'     => $image,
+            'data'      => $extractor,
+            'embed'     => $embed,
+        ];
     }
 
     public function useIn(): array

@@ -18,11 +18,14 @@ interface ParagraphInterface
     public function isShowForm(): bool;
 
     public function setData(Paragraph $paragraph): void;
-    
 
     public function getClassCSS(array $dataClass, EntityParagraphInterface $entityParagraph): array;
 
-    public function show(EntityParagraphInterface $entityParagraph): ?Response;
+    public function context(EntityParagraphInterface $entityParagraph): mixed;
+
+    public function twig(EntityParagraphInterface $entityParagraph): string;
+
+    public function view(string $twig, array $parameters = []): ?Response;
 
     public function template(EntityParagraphInterface $entityParagraph): array;
 

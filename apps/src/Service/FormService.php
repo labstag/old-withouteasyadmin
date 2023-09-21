@@ -33,6 +33,40 @@ class FormService
         return null;
     }
 
+    public function context(
+        object $formClass,
+        string $template,
+        array $params
+    ): mixed
+    {
+        foreach ($this->postform as $row) {
+            if ($row->getForm() != $formClass::class) {
+                continue;
+            }
+
+            return $row->context($template, $params);
+        }
+
+        return null;
+    }
+
+    public function view(
+        object $formClass,
+        string $template,
+        array $params
+    ): ?Response
+    {
+        foreach ($this->postform as $row) {
+            if ($row->getForm() != $formClass::class) {
+                continue;
+            }
+
+            return $row->view($template, $params);
+        }
+
+        return null;
+    }
+
     public function getForm(): array
     {
         $data = [];

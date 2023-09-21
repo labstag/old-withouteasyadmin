@@ -63,14 +63,14 @@ class FormParagraph extends ParagraphLib implements ParagraphInterface
         return true;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): ?Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         $template = $this->getTemplateFile($this->getCode($entityParagraph));
         /** @var FormParagraph $entityParagraph */
         $form      = $entityParagraph->getForm();
         $formClass = $this->formService->init($form);
 
-        return $this->formService->execute(
+        return $this->formService->context(
             $formClass,
             $template,
             ['paragraph' => $entityParagraph]

@@ -50,12 +50,9 @@ class TextParagraph extends ParagraphLib implements ParagraphInterface
         return true;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
-            ['paragraph' => $entityParagraph]
-        );
+        return ['paragraph' => $entityParagraph];
     }
 
     public function useIn(): array

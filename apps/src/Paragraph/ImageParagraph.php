@@ -53,7 +53,7 @@ class ImageParagraph extends ParagraphLib implements ParagraphInterface
         return true;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): ?Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         if (!$entityParagraph instanceof Image) {
             return null;
@@ -63,13 +63,10 @@ class ImageParagraph extends ParagraphLib implements ParagraphInterface
         $attachment = $entityParagraph->getImage();
         $file       = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
 
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
-            [
-                'paragraph'  => $entityParagraph,
-                'attachment' => $file,
-            ]
-        );
+        return [
+            'paragraph'  => $entityParagraph,
+            'attachment' => $file,
+        ];
     }
 
     public function useIn(): array

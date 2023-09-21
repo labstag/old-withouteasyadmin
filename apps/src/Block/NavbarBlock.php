@@ -46,7 +46,7 @@ class NavbarBlock extends BlockLib implements BlockInterface
         return true;
     }
 
-    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
+    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
     {
         if (!$entityBlock instanceof Navbar) {
             return null;
@@ -56,13 +56,10 @@ class NavbarBlock extends BlockLib implements BlockInterface
         $item = ($menu instanceof Menu) ? $this->menuService->createMenu($menu) : '';
         $show = ($item instanceof ItemInterface) ? (0 != count($item->getChildren())) : false;
 
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
-            [
-                'show'  => $show,
-                'item'  => $item,
-                'block' => $entityBlock,
-            ]
-        );
+        return [
+            'show'  => $show,
+            'item'  => $item,
+            'block' => $entityBlock,
+        ];
     }
 }

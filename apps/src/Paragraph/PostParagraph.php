@@ -46,7 +46,7 @@ class PostParagraph extends ParagraphLib implements ParagraphInterface
         return false;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         /** @var PostRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(EntityPost::class);
@@ -56,13 +56,10 @@ class PostParagraph extends ParagraphLib implements ParagraphInterface
             0
         );
 
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
-            [
-                'posts'     => $posts,
-                'paragraph' => $entityParagraph,
-            ]
-        );
+        return [
+            'posts'     => $posts,
+            'paragraph' => $entityParagraph,
+        ];
     }
 
     public function useIn(): array

@@ -44,15 +44,12 @@ class HeaderBlock extends BlockLib implements BlockInterface
         return true;
     }
 
-    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
+    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
     {
         if (!$entityBlock instanceof Header) {
             return null;
         }
 
-        return $this->render(
-            $this->getTemplateFile($this->getcode($entityBlock, $entityFront)),
-            ['block' => $entityBlock]
-        );
+        return ['block' => $entityBlock];
     }
 }

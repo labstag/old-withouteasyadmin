@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		{{ macro_site.breadcrumbs(breadcrumbs) }}
-		{{ macro_site.flashbag(app) }}
+		{{ macro_site.flashbag(app.flashes) }}
 		{% if searchform is defined %}
             {% form_theme searchform 'tmpl/back-form_themes.html.twig' %}
             {{ macro_site.searchform(searchform) }}

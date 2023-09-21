@@ -51,7 +51,7 @@ class HeaderParagraph extends ParagraphLib implements ParagraphInterface
         return false;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): ?Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         /** @var EditoRepository $repositoryLib */
         $repositoryLib = $this->repositoryService->get(Edito::class);
@@ -61,13 +61,10 @@ class HeaderParagraph extends ParagraphLib implements ParagraphInterface
             return null;
         }
 
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
-            [
-                'edito'     => $edito,
-                'paragraph' => $entityParagraph,
-            ]
-        );
+        return [
+            'edito'     => $edito,
+            'paragraph' => $entityParagraph,
+        ];
     }
 
     /**

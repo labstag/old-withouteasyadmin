@@ -17,8 +17,12 @@ interface BlockInterface
     public function isShowForm(): bool;
 
     public function getClassCSS(array $dataClass, EntityBlockInterface $entityBlock): array;
+    
+    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed;
 
-    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response;
+    public function twig(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string;
+
+    public function view(string $twig, array $parameters = []): ?Response;
 
     public function template(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): array;
 }

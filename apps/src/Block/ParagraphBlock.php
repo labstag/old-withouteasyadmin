@@ -45,35 +45,17 @@ class ParagraphBlock extends BlockLib implements BlockInterface
         return false;
     }
 
-    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
+    private function launParagraphs(array $paragraphs): array
     {
-        if (!$entityBlock instanceof Paragraph) {
-            return null;
-        }
-
-        $data     = $this->setParagraphs($entityFront);
-        $redirect = null;
-        foreach ($data as $paragraphs) {
-            if (!$paragraphs['data'] instanceof RedirectResponse) {
+        foreach ($paragraphs as $position => $row) {
+            if ($row['args']['parameters'] instanceof RedirectResponse) {
                 continue;
             }
-
-            $redirect = $paragraphs['data'];
-
-            break;
+            $content = call_user_func_array([$row['class'], $row['execute']], $row['args']);
+            $paragraphs[$position]['data'] = $content;
         }
 
-        if (!is_null($redirect)) {
-            return $redirect;
-        }
-
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
-            [
-                'paragraphs' => $data,
-                'block'      => $entityBlock,
-            ]
-        );
+        return $paragraphs;
     }
 
     private function setParagraphs(?EntityFrontInterface $entityFront): array
@@ -89,5 +71,35 @@ class ParagraphBlock extends BlockLib implements BlockInterface
         }
 
         return $this->getParagraphsArray($this->paragraphService, $entityFront, $paragraphs);
+    }
+
+    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
+    {
+        if (!$entityBlock instanceof Paragraph) {
+            return null;
+        }
+
+        $data     = $this->setParagraphs($entityFront);
+        $redirect = null;
+        foreach ($data as $paragraphs) {
+            if (!$paragraphs['args']['parameters'] instanceof RedirectResponse) {
+                continue;
+            }
+
+            $redirect = $paragraphs['args']['parameters'];
+
+            break;
+        }
+
+        if (!is_null($redirect)) {
+            return $redirect;
+        }else{
+            $data = $this->launParagraphs($data);
+        }
+
+        return [
+            'paragraphs' => $data,
+            'block'      => $entityBlock,
+        ];
     }
 }

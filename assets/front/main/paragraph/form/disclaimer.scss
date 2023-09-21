@@ -1,3 +1,66 @@
 .form-disclaimer{
-  
+  height: 100vh;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  div:has(> input[type='checkbox']) {
+    label {
+      cursor: pointer;
+    }
+  }
+  form {
+    width: 90vw;
+    @include media-min('tablet-up') {
+      width: 50vw;
+    }
+    border: 1px solid #000;
+    .disclaimer_message{
+      padding: 10px;
+      text-align: justify;
+    }
+
+    .disclaimer_confirm{
+      padding: 10px;
+      div:first-child {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: left;
+      }
+    }
+    
+    .disclaimer_btns {
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
+      @include media-min('tablet-up') {
+        flex-direction: row;
+      }
+      padding: 20px;
+      background: #868686;
+      button[type='submit'] {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid #007bff;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 10px;
+      }
+      a {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 20px;
+        color: #000;
+        text-decoration: none;
+        border: 1px solid #fff;
+        background: #fff;
+        font-weight: bold;
+        padding: 10px;
+      }
+    }
+  }
 }

@@ -44,15 +44,12 @@ class HtmlBlock extends BlockLib implements BlockInterface
         return true;
     }
 
-    public function show(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): ?Response
+    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
     {
         if (!$entityBlock instanceof Html) {
             return null;
         }
 
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityBlock, $entityFront)),
-            ['block' => $entityBlock]
-        );
+        return ['block' => $entityBlock];
     }
 }

@@ -48,7 +48,7 @@ class ChapterParagraph extends ParagraphLib implements ParagraphInterface
         return false;
     }
 
-    public function show(EntityParagraphInterface $entityParagraph): ?Response
+    public function context(EntityParagraphInterface $entityParagraph): mixed
     {
         /** @var Request $request */
         $request    = $this->requestStack->getCurrentRequest();
@@ -67,16 +67,13 @@ class ChapterParagraph extends ParagraphLib implements ParagraphInterface
         $history  = $chapter->getHistory();
         $prevnext = $this->getPrevNext($chapter, $history);
 
-        return $this->render(
-            $this->getTemplateFile($this->getcode($entityParagraph)),
-            [
-                'prev'      => $prevnext['prev'],
-                'next'      => $prevnext['next'],
-                'chapter'   => $chapter,
-                'history'   => $chapter->getHistory(),
-                'paragraph' => $entityParagraph,
-            ]
-        );
+        return [
+            'prev'      => $prevnext['prev'],
+            'next'      => $prevnext['next'],
+            'chapter'   => $chapter,
+            'history'   => $chapter->getHistory(),
+            'paragraph' => $entityParagraph,
+        ];
     }
 
     /**

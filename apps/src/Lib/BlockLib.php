@@ -12,6 +12,7 @@ use Labstag\Service\RepositoryService;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -74,16 +75,21 @@ abstract class BlockLib extends AbstractController
         $paragraphsArray = $entityFront->getParagraphs();
         foreach ($paragraphsArray as $paragraphArray) {
             /** @var Paragraph $paragraphArray */
-            $data = $paragraphService->showContent($paragraphArray);
-            if (is_null($data)) {
+            $context = $paragraphService->getContext($paragraphArray);
+            if (is_null($context)) {
                 continue;
             }
 
             $template = $paragraphService->showTemplate($paragraphArray);
 
             $paragraphs[] = [
+                'class'  => $paragraphService->getClass($paragraphArray),
+                'execute' => 'view',
+                'args'     => [
+                    'twig'       => $paragraphService->getTwigTemplate($paragraphArray),
+                    'parameters' => $context
+                ],
                 'template' => $template,
-                'data'     => $data,
             ];
         }
 
@@ -147,5 +153,18 @@ abstract class BlockLib extends AbstractController
         }
 
         return [];
+    }
+
+    public function twig(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
+    {
+        return $this->getTemplateFile($this->getCode($entityBlock, $entityFront));
+    }
+
+    public function view(string $twig, array $parameters = []): ?Response
+    {
+        return $this->render(
+            $twig,
+            $parameters
+        );
     }
 }

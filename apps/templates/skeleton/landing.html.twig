@@ -18,7 +18,7 @@
                 <img loading="lazy" alt="{{ config.site_title|e('html_attr') }}" src="{{ asset(imageglobal.name) | imagefilter('my_thumb') }}" />
             </picture>
         {% endif %}{% block box_title %}{% endblock %}</h1>
-        {{ macro_site.flashbag(app) }}
+        {{ macro_site.flashbag(app.flashes) }}
         {% block box %}{% endblock %}
     </div>
 {% endblock %}

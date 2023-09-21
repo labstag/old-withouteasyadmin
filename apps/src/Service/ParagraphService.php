@@ -333,7 +333,7 @@ class ParagraphService
         return $paragraph;
     }
 
-    public function showContent(Paragraph $paragraph): ?Response
+    public function getContext(Paragraph $paragraph): mixed
     {
         $type            = $paragraph->getType();
         $entityParagraph = $this->getEntity($paragraph);
@@ -341,17 +341,59 @@ class ParagraphService
             return null;
         }
 
-        $html = null;
+        $context = null;
         foreach ($this->rewindableGenerator as $row) {
             /** @var ParagraphInterface $row */
             if ($type === $row->getType()) {
-                $html = $row->show($entityParagraph);
+                $context = $row->context($entityParagraph);
 
                 break;
             }
         }
 
-        return $html;
+        return $context;
+    }
+
+    public function getClass(Paragraph $paragraph): ?ParagraphInterface
+    {
+        $type            = $paragraph->getType();
+        $entityParagraph = $this->getEntity($paragraph);
+        if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
+            return null;
+        }
+
+        $class = null;
+        foreach ($this->rewindableGenerator as $row) {
+            /** @var ParagraphInterface $row */
+            if ($type === $row->getType()) {
+                $class = $row;
+
+                break;
+            }
+        }
+
+        return $class;
+    }
+
+    public function getTwigTemplate(Paragraph $paragraph): ?string
+    {
+        $type            = $paragraph->getType();
+        $entityParagraph = $this->getEntity($paragraph);
+        if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
+            return null;
+        }
+
+        $template = null;
+        foreach ($this->rewindableGenerator as $row) {
+            /** @var ParagraphInterface $row */
+            if ($type === $row->getType()) {
+                $template = $row->twig($entityParagraph);
+
+                break;
+            }
+        }
+
+        return $template;
     }
 
     public function showTemplate(Paragraph $paragraph): ?array

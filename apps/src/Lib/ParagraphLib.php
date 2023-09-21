@@ -14,6 +14,7 @@ use Labstag\Service\RepositoryService;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -126,5 +127,18 @@ abstract class ParagraphLib extends AbstractController
         }
 
         return [];
+    }
+
+    public function twig(EntityParagraphInterface $entityParagraph): string
+    {
+        return $this->getTemplateFile($this->getCode($entityParagraph));
+    }
+
+    public function view(string $twig, array $parameters = []): ?Response
+    {
+        return $this->render(
+            $twig,
+            $parameters
+        );
     }
 }
