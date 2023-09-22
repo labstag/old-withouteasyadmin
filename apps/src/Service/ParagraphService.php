@@ -13,7 +13,6 @@ use Labstag\Queue\EnqueueMethod;
 use Labstag\Repository\ParagraphRepository;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Twig\Environment;
 
@@ -70,6 +69,27 @@ class ParagraphService
         return $data;
     }
 
+    public function getClass(Paragraph $paragraph): ?ParagraphInterface
+    {
+        $type            = $paragraph->getType();
+        $entityParagraph = $this->getEntity($paragraph);
+        if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
+            return null;
+        }
+
+        $class = null;
+        foreach ($this->rewindableGenerator as $row) {
+            /** @var ParagraphInterface $row */
+            if ($type === $row->getType()) {
+                $class = $row;
+
+                break;
+            }
+        }
+
+        return $class;
+    }
+
     public function getClassCSS(
         array $dataClass,
         Paragraph $paragraph
@@ -91,6 +111,27 @@ class ParagraphService
         }
 
         return $dataClass;
+    }
+
+    public function getContext(Paragraph $paragraph): mixed
+    {
+        $type            = $paragraph->getType();
+        $entityParagraph = $this->getEntity($paragraph);
+        if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
+            return null;
+        }
+
+        $context = null;
+        foreach ($this->rewindableGenerator as $row) {
+            /** @var ParagraphInterface $row */
+            if ($type === $row->getType()) {
+                $context = $row->context($entityParagraph);
+
+                break;
+            }
+        }
+
+        return $context;
     }
 
     public function getEntity(Paragraph $paragraph): ?EntityParagraphInterface
@@ -208,6 +249,27 @@ class ParagraphService
         }
 
         return $entity;
+    }
+
+    public function getTwigTemplate(Paragraph $paragraph): ?string
+    {
+        $type            = $paragraph->getType();
+        $entityParagraph = $this->getEntity($paragraph);
+        if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
+            return null;
+        }
+
+        $template = null;
+        foreach ($this->rewindableGenerator as $row) {
+            /** @var ParagraphInterface $row */
+            if ($type === $row->getType()) {
+                $template = $row->twig($entityParagraph);
+
+                break;
+            }
+        }
+
+        return $template;
     }
 
     public function getTypeEntity(Paragraph $paragraph): ?string
@@ -331,69 +393,6 @@ class ParagraphService
         }
 
         return $paragraph;
-    }
-
-    public function getContext(Paragraph $paragraph): mixed
-    {
-        $type            = $paragraph->getType();
-        $entityParagraph = $this->getEntity($paragraph);
-        if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
-            return null;
-        }
-
-        $context = null;
-        foreach ($this->rewindableGenerator as $row) {
-            /** @var ParagraphInterface $row */
-            if ($type === $row->getType()) {
-                $context = $row->context($entityParagraph);
-
-                break;
-            }
-        }
-
-        return $context;
-    }
-
-    public function getClass(Paragraph $paragraph): ?ParagraphInterface
-    {
-        $type            = $paragraph->getType();
-        $entityParagraph = $this->getEntity($paragraph);
-        if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
-            return null;
-        }
-
-        $class = null;
-        foreach ($this->rewindableGenerator as $row) {
-            /** @var ParagraphInterface $row */
-            if ($type === $row->getType()) {
-                $class = $row;
-
-                break;
-            }
-        }
-
-        return $class;
-    }
-
-    public function getTwigTemplate(Paragraph $paragraph): ?string
-    {
-        $type            = $paragraph->getType();
-        $entityParagraph = $this->getEntity($paragraph);
-        if (!$entityParagraph instanceof EntityParagraphInterface || is_null($type)) {
-            return null;
-        }
-
-        $template = null;
-        foreach ($this->rewindableGenerator as $row) {
-            /** @var ParagraphInterface $row */
-            if ($type === $row->getType()) {
-                $template = $row->twig($entityParagraph);
-
-                break;
-            }
-        }
-
-        return $template;
     }
 
     public function showTemplate(Paragraph $paragraph): ?array

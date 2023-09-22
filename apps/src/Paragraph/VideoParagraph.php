@@ -28,11 +28,44 @@ use Psr\Http\Message\UriInterface;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class VideoParagraph extends ParagraphLib implements ParagraphInterface
 {
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        if (!$entityParagraph instanceof Video) {
+            return null;
+        }
+
+        $extractor = $this->getData($entityParagraph);
+        if (is_null($extractor)) {
+            return null;
+        }
+
+        $package    = new Package(new EmptyVersionStrategy());
+        $attachment = $entityParagraph->getImage();
+        $image      = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
+
+        if (is_null($image)) {
+            /** @var UriInterface $extractorImage */
+            $extractorImage = $extractor->image;
+            $image          = $extractorImage->__toString();
+        }
+
+        $metas = $extractor->getMetas();
+
+        $datas = $metas->get('og:video:url');
+        $embed = (0 != (is_countable($datas) ? count($datas) : 0)) ? $datas[0] : null;
+
+        return [
+            'paragraph' => $entityParagraph,
+            'image'     => $image,
+            'data'      => $extractor,
+            'embed'     => $embed,
+        ];
+    }
+
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
@@ -116,40 +149,6 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
             /** @var UploadableField $annotation */
             $this->setDataAnnotation($annotation, $image, $video, $repositoryLib, $slug);
         }
-    }
-
-    public function context(EntityParagraphInterface $entityParagraph): mixed
-    {
-        if (!$entityParagraph instanceof Video) {
-            return null;
-        }
-
-        $extractor = $this->getData($entityParagraph);
-        if (is_null($extractor)) {
-            return null;
-        }
-
-        $package    = new Package(new EmptyVersionStrategy());
-        $attachment = $entityParagraph->getImage();
-        $image      = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
-
-        if (is_null($image)) {
-            /** @var UriInterface $extractorImage */
-            $extractorImage = $extractor->image;
-            $image          = $extractorImage->__toString();
-        }
-
-        $metas = $extractor->getMetas();
-
-        $datas = $metas->get('og:video:url');
-        $embed = (0 != (is_countable($datas) ? count($datas) : 0)) ? $datas[0] : null;
-
-        return [
-            'paragraph' => $entityParagraph,
-            'image'     => $image,
-            'data'      => $extractor,
-            'embed'     => $embed,
-        ];
     }
 
     public function useIn(): array

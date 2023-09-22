@@ -69,6 +69,19 @@ abstract class ParagraphLib extends AbstractController
         return $this->showTemplateFile($this->getCode($entityParagraph));
     }
 
+    public function twig(EntityParagraphInterface $entityParagraph): string
+    {
+        return $this->getTemplateFile($this->getCode($entityParagraph));
+    }
+
+    public function view(string $twig, array $parameters = []): ?Response
+    {
+        return $this->render(
+            $twig,
+            $parameters
+        );
+    }
+
     protected function getTemplateData(array $types): array
     {
         $code = md5(serialize($types));
@@ -127,18 +140,5 @@ abstract class ParagraphLib extends AbstractController
         }
 
         return [];
-    }
-
-    public function twig(EntityParagraphInterface $entityParagraph): string
-    {
-        return $this->getTemplateFile($this->getCode($entityParagraph));
-    }
-
-    public function view(string $twig, array $parameters = []): ?Response
-    {
-        return $this->render(
-            $twig,
-            $parameters
-        );
     }
 }

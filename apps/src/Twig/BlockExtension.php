@@ -12,7 +12,7 @@ class BlockExtension extends ExtensionLib
     public function getBlockClass(EntityBlockInterface $entityBlock): string
     {
         /** @var Block $block */
-        $block = $entityBlock->getBlock();
+        $block     = $entityBlock->getBlock();
         $dataClass = [
             'block-'.$block->getType(),
         ];

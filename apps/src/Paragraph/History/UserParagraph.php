@@ -11,10 +11,30 @@ use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserParagraph extends ParagraphLib implements ParagraphInterface
 {
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        /** @var Request $request */
+        $request    = $this->requestStack->getCurrentRequest();
+        $all        = $request->attributes->all();
+        $routeParam = $all['_route_params'];
+        $username   = $routeParam['username'] ?? null;
+        /** @var HistoryRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(History::class);
+        $pagination    = $this->paginator->paginate(
+            $repositoryLib->findPublierUsername($username),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return [
+            'pagination' => $pagination,
+            'paragraph'  => $entityParagraph,
+        ];
+    }
+
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
@@ -45,27 +65,6 @@ class UserParagraph extends ParagraphLib implements ParagraphInterface
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function context(EntityParagraphInterface $entityParagraph): mixed
-    {
-        /** @var Request $request */
-        $request    = $this->requestStack->getCurrentRequest();
-        $all        = $request->attributes->all();
-        $routeParam = $all['_route_params'];
-        $username   = $routeParam['username'] ?? null;
-        /** @var HistoryRepository $repositoryLib */
-        $repositoryLib = $this->repositoryService->get(History::class);
-        $pagination    = $this->paginator->paginate(
-            $repositoryLib->findPublierUsername($username),
-            $request->query->getInt('page', 1),
-            10
-        );
-
-        return [
-            'pagination' => $pagination,
-            'paragraph'  => $entityParagraph,
-        ];
     }
 
     /**

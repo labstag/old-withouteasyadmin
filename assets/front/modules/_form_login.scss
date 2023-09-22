@@ -1,0 +1,60 @@
+%login_footer {
+  padding: 20px;
+  background: #868686;
+}
+
+.form-login{
+  height: 100vh;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  div:has(> input[type='checkbox']) {
+    label {
+      cursor: pointer;
+    }
+  }
+  form {
+    width: 90vw;
+    @include media-min('tablet-up') {
+      width: 30vw;
+    }
+    border: 1px solid #000;
+  }
+
+  .form-group {
+    flex-direction: column;
+  }
+
+  .require-forminfo {
+    @extend %login_footer;
+  }
+}
+.login_title {
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 10px;
+}
+.login_body {
+  min-height: 10vh;
+  padding: 10px;
+}
+
+.login_footer {
+  @extend %login_footer;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  @include media-min('tablet-up') {
+    flex-direction: row;
+  }
+}
+.login_btns {
+  display: contents;
+  justify-content: space-evenly;
+  flex-direction: column;
+  @include media-min('tablet-up') {
+    flex-direction: row;
+  }
+}

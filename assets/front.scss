@@ -1,12 +1,24 @@
-@import '@nm/@fortawesome/fontawesome-free/scss/brands.scss';
-@import '@nm/@fortawesome/fontawesome-free/scss/fontawesome.scss';
-@import '@nm/@fortawesome/fontawesome-free/scss/regular.scss';
-@import '@nm/@fortawesome/fontawesome-free/scss/solid.scss';
-@import '@nm/flag-icons/sass/flag-icons.scss';
-@import '@nm/tom-select/dist/css/tom-select.css';
+@import '@nm/reset-css/sass/reset';
+@import '@nm/@fortawesome/fontawesome-free/scss/brands';
+@import '@nm/@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@nm/@fortawesome/fontawesome-free/scss/regular';
+@import '@nm/@fortawesome/fontawesome-free/scss/solid';
+@import '@nm/flag-icons/sass/flag-icons';
+@import '@nm/tom-select/src/scss/tom-select.default';
+
 @import '@front/utils/variables';
 @import '@front/utils/mixins';
-@import '@front/global/fonts';
-@import '@front/header';
-@import '@front/main';
-@import '@front/footer';
+@import '@front/modules/form';
+@import '@front/modules/header';
+@import "@front/modules/form_disclaimer";
+@import "@front/modules/form_login";
+@import "@front/modules/form_lost-password";
+@import "@front/modules/block_flashbag";
+@import '@front/modules/footer';
+@import '@front/modules/footer-block-footer';
+@import '@front/modules/footer-block-navbar';
+
+body{
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+}

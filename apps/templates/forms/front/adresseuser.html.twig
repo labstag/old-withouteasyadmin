@@ -1,4 +1,3 @@
-{% use "tmpl/front-form_themes.html.twig" %}
 {% set state = 'api_geo_codes_get_collection'|guard_route %}
 {% if state == true %}
     {% set url = path('api_geo_codes_get_collection', {'_format': 'json'}) %}

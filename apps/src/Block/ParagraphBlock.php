@@ -9,10 +9,39 @@ use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class ParagraphBlock extends BlockLib implements BlockInterface
 {
+    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
+    {
+        if (!$entityBlock instanceof Paragraph) {
+            return null;
+        }
+
+        $data     = $this->setParagraphs($entityFront);
+        $redirect = null;
+        foreach ($data as $paragraphs) {
+            if (!$paragraphs['args']['parameters'] instanceof RedirectResponse) {
+                continue;
+            }
+
+            $redirect = $paragraphs['args']['parameters'];
+
+            break;
+        }
+
+        if (!is_null($redirect)) {
+            return $redirect;
+        }
+
+        $data = $this->launParagraphs($data);
+
+        return [
+            'paragraphs' => $data,
+            'block'      => $entityBlock,
+        ];
+    }
+
     public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
         unset($entityBlock, $entityFront);
@@ -51,7 +80,8 @@ class ParagraphBlock extends BlockLib implements BlockInterface
             if ($row['args']['parameters'] instanceof RedirectResponse) {
                 continue;
             }
-            $content = call_user_func_array([$row['class'], $row['execute']], $row['args']);
+
+            $content                       = call_user_func_array([$row['class'], $row['execute']], $row['args']);
             $paragraphs[$position]['data'] = $content;
         }
 
@@ -71,35 +101,5 @@ class ParagraphBlock extends BlockLib implements BlockInterface
         }
 
         return $this->getParagraphsArray($this->paragraphService, $entityFront, $paragraphs);
-    }
-
-    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
-    {
-        if (!$entityBlock instanceof Paragraph) {
-            return null;
-        }
-
-        $data     = $this->setParagraphs($entityFront);
-        $redirect = null;
-        foreach ($data as $paragraphs) {
-            if (!$paragraphs['args']['parameters'] instanceof RedirectResponse) {
-                continue;
-            }
-
-            $redirect = $paragraphs['args']['parameters'];
-
-            break;
-        }
-
-        if (!is_null($redirect)) {
-            return $redirect;
-        }else{
-            $data = $this->launParagraphs($data);
-        }
-
-        return [
-            'paragraphs' => $data,
-            'block'      => $entityBlock,
-        ];
     }
 }

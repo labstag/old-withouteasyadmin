@@ -1,12 +1,15 @@
 <section id="{{ paragraph|paragraph_id }}" class="{{ paragraph|paragraph_class }}">
     {{ form_start(form) }}
-    <div class="disclaimer_message">
-        {{ config['disclaimer']['message']|raw }}
+    <h1 class="disclaimer_title">{{ 'disclaimer.title'|trans }}</h1>
+    <div class="disclaimer_body">
+        <div class="disclaimer_message">
+            {{ config['disclaimer']['message']|raw }}
+        </div>
+        <div class="disclaimer_confirm">
+            {{ form_row(form.confirm) }}
+        </div>
     </div>
-    <div class="disclaimer_confirm">
-        {{ form_row(form.confirm) }}
-    </div>
-    <div class="disclaimer_btns">
+    <div class="disclaimer_footer">
         {{ form_row(form.submit) }}
         {% if config['disclaimer']['url-redirect'] %}
             <a href="{{ config['disclaimer']['url-redirect'] }}">{{ 'disclaimer.btn.label'|trans }}</a>

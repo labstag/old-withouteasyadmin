@@ -13,10 +13,38 @@ use Labstag\Lib\BlockLib;
 use Labstag\Repository\LayoutRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class CustomBlock extends BlockLib implements BlockInterface
 {
+    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
+    {
+        unset($entityFront);
+        if (!$entityBlock instanceof Custom) {
+            return null;
+        }
+
+        $data     = $this->setParagraphs($entityBlock);
+        $redirect = null;
+        foreach ($data as $paragraphs) {
+            if (!$paragraphs['data'] instanceof RedirectResponse) {
+                continue;
+            }
+
+            $redirect = $paragraphs['data'];
+
+            break;
+        }
+
+        if (!is_null($redirect)) {
+            return $redirect;
+        }
+
+        return [
+            'paragraphs' => $data,
+            'block'      => $entityBlock,
+        ];
+    }
+
     public function getCode(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
     {
         unset($entityBlock, $entityFront);
@@ -83,33 +111,5 @@ class CustomBlock extends BlockLib implements BlockInterface
         }
 
         return $paragraphs;
-    }
-
-    public function context(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): mixed
-    {
-        if (!$entityBlock instanceof Custom) {
-            return null;
-        }
-
-        $data     = $this->setParagraphs($entityBlock);
-        $redirect = null;
-        foreach ($data as $paragraphs) {
-            if (!$paragraphs['data'] instanceof RedirectResponse) {
-                continue;
-            }
-
-            $redirect = $paragraphs['data'];
-
-            break;
-        }
-
-        if (!is_null($redirect)) {
-            return $redirect;
-        }
-
-        return [
-            'paragraphs' => $data,
-            'block'      => $entityBlock,
-        ];
     }
 }

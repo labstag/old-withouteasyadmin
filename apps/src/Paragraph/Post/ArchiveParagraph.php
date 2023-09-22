@@ -11,10 +11,27 @@ use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ArchiveParagraph extends ParagraphLib implements ParagraphInterface
 {
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        /** @var PostRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Post::class);
+        $archives      = $repositoryLib->findDateArchive();
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        $page    = $request->query->getInt('page', 1);
+        if (1 != $page) {
+            return null;
+        }
+
+        return [
+            'archives'  => $archives,
+            'paragraph' => $entityParagraph,
+        ];
+    }
+
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
@@ -45,24 +62,6 @@ class ArchiveParagraph extends ParagraphLib implements ParagraphInterface
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function context(EntityParagraphInterface $entityParagraph): mixed
-    {
-        /** @var PostRepository $repositoryLib */
-        $repositoryLib = $this->repositoryService->get(Post::class);
-        $archives      = $repositoryLib->findDateArchive();
-        /** @var Request $request */
-        $request = $this->requestStack->getCurrentRequest();
-        $page    = $request->query->getInt('page', 1);
-        if (1 != $page) {
-            return null;
-        }
-
-        return [
-            'archives'  => $archives,
-            'paragraph' => $entityParagraph,
-        ];
     }
 
     public function useIn(): array

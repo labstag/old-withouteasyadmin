@@ -11,10 +11,28 @@ use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ListParagraph extends ParagraphLib implements ParagraphInterface
 {
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        /** @var HistoryRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(History::class);
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+
+        $pagination = $this->paginator->paginate(
+            $repositoryLib->findPublier(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return [
+            'pagination' => $pagination,
+            'paragraph'  => $entityParagraph,
+        ];
+    }
+
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
@@ -45,25 +63,6 @@ class ListParagraph extends ParagraphLib implements ParagraphInterface
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function context(EntityParagraphInterface $entityParagraph): mixed
-    {
-        /** @var HistoryRepository $repositoryLib */
-        $repositoryLib = $this->repositoryService->get(History::class);
-        /** @var Request $request */
-        $request = $this->requestStack->getCurrentRequest();
-
-        $pagination = $this->paginator->paginate(
-            $repositoryLib->findPublier(),
-            $request->query->getInt('page', 1),
-            10
-        );
-
-        return [
-            'pagination' => $pagination,
-            'paragraph'  => $entityParagraph,
-        ];
     }
 
     public function useIn(): array

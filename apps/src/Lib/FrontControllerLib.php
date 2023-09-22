@@ -60,29 +60,11 @@ abstract class FrontControllerLib extends AbstractController
 
         if (!is_null($redirect)) {
             return $redirect;
-        }else{
-            $parameters = $this->launchBlock($parameters);
         }
+
+        $parameters = $this->launchBlock($parameters);
 
         return parent::render($view, $parameters, $response);
-    }
-
-    private function launchBlock(array $parameters): array
-    {
-        $blocks = $parameters['blocks'];
-        foreach ($blocks as $key => $block) {
-            foreach ($block as $position => $row) {
-                if ($row['args']['parameters'] instanceof RedirectResponse) {
-                    continue;
-                }
-                $content = call_user_func_array([$row['class'], $row['execute']], $row['args']);
-                $blocks[$key][$position]['data'] = $content;
-            }
-        }
-
-        $parameters['blocks'] = $blocks;
-
-        return $parameters;
     }
 
     private function getRedirection(array $blocks): ?RedirectResponse
@@ -102,6 +84,25 @@ abstract class FrontControllerLib extends AbstractController
         }
 
         return $redirect;
+    }
+
+    private function launchBlock(array $parameters): array
+    {
+        $blocks = $parameters['blocks'];
+        foreach ($blocks as $key => $block) {
+            foreach ($block as $position => $row) {
+                if ($row['args']['parameters'] instanceof RedirectResponse) {
+                    continue;
+                }
+
+                $content                         = call_user_func_array([$row['class'], $row['execute']], $row['args']);
+                $blocks[$key][$position]['data'] = $content;
+            }
+        }
+
+        $parameters['blocks'] = $blocks;
+
+        return $parameters;
     }
 
     private function setParameters(array $parameters): array
@@ -149,11 +150,11 @@ abstract class FrontControllerLib extends AbstractController
                 $template = $this->blockService->showTemplate($block, $content);
 
                 $parameters['blocks'][$key][] = [
-                    'class' => $this->blockService->getClass($block),
+                    'class'    => $this->blockService->getClass($block),
                     'execute'  => 'view',
                     'args'     => [
                         'twig'       => $this->blockService->getTwigTemplate($block, $content),
-                        'parameters' => $context
+                        'parameters' => $context,
                     ],
                     'template' => $template,
                 ];

@@ -12,6 +12,53 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ChangePasswordForm extends PostFormLib implements PostFormInterface
 {
+    public function context(array $params): mixed
+    {
+        /** @var Request $request */
+        $request = $this->requestStack->getCurrentRequest();
+        if (!$request->attributes->has('id')) {
+            $this->sessionService->flashBagAdd(
+                'danger',
+                $this->translator->trans('security.user.sendlostpassword.fail')
+            );
+
+            return $this->redirectToRoute('front');
+        }
+
+        /** @var UserRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(User::class);
+        $user          = $repositoryLib->findOneBy(
+            [
+                'id' => $request->attributes->get('id'),
+            ]
+        );
+
+        if (!$user instanceof User || 'lostpassword' != $user->getState()) {
+            $this->sessionService->flashBagAdd(
+                'danger',
+                $this->translator->trans('security.user.sendlostpassword.fail')
+            );
+
+            return $this->redirectToRoute('front');
+        }
+
+        $form = $this->createForm(
+            $this->getForm(),
+            $user
+        );
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->workflowService->changeState($user, ['valider']);
+
+            return $this->redirectToRoute('front');
+        }
+
+        return array_merge(
+            $params,
+            ['form' => $form]
+        );
+    }
+
     public function execute(string $template, array $params): ?Response
     {
         /** @var Request $request */
@@ -59,53 +106,6 @@ class ChangePasswordForm extends PostFormLib implements PostFormInterface
                 $params,
                 ['form' => $form]
             )
-        );
-    }
-
-    public function context(string $template, array $params): mixed
-    {
-        /** @var Request $request */
-        $request = $this->requestStack->getCurrentRequest();
-        if (!$request->attributes->has('id')) {
-            $this->sessionService->flashBagAdd(
-                'danger',
-                $this->translator->trans('security.user.sendlostpassword.fail')
-            );
-
-            return $this->redirectToRoute('front');
-        }
-
-        /** @var UserRepository $repositoryLib */
-        $repositoryLib = $this->repositoryService->get(User::class);
-        $user          = $repositoryLib->findOneBy(
-            [
-                'id' => $request->attributes->get('id'),
-            ]
-        );
-
-        if (!$user instanceof User || 'lostpassword' != $user->getState()) {
-            $this->sessionService->flashBagAdd(
-                'danger',
-                $this->translator->trans('security.user.sendlostpassword.fail')
-            );
-
-            return $this->redirectToRoute('front');
-        }
-
-        $form = $this->createForm(
-            $this->getForm(),
-            $user
-        );
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->workflowService->changeState($user, ['valider']);
-
-            return $this->redirectToRoute('front');
-        }
-
-        return array_merge(
-            $params,
-            ['form' => $form]
         );
     }
 

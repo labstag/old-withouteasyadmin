@@ -16,6 +16,22 @@ class FormService
     {
     }
 
+    public function context(
+        object $formClass,
+        array $params
+    ): mixed
+    {
+        foreach ($this->postform as $row) {
+            if ($row->getForm() != $formClass::class) {
+                continue;
+            }
+
+            return $row->context($params);
+        }
+
+        return null;
+    }
+
     public function execute(
         object $formClass,
         string $template,
@@ -28,40 +44,6 @@ class FormService
             }
 
             return $row->execute($template, $params);
-        }
-
-        return null;
-    }
-
-    public function context(
-        object $formClass,
-        string $template,
-        array $params
-    ): mixed
-    {
-        foreach ($this->postform as $row) {
-            if ($row->getForm() != $formClass::class) {
-                continue;
-            }
-
-            return $row->context($template, $params);
-        }
-
-        return null;
-    }
-
-    public function view(
-        object $formClass,
-        string $template,
-        array $params
-    ): ?Response
-    {
-        foreach ($this->postform as $row) {
-            if ($row->getForm() != $formClass::class) {
-                continue;
-            }
-
-            return $row->view($template, $params);
         }
 
         return null;
@@ -98,6 +80,23 @@ class FormService
         }
 
         return $formClass;
+    }
+
+    public function view(
+        object $formClass,
+        string $template,
+        array $params
+    ): ?Response
+    {
+        foreach ($this->postform as $row) {
+            if ($row->getForm() != $formClass::class) {
+                continue;
+            }
+
+            return $row->view($template, $params);
+        }
+
+        return null;
     }
 
     private function getFormByClass(string $class): ?AbstractTypeLib

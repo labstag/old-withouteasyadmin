@@ -40,7 +40,7 @@ abstract class BlockLib extends AbstractController
         EntityBlockInterface $entityBlock
     ): array
     {
-        $block = $entityBlock->getBlock();
+        $block       = $entityBlock->getBlock();
         $dataClass[] = $block->getRegion().'-block-'.$block->getType();
 
         return $dataClass;
@@ -59,6 +59,19 @@ abstract class BlockLib extends AbstractController
     ): array
     {
         return $this->showTemplateFile($this->getCode($entityBlock, $entityFront));
+    }
+
+    public function twig(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
+    {
+        return $this->getTemplateFile($this->getCode($entityBlock, $entityFront));
+    }
+
+    public function view(string $twig, array $parameters = []): ?Response
+    {
+        return $this->render(
+            $twig,
+            $parameters
+        );
     }
 
     protected function getParagraphsArray(
@@ -83,11 +96,11 @@ abstract class BlockLib extends AbstractController
             $template = $paragraphService->showTemplate($paragraphArray);
 
             $paragraphs[] = [
-                'class'  => $paragraphService->getClass($paragraphArray),
-                'execute' => 'view',
+                'class'    => $paragraphService->getClass($paragraphArray),
+                'execute'  => 'view',
                 'args'     => [
                     'twig'       => $paragraphService->getTwigTemplate($paragraphArray),
-                    'parameters' => $context
+                    'parameters' => $context,
                 ],
                 'template' => $template,
             ];
@@ -153,18 +166,5 @@ abstract class BlockLib extends AbstractController
         }
 
         return [];
-    }
-
-    public function twig(EntityBlockInterface $entityBlock, ?EntityFrontInterface $entityFront): string
-    {
-        return $this->getTemplateFile($this->getCode($entityBlock, $entityFront));
-    }
-
-    public function view(string $twig, array $parameters = []): ?Response
-    {
-        return $this->render(
-            $twig,
-            $parameters
-        );
     }
 }

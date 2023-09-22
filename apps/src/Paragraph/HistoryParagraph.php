@@ -10,10 +10,25 @@ use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\HistoryRepository;
-use Symfony\Component\HttpFoundation\Response;
 
 class HistoryParagraph extends ParagraphLib implements ParagraphInterface
 {
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        /** @var HistoryRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(EntityHistory::class);
+        $histories     = $repositoryLib->getLimitOffsetResult(
+            $repositoryLib->findPublier(),
+            5,
+            0
+        );
+
+        return [
+            'histories' => $histories,
+            'paragraph' => $entityParagraph,
+        ];
+    }
+
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
@@ -44,22 +59,6 @@ class HistoryParagraph extends ParagraphLib implements ParagraphInterface
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function context(EntityParagraphInterface $entityParagraph): mixed
-    {
-        /** @var HistoryRepository $repositoryLib */
-        $repositoryLib = $this->repositoryService->get(EntityHistory::class);
-        $histories     = $repositoryLib->getLimitOffsetResult(
-            $repositoryLib->findPublier(),
-            5,
-            0
-        );
-
-        return [
-            'histories' => $histories,
-            'paragraph' => $entityParagraph,
-        ];
     }
 
     public function useIn(): array

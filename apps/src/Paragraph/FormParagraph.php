@@ -8,10 +8,21 @@ use Labstag\Form\Admin\Paragraph\FormType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
-use Symfony\Component\HttpFoundation\Response;
 
 class FormParagraph extends ParagraphLib implements ParagraphInterface
 {
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        /** @var FormParagraph $entityParagraph */
+        $form      = $entityParagraph->getForm();
+        $formClass = $this->formService->init($form);
+
+        return $this->formService->context(
+            $formClass,
+            ['paragraph' => $entityParagraph]
+        );
+    }
+
     public function getClassCSS(
         array $dataClass,
         EntityParagraphInterface $entityParagraph
@@ -61,20 +72,6 @@ class FormParagraph extends ParagraphLib implements ParagraphInterface
     public function isShowForm(): bool
     {
         return true;
-    }
-
-    public function context(EntityParagraphInterface $entityParagraph): mixed
-    {
-        $template = $this->getTemplateFile($this->getCode($entityParagraph));
-        /** @var FormParagraph $entityParagraph */
-        $form      = $entityParagraph->getForm();
-        $formClass = $this->formService->init($form);
-
-        return $this->formService->context(
-            $formClass,
-            $template,
-            ['paragraph' => $entityParagraph]
-        );
     }
 
     public function useIn(): array

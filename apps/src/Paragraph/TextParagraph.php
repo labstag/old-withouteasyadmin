@@ -14,10 +14,14 @@ use Labstag\Form\Admin\Paragraph\TextType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
-use Symfony\Component\HttpFoundation\Response;
 
 class TextParagraph extends ParagraphLib implements ParagraphInterface
 {
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        return ['paragraph' => $entityParagraph];
+    }
+
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
@@ -48,11 +52,6 @@ class TextParagraph extends ParagraphLib implements ParagraphInterface
     public function isShowForm(): bool
     {
         return true;
-    }
-
-    public function context(EntityParagraphInterface $entityParagraph): mixed
-    {
-        return ['paragraph' => $entityParagraph];
     }
 
     public function useIn(): array

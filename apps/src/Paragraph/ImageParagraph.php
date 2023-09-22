@@ -17,10 +17,25 @@ use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
-use Symfony\Component\HttpFoundation\Response;
 
 class ImageParagraph extends ParagraphLib implements ParagraphInterface
 {
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        if (!$entityParagraph instanceof Image) {
+            return null;
+        }
+
+        $package    = new Package(new EmptyVersionStrategy());
+        $attachment = $entityParagraph->getImage();
+        $file       = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
+
+        return [
+            'paragraph'  => $entityParagraph,
+            'attachment' => $file,
+        ];
+    }
+
     public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
@@ -51,22 +66,6 @@ class ImageParagraph extends ParagraphLib implements ParagraphInterface
     public function isShowForm(): bool
     {
         return true;
-    }
-
-    public function context(EntityParagraphInterface $entityParagraph): mixed
-    {
-        if (!$entityParagraph instanceof Image) {
-            return null;
-        }
-
-        $package    = new Package(new EmptyVersionStrategy());
-        $attachment = $entityParagraph->getImage();
-        $file       = ($attachment instanceof Attachment) ? $package->getUrl('/'.$attachment->getName()) : null;
-
-        return [
-            'paragraph'  => $entityParagraph,
-            'attachment' => $file,
-        ];
     }
 
     public function useIn(): array
