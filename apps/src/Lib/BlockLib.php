@@ -153,22 +153,6 @@ abstract class BlockLib extends AbstractController
         return $data['view'];
     }
 
-    protected function setRedirect(array $paragraphs): mixed
-    {
-        $redirect = null;
-        foreach ($paragraphs as $paragraphs) {
-            if (!$paragraphs['args']['parameters'] instanceof RedirectResponse) {
-                continue;
-            }
-
-            $redirect = $paragraphs['args']['parameters'];
-
-            break;
-        }
-
-        return $redirect;
-    }
-
     protected function launchParagraphs(array $paragraphs): array
     {
         foreach ($paragraphs as $position => $row) {
@@ -181,6 +165,22 @@ abstract class BlockLib extends AbstractController
         }
 
         return $paragraphs;
+    }
+
+    protected function setRedirect(array $paragraphs): mixed
+    {
+        $redirect = null;
+        foreach ($paragraphs as $paragraph) {
+            if (!$paragraph['args']['parameters'] instanceof RedirectResponse) {
+                continue;
+            }
+
+            $redirect = $paragraph['args']['parameters'];
+
+            break;
+        }
+
+        return $redirect;
     }
 
     protected function showTemplateFile(string $type): array

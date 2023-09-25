@@ -8,7 +8,6 @@ use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;
 use Labstag\Lib\BlockLib;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ParagraphBlock extends BlockLib implements BlockInterface
 {

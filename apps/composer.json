@@ -28,7 +28,7 @@
         "league/oauth2-google": "4.0.*",
         "league/oauth2-instagram": "3.1.*",
         "league/oauth2-linkedin": "5.1.*",
-        "liip/imagine-bundle": "2.11.*",
+        "liip/imagine-bundle": "2.12.*",
         "michaelkaefer/oauth2-amazon": "1.0.*",
         "mmo/faker-images": "0.8.*",
         "nelmio/cors-bundle": "2.3.*",
