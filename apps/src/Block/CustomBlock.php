@@ -23,14 +23,14 @@ class CustomBlock extends BlockLib implements BlockInterface
             return null;
         }
 
-        $data     = $this->setParagraphs($entityBlock);
+        $paragraphs     = $this->setParagraphs($entityBlock);
         $redirect = null;
-        foreach ($data as $paragraphs) {
-            if (!$paragraphs['data'] instanceof RedirectResponse) {
+        foreach ($paragraphs as $paragraph) {
+            if (!$paragraph['args']['parameters'] instanceof RedirectResponse) {
                 continue;
             }
 
-            $redirect = $paragraphs['data'];
+            $redirect = $paragraph['args']['parameters'];
 
             break;
         }
@@ -39,8 +39,10 @@ class CustomBlock extends BlockLib implements BlockInterface
             return $redirect;
         }
 
+        $paragraphs = $this->launchParagraphs($paragraphs);
+
         return [
-            'paragraphs' => $data,
+            'paragraphs' => $paragraphs,
             'block'      => $entityBlock,
         ];
     }

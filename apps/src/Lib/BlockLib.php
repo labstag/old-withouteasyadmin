@@ -167,4 +167,18 @@ abstract class BlockLib extends AbstractController
 
         return [];
     }
+
+    protected function launchParagraphs(array $paragraphs): array
+    {
+        foreach ($paragraphs as $position => $row) {
+            if ($row['args']['parameters'] instanceof RedirectResponse) {
+                continue;
+            }
+
+            $content                       = call_user_func_array([$row['class'], $row['execute']], $row['args']);
+            $paragraphs[$position]['data'] = $content;
+        }
+
+        return $paragraphs;
+    }
 }

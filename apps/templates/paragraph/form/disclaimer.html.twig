@@ -10,10 +10,14 @@
         </div>
     </div>
     <div class="disclaimer_footer">
-        {{ form_row(form.submit) }}
-        {% if config['disclaimer']['url-redirect'] %}
-            <a href="{{ config['disclaimer']['url-redirect'] }}">{{ 'disclaimer.btn.label'|trans }}</a>
-        {% endif %}
+        <div class="row">
+            <div class="col-md-6">{{ form_widget(form.submit) }}</div>
+            {% if config['disclaimer']['url-redirect'] %}
+                <div class="col-md-6">
+                    <a href="{{ config['disclaimer']['url-redirect'] }}">{{ 'disclaimer.btn.label'|trans }}</a>
+                </div>
+            {% endif %}
+        </div>
     </div>
     {{ form_end(form) }}
 </section>

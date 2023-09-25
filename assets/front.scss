@@ -1,4 +1,4 @@
-@import '@nm/reset-css/sass/reset';
+@import '@nm/bootstrap/scss/bootstrap.scss';
 @import '@nm/@fortawesome/fontawesome-free/scss/brands';
 @import '@nm/@fortawesome/fontawesome-free/scss/fontawesome';
 @import '@nm/@fortawesome/fontawesome-free/scss/regular';
@@ -8,17 +8,20 @@
 
 @import '@front/utils/variables';
 @import '@front/utils/mixins';
-@import '@front/modules/form';
 @import '@front/modules/header';
+@import "@front/modules/header-block-navbar";
+@import "@front/modules/block_flashbag";
+@import "@front/modules/content-block-breadcrumb";
 @import "@front/modules/form_disclaimer";
 @import "@front/modules/form_login";
 @import "@front/modules/form_lost-password";
-@import "@front/modules/block_flashbag";
-@import '@front/modules/footer';
 @import '@front/modules/footer-block-footer';
 @import '@front/modules/footer-block-navbar';
-
-body{
-  font-family: Roboto, sans-serif;
-  font-style: normal;
-}
+@import "@front/modules/paragraph-edito";
+@import "@front/modules/paragraph-post";
+@import "@front/modules/paragraph-postarchive";
+@import "@front/modules/paragraph-bookmarklist";
+@import "@front/modules/paragraph-historylist";
+@import "@front/modules/paragraph-postlist";
+@import "@front/modules/paragraph-bookmark";
+@import '@front/modules/form';

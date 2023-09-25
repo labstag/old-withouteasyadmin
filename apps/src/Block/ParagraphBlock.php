@@ -34,7 +34,7 @@ class ParagraphBlock extends BlockLib implements BlockInterface
             return $redirect;
         }
 
-        $data = $this->launParagraphs($data);
+        $data = $this->launchParagraphs($data);
 
         return [
             'paragraphs' => $data,
@@ -72,20 +72,6 @@ class ParagraphBlock extends BlockLib implements BlockInterface
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    private function launParagraphs(array $paragraphs): array
-    {
-        foreach ($paragraphs as $position => $row) {
-            if ($row['args']['parameters'] instanceof RedirectResponse) {
-                continue;
-            }
-
-            $content                       = call_user_func_array([$row['class'], $row['execute']], $row['args']);
-            $paragraphs[$position]['data'] = $content;
-        }
-
-        return $paragraphs;
     }
 
     private function setParagraphs(?EntityFrontInterface $entityFront): array

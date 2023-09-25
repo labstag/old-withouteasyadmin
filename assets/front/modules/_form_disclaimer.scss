@@ -42,33 +42,8 @@
 .disclaimer_footer {
   padding: 20px;
   background: #868686;
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
-  @include media-min('tablet-up') {
-    flex-direction: row;
-  }
-  button[type='submit'] {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border: 1px solid #007bff;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 10px;
-  }
   a {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 20px;
-    color: #000;
-    text-decoration: none;
-    border: 1px solid #fff;
-    background: #fff;
-    font-weight: bold;
-    padding: 10px;
+    @extend .btn;
+    @extend .btn-danger;
   }
 }

@@ -50,6 +50,11 @@
     flex-direction: row;
   }
 }
+.login_lost {
+  @extend .btn;
+  @extend .btn-danger;
+  text-wrap: nowrap;
+}
 .login_btns {
   display: contents;
   justify-content: space-evenly;

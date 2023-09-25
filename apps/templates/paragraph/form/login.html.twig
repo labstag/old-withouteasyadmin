@@ -14,13 +14,11 @@
         {{ form_row(form.remember_me) }}
     </div>
     <div class="login_footer">
-        <div class="login_btns">
-            {{ form_row(form.submit) }}
-            {% set state = 'app_lost'|guard_route %}
-            {% if state == true %}
-                <a href="{{ path('app_lost') }}">{{ 'user.lostpassword.link'|trans }}</a>
-            {% endif %}
-        </div>
+        {{ form_widget(form.submit) }}
+        {% set state = 'app_lost'|guard_route %}
+        {% if state == true %}
+            <a href="{{ path('app_lost') }}" class="login_lost">{{ 'user.lostpassword.link'|trans }}</a>
+        {% endif %}
         {% set state = 'connect_start'|guard_route %}
         {% if state == true and oauths|length != 0 %}
             <div class="oauth">
