@@ -23,17 +23,8 @@ class CustomBlock extends BlockLib implements BlockInterface
             return null;
         }
 
-        $paragraphs     = $this->setParagraphs($entityBlock);
-        $redirect = null;
-        foreach ($paragraphs as $paragraph) {
-            if (!$paragraph['args']['parameters'] instanceof RedirectResponse) {
-                continue;
-            }
-
-            $redirect = $paragraph['args']['parameters'];
-
-            break;
-        }
+        $paragraphs = $this->setParagraphs($entityBlock);
+        $redirect = $this->setRedirect($paragraphs);
 
         if (!is_null($redirect)) {
             return $redirect;

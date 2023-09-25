@@ -11,6 +11,7 @@ use Labstag\Service\ParagraphService;
 use Labstag\Service\RepositoryService;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -152,20 +153,20 @@ abstract class BlockLib extends AbstractController
         return $data['view'];
     }
 
-    protected function showTemplateFile(string $type): array
+    protected function setRedirect(array $paragraphs): mixed
     {
-        $data    = $this->getTemplateData($type);
-        $globals = $this->twigEnvironment->getGlobals();
-        if (!isset($globals['app'])) {
-            return [];
+        $redirect = null;
+        foreach ($paragraphs as $paragraphs) {
+            if (!$paragraphs['args']['parameters'] instanceof RedirectResponse) {
+                continue;
+            }
+
+            $redirect = $paragraphs['args']['parameters'];
+
+            break;
         }
 
-        $app = $globals['app'];
-        if ($app instanceof AppVariable && 'dev' == $app->getDebug()) {
-            return $data;
-        }
-
-        return [];
+        return $redirect;
     }
 
     protected function launchParagraphs(array $paragraphs): array
@@ -180,5 +181,21 @@ abstract class BlockLib extends AbstractController
         }
 
         return $paragraphs;
+    }
+
+    protected function showTemplateFile(string $type): array
+    {
+        $data    = $this->getTemplateData($type);
+        $globals = $this->twigEnvironment->getGlobals();
+        if (!isset($globals['app'])) {
+            return [];
+        }
+
+        $app = $globals['app'];
+        if ($app instanceof AppVariable && 'dev' == $app->getDebug()) {
+            return $data;
+        }
+
+        return [];
     }
 }

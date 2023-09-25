@@ -19,16 +19,7 @@ class ParagraphBlock extends BlockLib implements BlockInterface
         }
 
         $data     = $this->setParagraphs($entityFront);
-        $redirect = null;
-        foreach ($data as $paragraphs) {
-            if (!$paragraphs['args']['parameters'] instanceof RedirectResponse) {
-                continue;
-            }
-
-            $redirect = $paragraphs['args']['parameters'];
-
-            break;
-        }
+        $redirect = $this->setRedirect($data);
 
         if (!is_null($redirect)) {
             return $redirect;
