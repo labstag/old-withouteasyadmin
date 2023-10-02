@@ -5,7 +5,6 @@ namespace Labstag\PostForm\Security;
 use Labstag\Form\Security\LoginType;
 use Labstag\Interfaces\PostFormInterface;
 use Labstag\Lib\PostFormLib;
-use Symfony\Component\HttpFoundation\Response;
 
 class LoginForm extends PostFormLib implements PostFormInterface
 {

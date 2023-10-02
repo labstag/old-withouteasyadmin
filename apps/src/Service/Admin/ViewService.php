@@ -239,7 +239,7 @@ class ViewService
             }
         }
 
-        if ((is_countable($variables) ? count($variables) : 0) != count($params)) {
+        if ((is_countable($variables) ? count($variables) : 0) !== count($params)) {
             return;
         }
 

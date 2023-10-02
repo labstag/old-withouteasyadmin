@@ -114,7 +114,7 @@ class DebugExtension extends ExtensionLib
         if (0 != (is_countable($data['files']) ? count($data['files']) : 0)) {
             $html .= "\tFILE NAME SUGGESTIONS: \n";
             foreach ($data['files'] as $file) {
-                $html .= str_repeat("\t", 2).(($data['view'] == $file) ? 'x' : '*')." ".$file."\n";
+                $html .= str_repeat("\t", 2).(($data['view'] == $file) ? 'x' : '*').' '.$file."\n";
             }
         }
 

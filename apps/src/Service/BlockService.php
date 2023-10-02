@@ -316,7 +316,7 @@ class BlockService
         $this->blockRepository->save($block);
     }
 
-    public function setEntity(Block $block, EntityBlockInterface $entity): void
+    public function setEntity(Block $block, EntityBlockInterface $entityBlock): void
     {
         $field = $this->getEntityField($block);
         if (is_null($field)) {
@@ -327,7 +327,7 @@ class BlockService
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getName() === $field) {
-                $propertyAccessor->setValue($block, $field, [$entity]);
+                $propertyAccessor->setValue($block, $field, [$entityBlock]);
             }
         }
     }

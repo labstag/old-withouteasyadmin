@@ -6,7 +6,6 @@ use Labstag\Form\Security\LostPasswordType;
 use Labstag\Interfaces\PostFormInterface;
 use Labstag\Lib\PostFormLib;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class LostPasswordForm extends PostFormLib implements PostFormInterface
 {

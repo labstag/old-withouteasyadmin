@@ -8,7 +8,6 @@ use Labstag\Interfaces\PostFormInterface;
 use Labstag\Lib\PostFormLib;
 use Labstag\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ChangePasswordForm extends PostFormLib implements PostFormInterface
 {

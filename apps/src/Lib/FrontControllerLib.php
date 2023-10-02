@@ -97,9 +97,9 @@ abstract class FrontControllerLib extends AbstractController
 
                 $callable = [
                     $row['class'],
-                    $row['execute']
+                    $row['execute'],
                 ];
-    
+
                 $content = call_user_func_array($callable, $row['args']);
 
                 $blocks[$key][$position]['data'] = $content;
