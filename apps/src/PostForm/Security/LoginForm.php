@@ -31,31 +31,6 @@ class LoginForm extends PostFormLib implements PostFormInterface
         );
     }
 
-    public function execute(string $template, array $params): ?Response
-    {
-        // last username entered by the user
-        $lastUsername = $this->authenticationUtils->getLastUsername();
-        $form         = $this->createForm(
-            $this->getForm(),
-            ['username' => $lastUsername]
-        );
-        // get the login error if there is one
-        $authenticationException = $this->authenticationUtils->getLastAuthenticationError();
-        $oauths                  = $this->oauthConnectUserRepository->findDistinctAllOauth();
-
-        return $this->render(
-            $template,
-            array_merge(
-                $params,
-                [
-                    'form'   => $form,
-                    'oauths' => $oauths,
-                    'error'  => $authenticationException,
-                ]
-            )
-        );
-    }
-
     public function getForm(): string
     {
         return LoginType::class;

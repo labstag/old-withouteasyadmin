@@ -109,17 +109,16 @@ class DebugExtension extends ExtensionLib
 
     private function beginDebug(array $data): string
     {
-        $html = "<!--\nTHEME DEBUG\n";
-        $html .= "THEME HOOK : '".$data['hook']."'\n";
+        $html = "<!--\n\tTHEME DEBUG\n";
+        $html .= "\tTHEME HOOK : '".$data['hook']."'\n";
         if (0 != (is_countable($data['files']) ? count($data['files']) : 0)) {
-            $html .= "FILE NAME SUGGESTIONS: \n";
+            $html .= "\tFILE NAME SUGGESTIONS: \n";
             foreach ($data['files'] as $file) {
-                $checked = ($data['view'] == $file) ? 'x' : '*';
-                $html .= ' '.$checked.' '.$file."\n";
+                $html .= str_repeat("\t", 2).(($data['view'] == $file) ? 'x' : '*')." ".$file."\n";
             }
         }
 
-        return $html.("BEGIN OUTPUT from '".$data['view']."' -->\n");
+        return $html.("\tBEGIN OUTPUT from '".$data['view']."'\n-->\n");
     }
 
     private function endDebug(array $data): string

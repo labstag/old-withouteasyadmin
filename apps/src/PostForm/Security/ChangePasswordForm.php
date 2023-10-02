@@ -59,56 +59,6 @@ class ChangePasswordForm extends PostFormLib implements PostFormInterface
         );
     }
 
-    public function execute(string $template, array $params): ?Response
-    {
-        /** @var Request $request */
-        $request = $this->requestStack->getCurrentRequest();
-        if (!$request->attributes->has('id')) {
-            $this->sessionService->flashBagAdd(
-                'danger',
-                $this->translator->trans('security.user.sendlostpassword.fail')
-            );
-
-            return $this->redirectToRoute('front');
-        }
-
-        /** @var UserRepository $repositoryLib */
-        $repositoryLib = $this->repositoryService->get(User::class);
-        $user          = $repositoryLib->findOneBy(
-            [
-                'id' => $request->attributes->get('id'),
-            ]
-        );
-
-        if (!$user instanceof User || 'lostpassword' != $user->getState()) {
-            $this->sessionService->flashBagAdd(
-                'danger',
-                $this->translator->trans('security.user.sendlostpassword.fail')
-            );
-
-            return $this->redirectToRoute('front');
-        }
-
-        $form = $this->createForm(
-            $this->getForm(),
-            $user
-        );
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->workflowService->changeState($user, ['valider']);
-
-            return $this->redirectToRoute('front');
-        }
-
-        return $this->render(
-            $template,
-            array_merge(
-                $params,
-                ['form' => $form]
-            )
-        );
-    }
-
     public function getForm(): string
     {
         return ChangePasswordType::class;

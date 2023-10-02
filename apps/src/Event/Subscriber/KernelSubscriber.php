@@ -137,9 +137,9 @@ class KernelSubscriber extends EventSubscriberLib
         $content = $response->getContent();
         $content = preg_replace('#<script>#i', '<script type="text/javascript">', (string) $content);
 
+        // config https://api.html-tidy.org/tidy/quickref_5.6.0.html
         $config = [
             'indent'                      => true,
-            'indent-spaces'               => 2,
             'output-xhtml'                => true,
             'drop-empty-elements'         => false,
             'drop-proprietary-attributes' => false,

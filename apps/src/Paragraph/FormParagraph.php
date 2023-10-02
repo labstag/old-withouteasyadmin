@@ -28,7 +28,7 @@ class FormParagraph extends ParagraphLib implements ParagraphInterface
         EntityParagraphInterface $entityParagraph
     ): array
     {
-        /** @var FormParagraph $paragraph */
+        /** @var FormParagraph $entityParagraph */
         if ('' == $entityParagraph->getForm()) {
             return $dataClass;
         }

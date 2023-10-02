@@ -32,23 +32,6 @@ class FormService
         return null;
     }
 
-    public function execute(
-        object $formClass,
-        string $template,
-        array $params
-    ): ?Response
-    {
-        foreach ($this->postform as $row) {
-            if ($row->getForm() != $formClass::class) {
-                continue;
-            }
-
-            return $row->execute($template, $params);
-        }
-
-        return null;
-    }
-
     public function getForm(): array
     {
         $data = [];

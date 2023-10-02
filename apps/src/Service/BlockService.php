@@ -316,11 +316,11 @@ class BlockService
         $this->blockRepository->save($block);
     }
 
-    public function setEntity(Block $block, $entity)
+    public function setEntity(Block $block, EntityBlockInterface $entity): void
     {
         $field = $this->getEntityField($block);
         if (is_null($field)) {
-            return $entity;
+            return;
         }
 
         $reflectionClass  = new ReflectionClass($block);

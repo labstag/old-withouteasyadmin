@@ -29,28 +29,6 @@ class LostPasswordForm extends PostFormLib implements PostFormInterface
         );
     }
 
-    public function execute(string $template, array $params): ?Response
-    {
-        $form = $this->createForm($this->getForm());
-        /** @var Request $request */
-        $request = $this->requestStack->getCurrentRequest();
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            $post = $request->request->all($form->getName());
-            $this->userService->postLostPassword($post);
-
-            return $this->redirectToRoute('app_login');
-        }
-
-        return $this->render(
-            $template,
-            array_merge(
-                $params,
-                ['form' => $form]
-            )
-        );
-    }
-
     public function getForm(): string
     {
         return LostPasswordType::class;
