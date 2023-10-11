@@ -1,7 +1,7 @@
 <?php
 /*
  * This document has been generated with
- * https://mlocati.github.io/php-cs-fixer-configurator/#version:3.14.4|configurator
+ * https://mlocati.github.io/php-cs-fixer-configurator/#version:3.34.1|configurator
  * you can change this configuration by importing this file.
  */
 $config = new PhpCsFixer\Config();
@@ -15,6 +15,8 @@ return $config
         'array_syntax' => true,
         // Use the null coalescing assignment operator `??=` where possible.
         'assign_null_coalescing_to_coalesce_equal' => true,
+        // PHP attributes declared without arguments must (not) be followed by empty parentheses.
+        'attribute_empty_parentheses' => true,
         // Converts backtick operators to `shell_exec` calls.
         'backtick_to_shell_exec' => true,
         // Binary operators should be surrounded by space as configured.
@@ -25,23 +27,25 @@ return $config
         'blank_line_after_opening_tag' => true,
         // An empty line feed must precede any configured statement.
         'blank_line_before_statement' => true,
-        // The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
-        'braces' => ['allow_single_line_anonymous_class_with_empty_body'=>true,'allow_single_line_closure'=>true,'position_after_functions_and_oop_constructs'=>'next','position_after_control_structures'=>'same','position_after_anonymous_constructs'=>'next'],
+        // Controls blank lines before a namespace declaration.
+        'blank_lines_before_namespace' => true,
         // A single space or none should be between cast and variable.
         'cast_spaces' => true,
         // Class, trait and interface elements must be separated with one or none blank line.
         'class_attributes_separation' => true,
         // Whitespace around the keywords of a class, trait, enum or interfaces definition should be one space.
         'class_definition' => true,
+        // When referencing an internal class it must be written using the correct casing.
+        'class_reference_name_casing' => true,
         // Namespace must not contain spacing, comments or PHPDoc.
         'clean_namespace' => true,
         // Using `isset($var) &&` multiple times should be done in one call.
         'combine_consecutive_issets' => true,
         // Calling `unset` on multiple items should be done in one call.
         'combine_consecutive_unsets' => true,
-        // Remove extra spaces in a nullable typehint.
-        'compact_nullable_typehint' => true,
-        // Concatenation should be spaced according configuration.
+        // Remove extra spaces in a nullable type declaration.
+        'compact_nullable_type_declaration' => true,
+        // Concatenation should be spaced according to configuration.
         'concat_space' => true,
         // The PHP constants `true`, `false`, and `null` MUST be written using the correct casing.
         'constant_case' => true,
@@ -75,7 +79,7 @@ return $config
         'general_phpdoc_tag_rename' => true,
         // Imports or fully qualifies global classes/functions/constants.
         'global_namespace_import' => true,
-        // Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
+        // Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.
         'include' => true,
         // Pre- or post-increment and decrement operators should be used if possible.
         'increment_style' => true,
@@ -89,6 +93,8 @@ return $config
         'linebreak_after_opening_tag' => true,
         // List (`array` destructuring) assignment should be declared using the configured syntax. Requires PHP >= 7.1.
         'list_syntax' => true,
+        // Shorthand notation for operators should be used if possible.
+        'long_to_shorthand_operator' => true,
         // Cast should be written in lower case.
         'lowercase_cast' => true,
         // PHP keywords MUST be in lower case.
@@ -109,10 +115,10 @@ return $config
         'multiline_whitespace_before_semicolons' => true,
         // Function defined by PHP should be called using the correct casing.
         'native_function_casing' => true,
-        // Native type hints for functions should use the correct case.
-        'native_function_type_declaration_casing' => true,
-        // All instances created with `new` keyword must (not) be followed by braces.
-        'new_with_braces' => true,
+        // Native type declarations should be used in the correct case.
+        'native_type_declaration_casing' => true,
+        // All instances created with `new` keyword must (not) be followed by parentheses.
+        'new_with_parentheses' => true,
         // Master language constructs shall be used instead of aliases.
         'no_alias_language_construct_call' => true,
         // Replace control structure alternative syntax to use braces.
@@ -149,12 +155,12 @@ return $config
         'no_short_bool_cast' => true,
         // Single-line whitespace before closing semicolon are prohibited.
         'no_singleline_whitespace_before_semicolons' => true,
+        // There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).
+        'no_space_around_double_colon' => true,
         // When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.
         'no_spaces_after_function_name' => true,
         // There MUST NOT be spaces around offset braces.
         'no_spaces_around_offset' => true,
-        // There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
-        'no_spaces_inside_parenthesis' => true,
         // Replaces superfluous `elseif` with `if`.
         'no_superfluous_elseif' => true,
         // Removes `@param`, `@return` and `@var` tags that don't provide any useful information.
@@ -165,14 +171,18 @@ return $config
         'no_trailing_whitespace' => true,
         // There MUST be no trailing spaces inside comment or PHPDoc.
         'no_trailing_whitespace_in_comment' => true,
+        // Removes unneeded braces that are superfluous and aren't part of a control structure's body.
+        'no_unneeded_braces' => true,
         // Removes unneeded parentheses around control statements.
         'no_unneeded_control_parentheses' => true,
-        // Removes unneeded curly braces that are superfluous and aren't part of a control structure's body.
-        'no_unneeded_curly_braces' => true,
+        // Imports should not be aliased as the same name.
+        'no_unneeded_import_alias' => true,
         // Variables must be set `null` instead of using `(unset)` casting.
         'no_unset_cast' => true,
         // Unused `use` statements must be removed.
         'no_unused_imports' => true,
+        // There should not be useless concat operations.
+        'no_useless_concat_operator' => true,
         // There should not be useless `else` cases.
         'no_useless_else' => true,
         // There should not be an empty `return` statement at the end of a function.
@@ -183,7 +193,7 @@ return $config
         'no_whitespace_in_blank_line' => true,
         // Array index should always be written by using square braces.
         'normalize_index_brace' => true,
-        // Adds or removes `?` before type declarations for parameters with a default `null` value.
+        // Adds or removes `?` before single type declarations or `|null` at the end of union types when parameters have a default `null` value.
         'nullable_type_declaration_for_default_null_value' => true,
         // There should not be space before or after object operators `->` and `?->`.
         'object_operator_without_whitespace' => true,
@@ -225,8 +235,6 @@ return $config
         'phpdoc_summary' => true,
         // Forces PHPDoc tags to be either regular annotations or inline.
         'phpdoc_tag_type' => true,
-        // Docblocks should only be used on structural elements.
-        'phpdoc_to_comment' => false,
         // PHPDoc should start and end with content, excluding the very first and last line of the docblocks.
         'phpdoc_trim' => true,
         // Removes extra blank lines after summary and after description in PHPDoc.
@@ -243,6 +251,8 @@ return $config
         'protected_to_private' => true,
         // Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.
         'return_assignment' => true,
+        // If the function explicitly returns an array, and has the return type `iterable`, then `yield from` must be used instead of `return`.
+        'return_to_yield_from' => true,
         // Adjust spacing around colon in return type declarations and backed enum types.
         'return_type_declaration' => true,
         // Instructions must be terminated with a semicolon.
@@ -257,8 +267,6 @@ return $config
         'simplified_null_return' => true,
         // A PHP file without end tag must always end with a single empty line feed.
         'single_blank_line_at_eof' => true,
-        // There should be exactly one blank line before a namespace declaration.
-        'single_blank_line_before_namespace' => true,
         // There MUST NOT be more than one property or constant declared per statement.
         'single_class_element_per_statement' => true,
         // There MUST be one use keyword per declaration.
@@ -266,23 +274,25 @@ return $config
         // Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.
         'single_line_after_imports' => true,
         // Single-line comments and multi-line comments with only one line of actual content should use the `//` syntax.
-        'single_line_comment_style' => [
-            'comment_types'=> ['asterisk']
-        ],
+        'single_line_comment_style' => ['comment_types'=>['asterisk']],
         // Throwing exception must be done in single line.
         'single_line_throw' => true,
         // Convert double quotes to single quotes for simple strings.
         'single_quote' => true,
         // Ensures a single space after language constructs.
-        'single_space_after_construct' => true,
+        'single_space_around_construct' => true,
         // Each trait `use` must be done as single statement.
         'single_trait_insert_per_statement' => true,
         // Fix whitespace after a semicolon.
         'space_after_semicolon' => true,
+        // Parentheses must be declared using the configured whitespace.
+        'spaces_inside_parentheses' => true,
         // Increment and decrement operators should be used if possible.
         'standardize_increment' => true,
         // Replace all `<>` with `!=`.
         'standardize_not_equals' => true,
+        // Each statement must be indented.
+        'statement_indentation' => true,
         // A case should be followed by a colon and not a semicolon.
         'switch_case_semicolon_to_colon' => true,
         // Removes extra spaces between colon and case value.
