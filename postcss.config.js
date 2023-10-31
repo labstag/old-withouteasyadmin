@@ -5,7 +5,7 @@ const atrulepacker = require('at-rule-packer');
 module.exports = {
   plugins: [
     autoprefixer({}),
-    atrulepacker(),
+    // atrulepacker(),
     discardComments({
       removeAll: true
     })

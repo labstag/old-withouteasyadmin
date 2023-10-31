@@ -1,4 +1,5 @@
-function loadGlobal () {
+import Wysiwyg from '@/wysiwyg'
+function loadGlobal() {
   document.querySelectorAll('.wysiwyg').forEach(element => {
     // const idinput = element.getAttribute('id')
 
@@ -9,7 +10,17 @@ function loadGlobal () {
 
     // global.CKEDITOR.replace(idinput)
 
-    global.ClassicEditor.create(element).catch(error => { console.error(error) })
+    Wysiwyg.create(
+      element,
+      {
+        language: 'fr'
+      }
+    ).then(editor => {
+      console.log( 'Editor was initialized', editor );
+    } )
+    .catch( err => {
+      console.error( err );
+    } );
   })
 }
 window.addEventListener('load', () => loadGlobal())

@@ -90,7 +90,7 @@
     "require-dev": {
         "behat/behat": "3.13.*",
         "doctrine/doctrine-fixtures-bundle": "3.4.*",
-        "friendsofphp/php-cs-fixer": "3.34.*",
+        "friendsofphp/php-cs-fixer": "3.37.*",
         "phpmd/phpmd": "2.14.*",
         "phpstan/phpdoc-parser": "1.24.*",
         "phpstan/phpstan": "1.10.*",
@@ -145,6 +145,14 @@
       "symfony/polyfill-php72": "*"
     },
     "scripts": {
+      "php-cs-fixer": [
+        "Composer\\Config::disableProcessTimeout",
+        "php-cs-fixer fix src"
+      ],
+      "php-cs-fixer-dry": [
+        "Composer\\Config::disableProcessTimeout",
+        "php-cs-fixer fix src --dry-run -v --diff"
+      ],
       "behat": [
         "Composer\\Config::disableProcessTimeout",
         "behat --config behat.yaml"
