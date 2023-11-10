@@ -444,10 +444,10 @@
 			{{ label }}
             <div class="btn-group float-end" role="group">
                 {% if allow_add is defined and allow_add == true %}
-                    <btn-addcollection title="Ajouter"></btn-addcollection>
+                    {% embed "embed/btn/addcollection.html.twig" %}{% endembed %}
                 {% endif %}
                 {% if element|default('label') == 'legend' and "collection" in form.vars.block_prefixes and "minmax" in row_attr %}
-                    <btn-togglefieldset></btn-togglefieldset>
+                    {% embed "embed/btn/togglefieldset.html.twig" %}{% endembed %}
                 {% endif %}
             </div>
 		</{{ element|default('label') }}>
@@ -463,10 +463,6 @@
             'prototype': prototype
         } %}
 	</div>
-{% endblock %}
-
-{% block collection_delete %}
-    <btn-delete title="Supprimer" />
 {% endblock %}
 
 {% block collection_widget %}

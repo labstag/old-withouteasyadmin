@@ -6,7 +6,7 @@
 {% endfor %}
 {% if allow_delete %}
     <div class="text-center col-12">
-        {{ block('collection_delete') }}
+        {% embed "embed/btn/delete.html.twig" %}{% endembed %}
     </div>
 {% endif %}
 </div>
