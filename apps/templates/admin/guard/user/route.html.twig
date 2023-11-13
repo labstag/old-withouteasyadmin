@@ -20,11 +20,11 @@
             </tr>
             <tr>
                 <th>
-                    <guard-changeroute
-                        state=0
-                        url="{{ path('api_guard_routeuser', {'user' : user.id}) }}"
-                        token="{{ csrf_token('guard') }}"
-                    />
+                    {% embed "embed/guard/changeroute.html.twig" with {
+                        state: 0,
+                        url: path('api_guard_routeuser', {'user' : user.id}),
+                        token: csrf_token('guard')
+                    } %}{% endembed %}
                 </th>
             </tr>
         </thead>
@@ -35,19 +35,19 @@
                     {{ route.name }}
                 </td>
                 <td>
-                    <guard-refgrouproute
-                        state=0
-                        group="{{ user.refgroupe.code|e('html_attr') }}"
-                        route="{{ route.name|e('html_attr') }}"
-                    />
+                    {% embed "embed/guard/refgrouproute.html.twig" with {
+                        state: 0,
+                        group: user.refgroupe.code|e('html_attr'),
+                        route: route.name|e('html_attr'),
+                    } %}{% endembed %}
                 </td>
                 <td>
-                    <guard-setroute
-                        state=0
-                        route="{{ route.name|e('html_attr') }}"
-                        url="{{ path('api_guard_routesetuser', {'user' : user.id, 'route': route.id}) }}"
-                        token="{{ csrf_token('guard') }}"
-                    />
+                    {% embed "embed/guard/setroute.html.twig" with {
+                        state: 0,
+                        route: route.name|e('html_attr'),
+                        url: path('api_guard_routesetuser', {'user' : user.id, 'route': route.id}),
+                        token: csrf_token('guard')
+                    } %}{% endembed %}
                 </td>
             </tr>
         {% else %}
