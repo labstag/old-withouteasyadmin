@@ -22,12 +22,12 @@
         {% set url = '#' %}
     {% endif %}
     {% if file is not null and file.name is not null %}
-        <attachment-img
-            src="{{ asset(file.name) | imagefilter('my_thumb') }}"
-            name="{{ name|e('html_attr') }}"
-            url="{{ url }}"
-            token="{{ csrf_token('attachment-img-' ~ entity.id) }}"
-        ></attachment-img>
+        {% embed "embed/attachment/img.html.twig" with {
+            src: asset(file.name) | imagefilter('my_thumb'),
+            name: name|e('html_attr'),
+            url: url,
+            token: csrf_token('attachment-img-' ~ entity.id)
+        } %}{% endembed %}
     {% endif %}
 {% endmacro %}
 
@@ -124,12 +124,12 @@
         {% if state1 == true  and state2 == true%}
             <div class="btngrouptable" role="group">
             {% for transition in workflow_transitions(entity) %}
-                <workflow-action
-                    url="{{ path(actions['workflow'], {'id': entity.id, 'state': transition.name, 'entity': entity|class_entity}) }}"
-                    name="{{ transition.name|e('html_attr') }}"
-                    token="{{ csrf_token('workflow-' ~ transition.name ~ entity.id) }}"
-                    redirect="{{ path(actions['list']) }}"
-                ></workflow-action>
+                {% embed "embed/workflow/action.html.twig" with {
+                    url: path(actions['workflow'], {'id': entity.id, 'state': transition.name, 'entity': entity|class_entity}),
+                    name: transition.name|e('html_attr'),
+                    token: csrf_token('workflow-' ~ transition.name ~ entity.id),
+                    redirect: path(actions['list'])
+                } %}{% endembed %}
             {% endfor %}
             </div>
         {% endif %}

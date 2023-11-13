@@ -37,11 +37,11 @@
                 {% set url = '#' %}
             {% endif %}
             {% if file is not null and file.name is not null %}
-                <attachment-img
-                    src="{{ asset(file.name) | imagefilter('my_thumb') }}"
-                    url="{{ url }}"
-                    token="{{ csrf_token('attachment-img-' ~ file.id) }}"
-                ></attachment-img>
+                {% embed "embed/attachment/img.html.twig" with {
+                    src: asset(file.name)|imagefilter('my_thumb'),
+                    url: url,
+                    token: csrf_token('attachment-img-' ~ file.id)
+                } %}{% endembed %}
             {% endif %}
         {% endif %}
     </fieldset>
