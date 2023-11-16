@@ -41,11 +41,11 @@
                     {{ workflow.transition }}
                 </td>
                 <td>
-                    {% embed "embed/guard/refgroupworkflow.html.twig" width {
+                    {% embed "embed/guard/refgroupworkflow.html.twig" with {
                         state: 0,
                         group: user.refgroupe.code|e('html_attr'),
                         entity: workflow.entity|e('html_attr'),
-                        transition: workflow.transition|e('html_attr'),
+                        transition: workflow.transition|e('html_attr')
                     } %}{% endembed %}
                 </td>
                 <td>

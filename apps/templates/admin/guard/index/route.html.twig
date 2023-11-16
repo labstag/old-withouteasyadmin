@@ -50,7 +50,7 @@
                         url: path('api_guard_routegroups', {'route': route.id}),
                         route: route.name|e('html_attr'),
                         token: csrf_token('guard')
-                    } %}
+                    } %}{% endembed %}
                 </td>
                 {% for group in groups %}
                     <td>
