@@ -32,7 +32,6 @@
         {% endif %}
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{% endblock %}
-        <script type="text/javascript" defer src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
     </head>
     <body{% if bodyclass is defined %} class="{{ bodyclass }}"{% endif %}{% if bodystyle is defined %} style="{{ bodystyle }}"{% endif %}>
         {% block content %}{% endblock %}
