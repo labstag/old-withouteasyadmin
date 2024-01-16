@@ -148,7 +148,7 @@
     "regenerator-runtime": "0.14.*",
     "resolve-url-loader": "5.0.*",
     "sass": "1.69.*",
-    "sass-loader": "14.0.*",
+    "sass-loader": "13.3.*",
     "storybook": "7.6.*",
     "style-loader": "3.3.*",
     "stylelint": "16.1.*",
