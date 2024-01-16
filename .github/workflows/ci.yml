@@ -91,6 +91,7 @@ jobs:
         path: cypress/
   launch:
     runs-on: ubuntu-22.04
+    needs: tests
     steps:
     - name: Checkout
       uses: actions/checkout@v4
