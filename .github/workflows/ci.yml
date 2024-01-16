@@ -128,6 +128,8 @@ jobs:
       run: npm run docker:deploy
     - name: 'Waiting'
       run: npm run docker:waiting
+    - name: 'docker ls'
+      run: npm run docker:ls
     - name: Add assets
       run: npm run assets
     - name: Test lancement bootstrap
