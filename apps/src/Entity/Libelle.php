@@ -15,7 +15,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: LibelleRepository::class)]
-#[ApiResource]
 class Libelle implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;

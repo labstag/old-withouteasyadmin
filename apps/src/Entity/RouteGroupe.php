@@ -9,7 +9,6 @@ use Labstag\Repository\RouteGroupeRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: RouteGroupeRepository::class)]
-#[ApiResource]
 class RouteGroupe implements EntityInterface
 {
 

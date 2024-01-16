@@ -68,7 +68,10 @@ class InstallService
             $data = $dotenv->parse((string) file_get_contents($file));
         }
 
-        $data = array_merge($serverEnv, $data);
+        $data = [
+            ...$serverEnv,
+            ...$data,
+        ];
         ksort($data);
 
         return $data;

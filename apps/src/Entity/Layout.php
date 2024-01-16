@@ -15,7 +15,6 @@ use Labstag\Repository\LayoutRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: LayoutRepository::class)]
-#[ApiResource]
 class Layout implements EntityFrontInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;

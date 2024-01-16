@@ -11,7 +11,6 @@ use Labstag\Repository\WorkflowRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: WorkflowRepository::class)]
-#[ApiResource]
 class Workflow implements EntityInterface
 {
 

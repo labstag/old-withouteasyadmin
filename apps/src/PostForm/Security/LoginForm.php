@@ -20,14 +20,12 @@ class LoginForm extends PostFormLib implements PostFormInterface
         $authenticationException = $this->authenticationUtils->getLastAuthenticationError();
         $oauths                  = $this->oauthConnectUserRepository->findDistinctAllOauth();
 
-        return array_merge(
-            $params,
-            [
-                'form'   => $form,
-                'oauths' => $oauths,
-                'error'  => $authenticationException,
-            ]
-        );
+        return [
+            ...$params,
+            'form'   => $form,
+            'oauths' => $oauths,
+            'error'  => $authenticationException,
+        ];
     }
 
     public function getForm(): string

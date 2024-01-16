@@ -9,7 +9,6 @@ use Labstag\Repository\AddressUserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: AddressUserRepository::class)]
-#[ApiResource]
 class AddressUser extends Address implements UserDataInterface
 {
 

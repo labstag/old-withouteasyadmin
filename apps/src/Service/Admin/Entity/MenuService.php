@@ -99,10 +99,10 @@ class MenuService extends ViewService implements AdminEntityServiceInterface
             throw new Exception('Template not found');
         }
 
-        $parameters = array_merge(
-            $parameters,
-            ['all' => $all]
-        );
+        $parameters = [
+            ...$parameters,
+            'all' => $all,
+        ];
 
         return $this->render(
             'admin/menu/index.html.twig',
@@ -145,10 +145,10 @@ class MenuService extends ViewService implements AdminEntityServiceInterface
             ]
         );
 
-        $parameters = array_merge(
-            $parameters,
-            ['menu' => $menu]
-        );
+        $parameters = [
+            ...$parameters,
+            'menu' => $menu,
+        ];
 
         $templates = $this->getDomain()->getTemplates();
         if (!array_key_exists('move', $templates)) {

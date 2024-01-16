@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: ConfigurationRepository::class)]
-#[ApiResource]
 class Configuration implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;

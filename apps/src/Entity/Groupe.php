@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: GroupeRepository::class)]
-#[ApiResource]
 class Groupe implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;

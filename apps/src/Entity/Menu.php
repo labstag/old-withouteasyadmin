@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
-#[ApiResource]
 class Menu implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;

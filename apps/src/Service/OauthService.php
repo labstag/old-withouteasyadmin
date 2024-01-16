@@ -237,16 +237,13 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        $params = array_merge(
-            $params,
-            [
-                'userAgent' => 'platform:appid:version, (by /u/username)',
-                'scopes'    => [
-                    'identity',
-                    'read',
-                ],
-            ]
-        );
+        $params = [...$params,
+            'userAgent' => 'platform:appid:version, (by /u/username)',
+            'scopes'    => [
+                'identity',
+                'read',
+            ],
+        ];
 
         return ('reddit' == $clientName) ? new Reddit($params) : $provider;
     }

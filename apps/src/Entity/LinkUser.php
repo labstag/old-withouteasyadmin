@@ -9,7 +9,6 @@ use Labstag\Repository\LinkUserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: LinkUserRepository::class)]
-#[ApiResource]
 class LinkUser extends Link implements UserDataInterface
 {
 

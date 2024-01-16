@@ -9,7 +9,6 @@ use Labstag\Repository\WorkflowGroupeRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: WorkflowGroupeRepository::class)]
-#[ApiResource]
 class WorkflowGroupe implements EntityInterface
 {
 

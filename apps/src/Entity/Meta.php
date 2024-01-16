@@ -10,7 +10,6 @@ use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: MetaRepository::class)]
-#[ApiResource]
 class Meta implements Stringable, EntityInterface
 {
 

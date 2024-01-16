@@ -12,7 +12,6 @@ use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: RouteRepository::class)]
-#[ApiResource]
 class Route implements Stringable, EntityInterface
 {
 

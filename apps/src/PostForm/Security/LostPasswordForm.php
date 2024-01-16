@@ -22,10 +22,10 @@ class LostPasswordForm extends PostFormLib implements PostFormInterface
             return $this->redirectToRoute('app_login');
         }
 
-        return array_merge(
-            $params,
-            ['form' => $form]
-        );
+        return [
+            ...$params,
+            'form' => $form,
+        ];
     }
 
     public function getForm(): string

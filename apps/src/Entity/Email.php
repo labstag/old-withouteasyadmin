@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
 #[ORM\DiscriminatorMap(['user' => 'EmailUser'])]
-#[ApiResource]
 abstract class Email implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;

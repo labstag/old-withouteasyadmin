@@ -9,7 +9,6 @@ use Labstag\Repository\EmailUserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: EmailUserRepository::class)]
-#[ApiResource]
 class EmailUser extends Email implements EntityInterface
 {
 

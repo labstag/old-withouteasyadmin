@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: GeoCodeRepository::class)]
-#[ApiResource]
 class GeoCode implements EntityTrashInterface
 {
     use SoftDeleteableEntity;

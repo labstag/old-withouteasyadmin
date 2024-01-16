@@ -13,7 +13,6 @@ use Labstag\Repository\RenderRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: RenderRepository::class)]
-#[ApiResource]
 class Render implements EntityTrashInterface, PublicInterface
 {
     use SoftDeleteableEntity;

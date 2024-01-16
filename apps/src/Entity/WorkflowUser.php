@@ -10,7 +10,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: WorkflowUserRepository::class)]
-#[ApiResource]
 class WorkflowUser implements EntityInterface
 {
 

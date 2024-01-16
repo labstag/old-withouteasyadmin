@@ -210,10 +210,10 @@ class ParagraphService
     {
         /** @var EntityInterface $entityParagraph */
         $entityParagraph = $this->serviceParagraphService->getEntity($paragraph);
-        $annotations     = array_merge(
-            $this->uploadAnnotationReader->getUploadableFields($paragraph),
-            $this->uploadAnnotationReader->getUploadableFields($entityParagraph),
-        );
+        $annotations     = [
+            ...$this->uploadAnnotationReader->getUploadableFields($paragraph),
+            ...$this->uploadAnnotationReader->getUploadableFields($entityParagraph),
+        ];
         if (0 == count($annotations)) {
             return;
         }

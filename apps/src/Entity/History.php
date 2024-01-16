@@ -21,7 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
-#[ApiResource]
 class History implements PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;

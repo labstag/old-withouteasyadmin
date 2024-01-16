@@ -15,7 +15,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[ApiResource]
 class Category implements Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;

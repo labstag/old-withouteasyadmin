@@ -20,7 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Uploadable]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: BookmarkRepository::class)]
-#[ApiResource]
 class Bookmark implements EntityTrashInterface
 {
     use SoftDeleteableEntity;

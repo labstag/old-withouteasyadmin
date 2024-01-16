@@ -27,10 +27,10 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
         }
 
         $field      = $this->blockService->getEntityField($entity);
-        $parameters = array_merge(
-            $parameters,
-            ['field' => $field]
-        );
+        $parameters = [
+            ...$parameters,
+            'field' => $field,
+        ];
 
         return parent::edit($entity, $parameters);
     }
@@ -178,14 +178,12 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
             throw new AccessDeniedException();
         }
 
-        $parameters = array_merge(
-            $parameters,
-            [
-                'data'    => $data,
-                'actions' => $url,
-                'newform' => $form,
-            ]
-        );
+        $parameters = [
+            ...$parameters,
+            'data'    => $data,
+            'actions' => $url,
+            'newform' => $form,
+        ];
 
         return $this->render(
             $templates[$type],

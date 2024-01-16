@@ -20,7 +20,6 @@ use Labstag\Repository\ParagraphRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: ParagraphRepository::class)]
-#[ApiResource]
 class Paragraph implements EntityInterface
 {
     use BookmarkEntity;

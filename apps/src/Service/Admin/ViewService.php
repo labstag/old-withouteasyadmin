@@ -214,10 +214,10 @@ class ViewService
     ): void
     {
         $compiledRoute   = $data->compile();
-        $breadcrumbTitle = array_merge(
-            $this->setHeaderTitle(),
-            $this->domainService->getTitles()
-        );
+        $breadcrumbTitle = [
+            ...$this->setHeaderTitle(),
+            ...$this->domainService->getTitles(),
+        ];
         $title = '';
         foreach ($breadcrumbTitle as $key => $value) {
             if ($key == $route) {
@@ -314,13 +314,11 @@ class ViewService
             }
         }
 
-        $parameters = array_merge(
-            $parameters,
-            [
-                'entity' => $entity,
-                'form'   => $form,
-            ]
-        );
+        $parameters = [
+            ...$parameters,
+            'entity' => $entity,
+            'form'   => $form,
+        ];
 
         return $this->render(
             $template,
@@ -533,12 +531,10 @@ class ViewService
 
     private function generateMenus(array $parameters = []): array
     {
-        return array_merge(
-            $parameters,
-            [
-                'allmenu' => $this->menuService->createMenus(),
-            ]
-        );
+        return [
+            ...$parameters,
+            'allmenu' => $this->menuService->createMenus(),
+        ];
     }
 
     private function getBreadcrumb(
@@ -633,13 +629,11 @@ class ViewService
             throw new AccessDeniedException();
         }
 
-        $parameters = array_merge(
-            $parameters,
-            [
-                'pagination' => $pagination,
-                'actions'    => $url,
-            ]
-        );
+        $parameters = [
+            ...$parameters,
+            'pagination' => $pagination,
+            'actions'    => $url,
+        ];
         $parameters = $this->setSearchForms($parameters);
 
         $template = $templates[$type];
