@@ -39,7 +39,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
                 )
             );
 
-            return COMMAND::FAILURE;
+            return Command::FAILURE;
         }
 
         $csv = $this->geocodeService->csv($country);
@@ -48,7 +48,7 @@ class LabstagGeocodeInstallCommand extends CommandLib
                 ['fichier inexistant']
             );
 
-            return COMMAND::FAILURE;
+            return Command::FAILURE;
         }
 
         $progressBar = new ProgressBar($output, is_countable($csv) ? count($csv) : 0);

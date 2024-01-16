@@ -1,11 +1,12 @@
 <?php
 /*
  * This document has been generated with
- * https://mlocati.github.io/php-cs-fixer-configurator/#version:3.34.1|configurator
+ * https://mlocati.github.io/php-cs-fixer-configurator/#version:3.47.0|configurator
  * you can change this configuration by importing this file.
  */
 $config = new PhpCsFixer\Config();
 return $config
+    ->setRiskyAllowed(true)
     ->setRules([
         // Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
         'align_multiline_comment' => true,
@@ -20,7 +21,7 @@ return $config
         // Converts backtick operators to `shell_exec` calls.
         'backtick_to_shell_exec' => true,
         // Binary operators should be surrounded by space as configured.
-        'binary_operator_spaces' => ['operators'=>['=>'=>'align_single_space_minimal','='=>'align_single_space_minimal']],
+        'binary_operator_spaces' => ['operators' => ['=>' => 'align_single_space_minimal','=' => 'align_single_space_minimal']],
         // There MUST be one blank line after the namespace declaration.
         'blank_line_after_namespace' => true,
         // Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.
@@ -69,12 +70,10 @@ return $config
         'explicit_string_variable' => true,
         // PHP code must use the long `<?php` tags or short-echo `<?=` tags and not other tag variations.
         'full_opening_tag' => true,
-        // Transforms imported FQCN parameters and return types in function arguments to short version.
+        // Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace.
         'fully_qualified_strict_types' => true,
         // Spaces should be properly placed in a function declaration.
         'function_declaration' => true,
-        // Ensure single space between function's argument and its typehint.
-        'function_typehint_space' => true,
         // Renames PHPDoc tags.
         'general_phpdoc_tag_rename' => true,
         // Imports or fully qualifies global classes/functions/constants.
@@ -198,14 +197,14 @@ return $config
         // There should not be space before or after object operators `->` and `?->`.
         'object_operator_without_whitespace' => true,
         // Orders the elements of classes/interfaces/traits/enums.
-        'ordered_class_elements' => ['sort_algorithm'=>'alpha'],
+        'ordered_class_elements' => ['sort_algorithm' => 'alpha'],
         // Ordering `use` statements.
         'ordered_imports' => true,
         // PHPUnit annotations should be a FQCNs including a root namespace.
         'php_unit_fqcn_annotation' => true,
         // Enforce camel (or snake) case for PHPUnit test methods, following configuration.
         'php_unit_method_casing' => true,
-        // All items of the given phpdoc tags must be either left-aligned or (by default) aligned vertically.
+        // All items of the given PHPDoc tags must be either left-aligned or (by default) aligned vertically.
         'phpdoc_align' => true,
         // PHPDoc annotation descriptions should not be a sentence.
         'phpdoc_annotation_without_dot' => true,
@@ -274,7 +273,7 @@ return $config
         // Each namespace use MUST go on its own line and there MUST be one blank line after the use statements block.
         'single_line_after_imports' => true,
         // Single-line comments and multi-line comments with only one line of actual content should use the `//` syntax.
-        'single_line_comment_style' => ['comment_types'=>['asterisk']],
+        'single_line_comment_style' => ['comment_types' => ['asterisk']],
         // Throwing exception must be done in single line.
         'single_line_throw' => true,
         // Convert double quotes to single quotes for simple strings.
@@ -319,7 +318,12 @@ return $config
         'yoda_style' => true,
     ])
     ->setFinder(PhpCsFixer\Finder::create()
-        // ->exclude('folder-to-exclude') // if you want to exclude some folders, you can do it like this!
         ->in(__DIR__)
+        // ->exclude([
+        //     'folder-to-exclude',
+        // ])
+        // ->append([
+        //     'file-to-include',
+        // ])
     )
 ;
