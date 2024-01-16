@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class UploadAnnotationReader
 {
-
     public function enableAttachment(array $annotations, array $fields): bool
     {
         $enable = false;
