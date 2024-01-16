@@ -21,7 +21,6 @@ services:
       - '../src/DependencyInjection/'
       - '../src/Entity/'
       - '../src/Kernel.php'
-      - "../src/Reader/"
   Labstag\Paragraph\:
       resource: "../src/Paragraph/"
       public: true
@@ -109,8 +108,6 @@ services:
     decorates: api_platform.openapi.factory
   Labstag\OpenApi\SearchOpenApi:
     decorates: api_platform.openapi.factory
-  Labstag\Reader\UploadAnnotationReader:
-    arguments: ["@annotations.reader"]
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones

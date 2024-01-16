@@ -2,7 +2,6 @@
 
 namespace Labstag\Lib;
 
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Service\BlockService;
@@ -34,7 +33,6 @@ abstract class EventSubscriberLib implements EventSubscriberInterface
         protected EntityManagerInterface $entityManager,
         protected ParagraphService $paragraphService,
         protected BlockService $blockService,
-        protected Reader $reader,
         protected Environment $twigEnvironment,
         protected FrontService $frontService,
         protected UrlGeneratorInterface $urlGenerator,
