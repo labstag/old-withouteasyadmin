@@ -87,7 +87,7 @@ jobs:
     - name: Archive screenshots
       uses: actions/upload-artifact@v3
       with:
-        name: screenshot
+        name: screenshot-tests
         path: cypress/
   launch:
     runs-on: ubuntu-22.04
@@ -148,5 +148,5 @@ jobs:
     - name: Archive screenshots
       uses: actions/upload-artifact@v3
       with:
-        name: screenshot
+        name: screenshot-launch
         path: cypress/
