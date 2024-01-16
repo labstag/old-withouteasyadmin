@@ -1,7 +1,7 @@
 name: Continuous Integration
 on: [push]
 jobs:
-  tests:
+  launch:
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout
@@ -40,48 +40,18 @@ jobs:
       run: npm run docker:deploy
     - name: 'Waiting'
       run: npm run docker:waiting
-    - name: linter readme.md
-      run: npm run lint:markdown
-    - name: linter SCSS
-      run: npm run lint:stylelint:fix
-    - name: "install PHAR"
-      run: npm run download:phar
-    - name: 'docker ls'
-      run: npm run docker:ls
-    - name: linter PHP Code Sniffer
-      uses: nick-fields/retry@v2
-      with:
-        timeout_minutes: 10
-        max_attempts: 3
-        command: npm run lint:phpcs:error
-    - name: linter PHP MD
-      run: npm run lint:phpmd
-    - name: linter PHPMND
-      run: npm run lint:phpmnd
     - name: Add assets
       run: npm run assets
     - name: Test lancement bootstrap
-      run: npm run encore:dev
-    - name: Linter twig
-      run: npm run lint:twig
-    - name: Linter yaml
-      run: npm run lint:yaml
-    - name: linter phpstan
-      run: npm run lint:phpstan:0
+      run: npm run encore:prod
     - name: 'BDD MIGRATE'
       run: npm run doctrine:migrate
     - name: 'BDD Schema update'
       run: npm run doctrine:schema:update
     - name: 'Run the fixtures'
       run: npm run doctrine:fixtures
-    - name: 'Labstag (install)'
-      run: npm run labstag:install
-    - name: 'Labstag (guard)'
-      run: npm run labstag:guard-route
-    - name: 'Labstag (workflow)'
-      run: npm run labstag:workflows-show
-    - name: Run Acceptance Tests
-      run: npm run test:behat
+    - name: 'Labstag install'
+      run: npm run cmd:labstag:all
     - name: Cypress run
       uses: cypress-io/github-action@v5
     - name: Archive screenshots
