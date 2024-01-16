@@ -133,7 +133,7 @@ jobs:
     - name: Add assets
       run: npm run assets
     - name: Test lancement bootstrap
-      run: npm run encore:prod
+      run: npm run encore:build
     - name: 'BDD MIGRATE'
       run: npm run doctrine:migrate
     - name: 'BDD Schema update'
