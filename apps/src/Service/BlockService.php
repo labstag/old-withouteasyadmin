@@ -12,17 +12,20 @@ use Labstag\Repository\BlockRepository;
 use Labstag\Repository\PageRepository;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class BlockService
 {
+    protected $rewindableGenerator;
     public function __construct(
-        protected RewindableGenerator $rewindableGenerator,
+        #[TaggedIterator('blocksclass')] iterable $rewindableGenerator,
         protected EnqueueMethod $enqueueMethod,
         protected PageRepository $pageRepository,
         protected BlockRepository $blockRepository
     )
     {
+        $this->rewindableGenerator = $rewindableGenerator;
     }
 
     public function getAll(): array

@@ -67,37 +67,6 @@ services:
   Labstag\Controller\:
     resource: "../src/Controller/"
     tags: ["controller.service_arguments"]
-  Labstag\Command\:
-    resource: "../src/Command/"
-    arguments:  
-      - serverenv: "env"
-      - !tagged_iterator entitiesclass
-  Labstag\Service\RepositoryService:
-    arguments:  
-      - !tagged_iterator repositories
-  Labstag\Service\TrashService:
-    arguments:  
-      - !tagged_iterator repositories
-  Labstag\Service\FormService:
-    arguments:
-      - !tagged_iterator postform
-      - !tagged_iterator securityform
-      - !tagged_iterator frontform
-  Labstag\Service\BlockService:
-    arguments:
-      - !tagged_iterator blocksclass
-  Labstag\Service\DomainService:
-    arguments:
-      - !tagged_iterator domainsclass
-  Labstag\Service\ParagraphService:
-    arguments:
-      - !tagged_iterator paragraphsclass
-  Labstag\Service\AdminService:
-    arguments:
-      - !tagged_iterator entitiesadminservice
-  Labstag\Service\FrontService:
-    arguments:
-      - !tagged_iterator frontclass
   Labstag\OpenApi\ActionsOpenApi:
     decorates: api_platform.openapi.factory
   Labstag\OpenApi\AttachmentOpenApi:

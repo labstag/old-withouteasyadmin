@@ -22,11 +22,7 @@ class LabstagInstallCommand extends CommandLib
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
         $symfonyStyle->note('Ajout de la configuration');
-        if (!is_array($this->serverenv)) {
-            throw new Exception('Argument serverenv invalide');
-        }
-
-        $this->installService->config($this->serverenv);
+        $this->installService->config();
         $symfonyStyle->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;

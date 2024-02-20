@@ -10,14 +10,15 @@ use Labstag\Service\RepositoryService;
 use Labstag\Service\WorkflowService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class CommandLib extends Command
 {
+    protected $rewindableGenerator;
     public function __construct(
-        protected mixed $serverenv,
-        protected RewindableGenerator $rewindableGenerator,
+        #[TaggedIterator('entitiesclass')] iterable $rewindableGenerator,
         protected EventDispatcherInterface $eventDispatcher,
         protected WorkflowService $workflowService,
         protected InstallService $installService,
@@ -28,6 +29,7 @@ abstract class CommandLib extends Command
         protected RepositoryService $repositoryService
     )
     {
+        $this->rewindableGenerator = $rewindableGenerator;
         parent::__construct();
     }
 }

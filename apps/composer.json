@@ -35,6 +35,8 @@
         "omines/oauth2-gitlab": "3.6.*",
         "phpdocumentor/reflection-docblock": "5.3.*",
         "rtheunissen/oauth2-reddit": "2.0.*",
+        "sonata-project/admin-bundle": "^4.29",
+        "sonata-project/doctrine-orm-admin-bundle": "^4.15",
         "spipu/html2pdf": "5.2.*",
         "stevenmaguire/oauth2-bitbucket": "3.0.*",
         "stevenmaguire/oauth2-dropbox": "3.1.*",
