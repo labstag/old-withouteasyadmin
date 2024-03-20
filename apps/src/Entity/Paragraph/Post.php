@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ORM\Table(name: 'paragraph_post')]
-#[ApiResource(routePrefix: '/paragraph')]
 class Post implements Stringable, EntityParagraphInterface, EntityInterface
 {
 

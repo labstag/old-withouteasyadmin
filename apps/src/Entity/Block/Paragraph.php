@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: ParagraphRepository::class)]
 #[ORM\Table(name: 'block_paragraph')]
-#[ApiResource(routePrefix: '/block')]
 class Paragraph implements Stringable, EntityBlockInterface
 {
 

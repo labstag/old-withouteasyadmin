@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: EditoRepository::class)]
 #[ORM\Table(name: 'paragraph_edito')]
-#[ApiResource(routePrefix: '/paragraph')]
 class Edito implements Stringable, EntityParagraphInterface, EntityInterface
 {
 

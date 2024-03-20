@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: LibelleRepository::class)]
 #[ORM\Table(name: 'paragraph_bookmark_libelle')]
-#[ApiResource(routePrefix: '/paragraph/bookmark')]
 class Libelle implements Stringable, EntityParagraphInterface, EntityInterface
 {
 

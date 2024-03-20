@@ -14,7 +14,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: FooterRepository::class)]
 #[ORM\Table(name: 'block_footer')]
-#[ApiResource(routePrefix: '/block')]
 class Footer implements Stringable, EntityBlockInterface
 {
 

@@ -14,7 +14,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: HeaderRepository::class)]
 #[ORM\Table(name: 'block_header')]
-#[ApiResource(routePrefix: '/block')]
 class Header implements Stringable, EntityBlockInterface
 {
 

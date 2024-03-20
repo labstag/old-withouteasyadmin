@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'paragraph_post_category')]
-#[ApiResource(routePrefix: '/paragraph/post')]
 class Category implements Stringable, EntityParagraphInterface, EntityInterface
 {
 

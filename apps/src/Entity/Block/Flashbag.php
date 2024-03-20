@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: FlashbagRepository::class)]
 #[ORM\Table(name: 'block_flashbag')]
-#[ApiResource(routePrefix: '/block')]
 class Flashbag implements Stringable, EntityBlockInterface
 {
 

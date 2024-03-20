@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: BookmarkRepository::class)]
 #[ORM\Table(name: 'paragraph_bookmark')]
-#[ApiResource(routePrefix: '/paragraph')]
 class Bookmark implements Stringable, EntityParagraphInterface, EntityInterface
 {
 

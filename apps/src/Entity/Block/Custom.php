@@ -15,7 +15,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: CustomRepository::class)]
 #[ORM\Table(name: 'block_custom')]
-#[ApiResource(routePrefix: '/block')]
 class Custom implements Stringable, EntityBlockInterface
 {
 

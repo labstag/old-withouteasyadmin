@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: BreadcrumbRepository::class)]
 #[ORM\Table(name: 'block_breadcrumb')]
-#[ApiResource(routePrefix: '/block')]
 class Breadcrumb implements Stringable, EntityBlockInterface
 {
 

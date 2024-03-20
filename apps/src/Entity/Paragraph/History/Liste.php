@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: ListeRepository::class)]
 #[ORM\Table(name: 'paragraph_history_list')]
-#[ApiResource(routePrefix: '/paragraph/history')]
 class Liste implements Stringable, EntityParagraphInterface, EntityInterface
 {
 

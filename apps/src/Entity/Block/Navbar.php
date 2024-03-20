@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: NavbarRepository::class)]
 #[ORM\Table(name: 'block_navbar')]
-#[ApiResource(routePrefix: '/block')]
 class Navbar implements Stringable, EntityBlockInterface
 {
 

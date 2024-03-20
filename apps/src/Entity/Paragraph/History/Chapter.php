@@ -13,7 +13,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: ChapterRepository::class)]
 #[ORM\Table(name: 'paragraph_history_chapter')]
-#[ApiResource(routePrefix: '/paragraph/history')]
 class Chapter implements Stringable, EntityParagraphInterface, EntityInterface
 {
 
