@@ -9,6 +9,7 @@ use Labstag\Service\DataService;
 use Labstag\Service\ErrorService;
 use Labstag\Service\FrontService;
 use Labstag\Service\GuardService;
+use Labstag\Service\HttpErrorService;
 use Labstag\Service\ParagraphService;
 use Labstag\Service\RepositoryService;
 use Labstag\Service\SessionService;
@@ -30,6 +31,7 @@ use Twig\Environment;
 abstract class EventSubscriberLib implements EventSubscriberInterface
 {
     public function __construct(
+        protected HttpErrorService $httpErrorService,
         protected EntityManagerInterface $entityManager,
         protected ParagraphService $paragraphService,
         protected BlockService $blockService,

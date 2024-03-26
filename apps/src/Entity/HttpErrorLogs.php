@@ -45,6 +45,9 @@ class HttpErrorLogs implements EntityInterface
     #[ORM\Column(type: Types::TEXT)]
     private ?string $url = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $ip = null;
+
     public function getAgent(): ?string
     {
         return $this->agent;
@@ -135,6 +138,18 @@ class HttpErrorLogs implements EntityInterface
     public function setUrl(string $url): static
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getIp(): ?string
+    {
+        return $this->ip;
+    }
+
+    public function setIp(string $ip): self
+    {
+        $this->ip = $ip;
 
         return $this;
     }
