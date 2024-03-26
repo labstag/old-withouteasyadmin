@@ -2,7 +2,6 @@
 
 namespace Labstag\Command;
 
-use Exception;
 use Labstag\Lib\CommandLib;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

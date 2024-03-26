@@ -67,6 +67,7 @@ class InstallService
         if (is_file($file)) {
             $data = $dotenv->parse((string) file_get_contents($file));
         }
+
         ksort($data);
 
         return $data;

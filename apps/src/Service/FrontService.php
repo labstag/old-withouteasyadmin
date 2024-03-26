@@ -7,7 +7,6 @@ use Labstag\Interfaces\FrontInterface;
 use Labstag\Repository\AttachmentRepository;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
-use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -32,7 +31,8 @@ class FrontService
     protected $rewindableGenerator;
 
     public function __construct(
-        #[TaggedIterator('frontclass')] iterable $rewindableGenerator,
+        #[TaggedIterator('frontclass')]
+        iterable $rewindableGenerator,
         protected Environment $twigEnvironment,
         protected RequestStack $requestStack,
         protected UrlGeneratorInterface $urlGenerator,

@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity\Paragraph\Edito;
 
-use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Paragraph;
 use Labstag\Interfaces\EntityInterface;

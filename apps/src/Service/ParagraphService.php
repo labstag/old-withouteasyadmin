@@ -12,17 +12,18 @@ use Labstag\Interfaces\PublicInterface;
 use Labstag\Queue\EnqueueMethod;
 use Labstag\Repository\ParagraphRepository;
 use ReflectionClass;
-use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Twig\Environment;
 
 class ParagraphService
 {
+
     protected $rewindableGenerator;
 
     public function __construct(
-        #[TaggedIterator('paragraphsclass')] iterable $rewindableGenerator,
+        #[TaggedIterator('paragraphsclass')]
+        iterable $rewindableGenerator,
         protected Environment $twigEnvironment,
         protected EnqueueMethod $enqueueMethod,
         protected ParagraphRepository $paragraphRepository

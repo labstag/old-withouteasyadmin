@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity\Block;
 
-use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Labstag\Entity\Block;
 use Labstag\Entity\Menu;

@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity\Paragraph;
 
-use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Labstag\Annotation\Uploadable;

@@ -3,24 +3,30 @@
 namespace Labstag\Service;
 
 use Labstag\Lib\AbstractTypeLib;
-use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\HttpFoundation\Response;
 
 class FormService
 {
-    protected $postform;
-    protected $securityform;
+
     protected $frontform;
+
+    protected $postform;
+
+    protected $securityform;
+
     public function __construct(
-        #[TaggedIterator('postform')] iterable $postform,
-        #[TaggedIterator('securityform')] iterable $securityform,
-        #[TaggedIterator('frontform')] iterable $frontform
+        #[TaggedIterator('postform')]
+        iterable $postform,
+        #[TaggedIterator('securityform')]
+        iterable $securityform,
+        #[TaggedIterator('frontform')]
+        iterable $frontform
     )
     {
-        $this->postform = $postform;
+        $this->postform     = $postform;
         $this->securityform = $securityform;
-        $this->frontform = $frontform;
+        $this->frontform    = $frontform;
     }
 
     public function context(

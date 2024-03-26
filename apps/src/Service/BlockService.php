@@ -11,15 +11,17 @@ use Labstag\Queue\EnqueueMethod;
 use Labstag\Repository\BlockRepository;
 use Labstag\Repository\PageRepository;
 use ReflectionClass;
-use Symfony\Component\DependencyInjection\Argument\RewindableGenerator;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class BlockService
 {
+
     protected $rewindableGenerator;
+
     public function __construct(
-        #[TaggedIterator('blocksclass')] iterable $rewindableGenerator,
+        #[TaggedIterator('blocksclass')]
+        iterable $rewindableGenerator,
         protected EnqueueMethod $enqueueMethod,
         protected PageRepository $pageRepository,
         protected BlockRepository $blockRepository
