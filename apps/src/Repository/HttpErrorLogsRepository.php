@@ -8,8 +8,8 @@ use Labstag\Lib\RepositoryLib;
 
 class HttpErrorLogsRepository extends RepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, HttpErrorLogs::class);
+        parent::__construct($managerRegistry, HttpErrorLogs::class);
     }
 }

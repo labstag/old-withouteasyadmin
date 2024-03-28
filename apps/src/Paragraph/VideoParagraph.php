@@ -108,7 +108,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
         /** @var Video $video */
         $video = $videos[0];
         $url   = (string) $video->getUrl();
-        if ('' == $url) {
+        if ('' === $url) {
             return;
         }
 
@@ -167,7 +167,7 @@ class VideoParagraph extends ParagraphLib implements ParagraphInterface
     private function getData(Video $video): ?Extractor
     {
         $url = (string) $video->getUrl();
-        if ('' == $url) {
+        if ('' === $url) {
             return null;
         }
 

@@ -31,7 +31,7 @@ class EntitiesListener extends EventListenerLib
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
         $object = $lifecycleEventArgs->getObject();
-        if (!$object instanceof EntityInterface || 'persist' != $action) {
+        if (!$object instanceof EntityInterface || 'persist' !== $action) {
             return;
         }
 

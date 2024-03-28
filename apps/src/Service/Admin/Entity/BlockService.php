@@ -174,7 +174,7 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
             $total += is_countable($region) ? count($region) : 0;
         }
 
-        if (('trash' == $routeType && 0 == $total)) {
+        if (('trash' === $routeType && 0 == $total)) {
             throw new AccessDeniedException();
         }
 

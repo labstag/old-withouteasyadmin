@@ -484,7 +484,7 @@ class ViewService
         $query   = $request->query;
         $get     = $query->all();
         $form    = $domain->getSearchForm();
-        if ('' == $form) {
+        if ('' === $form) {
             return $parameters;
         }
 
@@ -625,7 +625,7 @@ class ViewService
         $this->btnService->setBtnListOrTrash($domain, $routeType);
         $pagination = $this->setPagination($routeType);
 
-        if ('trash' == $routeType && 0 == $pagination->count()) {
+        if ('trash' === $routeType && 0 == $pagination->count()) {
             throw new AccessDeniedException();
         }
 
@@ -735,11 +735,11 @@ class ViewService
         $routeType = (0 != substr_count((string) $routeCurrent, 'preview')) ? 'preview' : 'show';
         $this->btnService->showOrPreviewadd($url, $routeType, $entity);
 
-        if (isset($url['delete']) && 'show' == $routeType) {
+        if (isset($url['delete']) && 'show' === $routeType) {
             $this->btnService->setBtnDelete($url, $entity);
         }
 
-        if ('preview' == $routeType && is_null($entity->getDeletedAt())) {
+        if ('preview' === $routeType && is_null($entity->getDeletedAt())) {
             throw new AccessDeniedException();
         }
 

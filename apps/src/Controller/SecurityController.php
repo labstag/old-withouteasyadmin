@@ -221,7 +221,7 @@ class SecurityController extends FrontControllerLib
 
         /** @var string $url */
         $url = $this->generateUrl('front');
-        if ('' == $referer) {
+        if ('' === $referer) {
             $referer = $url;
         }
 

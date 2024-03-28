@@ -120,7 +120,7 @@ class LayoutService extends ViewService implements AdminEntityServiceInterface
         $this->btnService->setBtnListOrTrash($domain, $routeType);
         $pagination = $this->setPagination($routeType);
 
-        if ('trash' == $routeType && 0 == $pagination->count()) {
+        if ('trash' === $routeType && 0 == $pagination->count()) {
             throw new AccessDeniedException();
         }
 

@@ -128,7 +128,7 @@ class BtnService
         array $routeParam = []
     ): self
     {
-        if ('' == $route || !$this->isRouteEnable($route)) {
+        if ('' === $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -192,7 +192,7 @@ class BtnService
         array $routeParam = []
     ): self
     {
-        if ('' == $route || !$this->isRouteEnable($route)) {
+        if ('' === $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -209,7 +209,7 @@ class BtnService
 
     public function addBtnImport(string $route, string $text = 'Import'): self
     {
-        if ('' == $route || !$this->isRouteEnable($route)) {
+        if ('' === $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -226,7 +226,7 @@ class BtnService
 
     public function addBtnList(string $route, string $text = 'Liste'): self
     {
-        if ('' == $route || !$this->isRouteEnable($route)) {
+        if ('' === $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -243,7 +243,7 @@ class BtnService
 
     public function addBtnNew(string $route, string $text = 'Nouveau'): self
     {
-        if ('' == $route || !$this->isRouteEnable($route)) {
+        if ('' === $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -288,7 +288,7 @@ class BtnService
         array $routeParam = []
     ): self
     {
-        if ('' == $route || !$this->isRouteEnable($route)) {
+        if ('' === $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -305,7 +305,7 @@ class BtnService
 
     public function addBtnTrash(string $route, string $text = 'Corbeille'): self
     {
-        if ('' == $route || !$this->isRouteEnable($route)) {
+        if ('' === $route || !$this->isRouteEnable($route)) {
             return $this;
         }
 
@@ -334,13 +334,13 @@ class BtnService
             $routeType
         );
 
-        if (isset($url['new']) && 'trash' != $routeType) {
+        if (isset($url['new']) && 'trash' !== $routeType) {
             $this->addBtnNew(
                 $url['new']
             );
         }
 
-        if (isset($url['import']) && 'trash' != $routeType) {
+        if (isset($url['import']) && 'trash' !== $routeType) {
             $this->addBtnImport(
                 $url['import']
             );
@@ -460,7 +460,7 @@ class BtnService
         string $routeType
     ): void
     {
-        if ('trash' == $routeType) {
+        if ('trash' === $routeType) {
             $this->listOrTrashRouteTrash($url, $serviceEntityRepositoryLib);
 
             return;
@@ -502,7 +502,7 @@ class BtnService
         RepositoryLib $serviceEntityRepositoryLib
     ): void
     {
-        if ('trash' == $routeType) {
+        if ('trash' === $routeType) {
             return;
         }
 
@@ -680,7 +680,7 @@ class BtnService
         EntityInterface $entity
     ): void
     {
-        if (!(isset($url['destroy']) && 'preview' == $routeType)) {
+        if (!(isset($url['destroy']) && 'preview' === $routeType)) {
             return;
         }
 
@@ -704,7 +704,7 @@ class BtnService
         EntityInterface $entity
     ): void
     {
-        if (!(isset($url['edit']) && 'show' == $routeType) || !$this->isGranted('edit', $entity)) {
+        if (!(isset($url['edit']) && 'show' === $routeType) || !$this->isGranted('edit', $entity)) {
             return;
         }
 
@@ -723,7 +723,7 @@ class BtnService
         EntityInterface $entity
     ): void
     {
-        if (!(isset($url['guard']) && 'show' == $routeType) || !$this->enableBtnGuard($entity)) {
+        if (!(isset($url['guard']) && 'show' === $routeType) || !$this->enableBtnGuard($entity)) {
             return;
         }
 
@@ -743,7 +743,7 @@ class BtnService
     ): void
     {
         unset($entity);
-        if (!(isset($url['list']) && 'show' == $routeType)) {
+        if (!(isset($url['list']) && 'show' === $routeType)) {
             return;
         }
 
@@ -759,7 +759,7 @@ class BtnService
         EntityInterface $entity
     ): void
     {
-        if (isset($url['restore']) && 'preview' == $routeType) {
+        if (isset($url['restore']) && 'preview' === $routeType) {
             $this->addBtnRestore(
                 $entity,
                 [
@@ -782,7 +782,7 @@ class BtnService
     ): void
     {
         unset($entity);
-        if (!(isset($url['trash']) && 'preview' == $routeType)) {
+        if (!(isset($url['trash']) && 'preview' === $routeType)) {
             return;
         }
 

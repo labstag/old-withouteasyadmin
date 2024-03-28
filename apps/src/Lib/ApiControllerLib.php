@@ -35,7 +35,7 @@ abstract class ApiControllerLib extends AbstractController
         /** @var RepositoryLib $entityRepository */
         $entityRepository = $repositoryService->get($entityClass);
         $results          = $entityRepository->findEnableByUser($user);
-        if (RouteUser::class == $entityClass) {
+        if (RouteUser::class === $entityClass) {
             if (!is_iterable($results)) {
                 return $data;
             }

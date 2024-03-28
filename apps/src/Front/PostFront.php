@@ -67,7 +67,7 @@ class PostFront extends PageFront implements FrontInterface
         array $breadcrumb
     ): array
     {
-        if ('front_article_category' != $route) {
+        if ('front_article_category' !== $route) {
             return $breadcrumb;
         }
 
@@ -101,7 +101,7 @@ class PostFront extends PageFront implements FrontInterface
         array $breadcrumb
     ): array
     {
-        if ('front_article_libelle' != $route) {
+        if ('front_article_libelle' !== $route) {
             return $breadcrumb;
         }
 
@@ -135,7 +135,7 @@ class PostFront extends PageFront implements FrontInterface
         array $breadcrumb
     ): array
     {
-        if ('front_article_year' != $route && !isset($params['year'])) {
+        if ('front_article_year' !== $route && !isset($params['year'])) {
             return $breadcrumb;
         }
 

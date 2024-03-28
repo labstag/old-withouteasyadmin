@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class HttpErrorService
 {
-
     public function __construct(
         protected RequestStack $requestStack,
         protected HttpErrorLogsRepository $httpErrorLogsRepository
@@ -47,7 +46,7 @@ class HttpErrorService
         $httpErrorLogs->setUrl($url);
         $httpErrorLogs->setAgent($server->get('HTTP_USER_AGENT'));
         $httpErrorLogs->setHttpCode($httpCode);
-        $httpErrorLogs->setIp($server->get('REMOTE_ADDR'));
+        $httpErrorLogs->setInternetProtocol($server->get('REMOTE_ADDR'));
         if (!is_null($referer)) {
             $httpErrorLogs->setReferer($referer);
         }
@@ -60,6 +59,6 @@ class HttpErrorService
         );
         $httpErrorLogs->setRequestMethod($method);
 
-        $this->httpErrorLogsRepository->save($httpErrorLogs, true);
+        $this->httpErrorLogsRepository->save($httpErrorLogs);
     }
 }

@@ -31,7 +31,7 @@ class BookmarkController extends FrontControllerLib
         );
 
         if (!$bookmark instanceof Bookmark) {
-            if ('' != $slug) {
+            if ('' !== $slug) {
                 throw $this->createNotFoundException();
             }
 

@@ -8,8 +8,8 @@ use Labstag\Lib\RepositoryLib;
 
 class RedirectionRepository extends RepositoryLib
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Redirection::class);
+        parent::__construct($managerRegistry, Redirection::class);
     }
 }

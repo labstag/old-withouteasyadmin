@@ -19,13 +19,13 @@ class HttpErrorLogs implements EntityInterface
 
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: 'datetime')]
-    private DateTime $created;
+    private DateTime $dateTime;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $domain = null;
 
     #[ORM\Column]
-    private ?int $http_code = null;
+    private ?int $httpCode = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -33,20 +33,20 @@ class HttpErrorLogs implements EntityInterface
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?string $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $internetProtocol = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $referer = null;
 
     #[ORM\Column]
-    private array $request_data = [];
+    private array $requestData = [];
 
     #[ORM\Column(length: 255)]
-    private ?string $request_method = null;
+    private ?string $requestMethod = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $url = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $ip = null;
 
     public function getAgent(): ?string
     {
@@ -55,7 +55,7 @@ class HttpErrorLogs implements EntityInterface
 
     public function getCreated()
     {
-        return $this->created;
+        return $this->dateTime;
     }
 
     public function getDomain(): ?string
@@ -65,12 +65,17 @@ class HttpErrorLogs implements EntityInterface
 
     public function getHttpCode(): ?int
     {
-        return $this->http_code;
+        return $this->httpCode;
     }
 
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getInternetProtocol(): ?string
+    {
+        return $this->internetProtocol;
     }
 
     public function getReferer(): ?string
@@ -80,12 +85,12 @@ class HttpErrorLogs implements EntityInterface
 
     public function getRequestData(): array
     {
-        return $this->request_data;
+        return $this->requestData;
     }
 
     public function getRequestMethod(): ?string
     {
-        return $this->request_method;
+        return $this->requestMethod;
     }
 
     public function getUrl(): ?string
@@ -107,9 +112,16 @@ class HttpErrorLogs implements EntityInterface
         return $this;
     }
 
-    public function setHttpCode(int $http_code): static
+    public function setHttpCode(int $httpCode): static
     {
-        $this->http_code = $http_code;
+        $this->httpCode = $httpCode;
+
+        return $this;
+    }
+
+    public function setInternetProtocol(string $internetProtocol): self
+    {
+        $this->internetProtocol = $internetProtocol;
 
         return $this;
     }
@@ -121,16 +133,16 @@ class HttpErrorLogs implements EntityInterface
         return $this;
     }
 
-    public function setRequestData(array $request_data): static
+    public function setRequestData(array $requestData): static
     {
-        $this->request_data = $request_data;
+        $this->requestData = $requestData;
 
         return $this;
     }
 
-    public function setRequestMethod(string $request_method): static
+    public function setRequestMethod(string $requestMethod): static
     {
-        $this->request_method = $request_method;
+        $this->requestMethod = $requestMethod;
 
         return $this;
     }
@@ -138,18 +150,6 @@ class HttpErrorLogs implements EntityInterface
     public function setUrl(string $url): static
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    public function getIp(): ?string
-    {
-        return $this->ip;
-    }
-
-    public function setIp(string $ip): self
-    {
-        $this->ip = $ip;
 
         return $this;
     }

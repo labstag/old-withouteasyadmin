@@ -30,7 +30,7 @@ class PostController extends FrontControllerLib
         );
 
         if (!$post instanceof Post) {
-            if ('' != $slug) {
+            if ('' !== $slug) {
                 return $this->page('mes-articles/'.$slug, $pageRepository);
             }
 

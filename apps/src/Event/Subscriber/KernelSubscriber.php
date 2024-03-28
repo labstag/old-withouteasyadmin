@@ -3,8 +3,8 @@
 namespace Labstag\Event\Subscriber;
 
 use Labstag\Lib\EventSubscriberLib;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use tidy;
@@ -116,7 +116,7 @@ class KernelSubscriber extends EventSubscriberLib
     {
         return [
             KernelEvents::EXCEPTION => 'onKernelException',
-            KernelEvents::RESPONSE => 'onKernelResponse'
+            KernelEvents::RESPONSE  => 'onKernelResponse',
         ];
     }
 

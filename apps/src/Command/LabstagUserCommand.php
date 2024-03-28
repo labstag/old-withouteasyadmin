@@ -119,7 +119,7 @@ class LabstagUserCommand extends CommandLib
         }
 
         foreach ($usernames as $username) {
-            if (!is_string($username) || '' == $username) {
+            if (!is_string($username) || '' === $username) {
                 continue;
             }
 

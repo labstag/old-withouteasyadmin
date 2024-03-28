@@ -34,7 +34,7 @@ class HistoryController extends FrontControllerLib
         );
 
         if (!$history instanceof History) {
-            if ('' != $slug) {
+            if ('' !== $slug) {
                 throw $this->createNotFoundException();
             }
 

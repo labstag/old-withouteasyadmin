@@ -15,16 +15,16 @@ class Redirection implements EntityInterface
 {
 
     #[ORM\Column]
-    private ?int $action_code = null;
+    private ?int $actionCode = null;
 
     #[ORM\Column]
-    private ?int $action_type = null;
+    private ?int $actionType = null;
 
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: 'datetime')]
-    private DateTime $created;
+    private DateTime $dateTime;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::JSON)]
     private array $data = [];
 
     #[ORM\Column(type: Types::TEXT)]
@@ -40,7 +40,7 @@ class Redirection implements EntityInterface
     private ?string $id = null;
 
     #[ORM\Column(options: ['default' => 0])]
-    private ?int $last_count = null;
+    private ?int $lastCount = null;
 
     #[ORM\Column]
     private ?int $position = null;
@@ -56,17 +56,17 @@ class Redirection implements EntityInterface
 
     public function getActionCode(): ?int
     {
-        return $this->action_code;
+        return $this->actionCode;
     }
 
     public function getActionType(): ?int
     {
-        return $this->action_type;
+        return $this->actionType;
     }
 
     public function getCreated()
     {
-        return $this->created;
+        return $this->dateTime;
     }
 
     public function getData(): array
@@ -86,7 +86,7 @@ class Redirection implements EntityInterface
 
     public function getLastCount(): ?int
     {
-        return $this->last_count;
+        return $this->lastCount;
     }
 
     public function getPosition(): ?int
@@ -114,16 +114,16 @@ class Redirection implements EntityInterface
         return $this->regex;
     }
 
-    public function setActionCode(int $action_code): static
+    public function setActionCode(int $actionCode): static
     {
-        $this->action_code = $action_code;
+        $this->actionCode = $actionCode;
 
         return $this;
     }
 
-    public function setActionType(int $action_type): static
+    public function setActionType(int $actionType): static
     {
-        $this->action_type = $action_type;
+        $this->actionType = $actionType;
 
         return $this;
     }
@@ -149,9 +149,9 @@ class Redirection implements EntityInterface
         return $this;
     }
 
-    public function setLastCount(int $last_count): static
+    public function setLastCount(int $lastCount): static
     {
-        $this->last_count = $last_count;
+        $this->lastCount = $lastCount;
 
         return $this;
     }
