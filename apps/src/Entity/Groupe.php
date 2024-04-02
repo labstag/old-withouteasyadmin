@@ -11,6 +11,7 @@ use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\GroupeRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
@@ -110,7 +111,7 @@ class Groupe implements Stringable, EntityTrashInterface
         return $this;
     }
 
-    public function addUser(User $user): self
+    public function addUser(UserInterface $user): self
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
@@ -204,7 +205,7 @@ class Groupe implements Stringable, EntityTrashInterface
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUser(UserInterface $user): self
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);

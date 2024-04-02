@@ -25,7 +25,7 @@ class History implements PublicInterface, EntityTrashInterface, EntityWithParagr
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    #[ORM\OneToMany(targetEntity: Chapter::class, mappedBy: 'history', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Chapter::class, mappedBy: 'refhistory', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $chapters;
 

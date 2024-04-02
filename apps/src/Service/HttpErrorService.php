@@ -4,11 +4,13 @@ namespace Labstag\Service;
 
 use Labstag\Entity\HttpErrorLogs;
 use Labstag\Repository\HttpErrorLogsRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class HttpErrorService
 {
     public function __construct(
+        protected Security $security,
         protected RequestStack $requestStack,
         protected HttpErrorLogsRepository $httpErrorLogsRepository
     )
@@ -42,6 +44,7 @@ class HttpErrorService
             return;
         }
 
+        $httpErrorLogs->setUser($this->security->getUser());
         $httpErrorLogs->setDomain($domain);
         $httpErrorLogs->setUrl($url);
         $httpErrorLogs->setAgent($server->get('HTTP_USER_AGENT'));

@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\HttpErrorLogsRepository;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: HttpErrorLogsRepository::class)]
 class HttpErrorLogs implements EntityInterface
@@ -47,6 +48,10 @@ class HttpErrorLogs implements EntityInterface
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $url = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'httpErrorLogs', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refuser_id', nullable: false)]
+    private ?UserInterface $user = null;
 
     public function getAgent(): ?string
     {
@@ -96,6 +101,11 @@ class HttpErrorLogs implements EntityInterface
     public function getUrl(): ?string
     {
         return $this->url;
+    }
+
+    public function getUser(): ?UserInterface
+    {
+        return $this->user;
     }
 
     public function setAgent(string $agent): static
@@ -150,6 +160,13 @@ class HttpErrorLogs implements EntityInterface
     public function setUrl(string $url): static
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function setUser(?UserInterface $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

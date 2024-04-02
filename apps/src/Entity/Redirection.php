@@ -20,12 +20,12 @@ class Redirection implements EntityInterface
     #[ORM\Column]
     private ?int $actionType = null;
 
+    #[ORM\Column(type: Types::JSON)]
+    private array $data = [];
+
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: 'datetime')]
     private DateTime $dateTime;
-
-    #[ORM\Column(type: Types::JSON)]
-    private array $data = [];
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $destination = null;

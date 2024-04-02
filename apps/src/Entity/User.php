@@ -99,6 +99,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     ]
     private Collection $histories;
 
+    #[ORM\OneToMany(
+        targetEntity: HttpErrorLogs::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $httpErrorLogs;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'guid', unique: true)]
@@ -186,6 +195,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->posts             = new ArrayCollection();
         $this->bookmarks         = new ArrayCollection();
         $this->histories         = new ArrayCollection();
+        $this->httpErrorLogs     = new ArrayCollection();
     }
 
     public function __serialize(): array
@@ -260,6 +270,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         if (!$this->histories->contains($history)) {
             $this->histories[] = $history;
             $history->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addHttpErrorLog(HttpErrorLogs $httpErrorLogs): static
+    {
+        if (!$this->httpErrorLogs->contains($httpErrorLogs)) {
+            $this->httpErrorLogs->add($httpErrorLogs);
+            $httpErrorLogs->setUser($this);
         }
 
         return $this;
@@ -409,6 +429,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     public function getHistories(): Collection
     {
         return $this->histories;
+    }
+
+    /**
+     * @return Collection<int, HttpErrorLogs>
+     */
+    public function getHttpErrorLogs(): Collection
+    {
+        return $this->httpErrorLogs;
     }
 
     public function getId(): ?string
@@ -565,6 +593,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
             element: $this->histories,
             history: $history
         );
+
+        return $this;
+    }
+
+    public function removeHttpErrorLog(HttpErrorLogs $httpErrorLogs): static
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->httpErrorLogs->removeElement($httpErrorLogs) && $httpErrorLogs->getUser() === $this) {
+            $httpErrorLogs->setUser(null);
+        }
 
         return $this;
     }

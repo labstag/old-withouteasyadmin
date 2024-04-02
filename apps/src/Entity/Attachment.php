@@ -15,6 +15,7 @@ use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\AttachmentRepository;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: AttachmentRepository::class)]
@@ -162,7 +163,7 @@ class Attachment implements EntityTrashInterface, Stringable
         return $this;
     }
 
-    public function addUser(User $user): self
+    public function addUser(UserInterface $user): self
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
@@ -322,7 +323,7 @@ class Attachment implements EntityTrashInterface, Stringable
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUser(UserInterface $user): self
     {
         // set the owning side to null (unless already changed)
         if ($this->users->removeElement($user) && $user->getAvatar() === $this) {
