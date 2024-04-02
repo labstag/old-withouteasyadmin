@@ -4,7 +4,7 @@ namespace Labstag\Paragraph;
 
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Form;
-use Labstag\Form\Admin\Paragraph\FormType;
+use Labstag\Form\Gestion\Paragraph\FormType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

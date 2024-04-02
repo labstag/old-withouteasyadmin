@@ -6,7 +6,7 @@ use Labstag\Entity\Chapter;
 use Labstag\Entity\History;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\History\Chapter as HistoryChapter;
-use Labstag\Form\Admin\Paragraph\History\ChapterType;
+use Labstag\Form\Gestion\Paragraph\History\ChapterType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

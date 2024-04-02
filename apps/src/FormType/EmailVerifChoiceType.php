@@ -57,10 +57,10 @@ class EmailVerifChoiceType extends FormTypeLib
     {
         $optionsResolver->setDefaults(
             [
-                'label' => $this->translator->trans('forms.email.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('forms.email.help', [], 'admin.form'),
+                'label' => $this->translator->trans('forms.email.label', [], 'gestion.form'),
+                'help'  => $this->translator->trans('forms.email.help', [], 'gestion.form'),
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('forms.email.placeholder', [], 'admin.form'),
+                    'placeholder' => $this->translator->trans('forms.email.placeholder', [], 'gestion.form'),
                 ],
             ]
         );

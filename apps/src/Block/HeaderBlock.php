@@ -3,7 +3,7 @@
 namespace Labstag\Block;
 
 use Labstag\Entity\Block\Header;
-use Labstag\Form\Admin\Block\HeaderType;
+use Labstag\Form\Gestion\Block\HeaderType;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;

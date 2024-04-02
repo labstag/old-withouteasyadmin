@@ -55,7 +55,7 @@
             {% if urlAdd is defined %}
                 {% set param = {'addurl': urlAdd, 'urledit': urlEdit, 'urldelete': urlDelete, 'paragraphs': paragraphs} %}
             {% endif %}
-            {% include "admin/paragraph/list.html.twig" with param %}
+            {% include "gestion/paragraph/list.html.twig" with param %}
         </div>
         {{ form_widget(form) }}
         {{ form_errors(form) }}

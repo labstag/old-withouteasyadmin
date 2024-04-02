@@ -5,7 +5,7 @@ namespace Labstag\Paragraph\History;
 use Labstag\Entity\History;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\History\Liste;
-use Labstag\Form\Admin\Paragraph\History\ListType;
+use Labstag\Form\Gestion\Paragraph\History\ListType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

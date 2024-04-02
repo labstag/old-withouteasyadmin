@@ -7,7 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Libelle;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_libelle_trash')]
+#[Trashable(url: 'gestion_libelle_trash')]
 class LibelleRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

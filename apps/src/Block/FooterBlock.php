@@ -3,7 +3,7 @@
 namespace Labstag\Block;
 
 use Labstag\Entity\Block\Footer;
-use Labstag\Form\Admin\Block\FooterType;
+use Labstag\Form\Gestion\Block\FooterType;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;

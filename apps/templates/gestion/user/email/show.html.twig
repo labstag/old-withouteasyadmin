@@ -1,0 +1,39 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'user.email.address'|trans({}, 'gestion.messages') }}</th>
+                <td><a href="mailto:{{ entity.address }}">{{ entity.address }}</a></td>
+            </tr>
+            <tr>
+                <th>{{ 'user.email.principal'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.principal ? 'state.yes'|trans({}, 'gestion.messages') : 'state.no'|trans({}, 'gestion.messages') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user.email.user'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'gestion_user_preview' %}
+                    {% else %}
+                        {% set url = 'gestion_user_show' %}
+                    {% endif %}
+                    {% set state = url|guard_route %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'workflow.state'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

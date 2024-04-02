@@ -1,0 +1,23 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'template.name'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'template.code'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.code }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'template.html'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.html|raw }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'template.text'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.text }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

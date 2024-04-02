@@ -5,7 +5,7 @@ namespace Labstag\Service\Gestion\Entity;
 use Exception;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Configuration;
-use Labstag\Form\Admin\ParamType;
+use Labstag\Form\Gestion\ParamType;
 use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Repository\AttachmentRepository;
 use Labstag\Service\Gestion\ViewService;
@@ -29,17 +29,17 @@ class ConfigurationService extends ViewService implements AdminEntityServiceInte
             file_put_contents($file, $content);
             $this->sessionService->flashBagAdd(
                 'success',
-                $this->translator->trans('admin.flashbag.data.export.success')
+                $this->translator->trans('gestion.flashbag.data.export.success')
             );
         } catch (Exception $exception) {
             $this->errorService->set($exception);
             $paramtrans = ['%file%' => $file];
 
-            $msg = $this->translator->trans('admin.flashbag.data.export.fail', $paramtrans);
+            $msg = $this->translator->trans('gestion.flashbag.data.export.fail', $paramtrans);
             $this->sessionService->flashBagAdd('danger', $msg);
         }
 
-        return $this->redirectToRoute('admin_param');
+        return $this->redirectToRoute('gestion_param');
     }
 
     public function form(): Response
@@ -81,12 +81,12 @@ class ConfigurationService extends ViewService implements AdminEntityServiceInte
             'btn-admin-header-export',
             'Exporter',
             [
-                'href' => $this->generateUrl('admin_export'),
+                'href' => $this->generateUrl('gestion_export'),
             ]
         );
 
         return $this->render(
-            'admin/param.html.twig',
+            'gestion/param.html.twig',
             [
                 'images' => $images,
                 'form'   => $form,

@@ -3,7 +3,7 @@
 namespace Labstag\Service\Gestion\Entity;
 
 use Labstag\Entity\Memo;
-use Labstag\Form\Admin\FormType;
+use Labstag\Form\Gestion\FormType;
 use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Repository\MemoRepository;
 use Labstag\Service\Gestion\ViewService;
@@ -13,7 +13,7 @@ class GestionService extends ViewService implements AdminEntityServiceInterface
 {
     public function getType(): string
     {
-        return 'admin';
+        return 'gestion';
     }
 
     public function home(): Response
@@ -23,7 +23,7 @@ class GestionService extends ViewService implements AdminEntityServiceInterface
         $memos          = $memoRepository->findPublier();
 
         return $this->render(
-            'admin/index.html.twig',
+            'gestion/index.html.twig',
             ['memos' => $memos]
         );
     }
@@ -33,7 +33,7 @@ class GestionService extends ViewService implements AdminEntityServiceInterface
         $types = $this->oauthService->getConfigProvider();
 
         return $this->render(
-            'admin/oauth.html.twig',
+            'gestion/oauth.html.twig',
             ['types' => $types]
         );
     }

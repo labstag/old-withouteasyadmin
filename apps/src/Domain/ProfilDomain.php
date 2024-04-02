@@ -3,7 +3,7 @@
 namespace Labstag\Domain;
 
 use Labstag\Entity\Profil;
-use Labstag\Form\Admin\ProfilType;
+use Labstag\Form\Gestion\ProfilType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\ProfilSearch;
@@ -22,13 +22,13 @@ class ProfilDomain extends DomainLib implements DomainInterface
 
     public function getTemplates(): array
     {
-        return ['edit' => 'admin/profil.html.twig'];
+        return ['edit' => 'gestion/profil.html.twig'];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_profil' => $this->translator->trans('profil.title', [], 'admin.breadcrumb'),
+            'gestion_profil' => $this->translator->trans('profil.title', [], 'gestion.breadcrumb'),
         ];
     }
 

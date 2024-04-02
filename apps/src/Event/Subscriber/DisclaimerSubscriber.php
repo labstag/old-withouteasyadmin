@@ -58,6 +58,10 @@ class DisclaimerSubscriber extends EventSubscriberLib
             return false;
         }
 
+        if (0 !== substr_count($controller, 'Controller\\Gestion')) {
+            return false;
+        }
+
         if (0 !== substr_count($controller, 'SecurityController')) {
             return false;
         }

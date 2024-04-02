@@ -3,7 +3,7 @@ export class LinkBtnAdmin extends ElementHTML {
   constructor () {
     super()
     const aElement = document.createElement('a')
-    this.classList.add('link-btnadmin')
+    this.classList.add('link-btngestion')
     const icon = this.getAttribute('icon')
     const text = this.getAttribute('text')
     const idElement = this.getAttribute('id')

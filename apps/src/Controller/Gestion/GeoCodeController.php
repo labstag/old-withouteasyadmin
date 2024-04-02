@@ -9,7 +9,7 @@ use Labstag\Service\Gestion\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/gestion/geocode', name: 'admin_geocode_')]
+#[Route(path: '/gestion/geocode', name: 'gestion_geocode_')]
 class GeoCodeController extends GestionControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]

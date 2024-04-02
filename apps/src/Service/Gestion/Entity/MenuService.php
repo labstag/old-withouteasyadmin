@@ -92,7 +92,7 @@ class MenuService extends ViewService implements AdminEntityServiceInterface
 
         $modal['delete'] = true;
         $this->twigEnvironment->addGlobal('modal', $modal);
-        $this->btnService->addBtnNew('admin_menu_new');
+        $this->btnService->addBtnNew('gestion_menu_new');
 
         $templates = $this->getDomain()->getTemplates();
         if (!array_key_exists('index', $templates)) {
@@ -105,7 +105,7 @@ class MenuService extends ViewService implements AdminEntityServiceInterface
         ];
 
         return $this->render(
-            'admin/menu/index.html.twig',
+            'gestion/menu/index.html.twig',
             $parameters
         );
     }
@@ -140,7 +140,7 @@ class MenuService extends ViewService implements AdminEntityServiceInterface
             'btn-admin-save-move',
             'Enregistrer',
             [
-                'is'   => 'link-btnadminmove',
+                'is'   => 'link-btngestionmove',
                 'href' => $currentUrl,
             ]
         );

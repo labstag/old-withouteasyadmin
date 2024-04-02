@@ -1,0 +1,31 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'user.link.name'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user.link.address'|trans({}, 'gestion.messages') }}</th>
+                <td><a href="{{ entity.address }}" target="_blank">{{ entity.address }}</a></td>
+            </tr>
+            <tr>
+                <th>{{ 'user.link.user'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'gestion_user_preview' %}
+                    {% else %}
+                        {% set url = 'gestion_user_show' %}
+                    {% endif %}
+                    {% set state = url|guard_route %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

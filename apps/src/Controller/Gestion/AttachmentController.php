@@ -9,7 +9,7 @@ use Labstag\Service\Gestion\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/gestion/attachment', name: 'admin_attachment_')]
+#[Route(path: '/gestion/attachment', name: 'gestion_attachment_')]
 class AttachmentController extends GestionControllerLib
 {
     #[Route(path: '/', name: 'index', methods: ['GET'])]

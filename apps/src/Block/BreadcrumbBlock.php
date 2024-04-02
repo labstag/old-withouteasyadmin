@@ -3,7 +3,7 @@
 namespace Labstag\Block;
 
 use Labstag\Entity\Block\Breadcrumb;
-use Labstag\Form\Admin\Block\BreadcrumbType;
+use Labstag\Form\Gestion\Block\BreadcrumbType;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;

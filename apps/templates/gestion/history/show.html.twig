@@ -1,0 +1,68 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th colspan=2>
+                    <a href="{{ path('front_history', {'slug': entity.slug}) }}" target="_blank">
+                        {{ 'history.url'|trans({}, 'gestion.messages') }}
+                    </a>
+                </th>
+            </tr>
+            <tr>
+                <th>{{ 'history.name'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'history.summary'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.summary|raw }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'history.published'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.published|format_datetime(pattern=formatdatetime.back) }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'history.chapters'|trans({}, 'gestion.messages') }} ({{ entity.chapters|length }}</th>
+                <td>
+                    <ul>
+                        {% for chapter in entity.chapters %}
+                            <li>{{ chapter.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'history.pdf'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    <a href="{{ path('gestion_history_pdf', {'id': entity.id}) }}" target="_blank">
+                        {{ 'history.pdfgenerate'|trans({}, 'gestion.messages') }}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'history.user'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'gestion_user_preview' %}
+                    {% else %}
+                        {% set url = 'gestion_user_show' %}
+                    {% endif %}
+                    {% set state = url|guard_route %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'workflow.state'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

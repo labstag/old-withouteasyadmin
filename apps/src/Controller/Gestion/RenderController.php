@@ -9,7 +9,7 @@ use Labstag\Service\Gestion\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/gestion/render', name: 'admin_render_')]
+#[Route(path: '/gestion/render', name: 'gestion_render_')]
 class RenderController extends GestionControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]

@@ -4,7 +4,7 @@ namespace Labstag\Domain;
 
 use Labstag\Entity\Menu;
 
-use Labstag\Form\Admin\MenuType;
+use Labstag\Form\Gestion\MenuType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\MenuSearch;
@@ -24,22 +24,22 @@ class MenuDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'index' => 'admin/menu/index.html.twig',
-            'trash' => 'admin/menu/trash.html.twig',
-            'move'  => 'admin/menu/move.html.twig',
+            'index' => 'gestion/menu/index.html.twig',
+            'trash' => 'gestion/menu/trash.html.twig',
+            'move'  => 'gestion/menu/move.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_menu_index'   => $this->translator->trans('menu.title', [], 'admin.breadcrumb'),
-            'admin_menu_add'     => $this->translator->trans('menu.add', [], 'admin.breadcrumb'),
-            'admin_menu_divider' => $this->translator->trans('menu.divider', [], 'admin.breadcrumb'),
-            'admin_menu_move'    => $this->translator->trans('menu.move', [], 'admin.breadcrumb'),
-            'admin_menu_new'     => $this->translator->trans('menu.new', [], 'admin.breadcrumb'),
-            'admin_menu_trash'   => $this->translator->trans('menu.trash', [], 'admin.breadcrumb'),
-            'admin_menu_update'  => $this->translator->trans('menu.update', [], 'admin.breadcrumb'),
+            'gestion_menu_index'   => $this->translator->trans('menu.title', [], 'gestion.breadcrumb'),
+            'gestion_menu_add'     => $this->translator->trans('menu.add', [], 'gestion.breadcrumb'),
+            'gestion_menu_divider' => $this->translator->trans('menu.divider', [], 'gestion.breadcrumb'),
+            'gestion_menu_move'    => $this->translator->trans('menu.move', [], 'gestion.breadcrumb'),
+            'gestion_menu_new'     => $this->translator->trans('menu.new', [], 'gestion.breadcrumb'),
+            'gestion_menu_trash'   => $this->translator->trans('menu.trash', [], 'gestion.breadcrumb'),
+            'gestion_menu_update'  => $this->translator->trans('menu.update', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -53,13 +53,13 @@ class MenuDomain extends DomainLib implements DomainInterface
         return [
             'delete'   => 'api_action_delete',
             'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_menu_edit',
+            'edit'     => 'gestion_menu_edit',
             'empty'    => 'api_action_empty',
-            'position' => 'admin_menu_move',
-            'list'     => 'admin_menu_index',
-            'new'      => 'admin_menu_new',
+            'position' => 'gestion_menu_move',
+            'list'     => 'gestion_menu_index',
+            'new'      => 'gestion_menu_new',
             'restore'  => 'api_action_restore',
-            'trash'    => 'admin_menu_trash',
+            'trash'    => 'gestion_menu_trash',
         ];
     }
 }

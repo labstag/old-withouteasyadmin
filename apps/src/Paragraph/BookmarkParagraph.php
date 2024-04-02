@@ -5,7 +5,7 @@ namespace Labstag\Paragraph;
 use Labstag\Entity\Bookmark as EntityBookmark;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Bookmark;
-use Labstag\Form\Admin\Paragraph\BookmarkType;
+use Labstag\Form\Gestion\Paragraph\BookmarkType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

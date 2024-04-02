@@ -3,7 +3,7 @@
 namespace Labstag\Paragraph\Post;
 
 use Labstag\Entity\Paragraph\Post\Header;
-use Labstag\Form\Admin\Paragraph\Post\HeaderType;
+use Labstag\Form\Gestion\Paragraph\Post\HeaderType;
 use Labstag\Interfaces\EntityParagraphInterface;
 
 class HeaderParagraph extends ShowParagraph

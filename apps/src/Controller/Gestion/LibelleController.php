@@ -9,7 +9,7 @@ use Labstag\Service\Gestion\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/gestion/libelle', name: 'admin_libelle_')]
+#[Route(path: '/gestion/libelle', name: 'gestion_libelle_')]
 class LibelleController extends GestionControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]

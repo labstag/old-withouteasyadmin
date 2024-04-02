@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/gestion/history/chapter', name: 'admin_chapter_')]
+#[Route(path: '/gestion/history/chapter', name: 'gestion_chapter_')]
 class ChapterController extends GestionControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]

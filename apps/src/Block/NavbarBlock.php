@@ -5,7 +5,7 @@ namespace Labstag\Block;
 use Knp\Menu\ItemInterface;
 use Labstag\Entity\Block\Navbar;
 use Labstag\Entity\Menu;
-use Labstag\Form\Admin\Block\NavbarType;
+use Labstag\Form\Gestion\Block\NavbarType;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;

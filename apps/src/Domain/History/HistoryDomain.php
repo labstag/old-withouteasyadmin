@@ -4,8 +4,8 @@ namespace Labstag\Domain\History;
 
 use Labstag\Entity\History;
 
-use Labstag\Form\Admin\HistoryType;
-use Labstag\Form\Admin\Search\HistoryType as SearchHistoryType;
+use Labstag\Form\Gestion\HistoryType;
+use Labstag\Form\Gestion\Search\HistoryType as SearchHistoryType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\HistorySearch;
@@ -30,24 +30,24 @@ class HistoryDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'edit'    => 'admin/history/form.html.twig',
-            'move'    => 'admin/history/move.html.twig',
-            'index'   => 'admin/history/index.html.twig',
-            'trash'   => 'admin/history/index.html.twig',
-            'show'    => 'admin/history/show.html.twig',
-            'preview' => 'admin/history/show.html.twig',
+            'edit'    => 'gestion/history/form.html.twig',
+            'move'    => 'gestion/history/move.html.twig',
+            'index'   => 'gestion/history/index.html.twig',
+            'trash'   => 'gestion/history/index.html.twig',
+            'show'    => 'gestion/history/show.html.twig',
+            'preview' => 'gestion/history/show.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_history_edit'    => $this->translator->trans('history.edit', [], 'admin.breadcrumb'),
-            'admin_history_move'    => $this->translator->trans('history.move', [], 'admin.breadcrumb'),
-            'admin_history_new'     => $this->translator->trans('history.new', [], 'admin.breadcrumb'),
-            'admin_history_trash'   => $this->translator->trans('history.trash', [], 'admin.breadcrumb'),
-            'admin_history_preview' => $this->translator->trans('history.preview', [], 'admin.breadcrumb'),
-            'admin_history_show'    => $this->translator->trans('history.show', [], 'admin.breadcrumb'),
+            'gestion_history_edit'    => $this->translator->trans('history.edit', [], 'gestion.breadcrumb'),
+            'gestion_history_move'    => $this->translator->trans('history.move', [], 'gestion.breadcrumb'),
+            'gestion_history_new'     => $this->translator->trans('history.new', [], 'gestion.breadcrumb'),
+            'gestion_history_trash'   => $this->translator->trans('history.trash', [], 'gestion.breadcrumb'),
+            'gestion_history_preview' => $this->translator->trans('history.preview', [], 'gestion.breadcrumb'),
+            'gestion_history_show'    => $this->translator->trans('history.show', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -60,16 +60,16 @@ class HistoryDomain extends DomainLib implements DomainInterface
     {
         return [
             'delete'   => 'api_action_delete',
-            'move'     => 'admin_history_move',
+            'move'     => 'gestion_history_move',
             'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_history_edit',
+            'edit'     => 'gestion_history_edit',
             'empty'    => 'api_action_empty',
-            'list'     => 'admin_history_index',
-            'new'      => 'admin_history_new',
-            'preview'  => 'admin_history_preview',
+            'list'     => 'gestion_history_index',
+            'new'      => 'gestion_history_new',
+            'preview'  => 'gestion_history_preview',
             'restore'  => 'api_action_restore',
-            'show'     => 'admin_history_show',
-            'trash'    => 'admin_history_trash',
+            'show'     => 'gestion_history_show',
+            'trash'    => 'gestion_history_trash',
             'workflow' => 'api_action_workflow',
         ];
     }

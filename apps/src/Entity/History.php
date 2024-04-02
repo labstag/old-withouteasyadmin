@@ -82,7 +82,7 @@ class History implements PublicInterface, EntityTrashInterface, EntityWithParagr
     {
         if (!$this->chapters->contains($chapter)) {
             $this->chapters[] = $chapter;
-            $chapter->setHistory($this);
+            $chapter->setRefHistory($this);
         }
 
         return $this;

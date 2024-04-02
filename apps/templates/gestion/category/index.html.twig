@@ -1,0 +1,21 @@
+
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'name': 'post.category.name'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'post.category.slug'|trans({}, 'gestion.messages')
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/category/macro.html.twig" as macro_post %}
+        {% block tbody %}
+        {{ macro_post.show(pagination, 0, actions) }}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

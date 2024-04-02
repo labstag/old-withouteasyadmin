@@ -4,13 +4,13 @@
     <div class="edito_date">
         {{ 'edito.infodateuser'|trans(
                 {
-                    '%date%': edito.published|format_datetime(pattern=formatdatetime.public),
+                    '%date%': edito.published|format_datetime(pattern=formatdatetime.front),
                     '%user%': macro_site.user(edito.refuser, path('front_article_user', {'username': edito.refuser.username}))
                 }
             )|raw }}
-        {% set state = 'admin_edito_edit'|guard_route %}
+        {% set state = 'gestion_edito_edit'|guard_route %}
         {% if state == true %}
-            <a href="{{ path('admin_edito_edit', {'id': edito.id}) }}" target="_blank">{{ 'edito.update'|trans }}</a>
+            <a href="{{ path('gestion_edito_edit', {'id': edito.id}) }}" target="_blank">{{ 'edito.update'|trans }}</a>
         {% endif %}
     </div>
     <div class="edito_content">

@@ -171,11 +171,11 @@ header {
   }
 }
 
-.menu-admin {
+.menu-gestion {
   @extend .me-auto;
 }
 
-.menu-admin-profil {
+.menu-gestion-profil {
   @extend .ms-auto;
 }
 
@@ -242,15 +242,15 @@ header {
   @extend .text-center;
 
   i {
-    @extend .btn-admin-table-action;
+    @extend .btn-gestion-table-action;
   }
 }
 
-.list-btn-admin {
+.list-btn-gestion {
   @extend .btn-group;
   @extend .btn-group-lg;
 
-  .link-btnadmin {
+  .link-btngestion {
     @extend .btn;
     @extend .btn-secondary;
 
@@ -264,81 +264,81 @@ header {
   }
 }
 
-.btn-admin-header-destroy {
+.btn-gestion-header-destroy {
   @extend .fas;
   @extend .fa-trash;
 }
 
-.btn-admin-header-restore,
-.btn-admin-header-restories {
+.btn-gestion-header-restore,
+.btn-gestion-header-restories {
   @extend .fas;
   @extend .fa-trash-restore;
 }
 
-.btn-admin-header-trash {
+.btn-gestion-header-trash {
   @extend .fas;
   @extend .fa-trash;
 }
 
-.btn-admin-header-empty,
-.btn-admin-header-emptyall,
-.btn-admin-header-empties {
+.btn-gestion-header-empty,
+.btn-gestion-header-emptyall,
+.btn-gestion-header-empties {
   @extend .fas;
   @extend .fa-trash;
 }
 
-.btn-admin-header-guard {
+.btn-gestion-header-guard {
   @extend .fas;
   @extend .fa-gavel;
 }
 
-.btn-admin-header-edit {
+.btn-gestion-header-edit {
   @extend .far;
   @extend .fa-edit;
 }
 
-.btn-admin-header-delete,
-.btn-admin-header-deleties {
+.btn-gestion-header-delete,
+.btn-gestion-header-deleties {
   @extend .far;
   @extend .fa-trash-alt;
 }
 
-.btn-admin-header-show {
+.btn-gestion-header-show {
   @extend .far;
   @extend .fa-eye;
 }
 
-.btn-admin-header-save {
+.btn-gestion-header-save {
   @extend .fas;
   @extend .fa-save;
 }
 
-.btn-admin-header-export {
+.btn-gestion-header-export {
   @extend .fas;
   @extend .fa-file-export;
 }
 
-.btn-admin-save-move {
+.btn-gestion-save-move {
   @extend .fas;
   @extend .fa-save;
 }
 
-.btn-admin-header-new {
+.btn-gestion-header-new {
   @extend .fas;
   @extend .fa-plus;
 }
 
-.btn-admin-header-import {
+.btn-gestion-header-import {
   @extend .fas;
   @extend .fa-file-import;
 }
 
-.btn-admin-header-list {
+.btn-gestion-header-list {
   @extend .fas;
   @extend .fa-list;
 }
 
-.btn-admin-table-action {
+.btn-gestion-table-action {
   @extend .fas;
   @extend .fa-cog;
 

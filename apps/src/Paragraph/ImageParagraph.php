@@ -11,7 +11,7 @@ use Labstag\Entity\Memo;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Image;
 use Labstag\Entity\Post;
-use Labstag\Form\Admin\Paragraph\ImageType;
+use Labstag\Form\Gestion\Paragraph\ImageType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

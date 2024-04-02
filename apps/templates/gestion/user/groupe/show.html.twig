@@ -1,0 +1,19 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'user.groupe.name'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user.groupe.code'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.code }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user.groupe.users'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.users|length }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

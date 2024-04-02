@@ -1,0 +1,11 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.published) }}
+    {{ form_row(form.slug) }}
+    {{ form_row(form.content) }}
+    {{ form_row(form.paragraph) }}
+    {{ form_row(form.metas) }}
+    {{ form_end(form) }}
+{% endblock %}

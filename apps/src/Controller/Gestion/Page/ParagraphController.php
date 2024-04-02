@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/gestion/page/paragraph', name: 'admin_page_paragraph_')]
+#[Route(path: '/gestion/page/paragraph', name: 'gestion_page_paragraph_')]
 class ParagraphController extends AbstractController
 {
     public function __construct(
@@ -52,10 +52,10 @@ class ParagraphController extends AbstractController
     {
         $paragraph = $this->gestionService->paragraph();
         $paragraph->setUrls(
-            'admin_page_paragraph_list',
-            'admin_page_edit',
-            'admin_page_paragraph_show',
-            'admin_page_paragraph_delete'
+            'gestion_page_paragraph_list',
+            'gestion_page_edit',
+            'gestion_page_paragraph_show',
+            'gestion_page_paragraph_delete'
         );
 
         return $paragraph;

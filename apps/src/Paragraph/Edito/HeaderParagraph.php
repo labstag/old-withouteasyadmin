@@ -5,7 +5,7 @@ namespace Labstag\Paragraph\Edito;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Edito\Header;
-use Labstag\Form\Admin\Paragraph\Edito\HeaderType;
+use Labstag\Form\Gestion\Paragraph\Edito\HeaderType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

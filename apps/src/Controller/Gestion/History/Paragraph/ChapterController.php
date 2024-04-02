@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/gestion/history/chapter/paragraph', name: 'admin_chapter_paragraph_')]
+#[Route(path: '/gestion/history/chapter/paragraph', name: 'gestion_chapter_paragraph_')]
 class ChapterController extends AbstractController
 {
     public function __construct(
@@ -52,10 +52,10 @@ class ChapterController extends AbstractController
     {
         $paragraph = $this->gestionService->paragraph();
         $paragraph->setUrls(
-            'admin_chapter_paragraph_list',
-            'admin_chapter_edit',
-            'admin_chapter_paragraph_show',
-            'admin_chapter_paragraph_delete'
+            'gestion_chapter_paragraph_list',
+            'gestion_chapter_edit',
+            'gestion_chapter_paragraph_show',
+            'gestion_chapter_paragraph_delete'
         );
 
         return $paragraph;

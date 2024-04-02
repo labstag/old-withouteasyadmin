@@ -37,7 +37,7 @@ class GuardService extends ViewService implements AdminEntityServiceInterface
         );
 
         return $this->render(
-            'admin/guard/index.html.twig',
+            'gestion/guard/index.html.twig',
             [
                 'groups'    => $groupeRepository->findBy([], ['name' => 'ASC']),
                 'routes'    => $routeRepository->findBy([], ['name' => 'ASC']),
@@ -51,18 +51,18 @@ class GuardService extends ViewService implements AdminEntityServiceInterface
         /** @var WorkflowRepository $workflowRepository */
         $workflowRepository = $this->entityManager->getRepository(Workflow::class);
         $this->btnService->addBtnList(
-            'admin_groupuser_index',
+            'gestion_groupuser_index',
             'Liste',
         );
         $this->btnService->addBtnShow(
-            'admin_groupuser_show',
+            'gestion_groupuser_show',
             'Show',
             [
                 'id' => $groupe->getId(),
             ]
         );
         $this->btnService->addBtnEdit(
-            'admin_groupuser_edit',
+            'gestion_groupuser_edit',
             'Editer',
             [
                 'id' => $groupe->getId(),
@@ -72,10 +72,10 @@ class GuardService extends ViewService implements AdminEntityServiceInterface
         if (0 == count($routes)) {
             $this->sessionService->flashBagAdd(
                 'danger',
-                $this->translator->trans('admin.group.guard.superadmin.nope')
+                $this->translator->trans('gestion.group.guard.supergestion.nope')
             );
 
-            return $this->redirectToRoute('admin_groupuser_index');
+            return $this->redirectToRoute('gestion_groupuser_index');
         }
 
         $workflows = $workflowRepository->findBy(
@@ -87,7 +87,7 @@ class GuardService extends ViewService implements AdminEntityServiceInterface
         );
 
         return $this->render(
-            'admin/guard/group.html.twig',
+            'gestion/guard/group.html.twig',
             [
                 'group'     => $groupe,
                 'routes'    => $routes,
@@ -101,18 +101,18 @@ class GuardService extends ViewService implements AdminEntityServiceInterface
         /** @var WorkflowRepository $workflowRepository */
         $workflowRepository = $this->entityManager->getRepository(Workflow::class);
         $this->btnService->addBtnList(
-            'admin_user_index',
+            'gestion_user_index',
             'Liste',
         );
         $this->btnService->addBtnShow(
-            'admin_user_show',
+            'gestion_user_show',
             'Show',
             [
                 'id' => $user->getId(),
             ]
         );
         $this->btnService->addBtnEdit(
-            'admin_user_edit',
+            'gestion_user_edit',
             'Editer',
             [
                 'id' => $user->getId(),
@@ -122,10 +122,10 @@ class GuardService extends ViewService implements AdminEntityServiceInterface
         if (0 == count($routes)) {
             $this->sessionService->flashBagAdd(
                 'danger',
-                $this->translator->trans('admin.user.guard.superadmin.nope')
+                $this->translator->trans('gestion.user.guard.supergestion.nope')
             );
 
-            return $this->redirectToRoute('admin_user_index');
+            return $this->redirectToRoute('gestion_user_index');
         }
 
         $workflows = $workflowRepository->findBy(
@@ -137,7 +137,7 @@ class GuardService extends ViewService implements AdminEntityServiceInterface
         );
 
         return $this->render(
-            'admin/guard/user.html.twig',
+            'gestion/guard/user.html.twig',
             [
                 'user'      => $user,
                 'routes'    => $routes,

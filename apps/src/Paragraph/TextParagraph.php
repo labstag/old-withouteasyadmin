@@ -10,7 +10,7 @@ use Labstag\Entity\Memo;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Text;
 use Labstag\Entity\Post;
-use Labstag\Form\Admin\Paragraph\TextType;
+use Labstag\Form\Gestion\Paragraph\TextType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

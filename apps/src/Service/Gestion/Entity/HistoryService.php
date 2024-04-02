@@ -106,7 +106,7 @@ class HistoryService extends ViewService implements AdminEntityServiceInterface
             'btn-admin-save-move',
             'Enregistrer',
             [
-                'is'   => 'link-btnadminmove',
+                'is'   => 'link-btngestionmove',
                 'href' => $currentUrl,
             ]
         );

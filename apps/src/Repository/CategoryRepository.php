@@ -8,7 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Category;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_category_trash')]
+#[Trashable(url: 'gestion_category_trash')]
 class CategoryRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

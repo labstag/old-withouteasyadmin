@@ -1,0 +1,25 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'field': 'a.name',
+                'name': 'render.name'|trans({}, 'gestion.messages')
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/macro.html.twig" as macro_gestion %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.name }}</td>
+                    <td>
+                        {{ macro_gestion.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

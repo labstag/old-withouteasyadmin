@@ -3,7 +3,7 @@
 namespace Labstag\Block;
 
 use Labstag\Entity\Block\Flashbag;
-use Labstag\Form\Admin\Block\FlashbagType;
+use Labstag\Form\Gestion\Block\FlashbagType;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;

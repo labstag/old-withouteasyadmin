@@ -5,7 +5,7 @@ namespace Labstag\Paragraph\Bookmark;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Bookmark\Libelle;
-use Labstag\Form\Admin\Paragraph\Bookmark\LibelleType;
+use Labstag\Form\Gestion\Paragraph\Bookmark\LibelleType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

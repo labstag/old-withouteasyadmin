@@ -40,7 +40,7 @@ class ChapterListener extends EventListenerLib
         $this->logger->info($action.' '.$object::class);
         $this->verifMetas($object);
         /** @var History $history */
-        $history = $object->getHistory();
+        $history = $object->getRefHistory();
         $this->enqueueMethod->async(
             HistoryService::class,
             'process',

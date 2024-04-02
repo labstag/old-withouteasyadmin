@@ -1,0 +1,48 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'field': 'a.name',
+                'name': 'page.name'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.slug',
+                'name': 'page.slug'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'page.paragraphs'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'page.url'|trans({}, 'gestion.messages')
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/macro.html.twig" as macro_gestion %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.slug }}</td>
+                    <td>
+                        <ul>
+                            {% for paragraph in entity.paragraphs %}
+                                <li>{{ paragraph.type|paragraph_name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <a href="{{ path('front', {'slug': entity.slug}) }}" target="_blank">
+                            {{ 'page.url'|trans({}, 'gestion.messages') }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ macro_gestion.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

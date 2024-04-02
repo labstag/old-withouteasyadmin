@@ -135,7 +135,7 @@ class TwigEventSubscriber extends EventSubscriberLib
         $currentRoute = $controllerEvent->getRequest()->attributes->get('_route');
         $routes       = [
             'app_login',
-            'admin_profil',
+            'gestion_profil',
         ];
 
         if (!in_array($currentRoute, $routes)) {

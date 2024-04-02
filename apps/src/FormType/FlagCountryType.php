@@ -25,10 +25,10 @@ class FlagCountryType extends FormTypeLib
     {
         $optionsResolver->setDefaults(
             [
-                'label' => $this->translator->trans('forms.country.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('forms.country.help', [], 'admin.form'),
+                'label' => $this->translator->trans('forms.country.label', [], 'gestion.form'),
+                'help'  => $this->translator->trans('forms.country.help', [], 'gestion.form'),
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('forms.country.placeholder', [], 'admin.form'),
+                    'placeholder' => $this->translator->trans('forms.country.placeholder', [], 'gestion.form'),
                     'is'          => 'select-country',
                     'choices'     => 'true',
                 ],

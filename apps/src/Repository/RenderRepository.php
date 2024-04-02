@@ -7,7 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Render;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_render_trash')]
+#[Trashable(url: 'gestion_render_trash')]
 class RenderRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

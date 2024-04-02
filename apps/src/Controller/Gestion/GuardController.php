@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/gestion/guard')]
 class GuardController extends GestionControllerLib
 {
-    #[Route(path: '/', name: 'admin_guard_index', methods: ['GET', 'POST'])]
+    #[Route(path: '/', name: 'gestion_guard_index', methods: ['GET', 'POST'])]
     public function index(): Response
     {
         $viewService = $this->gestionService->setDomain('guard');

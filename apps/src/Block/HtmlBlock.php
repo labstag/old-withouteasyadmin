@@ -3,7 +3,7 @@
 namespace Labstag\Block;
 
 use Labstag\Entity\Block\Html;
-use Labstag\Form\Admin\Block\HtmlType;
+use Labstag\Form\Gestion\Block\HtmlType;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;

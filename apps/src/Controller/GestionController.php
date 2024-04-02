@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/gestion')]
 class GestionController extends GestionControllerLib
 {
-    #[Route(path: '/export', name: 'admin_export')]
+    #[Route(path: '/export', name: 'gestion_export')]
     public function export(): RedirectResponse
     {
         $configurationService = $this->paramConfig();
@@ -24,25 +24,25 @@ class GestionController extends GestionControllerLib
         return $configurationService->export();
     }
 
-    #[Route(path: '/paragraph', name: 'admin_paragraph', methods: ['GET'])]
+    #[Route(path: '/paragraph', name: 'gestion_paragraph', methods: ['GET'])]
     public function iframe(): Response
     {
-        return $this->render('admin/paragraph/iframe.html.twig');
+        return $this->render('gestion/paragraph/iframe.html.twig');
     }
 
-    #[Route(path: '/', name: 'admin')]
+    #[Route(path: '/', name: 'gestion')]
     public function index(): Response
     {
-        return $this->adminConfig()->home();
+        return $this->gestionConfig()->home();
     }
 
-    #[Route(path: '/oauth', name: 'admin_oauth')]
+    #[Route(path: '/oauth', name: 'gestion_oauth')]
     public function oauth(): Response
     {
-        return $this->adminConfig()->oauth();
+        return $this->gestionConfig()->oauth();
     }
 
-    #[Route(path: '/param', name: 'admin_param', methods: ['GET', 'POST'])]
+    #[Route(path: '/param', name: 'gestion_param', methods: ['GET', 'POST'])]
     public function param(): Response
     {
         $configurationService = $this->paramConfig();
@@ -50,14 +50,14 @@ class GestionController extends GestionControllerLib
         return $configurationService->form();
     }
 
-    #[Route(path: '/themes/{state}', name: 'admin_themes', defaults: ['state' => 'admin'])]
+    #[Route(path: '/themes/{state}', name: 'gestion_themes', defaults: ['state' => 'gestion'])]
     public function themes(string $state): Response
     {
-        return $this->adminConfig()->themes($state);
+        return $this->gestionConfig()->themes($state);
     }
 
     #[IgnoreSoftDelete]
-    #[Route(path: '/trash', name: 'admin_trash')]
+    #[Route(path: '/trash', name: 'gestion_trash')]
     public function trash(): Response
     {
         $viewService = $this->gestionService->setDomain('trash');
@@ -68,9 +68,9 @@ class GestionController extends GestionControllerLib
         return $viewService->list();
     }
 
-    private function adminConfig(): GestionService
+    private function gestionConfig(): GestionService
     {
-        $viewService = $this->gestionService->setDomain('admin');
+        $viewService = $this->gestionService->setDomain('gestion');
         if (!$viewService instanceof GestionService) {
             throw new Exception('GestionService not found');
         }

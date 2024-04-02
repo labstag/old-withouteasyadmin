@@ -17,7 +17,7 @@ use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph;
 use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Post;
-use Labstag\Form\Admin\Paragraph\VideoType;
+use Labstag\Form\Gestion\Paragraph\VideoType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

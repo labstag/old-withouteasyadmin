@@ -4,8 +4,8 @@ namespace Labstag\Domain\User;
 
 use Labstag\Entity\LinkUser;
 
-use Labstag\Form\Admin\Search\User\LinkUserType as SearchLinkUserType;
-use Labstag\Form\Admin\User\LinkUserType;
+use Labstag\Form\Gestion\Search\User\LinkUserType as SearchLinkUserType;
+use Labstag\Form\Gestion\User\LinkUserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\User\LinkUserSearch;
@@ -30,22 +30,22 @@ class LinkUserDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'index'   => 'admin/user/link/index.html.twig',
-            'trash'   => 'admin/user/link/index.html.twig',
-            'show'    => 'admin/user/link/show.html.twig',
-            'preview' => 'admin/user/link/show.html.twig',
+            'index'   => 'gestion/user/link/index.html.twig',
+            'trash'   => 'gestion/user/link/index.html.twig',
+            'show'    => 'gestion/user/link/show.html.twig',
+            'preview' => 'gestion/user/link/show.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_linkuser_index'   => $this->translator->trans('linkuser.title', [], 'admin.breadcrumb'),
-            'admin_linkuser_edit'    => $this->translator->trans('linkuser.edit', [], 'admin.breadcrumb'),
-            'admin_linkuser_new'     => $this->translator->trans('linkuser.new', [], 'admin.breadcrumb'),
-            'admin_linkuser_trash'   => $this->translator->trans('linkuser.trash', [], 'admin.breadcrumb'),
-            'admin_linkuser_preview' => $this->translator->trans('linkuser.preview', [], 'admin.breadcrumb'),
-            'admin_linkuser_show'    => $this->translator->trans('linkuser.show', [], 'admin.breadcrumb'),
+            'gestion_linkuser_index'   => $this->translator->trans('linkuser.title', [], 'gestion.breadcrumb'),
+            'gestion_linkuser_edit'    => $this->translator->trans('linkuser.edit', [], 'gestion.breadcrumb'),
+            'gestion_linkuser_new'     => $this->translator->trans('linkuser.new', [], 'gestion.breadcrumb'),
+            'gestion_linkuser_trash'   => $this->translator->trans('linkuser.trash', [], 'gestion.breadcrumb'),
+            'gestion_linkuser_preview' => $this->translator->trans('linkuser.preview', [], 'gestion.breadcrumb'),
+            'gestion_linkuser_show'    => $this->translator->trans('linkuser.show', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -59,14 +59,14 @@ class LinkUserDomain extends DomainLib implements DomainInterface
         return [
             'delete'  => 'api_action_delete',
             'destroy' => 'api_action_destroy',
-            'edit'    => 'admin_linkuser_edit',
+            'edit'    => 'gestion_linkuser_edit',
             'empty'   => 'api_action_empty',
-            'list'    => 'admin_linkuser_index',
-            'new'     => 'admin_linkuser_new',
-            'preview' => 'admin_linkuser_preview',
+            'list'    => 'gestion_linkuser_index',
+            'new'     => 'gestion_linkuser_new',
+            'preview' => 'gestion_linkuser_preview',
             'restore' => 'api_action_restore',
-            'show'    => 'admin_linkuser_show',
-            'trash'   => 'admin_linkuser_trash',
+            'show'    => 'gestion_linkuser_show',
+            'trash'   => 'gestion_linkuser_trash',
         ];
     }
 }

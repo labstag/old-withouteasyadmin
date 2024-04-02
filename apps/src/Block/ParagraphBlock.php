@@ -3,7 +3,7 @@
 namespace Labstag\Block;
 
 use Labstag\Entity\Block\Paragraph;
-use Labstag\Form\Admin\Block\ParagraphType;
+use Labstag\Form\Gestion\Block\ParagraphType;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;

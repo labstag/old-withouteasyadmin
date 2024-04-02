@@ -21,61 +21,61 @@
                     {
                         "name": "Trash",
                         "data": {
-                            "route": "admin_trash"
+                            "route": "gestion_trash"
                         }
                     },
                     {
                         "name": "Param",
                         "data": {
-                            "route": "admin_param"
+                            "route": "gestion_param"
                         }
                     },
                     {
                         "name": "Oauth",
                         "data": {
-                            "route": "admin_oauth"
+                            "route": "gestion_oauth"
                         }
                     },
                     {
                         "name": "Attachment",
                         "data": {
-                            "route": "admin_attachment_index"
+                            "route": "gestion_attachment_index"
                         }
                     },
                     {
                         "name": "Block",
                         "data": {
-                            "route": "admin_block_index"
+                            "route": "gestion_block_index"
                         }
                     },
                     {
                         "name": "Geocode",
                         "data": {
-                            "route": "admin_geocode_index"
+                            "route": "gestion_geocode_index"
                         }
                     },
                     {
                         "name": "Note Interne",
                         "data": {
-                            "route": "admin_memo_index"
+                            "route": "gestion_memo_index"
                         }
                     },
                     {
                         "name": "Edito",
                         "data": {
-                            "route": "admin_edito_index"
+                            "route": "gestion_edito_index"
                         }
                     },
                     {
                         "name": "Template",
                         "data": {
-                            "route": "admin_template_index"
+                            "route": "gestion_template_index"
                         }
                     },
                     {
                         "name": "Menu",
                         "data": {
-                            "route": "admin_menu_index"
+                            "route": "gestion_menu_index"
                         }
                     }
                 ]
@@ -86,31 +86,31 @@
                     {
                         "name": "Adresses",
                         "data": {
-                            "route": "admin_addressuser_index"
+                            "route": "gestion_addressuser_index"
                         }
                     },
                     {
                         "name": "Emails",
                         "data": {
-                            "route": "admin_emailuser_index"
+                            "route": "gestion_emailuser_index"
                         }
                     },
                     {
                         "name": "Liens",
                         "data": {
-                            "route": "admin_linkuser_index"
+                            "route": "gestion_linkuser_index"
                         }
                     },
                     {
                         "name": "Phones",
                         "data": {
-                            "route": "admin_phoneuser_index"
+                            "route": "gestion_phoneuser_index"
                         }
                     },
                     {
                         "name": "Groupes",
                         "data": {
-                            "route": "admin_groupuser_index"
+                            "route": "gestion_groupuser_index"
                         }
                     },
                     {
@@ -119,13 +119,13 @@
                     {
                         "name": "Droits",
                         "data": {
-                            "route": "admin_guard_index"
+                            "route": "gestion_guard_index"
                         }
                     },
                     {
                         "name": "Liste",
                         "data": {
-                            "route": "admin_user_index"
+                            "route": "gestion_user_index"
                         }
                     }
                 ]
@@ -144,13 +144,13 @@
                     {
                         "name": "Libelle",
                         "data": {
-                            "route": "admin_libelle_index"
+                            "route": "gestion_libelle_index"
                         }
                     },
                     {
                         "name": "Category",
                         "data": {
-                            "route": "admin_category_index"
+                            "route": "gestion_category_index"
                         }
                     }
                 ]
@@ -161,19 +161,19 @@
                     {
                         "name": "Pages",
                         "data": {
-                            "route": "admin_page_index"
+                            "route": "gestion_page_index"
                         }
                     },
                     {
                         "name": "Layout",
                         "data": {
-                            "route": "admin_layout_index"
+                            "route": "gestion_layout_index"
                         }
                     },
                     {
                         "name": "Render",
                         "data": {
-                            "route": "admin_render_index"
+                            "route": "gestion_render_index"
                         }
                     }
                 ]
@@ -184,25 +184,25 @@
                     {
                         "name": "Posts",
                         "data": {
-                            "route": "admin_post_index"
+                            "route": "gestion_post_index"
                         }
                     },
                     {
                         "name": "Bookmarks",
                         "data": {
-                            "route": "admin_bookmark_index"
+                            "route": "gestion_bookmark_index"
                         }
                     },
                     {
                         "name": "Histories",
                         "data": {
-                            "route": "admin_history_index"
+                            "route": "gestion_history_index"
                         }
                     },
                     {
                         "name": "Chapters",
                         "data": {
-                            "route": "admin_chapter_index"
+                            "route": "gestion_chapter_index"
                         }
                     }
                 ]
@@ -218,7 +218,7 @@
                     {
                         "name": "Mon profil",
                         "data": {
-                            "route": "admin_profil"
+                            "route": "gestion_profil"
                         }
                     },
                     {

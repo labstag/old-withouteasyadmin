@@ -15,12 +15,12 @@
 			<div class="bookmark-date">
 				{{ 'bookmark.infodate'|trans(
                     {
-                        '%date%': bookmark.published|format_datetime(pattern=formatdatetime.public)
+                        '%date%': bookmark.published|format_datetime(pattern=formatdatetime.front)
                     }
                 )|raw }}
-				{% set state = 'admin_bookmark_edit'|guard_route %}
+				{% set state = 'gestion_bookmark_edit'|guard_route %}
 				{% if state == true %}
-					<a href="{{ path('admin_bookmark_edit', {'id': bookmark.id}) }}" target="_blank">Modifier</a>
+					<a href="{{ path('gestion_bookmark_edit', {'id': bookmark.id}) }}" target="_blank">Modifier</a>
 				{% endif %}
 			</div>
 			<div class="bookmark-content">

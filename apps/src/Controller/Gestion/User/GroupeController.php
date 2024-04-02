@@ -11,7 +11,7 @@ use Labstag\Service\Gestion\ViewService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/gestion/user/groupe', name: 'admin_groupuser_')]
+#[Route(path: '/gestion/user/groupe', name: 'gestion_groupuser_')]
 class GroupeController extends GestionControllerLib
 {
     #[Route(path: '/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]

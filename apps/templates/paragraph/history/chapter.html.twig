@@ -12,13 +12,13 @@
         <div class="history_date">
             {{ 'history.infodateuser'|trans(
                 {
-                    '%date%': history.published|format_datetime(pattern=formatdatetime.public),
+                    '%date%': history.published|format_datetime(pattern=formatdatetime.front),
                     '%user%': macro_site.user(history.refuser, path('front_history_user', {'username': history.refuser.username}))
                 }
             )|raw }}
-            {% set state = 'admin_history_edit'|guard_route %}
+            {% set state = 'gestion_history_edit'|guard_route %}
             {% if state == true %}
-                <a href="{{ path('admin_history_edit', {'id': history.id}) }}" target="_blank">Modifier</a>
+                <a href="{{ path('gestion_history_edit', {'id': history.id}) }}" target="_blank">Modifier</a>
             {% endif %}
         </div>
     </div>

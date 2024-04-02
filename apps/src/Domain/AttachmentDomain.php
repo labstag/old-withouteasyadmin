@@ -22,15 +22,15 @@ class AttachmentDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'index' => 'admin/attachment/index.html.twig',
-            'trash' => 'admin/attachment/index.html.twig',
+            'index' => 'gestion/attachment/index.html.twig',
+            'trash' => 'gestion/attachment/index.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_attachment_index' => $this->translator->trans('attachment.title', [], 'admin.breadcrumb'),
+            'gestion_attachment_index' => $this->translator->trans('attachment.title', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -45,9 +45,9 @@ class AttachmentDomain extends DomainLib implements DomainInterface
             'delete'   => 'api_action_delete',
             'destroy'  => 'api_action_destroy',
             'empty'    => 'api_action_empty',
-            'list'     => 'admin_attachment_index',
+            'list'     => 'gestion_attachment_index',
             'restore'  => 'api_action_restore',
-            'trash'    => 'admin_attachment_trash',
+            'trash'    => 'gestion_attachment_trash',
             'workflow' => 'api_action_workflow',
         ];
     }

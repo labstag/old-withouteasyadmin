@@ -5,7 +5,7 @@ namespace Labstag\Service\Gestion;
 use Doctrine\Common\Collections\Collection;
 use Exception;
 use Labstag\Entity\Paragraph;
-use Labstag\Form\Admin\ParagraphType;
+use Labstag\Form\Gestion\ParagraphType;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Interfaces\EntityWithParagraphInterface;
 use Labstag\Interfaces\PublicInterface;
@@ -97,7 +97,7 @@ class ParagraphService
         }
 
         return $this->render(
-            'admin/paragraph/list.html.twig',
+            'gestion/paragraph/list.html.twig',
             [
                 'paragraphs' => $paragraphs,
                 'urledit'    => (string) $this->urls['edit'],
@@ -149,7 +149,7 @@ class ParagraphService
         }
 
         return $this->render(
-            'admin/paragraph/show.html.twig',
+            'gestion/paragraph/show.html.twig',
             [
                 'paragraph' => $paragraph,
                 'form'      => $form,

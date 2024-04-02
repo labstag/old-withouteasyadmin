@@ -32,11 +32,11 @@ class HttpErrorService
         $method        = $server->get('REQUEST_METHOD');
         $data          = $this->httpErrorLogsRepository->findBy(
             [
-                'domain'         => $domain,
-                'url'            => $url,
-                'referer'        => $referer,
-                'http_code'      => $httpCode,
-                'request_method' => $method,
+                'domain'        => $domain,
+                'url'           => $url,
+                'referer'       => $referer,
+                'httpCode'      => $httpCode,
+                'requestMethod' => $method,
             ]
         );
 

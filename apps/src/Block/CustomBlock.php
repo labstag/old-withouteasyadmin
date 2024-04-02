@@ -5,7 +5,7 @@ namespace Labstag\Block;
 use Exception;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
-use Labstag\Form\Admin\Block\CustomType;
+use Labstag\Form\Gestion\Block\CustomType;
 use Labstag\Interfaces\BlockInterface;
 use Labstag\Interfaces\EntityBlockInterface;
 use Labstag\Interfaces\EntityFrontInterface;

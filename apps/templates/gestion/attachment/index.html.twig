@@ -1,0 +1,54 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'field': 'a.name',
+                'name': 'attachment.name'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.mimeType',
+                'name': 'attachment.mimetype'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.size',
+                'name': 'attachment.size'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'attachment.download'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.state',
+                'name': 'attachment.state'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'attachment.workflow'|trans({}, 'gestion.messages')
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/macro.html.twig" as macro_gestion %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.mimeType }}</td>
+                    <td>{{ entity.size }}</td>
+                    <td>{% if entity.name != '' %}<a href="{{ asset(entity.name) }}" target="_blank">{{ 'attachment.seefile'|trans({}, 'gestion.messages') }}</a>{% endif %}</td>
+                    <td>
+                        {% for state in workflow_marked_places(entity) %}
+                            {{ state }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ macro_gestion.workflow(entity, actions) }}
+                    </td>
+                    <td>
+                        {{ macro_gestion.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

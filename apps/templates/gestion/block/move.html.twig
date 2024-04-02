@@ -1,0 +1,20 @@
+{% import "gestion/menu/macro.html.twig" as macro_menu %}
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <div class="row">
+        {% for type, row in data %}
+            <div class="col-6">
+                <fieldset>
+                    <legend>{{ type }}</legend>
+                    <ul is="entity-move">
+                        {% for entity in row %}
+                            <li data-id="{{ entity.id }}">
+                                {{ entity.title }} ({{ entity.type }})
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </fieldset>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

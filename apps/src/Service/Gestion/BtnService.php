@@ -94,7 +94,7 @@ class BtnService
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
             'id'       => 'DeleteForm',
-            'is'       => 'link-btnadmindelete',
+            'is'       => 'link-btngestiondelete',
             'token'    => $token,
             'redirect' => $this->router->generate($route['list']),
             'url'      => $this->router->generate(
@@ -168,7 +168,7 @@ class BtnService
         $code  = 'empty';
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
-            'is'       => 'link-btnadminempty',
+            'is'       => 'link-btngestionempty',
             'token'    => $token,
             'redirect' => $this->router->generate($route['list']),
             'url'      => $this->router->generate(
@@ -816,7 +816,7 @@ class BtnService
             'btn-admin-header-'.$codemodal,
             $title,
             [
-                'is'       => 'link-btnadmin'.$codemodal,
+                'is'       => 'link-btngestion'.$codemodal,
                 'token'    => $value,
                 'redirect' => $this->router->generate(
                     $routes['redirect']['href'],
@@ -919,7 +919,7 @@ class BtnService
         $token = $this->csrfTokenManager->getToken($code)->getValue();
         $attr  = [
             'token'    => $token,
-            'is'       => 'link-btnadmin'.$word,
+            'is'       => 'link-btngestion'.$word,
             'redirect' => $this->router->generate($route['list']),
             'url'      => $this->router->generate(
                 $route[$word],

@@ -8,7 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Page;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_page_trash')]
+#[Trashable(url: 'gestion_page_trash')]
 class PageRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

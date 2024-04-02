@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/gestion/profil')]
 class ProfilController extends GestionControllerLib
 {
-    #[Route(path: '/', name: 'admin_profil', methods: ['GET', 'POST'])]
+    #[Route(path: '/', name: 'gestion_profil', methods: ['GET', 'POST'])]
     public function profil(
         Security $security
     ): Response

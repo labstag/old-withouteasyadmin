@@ -4,7 +4,7 @@ namespace Labstag\Service\Gestion\Entity;
 
 use Exception;
 use Labstag\Entity\Block;
-use Labstag\Form\Admin\NewBlockType;
+use Labstag\Form\Gestion\NewBlockType;
 use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Repository\BlockRepository;
@@ -69,7 +69,7 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
             'btn-admin-save-move',
             'Enregistrer',
             [
-                'is'   => 'link-btnadminmove',
+                'is'   => 'link-btngestionmove',
                 'href' => $currentUrl,
             ]
         );
@@ -148,7 +148,7 @@ class BlockService extends ViewService implements AdminEntityServiceInterface
             'btn-admin-header-new',
             'Nouveau',
             [
-                'is'       => 'link-btnadminnewblock',
+                'is'       => 'link-btngestionnewblock',
                 'data-url' => $this->router->generate($routes['add']),
             ]
         );

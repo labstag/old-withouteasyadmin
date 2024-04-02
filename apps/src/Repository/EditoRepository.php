@@ -7,7 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Edito;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_edito_trash')]
+#[Trashable(url: 'gestion_edito_trash')]
 class EditoRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

@@ -7,7 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\User;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_user_trash')]
+#[Trashable(url: 'gestion_user_trash')]
 class UserRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

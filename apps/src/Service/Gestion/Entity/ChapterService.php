@@ -23,7 +23,7 @@ class ChapterService extends ViewService implements AdminEntityServiceInterface
         }
 
         $chapter = new Chapter();
-        $chapter->setHistory($history);
+        $chapter->setRefHistory($history);
         $chapter->setName(Uuid::v1());
         $chapter->setPosition((is_countable($history->getChapters()) ? count($history->getChapters()) : 0) + 1);
 

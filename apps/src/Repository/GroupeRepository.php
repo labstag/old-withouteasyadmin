@@ -7,7 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Groupe;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_groupuser_trash')]
+#[Trashable(url: 'gestion_groupuser_trash')]
 class GroupeRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

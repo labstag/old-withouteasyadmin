@@ -8,7 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Bookmark;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_bookmark_trash')]
+#[Trashable(url: 'gestion_bookmark_trash')]
 class BookmarkRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

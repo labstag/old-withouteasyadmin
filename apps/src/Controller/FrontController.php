@@ -35,7 +35,8 @@ class FrontController extends FrontControllerLib
         defaults: [
             'slug' => '',
             '_'    => '',
-        ]
+        ],
+        priority: -1
     )]
     public function index(
         string $slug,

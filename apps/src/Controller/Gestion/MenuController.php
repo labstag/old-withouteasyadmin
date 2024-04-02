@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/gestion/menu', name: 'admin_menu_')]
+#[Route(path: '/gestion/menu', name: 'gestion_menu_')]
 class MenuController extends GestionControllerLib
 {
     #[Route(path: '/add', name: 'add', methods: ['GET', 'POST'])]

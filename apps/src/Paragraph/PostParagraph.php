@@ -5,7 +5,7 @@ namespace Labstag\Paragraph;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post;
 use Labstag\Entity\Post as EntityPost;
-use Labstag\Form\Admin\Paragraph\PostType;
+use Labstag\Form\Gestion\Paragraph\PostType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

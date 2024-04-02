@@ -19,7 +19,7 @@ class TrashService extends ViewService implements AdminEntityServiceInterface
         if (0 == (is_countable($all) ? count($all) : 0)) {
             $this->sessionService->flashBagAdd(
                 'danger',
-                $this->translator->trans('admin.flashbag.trash.empty')
+                $this->translator->trans('gestion.flashbag.trash.empty')
             );
 
             return $this->redirectToRoute('admin');
@@ -48,9 +48,9 @@ class TrashService extends ViewService implements AdminEntityServiceInterface
                 'btn-admin-header-emptyall',
                 'Tout vider',
                 [
-                    'is'       => 'link-btnadminemptyall',
+                    'is'       => 'link-btngestionemptyall',
                     'token'    => $value,
-                    'redirect' => $this->generateUrl('admin_trash'),
+                    'redirect' => $this->generateUrl('gestion_trash'),
                     'url'      => $this->generateUrl('api_action_emptyall'),
                 ]
             );
@@ -60,7 +60,7 @@ class TrashService extends ViewService implements AdminEntityServiceInterface
         $this->btnService->addViderSelection(
             [
                 'redirect' => [
-                    'href'   => 'admin_trash',
+                    'href'   => 'gestion_trash',
                     'params' => [],
                 ],
                 'url'      => [
@@ -72,7 +72,7 @@ class TrashService extends ViewService implements AdminEntityServiceInterface
         );
 
         return $this->render(
-            'admin/trash.html.twig',
+            'gestion/trash.html.twig',
             ['trash' => $all]
         );
     }

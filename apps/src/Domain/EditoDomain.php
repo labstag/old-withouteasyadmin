@@ -3,9 +3,9 @@
 namespace Labstag\Domain;
 
 use Labstag\Entity\Edito;
-use Labstag\Form\Admin\EditoType;
+use Labstag\Form\Gestion\EditoType;
 
-use Labstag\Form\Admin\Search\EditoType as SearchEditoType;
+use Labstag\Form\Gestion\Search\EditoType as SearchEditoType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\EditoSearch;
@@ -30,23 +30,23 @@ class EditoDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'index'   => 'admin/edito/index.html.twig',
-            'trash'   => 'admin/edito/index.html.twig',
-            'edit'    => 'admin/edito/form.html.twig',
-            'show'    => 'admin/edito/show.html.twig',
-            'preview' => 'admin/edito/show.html.twig',
+            'index'   => 'gestion/edito/index.html.twig',
+            'trash'   => 'gestion/edito/index.html.twig',
+            'edit'    => 'gestion/edito/form.html.twig',
+            'show'    => 'gestion/edito/show.html.twig',
+            'preview' => 'gestion/edito/show.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_edito_index'   => $this->translator->trans('edito.title', [], 'admin.breadcrumb'),
-            'admin_edito_edit'    => $this->translator->trans('edito.edit', [], 'admin.breadcrumb'),
-            'admin_edito_new'     => $this->translator->trans('edito.new', [], 'admin.breadcrumb'),
-            'admin_edito_trash'   => $this->translator->trans('edito.trash', [], 'admin.breadcrumb'),
-            'admin_edito_preview' => $this->translator->trans('edito.preview', [], 'admin.breadcrumb'),
-            'admin_edito_show'    => $this->translator->trans('edito.show', [], 'admin.breadcrumb'),
+            'gestion_edito_index'   => $this->translator->trans('edito.title', [], 'gestion.breadcrumb'),
+            'gestion_edito_edit'    => $this->translator->trans('edito.edit', [], 'gestion.breadcrumb'),
+            'gestion_edito_new'     => $this->translator->trans('edito.new', [], 'gestion.breadcrumb'),
+            'gestion_edito_trash'   => $this->translator->trans('edito.trash', [], 'gestion.breadcrumb'),
+            'gestion_edito_preview' => $this->translator->trans('edito.preview', [], 'gestion.breadcrumb'),
+            'gestion_edito_show'    => $this->translator->trans('edito.show', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -60,14 +60,14 @@ class EditoDomain extends DomainLib implements DomainInterface
         return [
             'delete'   => 'api_action_delete',
             'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_edito_edit',
+            'edit'     => 'gestion_edito_edit',
             'empty'    => 'api_action_empty',
-            'list'     => 'admin_edito_index',
-            'new'      => 'admin_edito_new',
-            'preview'  => 'admin_edito_preview',
+            'list'     => 'gestion_edito_index',
+            'new'      => 'gestion_edito_new',
+            'preview'  => 'gestion_edito_preview',
             'restore'  => 'api_action_restore',
-            'show'     => 'admin_edito_show',
-            'trash'    => 'admin_edito_trash',
+            'show'     => 'gestion_edito_show',
+            'trash'    => 'gestion_edito_trash',
             'workflow' => 'api_action_workflow',
         ];
     }

@@ -4,8 +4,8 @@ namespace Labstag\Domain;
 
 use Labstag\Entity\Post;
 
-use Labstag\Form\Admin\PostType;
-use Labstag\Form\Admin\Search\PostType as SearchPostType;
+use Labstag\Form\Gestion\PostType;
+use Labstag\Form\Gestion\Search\PostType as SearchPostType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\PostSearch;
@@ -30,23 +30,23 @@ class PostDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'index'   => 'admin/post/index.html.twig',
-            'trash'   => 'admin/post/index.html.twig',
-            'show'    => 'admin/post/show.html.twig',
-            'preview' => 'admin/post/show.html.twig',
-            'edit'    => 'admin/post/form.html.twig',
+            'index'   => 'gestion/post/index.html.twig',
+            'trash'   => 'gestion/post/index.html.twig',
+            'show'    => 'gestion/post/show.html.twig',
+            'preview' => 'gestion/post/show.html.twig',
+            'edit'    => 'gestion/post/form.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_post_index'   => $this->translator->trans('post.title', [], 'admin.breadcrumb'),
-            'admin_post_edit'    => $this->translator->trans('post.edit', [], 'admin.breadcrumb'),
-            'admin_post_new'     => $this->translator->trans('post.new', [], 'admin.breadcrumb'),
-            'admin_post_trash'   => $this->translator->trans('post.trash', [], 'admin.breadcrumb'),
-            'admin_post_preview' => $this->translator->trans('post.preview', [], 'admin.breadcrumb'),
-            'admin_post_show'    => $this->translator->trans('post.show', [], 'admin.breadcrumb'),
+            'gestion_post_index'   => $this->translator->trans('post.title', [], 'gestion.breadcrumb'),
+            'gestion_post_edit'    => $this->translator->trans('post.edit', [], 'gestion.breadcrumb'),
+            'gestion_post_new'     => $this->translator->trans('post.new', [], 'gestion.breadcrumb'),
+            'gestion_post_trash'   => $this->translator->trans('post.trash', [], 'gestion.breadcrumb'),
+            'gestion_post_preview' => $this->translator->trans('post.preview', [], 'gestion.breadcrumb'),
+            'gestion_post_show'    => $this->translator->trans('post.show', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -60,14 +60,14 @@ class PostDomain extends DomainLib implements DomainInterface
         return [
             'delete'   => 'api_action_delete',
             'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_post_edit',
+            'edit'     => 'gestion_post_edit',
             'empty'    => 'api_action_empty',
-            'list'     => 'admin_post_index',
-            'new'      => 'admin_post_new',
-            'preview'  => 'admin_post_preview',
+            'list'     => 'gestion_post_index',
+            'new'      => 'gestion_post_new',
+            'preview'  => 'gestion_post_preview',
             'restore'  => 'api_action_restore',
-            'show'     => 'admin_post_show',
-            'trash'    => 'admin_post_trash',
+            'show'     => 'gestion_post_show',
+            'trash'    => 'gestion_post_trash',
             'workflow' => 'api_action_workflow',
         ];
     }

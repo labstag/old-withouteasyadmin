@@ -60,7 +60,7 @@ class ConfigurationListener extends EventListenerLib
             }
 
             file_put_contents($file, $value);
-            $msg = $this->translator->trans('admin.robotstxt.file', ['%file%' => $file]);
+            $msg = $this->translator->trans('gestion.robotstxt.file', ['%file%' => $file]);
             $this->logger->info($msg);
             $this->sessionService->flashBagAdd('success', $msg);
         } catch (Exception $exception) {

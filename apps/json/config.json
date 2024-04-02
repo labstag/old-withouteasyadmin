@@ -6,8 +6,8 @@
         "url-redirect": "http:\/\/www.google.fr"
     },
     "format_datetime": {
-        "admin": "d MMMM y HH:mm:ss",
-        "public": "d MMMM y HH:mm"
+        "back": "d MMMM y HH:mm:ss",
+        "front": "d MMMM y HH:mm"
     },
     "generator": "1",
     "language": [

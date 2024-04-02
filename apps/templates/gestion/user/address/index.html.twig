@@ -1,0 +1,63 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'field': 'a.street',
+                'name': 'user.address.street'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.country',
+                'name': 'user.address.country'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.zipcode',
+                'name': 'user.address.zipcode'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.city',
+                'name': 'user.address.city'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'user.address.gps'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.type',
+                'name': 'user.address.type'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.pmr',
+                'name': 'user.address.pmr'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'user.address.user'|trans({}, 'gestion.messages')
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/macro.html.twig" as macro_gestion %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.street }}</td>
+                    <td>
+                        <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
+                        {{ entity.country|country_name('fr') }}
+                    </td>
+                    <td>{{ entity.zipcode }}</td>
+                    <td>{{ entity.city }}</td>
+                    <td>{{ entity.gps }}</td>
+                    <td>{{ entity.type }}</td>
+                    <td>{{ entity.pmr ? 'state.yes'|trans({}, 'gestion.messages') : 'state.no'|trans({}, 'gestion.messages') }}</td>
+                    <td>
+                        {{ entity.refuser.username }}
+                    </td>
+                    <td>
+                        {{ macro_gestion.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

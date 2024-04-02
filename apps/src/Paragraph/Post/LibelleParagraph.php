@@ -5,7 +5,7 @@ namespace Labstag\Paragraph\Post;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Post\Libelle;
 use Labstag\Entity\Post;
-use Labstag\Form\Admin\Paragraph\Post\LibelleType;
+use Labstag\Form\Gestion\Paragraph\Post\LibelleType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

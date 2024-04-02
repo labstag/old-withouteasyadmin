@@ -2,7 +2,7 @@
 
 namespace Labstag\Lib;
 
-use Labstag\Form\Admin\Collections\MetaType;
+use Labstag\Form\Gestion\Collections\MetaType;
 use Labstag\FormType\MinMaxCollectionType;
 use Labstag\FormType\ParagraphType;
 use Labstag\FormType\WysiwygType;
@@ -45,18 +45,18 @@ abstract class AbstractTypeLib extends AbstractType
             RepeatedType::class,
             [
                 'type'            => PasswordType::class,
-                'invalid_message' => $this->translator->trans('profil.password.match', [], 'admin.form'),
+                'invalid_message' => $this->translator->trans('profil.password.match', [], 'gestion.form'),
                 'options'         => [
                     'attr' => ['class' => 'password-field'],
                 ],
                 'required'        => false,
                 'first_options'   => [
-                    'label' => $this->translator->trans('profil.password.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('profil.password.help', [], 'admin.form'),
+                    'label' => $this->translator->trans('profil.password.label', [], 'gestion.form'),
+                    'help'  => $this->translator->trans('profil.password.help', [], 'gestion.form'),
                 ],
                 'second_options'  => [
-                    'label' => $this->translator->trans('profil.repeatpassword.label', [], 'admin.form'),
-                    'help'  => $this->translator->trans('profil.repeatpassword.help', [], 'admin.form'),
+                    'label' => $this->translator->trans('profil.repeatpassword.label', [], 'gestion.form'),
+                    'help'  => $this->translator->trans('profil.repeatpassword.help', [], 'gestion.form'),
                 ],
             ]
         );
@@ -68,8 +68,8 @@ abstract class AbstractTypeLib extends AbstractType
             'published',
             DateTimeType::class,
             [
-                'label'        => $this->translator->trans('published.label', [], 'admin.form'),
-                'help'         => $this->translator->trans('published.help', [], 'admin.form'),
+                'label'        => $this->translator->trans('published.label', [], 'gestion.form'),
+                'help'         => $this->translator->trans('published.help', [], 'gestion.form'),
                 'date_widget'  => 'single_text',
                 'time_widget'  => 'single_text',
                 'with_seconds' => true,
@@ -102,8 +102,8 @@ abstract class AbstractTypeLib extends AbstractType
             'content',
             WysiwygType::class,
             [
-                'label' => $this->translator->trans('content.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('content.help', [], 'admin.form'),
+                'label' => $this->translator->trans('content.label', [], 'gestion.form'),
+                'help'  => $this->translator->trans('content.help', [], 'gestion.form'),
             ]
         );
     }

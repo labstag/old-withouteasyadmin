@@ -16,13 +16,13 @@
 			<div class="post-date">
 				{{ 'post.infodateuser'|trans(
                     {
-                        '%date%': post.published|format_datetime(pattern=formatdatetime.public),
+                        '%date%': post.published|format_datetime(pattern=formatdatetime.front),
                         '%user%': macro_site.user(post.refuser, path('front_article_user', {'username': post.refuser.username}))
                     }
                 )|raw }}
-				{% set state = 'admin_post_edit'|guard_route %}
+				{% set state = 'gestion_post_edit'|guard_route %}
 				{% if state == true %}
-					<a href="{{ path('admin_post_edit', {'id': post.id}) }}" target="_blank">{{ 'post.update'|trans }}</a>
+					<a href="{{ path('gestion_post_edit', {'id': post.id}) }}" target="_blank">{{ 'post.update'|trans }}</a>
 				{% endif %}
 			</div>
 			<div class="post-content">

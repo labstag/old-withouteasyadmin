@@ -162,7 +162,7 @@ class ViewService
         $this->setBreadcrumbsPage();
         $parameters = $this->setTitleHeader($parameters);
 
-        $parameters['btnadmin'] = $this->btnService->get();
+        $parameters['btngestion'] = $this->btnService->get();
 
         $content = $this->renderView($view, $parameters);
 
@@ -409,11 +409,11 @@ class ViewService
     protected function setHeaderTitle(): array
     {
         return [
-            'admin'        => $this->translator->trans('admin.title', [], 'admin.header'),
-            'admin_oauth'  => $this->translator->trans('oauth.title', [], 'admin.header'),
-            'admin_param'  => $this->translator->trans('param.title', [], 'admin.header'),
-            'admin_profil' => $this->translator->trans('profil.title', [], 'admin.header'),
-            'admin_trash'  => $this->translator->trans('trash.title', [], 'admin.header'),
+            'admin'        => $this->translator->trans('gestion.title', [], 'gestion.header'),
+            'gestion_oauth'  => $this->translator->trans('oauth.title', [], 'gestion.header'),
+            'gestion_param'  => $this->translator->trans('param.title', [], 'gestion.header'),
+            'gestion_profil' => $this->translator->trans('profil.title', [], 'gestion.header'),
+            'gestion_trash'  => $this->translator->trans('trash.title', [], 'gestion.header'),
         ];
     }
 
@@ -575,7 +575,7 @@ class ViewService
     ): array
     {
         $templates = $domain->getTemplates();
-        $template  = (array_key_exists($type, $templates)) ? $templates[$type] : 'admin/crud/form.html.twig';
+        $template  = (array_key_exists($type, $templates)) ? $templates[$type] : 'gestion/crud/form.html.twig';
 
         $this->modalAttachmentDelete();
         $formType = $domain->getType();

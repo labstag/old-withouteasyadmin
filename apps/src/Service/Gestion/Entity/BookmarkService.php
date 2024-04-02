@@ -7,7 +7,7 @@ use DOMDocument;
 use Exception;
 use Labstag\Entity\Bookmark;
 use Labstag\Entity\User;
-use Labstag\Form\Admin\Bookmark\ImportType;
+use Labstag\Form\Gestion\Bookmark\ImportType;
 use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Queue\EnqueueMethod;

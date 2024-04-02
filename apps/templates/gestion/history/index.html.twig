@@ -1,0 +1,65 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'field': 'a.name',
+                'name': 'history.name'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'history.user'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'history.paragraphs'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.published',
+                'name': 'history.published'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'history.chapters'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.state',
+                'name': 'workflow.state'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'history.workflow'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'history.newchapter'|trans({}, 'gestion.messages')
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/macro.html.twig" as macro_gestion %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.refuser }}</td>
+                    <td>{{ entity.paragraphs|length }}</td>
+                    <td>{{ entity.published|format_datetime(pattern=formatdatetime.back) }}</td>
+                    <td>{{ entity.chapters|length }}</td>
+                    <td>
+                        {% for state in workflow_marked_places(entity) %}
+                            {{ state }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ macro_gestion.workflow(entity, actions) }}
+                    </td>
+                    <td>
+                        <a href="{{ path('gestion_chapter_new', {'id': entity.id}) }}">
+                            Ajouter un nouveau chapitre
+                        </a>
+                    </td>
+                    <td>
+                        {{ macro_gestion.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -3,9 +3,9 @@
 namespace Labstag\Domain;
 
 use Labstag\Entity\Memo;
-use Labstag\Form\Admin\MemoType;
+use Labstag\Form\Gestion\MemoType;
 
-use Labstag\Form\Admin\Search\MemoType as SearchMemoType;
+use Labstag\Form\Gestion\Search\MemoType as SearchMemoType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\MemoSearch;
@@ -30,23 +30,23 @@ class MemoDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'index'   => 'admin/memo/index.html.twig',
-            'trash'   => 'admin/memo/index.html.twig',
-            'show'    => 'admin/memo/show.html.twig',
-            'preview' => 'admin/memo/show.html.twig',
-            'edit'    => 'admin/memo/form.html.twig',
+            'index'   => 'gestion/memo/index.html.twig',
+            'trash'   => 'gestion/memo/index.html.twig',
+            'show'    => 'gestion/memo/show.html.twig',
+            'preview' => 'gestion/memo/show.html.twig',
+            'edit'    => 'gestion/memo/form.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_memo_index'   => $this->translator->trans('memo.title', [], 'admin.breadcrumb'),
-            'admin_memo_edit'    => $this->translator->trans('memo.edit', [], 'admin.breadcrumb'),
-            'admin_memo_new'     => $this->translator->trans('memo.new', [], 'admin.breadcrumb'),
-            'admin_memo_trash'   => $this->translator->trans('memo.trash', [], 'admin.breadcrumb'),
-            'admin_memo_preview' => $this->translator->trans('memo.preview', [], 'admin.breadcrumb'),
-            'admin_memo_show'    => $this->translator->trans('memo.show', [], 'admin.breadcrumb'),
+            'gestion_memo_index'   => $this->translator->trans('memo.title', [], 'gestion.breadcrumb'),
+            'gestion_memo_edit'    => $this->translator->trans('memo.edit', [], 'gestion.breadcrumb'),
+            'gestion_memo_new'     => $this->translator->trans('memo.new', [], 'gestion.breadcrumb'),
+            'gestion_memo_trash'   => $this->translator->trans('memo.trash', [], 'gestion.breadcrumb'),
+            'gestion_memo_preview' => $this->translator->trans('memo.preview', [], 'gestion.breadcrumb'),
+            'gestion_memo_show'    => $this->translator->trans('memo.show', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -60,14 +60,14 @@ class MemoDomain extends DomainLib implements DomainInterface
         return [
             'delete'   => 'api_action_delete',
             'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_memo_edit',
+            'edit'     => 'gestion_memo_edit',
             'empty'    => 'api_action_empty',
-            'list'     => 'admin_memo_index',
-            'new'      => 'admin_memo_new',
-            'preview'  => 'admin_memo_preview',
+            'list'     => 'gestion_memo_index',
+            'new'      => 'gestion_memo_new',
+            'preview'  => 'gestion_memo_preview',
             'restore'  => 'api_action_restore',
-            'show'     => 'admin_memo_show',
-            'trash'    => 'admin_memo_trash',
+            'show'     => 'gestion_memo_show',
+            'trash'    => 'gestion_memo_trash',
             'workflow' => 'api_action_workflow',
         ];
     }

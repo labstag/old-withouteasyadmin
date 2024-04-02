@@ -1,10 +1,10 @@
-admin.flashbag.data.export.fail: "Problème d'enregistrement du fichier %file%"
-admin.flashbag.data.export.success: 'Données exporté'
-admin.flashbag.trash.empty: 'La corbeille est vide'
-admin.group.guard.superadmin.nope: "Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique"
-admin.robotstxt.file: 'Fichier %file% modifié'
-admin.togglenavigation: 'Basculer la navigation'
-admin.user.guard.superadmin.nope: "L'utilisateur fait partie du groupe superadmin, qui n'est pas un groupe qui peut avoir des droits spécifique"
+gestion.flashbag.data.export.fail: "Problème d'enregistrement du fichier %file%"
+gestion.flashbag.data.export.success: 'Données exporté'
+gestion.flashbag.trash.empty: 'La corbeille est vide'
+gestion.group.guard.supergestion.nope: "Le groupe superadmin n'est pas un groupe qui peut avoir des droits spécifique"
+gestion.robotstxt.file: 'Fichier %file% modifié'
+gestion.togglenavigation: 'Basculer la navigation'
+gestion.user.guard.supergestion.nope: "L'utilisateur fait partie du groupe superadmin, qui n'est pas un groupe qui peut avoir des droits spécifique"
 bookmark.categories: Categories
 bookmark.infodate: '%date%'
 bookmark.libelles: Libelles

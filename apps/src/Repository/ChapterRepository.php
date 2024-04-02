@@ -7,7 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Chapter;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_history_trash')]
+#[Trashable(url: 'gestion_history_trash')]
 class ChapterRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

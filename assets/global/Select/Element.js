@@ -25,16 +25,16 @@ export class SelectElement extends ElementHTML {
 
   changeChecked () {
     const selectElement = document.querySelectorAll("select-element>input[type='checkbox']:checked")
-    const linkBtnAdminEmptiesElement = document.querySelector('link-btnadminempties')
+    const linkBtnAdminEmptiesElement = document.querySelector('link-btngestionempties')
     if (linkBtnAdminEmptiesElement !== null) {
       linkBtnAdminEmptiesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
     }
-    const linkBtnAdminDeletiesElement = document.querySelector('link-btnadmindeleties')
+    const linkBtnAdminDeletiesElement = document.querySelector('link-btngestiondeleties')
 
     if (linkBtnAdminDeletiesElement !== null) {
       linkBtnAdminDeletiesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
     }
-    const linkBtnAdminRestoriesElement = document.querySelector('link-btnadminrestories')
+    const linkBtnAdminRestoriesElement = document.querySelector('link-btngestionrestories')
     if (linkBtnAdminRestoriesElement !== null) {
       linkBtnAdminRestoriesElement.style.display = (selectElement.length !== 0) ? 'block' : 'none'
     }

@@ -5,7 +5,7 @@ namespace Labstag\Service\Gestion\Entity;
 use Exception;
 use Labstag\Entity\Block\Custom;
 use Labstag\Entity\Layout;
-use Labstag\Form\Admin\NewLayoutType;
+use Labstag\Form\Gestion\NewLayoutType;
 use Labstag\Interfaces\AdminEntityServiceInterface;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Repository\Block\CustomRepository;
@@ -99,7 +99,7 @@ class LayoutService extends ViewService implements AdminEntityServiceInterface
             'btn-admin-header-new',
             'Nouveau',
             [
-                'is'       => 'link-btnadminnewblock',
+                'is'       => 'link-btngestionnewblock',
                 'data-url' => $this->router->generate($routes['add']),
             ]
         );

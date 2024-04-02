@@ -5,7 +5,7 @@ namespace Labstag\Paragraph\Post;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\Post\Archive;
 use Labstag\Entity\Post;
-use Labstag\Form\Admin\Paragraph\Post\ArchiveType;
+use Labstag\Form\Gestion\Paragraph\Post\ArchiveType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;

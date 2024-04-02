@@ -1,0 +1,42 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'geocode.countrycode'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    <span class="flag-icon flag-icon-{{ entity.countryCode|lower }}"></span>
+                    {{ entity.countryCode|country_name('fr') }}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'geocode.postalcode'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.postalCode }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'geocode.placename'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.placeName }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'workflow.state'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.stateName }} ({{ entity.stateCode }})</td>
+            </tr>
+            <tr>
+                <th>{{ 'geocode.province'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.provinceName }} ({{ entity.provinceCode }})</td>
+            </tr>
+            <tr>
+                <th>{{ 'geocode.community'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.communityName }} ({{ entity.communityCode }})</td>
+            </tr>
+            <tr>
+                <th>{{ 'geocode.coordonnees'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.latitude }} , {{ entity.longitude }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'geocode.accuracy'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.accuracy }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
