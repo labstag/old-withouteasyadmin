@@ -29,8 +29,8 @@ services:
       resource: "../src/Entity/"
       public: true
       tags: [entitiesclass]
-  Labstag\Service\Admin\Entity\:
-      resource: "../src/Service/Admin/Entity/"
+  Labstag\Service\Gestion\Entity\:
+      resource: "../src/Service/Gestion/Entity/"
       public: true
       tags: [entitiesadminservice]
   Labstag\Block\:
