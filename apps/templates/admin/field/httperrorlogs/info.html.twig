@@ -1,0 +1,34 @@
+<b>{{ (field.value.currentEntity.agent) }}</b>
+<ul>
+    {% set deviceDetector = field.value.deviceDetector %}
+    {% if deviceDetector.isBot() %}
+      {% for key, data in deviceDetector.getBot() %}
+        {% if key == 'producer' %}
+          <li>{{ key }} : (name: <b>{{ data.name }}</b>, url: <b>{{ data.url }}</b>)</li>
+        {% else %}
+          <li>{{ key }} : <b>{{ data }}</b></li>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+        <li>OS ({% for key, data in deviceDetector.getOS() %}
+            {% if loop.first == false %}
+            ,
+            {% endif %}
+            {{ key }} : <b>{{ data }}</b>
+        {% endfor %})</li>
+        <li>Client ({% for key, data in deviceDetector.getClient() %}
+            {% if loop.first == false %}
+            ,
+            {% endif %}
+            {{ key }} : <b>{{ data }}</b>
+        {% endfor %})
+        </li>
+        <li>
+            Device : <b>{{ deviceDetector.getDevice() }}</b>
+            Brand : <b>{{ deviceDetector.getBrand() }}</b>
+            BrandName : <b>{{ deviceDetector.getBrandName() }}</b>
+            Model : <b>{{ deviceDetector.getModel() }}</b>
+            DeviceName : <b>{{ deviceDetector.getDeviceName() }}</b>
+        </li>
+    {% endif %}
+</ul>

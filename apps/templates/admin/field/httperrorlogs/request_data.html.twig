@@ -1,0 +1,5 @@
+<ul>
+    {% for key, data in field.value %}
+        <li>{{ key }} : {{ data|json_encode }}</li>
+    {% endfor %}
+</ul>

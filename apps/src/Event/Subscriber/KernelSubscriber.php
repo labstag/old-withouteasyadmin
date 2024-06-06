@@ -174,9 +174,11 @@ class KernelSubscriber extends EventSubscriberLib
         $response   = $responseEvent->getResponse();
         $request    = $responseEvent->getRequest();
         $controller = $request->attributes->get('_controller');
-        if ($this->testController($controller)) {
+        if (!$this->testController($controller)) {
             return;
         }
+
+        return;
 
         if ('html' != $request->getRequestFormat() || $response->getStatusCode() >= self::CLIENTNUMBER) {
             return;
