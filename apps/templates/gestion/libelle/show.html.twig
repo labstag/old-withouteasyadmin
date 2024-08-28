@@ -1,0 +1,15 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'post.libelle.name'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'post.libelle.slug'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.slug }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'field': 'a.title',
+                'name': 'memo.title'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.dateStart',
+                'name': 'memo.date_start'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.dateEnd',
+                'name': 'memo.date_end'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'memo.user'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'memo.pararaphs'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.state',
+                'name': 'workflow.state'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'memo.workflow'|trans({}, 'gestion.messages')
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/macro.html.twig" as macro_gestion %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.title }}</td>
+                    <td>{{ entity.dateStart ? entity.dateStart|format_datetime(pattern=formatdatetime.back) : '' }}</td>
+                    <td>{{ entity.dateEnd ? entity.dateEnd|format_datetime(pattern=formatdatetime.back) : '' }}</td>
+                    <td>{{ entity.refuser }}</td>
+                    <td>{{ entity.paragraphs|length }}</td>
+                    <td>
+                        {% for state in workflow_marked_places(entity) %}
+                            {{ state }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ macro_gestion.workflow(entity, actions) }}
+                    </td>
+                    <td>
+                        {{ macro_gestion.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

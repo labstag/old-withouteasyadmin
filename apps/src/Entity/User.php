@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,7 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Uploadable]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable, EntityTrashInterface
 {
     use SoftDeleteableEntity;
@@ -33,15 +31,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
      */
     protected const DATAUNSERIALIZE = 4;
 
-    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
-    protected ?Groupe $groupe = null;
-
     #[ORM\Column(type: 'string', nullable: true)]
     protected string $password;
 
-    #[Assert\NotCompromisedPassword()]
+    #[Assert\NotCompromisedPassword]
     protected ?string $plainPassword = null;
+
+    #[ORM\ManyToOne(targetEntity: Groupe::class, inversedBy: 'users', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'refgroupe_id', nullable: true)]
+    protected ?Groupe $refgroupe = null;
 
     #[ORM\Column(type: 'json')]
     protected array $roles = ['ROLE_USER'];
@@ -100,6 +98,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     )
     ]
     private Collection $histories;
+
+    #[ORM\OneToMany(
+        targetEntity: HttpErrorLogs::class,
+        mappedBy: 'user',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )
+    ]
+    private Collection $httpErrorLogs;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -188,6 +195,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         $this->posts             = new ArrayCollection();
         $this->bookmarks         = new ArrayCollection();
         $this->histories         = new ArrayCollection();
+        $this->httpErrorLogs     = new ArrayCollection();
     }
 
     public function __serialize(): array
@@ -262,6 +270,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         if (!$this->histories->contains($history)) {
             $this->histories[] = $history;
             $history->setRefuser($this);
+        }
+
+        return $this;
+    }
+
+    public function addHttpErrorLog(HttpErrorLogs $httpErrorLogs): static
+    {
+        if (!$this->httpErrorLogs->contains($httpErrorLogs)) {
+            $this->httpErrorLogs->add($httpErrorLogs);
+            $httpErrorLogs->setUser($this);
         }
 
         return $this;
@@ -413,6 +431,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
         return $this->histories;
     }
 
+    /**
+     * @return Collection<int, HttpErrorLogs>
+     */
+    public function getHttpErrorLogs(): Collection
+    {
+        return $this->httpErrorLogs;
+    }
+
     public function getId(): ?string
     {
         return $this->id;
@@ -463,7 +489,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function getRefgroupe(): ?Groupe
     {
-        return $this->groupe;
+        return $this->refgroupe;
     }
 
     /**
@@ -567,6 +593,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
             element: $this->histories,
             history: $history
         );
+
+        return $this;
+    }
+
+    public function removeHttpErrorLog(HttpErrorLogs $httpErrorLogs): static
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->httpErrorLogs->removeElement($httpErrorLogs) && $httpErrorLogs->getUser() === $this) {
+            $httpErrorLogs->setUser(null);
+        }
 
         return $this;
     }
@@ -713,7 +749,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
 
     public function setRefgroupe(?Groupe $groupe): self
     {
-        $this->groupe = $groupe;
+        $this->refgroupe = $groupe;
 
         return $this;
     }

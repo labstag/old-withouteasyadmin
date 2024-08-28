@@ -3,16 +3,16 @@
 namespace Labstag\Paragraph\Post;
 
 use Labstag\Entity\Paragraph\Post\Header;
-use Labstag\Form\Admin\Paragraph\Post\HeaderType;
+use Labstag\Form\Gestion\Paragraph\Post\HeaderType;
 use Labstag\Interfaces\EntityParagraphInterface;
 
 class HeaderParagraph extends ShowParagraph
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'post/header';
+        return ['post/header'];
     }
 
     public function getEntity(): string

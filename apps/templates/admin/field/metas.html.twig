@@ -1,0 +1,13 @@
+{% if field.value[0] is defined %}
+  {% set metas = field.value[0] %}
+  <ul>
+    {% set tags = {
+      'title': metas.title,
+      'description': metas.description,
+      'keywords': metas.keywords
+     } %}
+     {% for key, value in tags %}
+        <li><strong>{{ key }}</strong>: {{ value }}</li>
+     {% endfor %}
+  </ul>
+{% endif %}

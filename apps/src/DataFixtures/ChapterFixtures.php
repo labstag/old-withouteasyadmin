@@ -51,15 +51,15 @@ class ChapterFixtures extends FixtureLib implements DependentFixtureInterface
             $this->position[$indexHistory] = [];
         }
 
-        $chapter->setHistory($history);
+        $chapter->setRefHistory($history);
         $chapter->setPublished($generator->unique()->dateTime('now'));
 
         $indexposition = $this->position[$indexHistory];
         $position      = is_countable($indexposition) ? count($indexposition) : 0;
         $chapter->setPosition($position + 1);
-        $this->addReference('chapter_'.$index, $chapter);
         $this->position[$indexHistory][] = $chapter;
         $objectManager->persist($chapter);
+        $this->addReference('chapter_'.$index, $chapter);
         $this->workflowService->changeState($chapter, $states);
     }
 }

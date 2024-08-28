@@ -1,0 +1,12 @@
+{% import "gestion/macro.html.twig" as macro_gestion %}
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.date_start) }}
+    {{ form_row(form.date_end) }}
+    {{ form_row(form.file) }}
+    {{ form_row(form.content) }}
+    {{ form_row(form.paragraph) }}
+    {{ form_end(form) }}
+{% endblock %}

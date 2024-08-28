@@ -1,0 +1,22 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th colspan=2>
+                    <a href="{{ path('front', {'slug': entity.slug}) }}" target="_blank">
+                        {{ 'page.url'|trans({}, 'gestion.messages') }}
+                    </a>
+                </th>
+            </tr>
+            <tr>
+                <th>{{ 'page.name'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'page.slug'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.slug }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

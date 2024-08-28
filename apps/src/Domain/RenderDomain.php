@@ -4,8 +4,8 @@ namespace Labstag\Domain;
 
 use Labstag\Entity\Render;
 
-use Labstag\Form\Admin\RenderType;
-use Labstag\Form\Admin\Search\RenderType as SearchRenderType;
+use Labstag\Form\Gestion\RenderType;
+use Labstag\Form\Gestion\Search\RenderType as SearchRenderType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\RenderSearch;
@@ -30,24 +30,24 @@ class RenderDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'index'   => 'admin/render/index.html.twig',
-            'trash'   => 'admin/render/index.html.twig',
-            'show'    => 'admin/render/show.html.twig',
-            'preview' => 'admin/render/show.html.twig',
-            'edit'    => 'admin/render/form.html.twig',
-            'new'     => 'admin/render/form.html.twig',
+            'index'   => 'gestion/render/index.html.twig',
+            'trash'   => 'gestion/render/index.html.twig',
+            'show'    => 'gestion/render/show.html.twig',
+            'preview' => 'gestion/render/show.html.twig',
+            'edit'    => 'gestion/render/form.html.twig',
+            'new'     => 'gestion/render/form.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_render_index'   => $this->translator->trans('render.title', [], 'admin.breadcrumb'),
-            'admin_render_edit'    => $this->translator->trans('render.edit', [], 'admin.breadcrumb'),
-            'admin_render_new'     => $this->translator->trans('render.new', [], 'admin.breadcrumb'),
-            'admin_render_trash'   => $this->translator->trans('render.trash', [], 'admin.breadcrumb'),
-            'admin_render_preview' => $this->translator->trans('render.preview', [], 'admin.breadcrumb'),
-            'admin_render_show'    => $this->translator->trans('render.show', [], 'admin.breadcrumb'),
+            'gestion_render_index'   => $this->translator->trans('render.title', [], 'gestion.breadcrumb'),
+            'gestion_render_edit'    => $this->translator->trans('render.edit', [], 'gestion.breadcrumb'),
+            'gestion_render_new'     => $this->translator->trans('render.new', [], 'gestion.breadcrumb'),
+            'gestion_render_trash'   => $this->translator->trans('render.trash', [], 'gestion.breadcrumb'),
+            'gestion_render_preview' => $this->translator->trans('render.preview', [], 'gestion.breadcrumb'),
+            'gestion_render_show'    => $this->translator->trans('render.show', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -61,14 +61,14 @@ class RenderDomain extends DomainLib implements DomainInterface
         return [
             'delete'   => 'api_action_delete',
             'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_render_edit',
+            'edit'     => 'gestion_render_edit',
             'empty'    => 'api_action_empty',
-            'list'     => 'admin_render_index',
-            'new'      => 'admin_render_new',
-            'preview'  => 'admin_render_preview',
+            'list'     => 'gestion_render_index',
+            'new'      => 'gestion_render_new',
+            'preview'  => 'gestion_render_preview',
             'restore'  => 'api_action_restore',
-            'show'     => 'admin_render_show',
-            'trash'    => 'admin_render_trash',
+            'show'     => 'gestion_render_show',
+            'trash'    => 'gestion_render_trash',
             'workflow' => 'api_action_workflow',
         ];
     }

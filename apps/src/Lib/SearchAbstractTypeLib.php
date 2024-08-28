@@ -42,10 +42,10 @@ abstract class SearchAbstractTypeLib extends AbstractType
             NumberType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('form.limit.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('form.limit.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('form.limit.label', [], 'gestion.search.form'),
+                'help'     => $this->translator->trans('form.limit.help', [], 'gestion.search.form'),
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('form.limit.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('form.limit.placeholder', [], 'gestion.search.form'),
                 ],
             ]
         );
@@ -53,7 +53,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
             'submit',
             SubmitType::class,
             [
-                'label' => $this->translator->trans('form.submit', [], 'admin.search.form'),
+                'label' => $this->translator->trans('form.submit', [], 'gestion.search.form'),
                 'attr'  => ['name' => ''],
             ]
         );
@@ -61,7 +61,7 @@ abstract class SearchAbstractTypeLib extends AbstractType
             'reset',
             ResetType::class,
             [
-                'label' => $this->translator->trans('form.reset', [], 'admin.search.form'),
+                'label' => $this->translator->trans('form.reset', [], 'gestion.search.form'),
                 'attr'  => ['name' => ''],
             ]
         );
@@ -80,9 +80,9 @@ abstract class SearchAbstractTypeLib extends AbstractType
             TextType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('name.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('name.help', [], 'admin.search.form'),
-                'attr'     => ['placeholder' => $this->translator->trans('.name.placeholder', [], 'admin.search.form')],
+                'label'    => $this->translator->trans('name.label', [], 'gestion.search.form'),
+                'help'     => $this->translator->trans('name.help', [], 'gestion.search.form'),
+                'attr'     => ['placeholder' => $this->translator->trans('.name.placeholder', [], 'gestion.search.form')],
             ]
         );
     }
@@ -95,8 +95,8 @@ abstract class SearchAbstractTypeLib extends AbstractType
             [
                 'required' => false,
                 'widget'   => 'single_text',
-                'label'    => $this->translator->trans('published.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('published.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('published.label', [], 'gestion.search.form'),
+                'help'     => $this->translator->trans('published.help', [], 'gestion.search.form'),
             ]
         );
     }
@@ -108,13 +108,13 @@ abstract class SearchAbstractTypeLib extends AbstractType
             SearchableType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('refcategory.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('refcategory.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('refcategory.label', [], 'gestion.search.form'),
+                'help'     => $this->translator->trans('refcategory.help', [], 'gestion.search.form'),
                 'multiple' => false,
                 'class'    => Category::class,
                 'route'    => 'api_search_category',
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('refcategory.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('refcategory.placeholder', [], 'gestion.search.form'),
                 ],
             ]
         );
@@ -127,13 +127,13 @@ abstract class SearchAbstractTypeLib extends AbstractType
             SearchableType::class,
             [
                 'required' => false,
-                'label'    => $this->translator->trans('refuser.label', [], 'admin.search.form'),
-                'help'     => $this->translator->trans('refuser.help', [], 'admin.search.form'),
+                'label'    => $this->translator->trans('refuser.label', [], 'gestion.search.form'),
+                'help'     => $this->translator->trans('refuser.help', [], 'gestion.search.form'),
                 'multiple' => false,
                 'class'    => User::class,
                 'route'    => 'api_search_user',
                 'attr'     => [
-                    'placeholder' => $this->translator->trans('refuser.placeholder', [], 'admin.search.form'),
+                    'placeholder' => $this->translator->trans('refuser.placeholder', [], 'gestion.search.form'),
                 ],
             ]
         );

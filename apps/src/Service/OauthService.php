@@ -174,7 +174,7 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        return ('bitbucket' == $clientName) ? new Bitbucket($params) : $provider;
+        return ('bitbucket' === $clientName) ? new Bitbucket($params) : $provider;
     }
 
     protected function generateStandardProviderDiscord(
@@ -183,7 +183,7 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        return ('discord' == $clientName) ? new Discord($params) : $provider;
+        return ('discord' === $clientName) ? new Discord($params) : $provider;
     }
 
     protected function generateStandardProviderDropbox(
@@ -192,7 +192,7 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        return ('dropbox' == $clientName) ? new Dropbox($params) : $provider;
+        return ('dropbox' === $clientName) ? new Dropbox($params) : $provider;
     }
 
     protected function generateStandardProviderGithub(
@@ -201,7 +201,7 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        return ('github' == $clientName) ? new Github($params) : $provider;
+        return ('github' === $clientName) ? new Github($params) : $provider;
     }
 
     protected function generateStandardProviderGitlab(
@@ -210,7 +210,7 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        return ('gitlab' == $clientName) ? new Gitlab($params) : $provider;
+        return ('gitlab' === $clientName) ? new Gitlab($params) : $provider;
     }
 
     protected function generateStandardProviderGoogle(
@@ -219,7 +219,7 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        return ('google' == $clientName) ? new Google($params) : $provider;
+        return ('google' === $clientName) ? new Google($params) : $provider;
     }
 
     protected function generateStandardProviderlinkedin(
@@ -228,7 +228,7 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        return ('linkedin' == $clientName) ? new LinkedIn($params) : $provider;
+        return ('linkedin' === $clientName) ? new LinkedIn($params) : $provider;
     }
 
     protected function generateStandardProviderReddit(
@@ -237,18 +237,15 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        $params = array_merge(
-            $params,
-            [
-                'userAgent' => 'platform:appid:version, (by /u/username)',
-                'scopes'    => [
-                    'identity',
-                    'read',
-                ],
-            ]
-        );
+        $params = [...$params,
+            'userAgent' => 'platform:appid:version, (by /u/username)',
+            'scopes'    => [
+                'identity',
+                'read',
+            ],
+        ];
 
-        return ('reddit' == $clientName) ? new Reddit($params) : $provider;
+        return ('reddit' === $clientName) ? new Reddit($params) : $provider;
     }
 
     protected function generateStandardProviderSlack(
@@ -257,7 +254,7 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        return ('slack' == $clientName) ? new Slack($params) : $provider;
+        return ('slack' === $clientName) ? new Slack($params) : $provider;
     }
 
     protected function generateStandardProviderTwitch(
@@ -266,16 +263,12 @@ class OauthService
         ?AbstractProvider $provider
     ): ?AbstractProvider
     {
-        return ('twitch' == $clientName) ? new TwitchHelix($params) : $provider;
+        return ('twitch' === $clientName) ? new TwitchHelix($params) : $provider;
     }
 
     protected function getConfig(string $clientName): array
     {
-        if (isset($this->configProvider[$clientName])) {
-            return $this->configProvider[$clientName];
-        }
-
-        return [];
+        return $this->configProvider[$clientName] ?? [];
     }
 
     protected function initProvider(string $clientName): AbstractProvider

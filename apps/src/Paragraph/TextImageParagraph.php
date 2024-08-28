@@ -11,21 +11,36 @@ use Labstag\Entity\Memo;
 use Labstag\Entity\Page;
 use Labstag\Entity\Paragraph\TextImage;
 use Labstag\Entity\Post;
-use Labstag\Form\Admin\Paragraph\TextImageType;
+use Labstag\Form\Gestion\Paragraph\TextImageType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
-use Symfony\Component\HttpFoundation\Response;
 
 class TextImageParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        if (!$entityParagraph instanceof TextImage) {
+            return null;
+        }
+
+        $package    = new Package(new EmptyVersionStrategy());
+        $image      = $entityParagraph->getImage();
+        $attachment = ($image instanceof Attachment) ? $package->getUrl('/'.$image->getName()) : null;
+
+        return [
+            'paragraph'  => $entityParagraph,
+            'attachment' => $attachment,
+        ];
+    }
+
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'textimage';
+        return ['textimage'];
     }
 
     public function getEntity(): string
@@ -51,25 +66,6 @@ class TextImageParagraph extends ParagraphLib implements ParagraphInterface
     public function isShowForm(): bool
     {
         return true;
-    }
-
-    public function show(EntityParagraphInterface $entityParagraph): ?Response
-    {
-        if (!$entityParagraph instanceof TextImage) {
-            return null;
-        }
-
-        $package    = new Package(new EmptyVersionStrategy());
-        $image      = $entityParagraph->getImage();
-        $attachment = ($image instanceof Attachment) ? $package->getUrl('/'.$image->getName()) : null;
-
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
-            [
-                'paragraph'  => $entityParagraph,
-                'attachment' => $attachment,
-            ]
-        );
     }
 
     public function useIn(): array

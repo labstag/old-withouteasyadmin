@@ -3,7 +3,10 @@
 namespace Labstag\Event\Subscriber;
 
 use Labstag\Lib\EventSubscriberLib;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 use tidy;
 
 class KernelSubscriber extends EventSubscriberLib
@@ -35,6 +38,11 @@ class KernelSubscriber extends EventSubscriberLib
      * @var string
      */
     final public const LABSTAG_CONTROLLER = '/(Labstag)/';
+
+    /**
+     * @var string
+     */
+    final public const LABSTAG_CONTROLLER_ADMIN = '/(Labstag)\/Admin/';
 
     /**
      * @var string
@@ -78,17 +86,17 @@ class KernelSubscriber extends EventSubscriberLib
         'input-phone',
         'input-url',
         'link-add',
-        'link-btnadmin',
-        'link-btnadmindelete',
-        'link-btnadmindeleties',
-        'link-btnadmindestroy',
-        'link-btnadminempties',
-        'link-btnadminempty',
-        'link-btnadminemptyall',
-        'link-btnadminmove',
-        'link-btnadminnewblock',
-        'link-btnadminrestore',
-        'link-btnadminrestories',
+        'link-btngestion',
+        'link-btngestiondelete',
+        'link-btngestiondeleties',
+        'link-btngestiondestroy',
+        'link-btngestionempties',
+        'link-btngestionempty',
+        'link-btngestionemptyall',
+        'link-btngestionmove',
+        'link-btngestionnewblock',
+        'link-btngestionrestore',
+        'link-btngestionrestories',
         'link-delete',
         'link-destroy',
         'link-edit',
@@ -111,7 +119,54 @@ class KernelSubscriber extends EventSubscriberLib
      */
     public static function getSubscribedEvents(): array
     {
-        return ['kernel.response' => 'onKernelResponse'];
+        return [
+            KernelEvents::EXCEPTION => 'onKernelException',
+            KernelEvents::RESPONSE  => 'onKernelResponse',
+        ];
+    }
+
+    public function onKernelException(ExceptionEvent $exceptionEvent): void
+    {
+        $throwable = $exceptionEvent->getThrowable();
+        if (!$throwable instanceof NotFoundHttpException) {
+            return;
+        }
+
+        $statusCode = (string) $throwable->getStatusCode();
+
+        $this->httpErrorService->set($statusCode);
+    }
+
+
+    private function testController($controller)
+    {
+        if (!is_string($controller) || is_array($controller)) {
+            return false;
+        }
+
+        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
+        if (0 == count($matches)) {
+            return false;
+        }
+
+        preg_match(self::LABSTAG_CONTROLLER_ADMIN, $controller, $matches);
+        if (0 == count($matches)) {
+            return false;
+        }
+
+        preg_match(self::API_CONTROLLER, $controller, $apis);
+        preg_match(self::PARAGRAPH_CONTROLLER, $controller, $paragraphs);
+        preg_match(self::BLOCK_CONTROLLER, $controller, $blocks);
+        $count = count($apis) + count($paragraphs) + count($blocks);
+        if (0 != $count) {
+            return false;
+        }
+
+        if (in_array($controller, self::ERROR_CONTROLLER)) {
+            return false;
+        }
+
+        return true;
     }
 
     public function onKernelResponse(ResponseEvent $responseEvent): void
@@ -119,27 +174,22 @@ class KernelSubscriber extends EventSubscriberLib
         $response   = $responseEvent->getResponse();
         $request    = $responseEvent->getRequest();
         $controller = $request->attributes->get('_controller');
-        if (!is_string($controller)) {
+        if (!$this->testController($controller)) {
             return;
         }
 
-        preg_match(self::LABSTAG_CONTROLLER, $controller, $matches);
-        preg_match(self::API_CONTROLLER, $controller, $apis);
-        preg_match(self::PARAGRAPH_CONTROLLER, $controller, $paragraphs);
-        preg_match(self::BLOCK_CONTROLLER, $controller, $blocks);
-        $count = count($apis) + count($paragraphs) + count($blocks);
-        $test1 = (0 == count($matches) || in_array($controller, self::ERROR_CONTROLLER) || 0 != $count);
-        $test2 = ('html' != $request->getRequestFormat() || $response->getStatusCode() >= self::CLIENTNUMBER);
-        if ($test1 || $test2) {
+        return;
+
+        if ('html' != $request->getRequestFormat() || $response->getStatusCode() >= self::CLIENTNUMBER) {
             return;
         }
 
         $content = $response->getContent();
         $content = preg_replace('#<script>#i', '<script type="text/javascript">', (string) $content);
 
+        // config https://api.html-tidy.org/tidy/quickref_5.6.0.html
         $config = [
             'indent'                      => true,
-            'indent-spaces'               => 2,
             'output-xhtml'                => true,
             'drop-empty-elements'         => false,
             'drop-proprietary-attributes' => false,

@@ -37,10 +37,10 @@ class PhoneVerifType extends FormTypeLib
     {
         $optionsResolver->setDefaults(
             [
-                'label' => $this->translator->trans('forms.numero.label', [], 'admin.form'),
-                'help'  => $this->translator->trans('forms.numero.help', [], 'admin.form'),
+                'label' => $this->translator->trans('forms.numero.label', [], 'gestion.form'),
+                'help'  => $this->translator->trans('forms.numero.help', [], 'gestion.form'),
                 'attr'  => [
-                    'placeholder' => $this->translator->trans('forms.numero.placeholder', [], 'admin.form'),
+                    'placeholder' => $this->translator->trans('forms.numero.placeholder', [], 'gestion.form'),
                 ],
             ]
         );

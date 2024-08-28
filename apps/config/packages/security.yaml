@@ -47,6 +47,7 @@ security:
     - { path: ^/login, roles: PUBLIC_ACCESS }
     - { path: ^/lost, roles: PUBLIC_ACCESS }
     - { path: ^/admin, roles: ROLE_USER }
+    - { path: ^/gestion, roles: ROLE_USER }
     - { path: ^/efconnect, role: ROLE_USER }
     - { path: ^/elfinder, role: ROLE_USER }
     # - { path: ^/profile, roles: ROLE_USER }

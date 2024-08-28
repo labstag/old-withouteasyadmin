@@ -8,7 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Page;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_page_trash')]
+#[Trashable(url: 'gestion_page_trash')]
 class PageRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)
@@ -32,5 +32,19 @@ class PageRepository extends RepositoryLib
         );
 
         return $queryBuilder;
+    }
+
+    public function getBySlugs(array $slugs): mixed
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        $queryBuilder->where(
+            'p.slug IN (:slugs)'
+        );
+        $queryBuilder->setParameters(
+            ['slugs' => $slugs]
+        );
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

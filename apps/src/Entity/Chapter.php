@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: ChapterRepository::class)]
-#[ApiResource]
 class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
@@ -31,11 +29,6 @@ class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagr
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $created = null;
-
-    #[ORM\ManyToOne(targetEntity: History::class, inversedBy: 'chapters', cascade: ['persist'])]
-    #[Assert\NotBlank]
-    #[ORM\JoinColumn(name: 'refhistory_id', nullable: false)]
-    private ?History $history = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -62,6 +55,11 @@ class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagr
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $published = null;
+
+    #[ORM\ManyToOne(targetEntity: History::class, inversedBy: 'chapters', cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(name: 'refhistory_id', nullable: false)]
+    private ?History $refhistory = null;
 
     #[Gedmo\Slug(updatable: false, fields: ['name'])]
     #[ORM\Column(type: 'string', length: 255)]
@@ -107,11 +105,6 @@ class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagr
         return $this->created;
     }
 
-    public function getHistory(): ?History
-    {
-        return $this->history;
-    }
-
     public function getId(): ?string
     {
         return $this->id;
@@ -151,6 +144,11 @@ class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagr
     public function getPublished(): ?DateTimeInterface
     {
         return $this->published;
+    }
+
+    public function getRefhistory(): ?History
+    {
+        return $this->refhistory;
     }
 
     public function getSlug(): ?string
@@ -197,13 +195,6 @@ class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagr
         return $this;
     }
 
-    public function setHistory(?History $history): self
-    {
-        $this->history = $history;
-
-        return $this;
-    }
-
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -228,6 +219,13 @@ class Chapter implements PublicInterface, EntityTrashInterface, EntityWithParagr
     public function setPublished(DateTimeInterface $dateTime): self
     {
         $this->published = $dateTime;
+
+        return $this;
+    }
+
+    public function setRefHistory(?History $history): self
+    {
+        $this->refhistory = $history;
 
         return $this;
     }

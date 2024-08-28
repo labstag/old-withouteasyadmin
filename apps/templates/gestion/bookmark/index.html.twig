@@ -1,0 +1,48 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'field': 'a.name',
+                'name': 'bookmark.name'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'bookmark.user'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'bookmark.category'|trans({}, 'gestion.messages')
+            },
+            {
+                'field': 'a.state',
+                'name': 'workflow.state'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'bookmark.workflow'|trans({}, 'gestion.messages')
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/macro.html.twig" as macro_gestion %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.refuser }}</td>
+                    <td>{{ entity.refcategory }}</td>
+                    <td>
+                        {% for state in workflow_marked_places(entity) %}
+                            {{ state }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ macro_gestion.workflow(entity, actions) }}
+                    </td>
+                    <td>
+                        {{ macro_gestion.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

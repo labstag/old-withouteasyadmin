@@ -2,6 +2,9 @@
 
 namespace Labstag\Security\Voter;
 
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\MenuItemDto;
 use Labstag\Entity\AddressUser;
 use Labstag\Entity\Attachment;
 use Labstag\Entity\Block;
@@ -78,6 +81,15 @@ class EntityVoter extends Voter
         ];
 
         $status = false;
+
+        if ($subject instanceof EntityDto || $subject instanceof FieldDto || $subject instanceof MenuItemDto) {
+            return true;
+        }
+
+        if (is_array($subject) || is_null($subject)) {
+            return true;
+        }
+
         foreach ($entities as $entity) {
             if ($subject::class == $entity) {
                 $status = true;

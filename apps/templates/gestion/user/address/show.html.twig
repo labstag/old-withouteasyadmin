@@ -1,0 +1,58 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'user.address.street'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.street }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user.address.country'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    <span class="flag-icon flag-icon-{{ entity.country|lower }}"></span>
+                    {{ entity.country|country_name('fr') }}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'user.address.zipcode'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.zipcode }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user.address.city'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.city }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user.address.gps'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    <span class="gps-icon">
+                        {{ entity.gps }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'user.address.type'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.type }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user.address.pmr'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.pmr ? 'state.yes'|trans({}, 'gestion.messages') : 'state.no'|trans({}, 'gestion.messages') }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'user.address.user'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'gestion_user_preview' %}
+                    {% else %}
+                        {% set url = 'gestion_user_show' %}
+                    {% endif %}
+                    {% set state = url|guard_route %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,12 +13,13 @@ use Labstag\Entity\Paragraph\Video;
 use Labstag\Entity\Traits\StateableEntity;
 use Labstag\Interfaces\EntityTrashInterface;
 use Labstag\Repository\AttachmentRepository;
+use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: AttachmentRepository::class)]
-#[ApiResource]
-class Attachment implements EntityTrashInterface
+class Attachment implements EntityTrashInterface, Stringable
 {
     use SoftDeleteableEntity;
     use StateableEntity;
@@ -76,6 +76,11 @@ class Attachment implements EntityTrashInterface
         $this->paragraphVideos     = new ArrayCollection();
         $this->paragraphImages     = new ArrayCollection();
         $this->paragraphTextImages = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->getName();
     }
 
     public function addBookmark(Bookmark $bookmark): self
@@ -158,7 +163,7 @@ class Attachment implements EntityTrashInterface
         return $this;
     }
 
-    public function addUser(User $user): self
+    public function addUser(UserInterface $user): self
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
@@ -318,7 +323,7 @@ class Attachment implements EntityTrashInterface
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUser(UserInterface $user): self
     {
         // set the owning side to null (unless already changed)
         if ($this->users->removeElement($user) && $user->getAvatar() === $this) {

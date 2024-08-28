@@ -3,9 +3,9 @@
 namespace Labstag\Domain;
 
 use Labstag\Entity\Category;
-use Labstag\Form\Admin\CategoryType;
+use Labstag\Form\Gestion\CategoryType;
 
-use Labstag\Form\Admin\Search\CategoryType as SearchCategoryType;
+use Labstag\Form\Gestion\Search\CategoryType as SearchCategoryType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\CategorySearch;
@@ -38,22 +38,22 @@ class CategoryDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'index'   => 'admin/category/index.html.twig',
-            'trash'   => 'admin/category/index.html.twig',
-            'show'    => 'admin/category/show.html.twig',
-            'preview' => 'admin/category/show.html.twig',
+            'index'   => 'gestion/category/index.html.twig',
+            'trash'   => 'gestion/category/index.html.twig',
+            'show'    => 'gestion/category/show.html.twig',
+            'preview' => 'gestion/category/show.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_category_index'   => $this->translator->trans('category.title', [], 'admin.breadcrumb'),
-            'admin_category_edit'    => $this->translator->trans('category.edit', [], 'admin.breadcrumb'),
-            'admin_category_new'     => $this->translator->trans('category.new', [], 'admin.breadcrumb'),
-            'admin_category_preview' => $this->translator->trans('category.preview', [], 'admin.breadcrumb'),
-            'admin_category_show'    => $this->translator->trans('category.show', [], 'admin.breadcrumb'),
-            'admin_category_trash'   => $this->translator->trans('category.trash', [], 'admin.breadcrumb'),
+            'gestion_category_index'   => $this->translator->trans('category.title', [], 'gestion.breadcrumb'),
+            'gestion_category_edit'    => $this->translator->trans('category.edit', [], 'gestion.breadcrumb'),
+            'gestion_category_new'     => $this->translator->trans('category.new', [], 'gestion.breadcrumb'),
+            'gestion_category_preview' => $this->translator->trans('category.preview', [], 'gestion.breadcrumb'),
+            'gestion_category_show'    => $this->translator->trans('category.show', [], 'gestion.breadcrumb'),
+            'gestion_category_trash'   => $this->translator->trans('category.trash', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -67,14 +67,14 @@ class CategoryDomain extends DomainLib implements DomainInterface
         return [
             'delete'   => 'api_action_delete',
             'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_category_edit',
+            'edit'     => 'gestion_category_edit',
             'empty'    => 'api_action_empty',
-            'list'     => 'admin_category_index',
-            'new'      => 'admin_category_new',
-            'preview'  => 'admin_category_preview',
+            'list'     => 'gestion_category_index',
+            'new'      => 'gestion_category_new',
+            'preview'  => 'gestion_category_preview',
             'restore'  => 'api_action_restore',
-            'show'     => 'admin_category_show',
-            'trash'    => 'admin_category_trash',
+            'show'     => 'gestion_category_show',
+            'trash'    => 'gestion_category_trash',
             'workflow' => 'api_action_workflow',
         ];
     }

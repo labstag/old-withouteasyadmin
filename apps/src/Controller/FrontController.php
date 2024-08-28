@@ -23,7 +23,7 @@ class FrontController extends FrontControllerLib
         }
 
         return $this->render(
-            'front.html.twig',
+            'skeleton/front.html.twig',
             ['content' => $edito]
         );
     }
@@ -35,7 +35,8 @@ class FrontController extends FrontControllerLib
         defaults: [
             'slug' => '',
             '_'    => '',
-        ]
+        ],
+        priority: -1
     )]
     public function index(
         string $slug,

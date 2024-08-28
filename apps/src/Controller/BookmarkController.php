@@ -31,7 +31,7 @@ class BookmarkController extends FrontControllerLib
         );
 
         if (!$bookmark instanceof Bookmark) {
-            if ('' != $slug) {
+            if ('' !== $slug) {
                 throw $this->createNotFoundException();
             }
 
@@ -57,7 +57,7 @@ class BookmarkController extends FrontControllerLib
         );
 
         return $this->render(
-            'front.html.twig',
+            'skeleton/front.html.twig',
             ['content' => $render]
         );
     }
@@ -78,7 +78,7 @@ class BookmarkController extends FrontControllerLib
         );
 
         return $this->render(
-            'front.html.twig',
+            'skeleton/front.html.twig',
             ['content' => $render]
         );
     }

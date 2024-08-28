@@ -2,7 +2,6 @@
 
 namespace Labstag\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,13 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
-#[ApiResource]
 class History implements PublicInterface, EntityTrashInterface, EntityWithParagraphInterface
 {
     use SoftDeleteableEntity;
     use StateableEntity;
 
-    #[ORM\OneToMany(targetEntity: Chapter::class, mappedBy: 'history', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Chapter::class, mappedBy: 'refhistory', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $chapters;
 
@@ -84,7 +82,7 @@ class History implements PublicInterface, EntityTrashInterface, EntityWithParagr
     {
         if (!$this->chapters->contains($chapter)) {
             $this->chapters[] = $chapter;
-            $chapter->setHistory($this);
+            $chapter->setRefHistory($this);
         }
 
         return $this;

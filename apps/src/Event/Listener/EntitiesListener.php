@@ -2,22 +2,17 @@
 
 namespace Labstag\Event\Listener;
 
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Labstag\Interfaces\EntityInterface;
 use Labstag\Lib\EventListenerLib;
 
+#[AsDoctrineListener(event: Events::postPersist)]
+#[AsDoctrineListener(event: Events::postRemove)]
+#[AsDoctrineListener(event: Events::postUpdate)]
 class EntitiesListener extends EventListenerLib
 {
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::postPersist,
-            Events::postRemove,
-            Events::postUpdate,
-        ];
-    }
-
     public function postPersist(LifecycleEventArgs $lifecycleEventArgs): void
     {
         $this->logActivity('persist', $lifecycleEventArgs);
@@ -36,7 +31,7 @@ class EntitiesListener extends EventListenerLib
     private function logActivity(string $action, LifecycleEventArgs $lifecycleEventArgs): void
     {
         $object = $lifecycleEventArgs->getObject();
-        if (!$object instanceof EntityInterface || 'persist' != $action) {
+        if (!$object instanceof EntityInterface || 'persist' !== $action) {
             return;
         }
 

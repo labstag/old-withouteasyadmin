@@ -5,20 +5,35 @@ namespace Labstag\Paragraph\Edito;
 use Labstag\Entity\Edito;
 use Labstag\Entity\Layout;
 use Labstag\Entity\Paragraph\Edito\Header;
-use Labstag\Form\Admin\Paragraph\Edito\HeaderType;
+use Labstag\Form\Gestion\Paragraph\Edito\HeaderType;
 use Labstag\Interfaces\EntityParagraphInterface;
 use Labstag\Interfaces\ParagraphInterface;
 use Labstag\Lib\ParagraphLib;
 use Labstag\Repository\EditoRepository;
-use Symfony\Component\HttpFoundation\Response;
 
 class HeaderParagraph extends ParagraphLib implements ParagraphInterface
 {
-    public function getCode(EntityParagraphInterface $entityParagraph): string
+    public function context(EntityParagraphInterface $entityParagraph): mixed
+    {
+        /** @var EditoRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Edito::class);
+        $edito         = $repositoryLib->findOnePublier();
+
+        if (!$edito instanceof Edito) {
+            return null;
+        }
+
+        return [
+            'edito'     => $edito,
+            'paragraph' => $entityParagraph,
+        ];
+    }
+
+    public function getCode(EntityParagraphInterface $entityParagraph): array
     {
         unset($entityParagraph);
 
-        return 'edito/header';
+        return ['edito/header'];
     }
 
     public function getEntity(): string
@@ -49,25 +64,6 @@ class HeaderParagraph extends ParagraphLib implements ParagraphInterface
     public function isShowForm(): bool
     {
         return false;
-    }
-
-    public function show(EntityParagraphInterface $entityParagraph): ?Response
-    {
-        /** @var EditoRepository $repositoryLib */
-        $repositoryLib = $this->repositoryService->get(Edito::class);
-        $edito         = $repositoryLib->findOnePublier();
-
-        if (!$edito instanceof Edito) {
-            return null;
-        }
-
-        return $this->render(
-            $this->getTemplateFile($this->getCode($entityParagraph)),
-            [
-                'edito'     => $edito,
-                'paragraph' => $entityParagraph,
-            ]
-        );
     }
 
     /**

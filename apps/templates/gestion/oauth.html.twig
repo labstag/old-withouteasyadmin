@@ -1,0 +1,38 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <div>
+        <p>{{ 'oauth.message'|trans({}, 'gestion.messages')|raw }}</p>
+    </div>
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'name': 'oauth.service'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'oauth.url'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'oauth.urltoshare'|trans({}, 'gestion.messages')
+            }
+        ],
+        notajax: false
+    } %}
+        {% block tbody %}
+            {% for service, data in types %}
+                {% if data.config is defined %}
+                <tr>
+                    <td>
+                        {{ service }}
+                    </td>
+                    <td>
+                        <a href="{{ data.config }}">{{ 'oauth.go'|trans({}, 'gestion.messages') }}</a>
+                    </td>
+                    <td>
+                        {{ "%url%/oauth/check/%service%"|replace({"%url%": config['site_url'], "%service%": service}) }}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

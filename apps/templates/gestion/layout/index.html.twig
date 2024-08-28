@@ -1,0 +1,53 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'field': 'a.name',
+                'name': 'layout.name'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'layout.custom'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'layout.url'|trans({}, 'gestion.messages')
+            },
+            {
+                'name': 'layout.paragraphs'|trans({}, 'gestion.messages')
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/macro.html.twig" as macro_gestion %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.custom.block.title }}</td>
+                    <td>
+                        <ul>
+                            {% for url in entity.url %}
+                                <li>{{ url }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            {% for paragraph in entity.paragraphs %}
+                                <li>{{ paragraph.type|paragraph_name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        {{ macro_gestion.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+{% block modal %}
+    {{ parent() }}
+    {% include "gestion/block/add.html.twig" %}
+{% endblock %}

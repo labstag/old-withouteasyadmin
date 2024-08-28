@@ -8,7 +8,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Menu;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_menu_trash')]
+#[Trashable(url: 'gestion_menu_trash')]
 class MenuRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

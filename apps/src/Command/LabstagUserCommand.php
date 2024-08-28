@@ -119,7 +119,7 @@ class LabstagUserCommand extends CommandLib
         }
 
         foreach ($usernames as $username) {
-            if (!is_string($username) || '' == $username) {
+            if (!is_string($username) || '' === $username) {
                 continue;
             }
 
@@ -548,10 +548,10 @@ class LabstagUserCommand extends CommandLib
         User $user
     ): void
     {
-        /** @var GroupeRepository $repository */
-        $repository = $this->repositoryService->get(Groupe::class);
-        $groupes    = $repository->findBy([], ['name' => 'DESC']);
-        $data       = [];
+        /** @var GroupeRepository $repositoryLib */
+        $repositoryLib = $this->repositoryService->get(Groupe::class);
+        $groupes       = $repositoryLib->findBy([], ['name' => 'DESC']);
+        $data          = [];
         foreach ($groupes as $groupe) {
             /** @var Groupe $groupe */
             if ('visiteur' == $groupe->getCode()) {

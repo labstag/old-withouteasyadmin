@@ -7,7 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\GeoCode;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_geocode_trash')]
+#[Trashable(url: 'gestion_geocode_trash')]
 class GeoCodeRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

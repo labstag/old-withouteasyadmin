@@ -3,8 +3,8 @@
 namespace Labstag\Domain\User;
 
 use Labstag\Entity\User;
-use Labstag\Form\Admin\Search\UserType as SearchUserType;
-use Labstag\Form\Admin\User\UserType;
+use Labstag\Form\Gestion\Search\UserType as SearchUserType;
+use Labstag\Form\Gestion\User\UserType;
 use Labstag\Interfaces\DomainInterface;
 use Labstag\Lib\DomainLib;
 use Labstag\Search\UserSearch;
@@ -29,26 +29,26 @@ class UserDomain extends DomainLib implements DomainInterface
     public function getTemplates(): array
     {
         return [
-            'index'   => 'admin/user/index.html.twig',
-            'trash'   => 'admin/user/index.html.twig',
-            'edit'    => 'admin/user/form.html.twig',
-            'new'     => 'admin/user/form.html.twig',
-            'guard'   => 'admin/guard/user.html.twig',
-            'show'    => 'admin/user/show.html.twig',
-            'preview' => 'admin/user/show.html.twig',
+            'index'   => 'gestion/user/index.html.twig',
+            'trash'   => 'gestion/user/index.html.twig',
+            'edit'    => 'gestion/user/form.html.twig',
+            'new'     => 'gestion/user/form.html.twig',
+            'guard'   => 'gestion/guard/user.html.twig',
+            'show'    => 'gestion/user/show.html.twig',
+            'preview' => 'gestion/user/show.html.twig',
         ];
     }
 
     public function getTitles(): array
     {
         return [
-            'admin_user_index'   => $this->translator->trans('user.title', [], 'admin.breadcrumb'),
-            'admin_user_edit'    => $this->translator->trans('user.edit', [], 'admin.breadcrumb'),
-            'admin_user_guard'   => $this->translator->trans('user.guard', [], 'admin.breadcrumb'),
-            'admin_user_new'     => $this->translator->trans('user.new', [], 'admin.breadcrumb'),
-            'admin_user_trash'   => $this->translator->trans('user.trash', [], 'admin.breadcrumb'),
-            'admin_user_preview' => $this->translator->trans('user.preview', [], 'admin.breadcrumb'),
-            'admin_user_show'    => $this->translator->trans('user.show', [], 'admin.breadcrumb'),
+            'gestion_user_index'   => $this->translator->trans('user.title', [], 'gestion.breadcrumb'),
+            'gestion_user_edit'    => $this->translator->trans('user.edit', [], 'gestion.breadcrumb'),
+            'gestion_user_guard'   => $this->translator->trans('user.guard', [], 'gestion.breadcrumb'),
+            'gestion_user_new'     => $this->translator->trans('user.new', [], 'gestion.breadcrumb'),
+            'gestion_user_trash'   => $this->translator->trans('user.trash', [], 'gestion.breadcrumb'),
+            'gestion_user_preview' => $this->translator->trans('user.preview', [], 'gestion.breadcrumb'),
+            'gestion_user_show'    => $this->translator->trans('user.show', [], 'gestion.breadcrumb'),
         ];
     }
 
@@ -62,15 +62,15 @@ class UserDomain extends DomainLib implements DomainInterface
         return [
             'delete'   => 'api_action_delete',
             'destroy'  => 'api_action_destroy',
-            'edit'     => 'admin_user_edit',
+            'edit'     => 'gestion_user_edit',
             'empty'    => 'api_action_empty',
-            'guard'    => 'admin_user_guard',
-            'list'     => 'admin_user_index',
-            'new'      => 'admin_user_new',
-            'preview'  => 'admin_user_preview',
+            'guard'    => 'gestion_user_guard',
+            'list'     => 'gestion_user_index',
+            'new'      => 'gestion_user_new',
+            'preview'  => 'gestion_user_preview',
             'restore'  => 'api_action_restore',
-            'show'     => 'admin_user_show',
-            'trash'    => 'admin_user_trash',
+            'show'     => 'gestion_user_show',
+            'trash'    => 'gestion_user_trash',
             'workflow' => 'api_action_workflow',
         ];
     }

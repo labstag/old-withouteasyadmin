@@ -1,0 +1,79 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th colspan=2>
+                    <a href="{{ path('front_article', {'slug': entity.slug}) }}" target="_blank">
+                        {{ 'post.url'|trans({}, 'gestion.messages') }}
+                    </a>
+                </th>
+            </tr>
+            <tr>
+                <th>{{ 'post.title'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.title }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'post.content'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.content|raw }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'post.published'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.published|format_datetime(pattern=formatdatetime.back) }}</td>
+            </tr>
+            {% set img = attachment(entity.img) %}
+            {% if img is not null and img.name is not null %}
+            <tr>
+                <th>{{ 'post.image'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    <picture>
+                        <img loading="lazy" alt="{{ 'post.image'|trans({}, 'gestion.messages')|e("html_attr") }}" src="{{ asset(img.name) | imagefilter('my_thumb') }}" />
+                    </picture>
+                </td>
+            </tr>
+            {% endif %}
+            {% if post.refcategory is defined %}
+            <tr>
+                <th>{{ 'post.category'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'gestion_category_preview' %}
+                    {% else %}
+                        {% set url = 'gestion_category_show' %}
+                    {% endif %}
+                    {% set state = url|guard_route %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refcategory.id}) }}">{{ entity.refcategory }}</a>
+                    {% else %}
+                        {{ entity.refcategory }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>{{ 'post.user'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% if entity.refuser.deletedAt != '' %}
+                        {% set url = 'gestion_user_preview' %}
+                    {% else %}
+                        {% set url = 'gestion_user_show' %}
+                    {% endif %}
+                    {% set state = url|guard_route %}
+                    {% if state == true %}
+                        <a href="{{ path(url, {'id': entity.refuser.id}) }}">{{ entity.refuser }}</a>
+                    {% else %}
+                        {{ entity.refuser }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'workflow.state'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

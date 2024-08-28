@@ -1,0 +1,21 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-route-tab" data-bs-toggle="tab" href="#nav-route" role="tab" aria-controls="nav-route" aria-selected="true">
+                {{ 'guard.route'|trans({}, 'gestion.messages') }}
+            </a>
+            <a class="nav-item nav-link" id="nav-workflow-tab" data-bs-toggle="tab" href="#nav-workflow" role="tab" aria-controls="nav-workflow" aria-selected="false">
+                {{ 'guard.workflow'|trans({}, 'gestion.messages') }}
+            </a>
+        </div>
+    </nav>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="nav-route" role="tabpanel" aria-labelledby="nav-route-tab">
+            {% include 'gestion/guard/group/route.html.twig' %}
+        </div>
+        <div class="tab-pane fade" id="nav-workflow" role="tabpanel" aria-labelledby="nav-workflow-tab">
+            {% include 'gestion/guard/group/workflow.html.twig' %}
+        </div>
+    </div>
+{% endblock %}

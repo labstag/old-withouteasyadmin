@@ -1,0 +1,27 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    <table>
+        <tbody>
+            <tr>
+                <th>{{ 'chapter.name'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'chapter.content'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.content|raw }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'chapter.published'|trans({}, 'gestion.messages') }}</th>
+                <td>{{ entity.published|format_datetime(pattern=formatdatetime.back) }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'workflow.state'|trans({}, 'gestion.messages') }}</th>
+                <td>
+                    {% for state in workflow_marked_places(entity) %}
+                        {{ state }}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

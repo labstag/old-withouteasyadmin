@@ -7,7 +7,7 @@ use Labstag\Annotation\Trashable;
 use Labstag\Entity\Attachment;
 use Labstag\Lib\RepositoryLib;
 
-#[Trashable(url: 'admin_attachment_trash')]
+#[Trashable(url: 'gestion_attachment_trash')]
 class AttachmentRepository extends RepositoryLib
 {
     public function __construct(ManagerRegistry $managerRegistry)

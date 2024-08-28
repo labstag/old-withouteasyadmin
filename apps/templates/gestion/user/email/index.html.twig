@@ -1,0 +1,49 @@
+{% extends 'gestion.html.twig' %}
+{% block body %}
+    {% embed "gestion/table.html.twig" with {
+        theads: [
+            {
+                'field': 'a.address',
+                'name': 'user.email.address'|trans({}, 'gestion.messages'),
+            },
+            {
+                'field': 'a.principal',
+                'name': 'user.email.principal'|trans({}, 'gestion.messages'),
+            },
+            {
+                'name': 'user.email.user'|trans({}, 'gestion.messages'),
+            },
+            {
+                'field': 'a.state',
+                'name': 'workflow.state'|trans({}, 'gestion.messages'),
+            },
+            {
+                'name': 'user.email.workflow'|trans({}, 'gestion.messages'),
+            }
+        ],
+        pagination: pagination,
+        action: true
+    } %}
+        {% import "gestion/macro.html.twig" as macro_gestion %}
+        {% block tbody %}
+            {% for entity in pagination %}
+                <tr data-id="{{ entity.id }}">
+                    <td>{{ entity.address }}</td>
+                    <td>{{ entity.principal ? 'state.yes'|trans({}, 'gestion.messages') : 'state.no'|trans({}, 'gestion.messages') }}</td>
+                    <td>{{ entity.refuser }}</td>
+                    <td>
+                        {% for state in workflow_marked_places(entity) %}
+                            {{ state }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ macro_gestion.workflow(entity, actions) }}
+                    </td>
+                    <td>
+                        {{ macro_gestion.actions(entity, actions) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
