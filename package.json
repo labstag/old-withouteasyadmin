@@ -144,7 +144,7 @@
         "jquery": "3.6.*",
         "korojscommands": "1.2.*",
         "sortablejs": "1.15.*",
-        "tarteaucitronjs": "1.11.*",
+        "tarteaucitronjs": "1.14.*",
         "tom-select": "2.2.*"
     }
 }
